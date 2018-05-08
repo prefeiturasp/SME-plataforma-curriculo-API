@@ -1,13 +1,15 @@
-FROM ubuntu:18.04
+FROM centos:7
 
-#Set the timezone
-ENV TZ=America/Sao_Paulo
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN apt-get update -qq && apt-get install -y tzdata
+RUN yum install -y git-core zlib zlib-devel gcc-c++ patch readline readline-devel libyaml-devel libffi-devel openssl-devel make bzip2 autoconf automake libtool bison curl
 
-# Install dependencies
-RUN apt-get update -y
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs ruby libffi-dev libxml2 patch ruby-dev zlib1g-dev liblzma-dev
+RUN yum install -y postgresql-devel
+WORKDIR /tmp
+
+ADD https://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.1.tar.gz /tmp
+RUN tar -xzf ruby-2.5.1.tar.gz && rm ruby-2.5.1.tar.gz
+
+WORKDIR /tmp/ruby-2.5.1
+RUN ./configure && make && make install
 
 # Configuring main directory
 RUN mkdir -p /mnt/data/patio-digital
@@ -21,11 +23,12 @@ ENV RAKE_ENV='staging'
 COPY Gemfile /mnt/data/patio-digital/Gemfile
 COPY Gemfile.lock /mnt/data/patio-digital/Gemfile.lock
 
+# Install bundle and Gems
 RUN gem install bundler
 RUN bundle install --jobs 20 --retry 5 --without development test
 
 # Adding project files
 COPY . /mnt/data/patio-digital
-RUN bundle exec rake assets:precompile
+
 EXPOSE 80
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
