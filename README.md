@@ -58,4 +58,3 @@ After setting up, you can run the application and dependencies using [docker-com
     % docker-compose up -d
 
 Your Docker host is running on `localhost` then you should be able to use
-
