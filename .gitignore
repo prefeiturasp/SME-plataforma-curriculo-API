@@ -32,3 +32,4 @@ config/initializers/secret_token.rb
 docker-compose.yml
 
 .rspec
+/config/database.yml
