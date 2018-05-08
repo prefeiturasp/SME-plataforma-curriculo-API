@@ -13,22 +13,41 @@ RUN ./configure && make && make install
 
 # Configuring main directory
 RUN mkdir -p /mnt/data/patio-digital
-WORKDIR /mnt/data/patio-digital
+
+ENV APP_ROOT /mnt/data/patio-digital
+
+WORKDIR $APP_ROOT
 
 # Setting env up
 ENV RAILS_ENV='staging'
 ENV RAKE_ENV='staging'
+ENV PUMA_PORT=3000
 
 # Adding gems
-COPY Gemfile /mnt/data/patio-digital/Gemfile
-COPY Gemfile.lock /mnt/data/patio-digital/Gemfile.lock
+COPY Gemfile $APP_ROOT/Gemfile
+COPY Gemfile.lock $APP_ROOT/Gemfile.lock
 
 # Install bundle and Gems
 RUN gem install bundler
 RUN bundle install --jobs 20 --retry 5 --without development test
 
-# Adding project files
-COPY . /mnt/data/patio-digital
+COPY ./docker-compose.yml /tmp/docker-compose-template.yml
 
-EXPOSE 80
+RUN envsubst '$APP_ROOT' < "/tmp/docker-compose-template.yml" > $APP_ROOT
+
+# Adding project files
+COPY . $APP_ROOT
+
+# Add puma directories
+RUN mkdir -p shared/pids shared/sockets shared/log
+
+EXPOSE 3000
+
+# Assets precompile
+# RUN if [ $RAILS_ENV = 'staging' ]; then bundle exec rake assets:precompile --trace; fi
+
+# Expose assets for web container
+VOLUME $APP_ROOT/public
+
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
+

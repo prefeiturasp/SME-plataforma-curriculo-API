@@ -177,6 +177,7 @@ PLATFORMS
 DEPENDENCIES
   bootsnap (>= 1.1.0)
   byebug
+  capistrano
   capistrano-rails
   database_cleaner
   listen (>= 3.0.5, < 3.2)
