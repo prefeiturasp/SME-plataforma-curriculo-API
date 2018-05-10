@@ -1,0 +1,130 @@
+=== puma startup: 2018-05-09 20:39:55 -0300 ===
+Exiting
+=== puma startup: 2018-05-09 20:40:16 -0300 ===
+Exiting
+=== puma startup: 2018-05-09 20:40:26 -0300 ===
+Exiting
+=== puma startup: 2018-05-09 20:41:52 -0300 ===
+Exiting
+=== puma startup: 2018-05-09 20:44:47 -0300 ===
+Exiting
+=== puma startup: 2018-05-09 20:44:58 -0300 ===
+Exiting
+=== puma startup: 2018-05-09 20:48:42 -0300 ===
+[20107] * Starting control server on unix:///tmp/puma-status-1525909722508-20107
+[20107] - Gracefully shutting down workers...
+[20972] Early termination of worker
+[20967] Early termination of worker
+[20107] === puma shutdown: 2018-05-09 20:49:12 -0300 ===
+[20107] - Goodbye!
+Exiting
+=== puma startup: 2018-05-09 20:50:11 -0300 ===
+[21095] * Starting control server on unix:///tmp/puma-status-1525909811151-21095
+[21095] - Worker 0 (pid: 21113) booted, phase: 0
+[21095] - Worker 1 (pid: 21118) booted, phase: 0
+[21095] - Gracefully shutting down workers...
+[21095] === puma shutdown: 2018-05-09 20:50:25 -0300 ===
+[21095] - Goodbye!
+Exiting
+=== puma startup: 2018-05-09 20:50:30 -0300 ===
+[21170] * Starting control server on unix:///tmp/puma-status-1525909830846-21170
+[21170] - Worker 1 (pid: 21196) booted, phase: 0
+[21170] - Worker 0 (pid: 21191) booted, phase: 0
+Started GET "/" for 127.0.0.1 at 2018-05-09 20:50:36 -0300
+  [1m[35m (3.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /home/hebert/.rvm/gems/ruby-2.5.1@patio-digital/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /home/hebert/.rvm/gems/ruby-2.5.1@patio-digital/gems/railties-5.2.0/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /home/hebert/.rvm/gems/ruby-2.5.1@patio-digital/gems/railties-5.2.0/lib/rails/templates/rails/welcome/index.html.erb (19.3ms)
+Completed 200 OK in 52ms (Views: 28.3ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/favicon.ico" for 127.0.0.1 at 2018-05-09 20:50:37 -0300
+  
+ActionController::RoutingError (No route matches [GET] "/favicon.ico"):
+  
+actionpack (5.2.0) lib/action_dispatch/middleware/debug_exceptions.rb:65:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/show_exceptions.rb:33:in `call'
+railties (5.2.0) lib/rails/rack/logger.rb:38:in `call_app'
+railties (5.2.0) lib/rails/rack/logger.rb:26:in `block in call'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:71:in `block in tagged'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:28:in `tagged'
+activesupport (5.2.0) lib/active_support/tagged_logging.rb:71:in `tagged'
+railties (5.2.0) lib/rails/rack/logger.rb:26:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/remote_ip.rb:81:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/request_id.rb:27:in `call'
+rack (2.0.5) lib/rack/runtime.rb:22:in `call'
+activesupport (5.2.0) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/executor.rb:14:in `call'
+actionpack (5.2.0) lib/action_dispatch/middleware/static.rb:127:in `call'
+rack (2.0.5) lib/rack/sendfile.rb:111:in `call'
+railties (5.2.0) lib/rails/engine.rb:524:in `call'
+puma (3.11.4) lib/puma/configuration.rb:225:in `call'
+puma (3.11.4) lib/puma/server.rb:632:in `handle_request'
+puma (3.11.4) lib/puma/server.rb:446:in `process_client'
+puma (3.11.4) lib/puma/server.rb:306:in `block in run'
+puma (3.11.4) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+[21170] - Gracefully shutting down workers...
+[21170] === puma shutdown: 2018-05-09 20:50:40 -0300 ===
+[21170] - Goodbye!
+Exiting
+=== puma startup: 2018-05-09 20:51:16 -0300 ===
+[21367] * Starting control server on unix:///tmp/puma-status-1525909876349-21367
+[21367] - Worker 0 (pid: 21409) booted, phase: 0
+[21367] - Worker 1 (pid: 21414) booted, phase: 0
+[21367] - Gracefully shutting down workers...
+[21367] === puma shutdown: 2018-05-09 20:51:17 -0300 ===
+[21367] - Goodbye!
+Exiting
+=== puma startup: 2018-05-09 20:51:33 -0300 ===
+[21492] * Starting control server on unix:///tmp/puma-status-1525909893332-21492
+[21492] - Worker 0 (pid: 21511) booted, phase: 0
+[21492] - Worker 1 (pid: 21514) booted, phase: 0
+Started GET "/admin" for 127.0.0.1 at 2018-05-09 20:51:33 -0300
+  [1m[35m (1.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /home/hebert/.rvm/gems/ruby-2.5.1@patio-digital/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+Processing by Admin::DashboardController#index as HTML
+Completed 401 Unauthorized in 59ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/admin/login" for 127.0.0.1 at 2018-05-09 20:51:33 -0300
+Processing by ActiveAdmin::Devise::SessionsController#new as HTML
+  Rendering /home/hebert/.rvm/gems/ruby-2.5.1@patio-digital/gems/activeadmin-1.3.0/app/views/active_admin/devise/sessions/new.html.erb within layouts/active_admin_logged_out
+  Rendered /home/hebert/.rvm/gems/ruby-2.5.1@patio-digital/gems/activeadmin-1.3.0/app/views/active_admin/devise/shared/_links.erb (4.4ms)
+  Rendered /home/hebert/.rvm/gems/ruby-2.5.1@patio-digital/gems/activeadmin-1.3.0/app/views/active_admin/devise/sessions/new.html.erb within layouts/active_admin_logged_out (243.3ms)
+Completed 200 OK in 14779ms (Views: 14690.3ms | ActiveRecord: 11.5ms)
+
+
+Started GET "/assets/active_admin-70e4231508e12cc76ab94207699f5a98293283b172c3b734142d394fc82236a7.css" for 127.0.0.1 at 2018-05-09 20:51:48 -0300
+Started GET "/assets/active_admin-e670a4b09c70a1cf0e546e3cc233273ec00d44a2fe841969cac0562998dbec41.js" for 127.0.0.1 at 2018-05-09 20:51:48 -0300
+Started GET "/assets/active_admin/print-ed24cce6084b22ebfba0a18a67b64c009fbbc9bad9b7f72cc8ecda784b9e6d3d.css" for 127.0.0.1 at 2018-05-09 20:51:49 -0300
+  [1m[35m (2.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ /home/hebert/.rvm/gems/ruby-2.5.1@patio-digital/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+Started POST "/admin/login" for 127.0.0.1 at 2018-05-09 20:52:15 -0300
+Processing by ActiveAdmin::Devise::SessionsController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"iauoj19BOUdcCylUHGMlIKos//jDY8kmeGND5Lx/IcoHMiKhv7wf6RiIEF8RnlRaMM2iLrbOVJSZrEi627woCw==", "admin_user"=>{"email"=>"admin@example.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Login"}
+  [1m[36mAdminUser Load (2.9ms)[0m  [1m[34mSELECT  "admin_users".* FROM "admin_users" WHERE "admin_users"."email" = $1 ORDER BY "admin_users"."id" ASC LIMIT $2[0m  [["email", "admin@example.com"], ["LIMIT", 1]]
+  ↳ /home/hebert/.rvm/gems/ruby-2.5.1@patio-digital/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+  [1m[35m (0.7ms)[0m  [1m[35mBEGIN[0m
+  ↳ /home/hebert/.rvm/gems/ruby-2.5.1@patio-digital/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+  [1m[36mAdminUser Update (1.4ms)[0m  [1m[33mUPDATE "admin_users" SET "current_sign_in_at" = $1, "last_sign_in_at" = $2, "current_sign_in_ip" = $3, "last_sign_in_ip" = $4, "sign_in_count" = $5, "updated_at" = $6 WHERE "admin_users"."id" = $7[0m  [["current_sign_in_at", "2018-05-09 23:52:16.431574"], ["last_sign_in_at", "2018-05-09 23:52:16.431574"], ["current_sign_in_ip", "127.0.0.1/32"], ["last_sign_in_ip", "127.0.0.1/32"], ["sign_in_count", 1], ["updated_at", "2018-05-09 23:52:16.435762"], ["id", 1]]
+  ↳ /home/hebert/.rvm/gems/ruby-2.5.1@patio-digital/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+  [1m[35m (3.4ms)[0m  [1m[35mCOMMIT[0m
+  ↳ /home/hebert/.rvm/gems/ruby-2.5.1@patio-digital/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+Redirected to http://localhost:3000/admin
+Completed 302 Found in 653ms (ActiveRecord: 8.3ms)
+
+
+Started GET "/admin" for 127.0.0.1 at 2018-05-09 20:52:16 -0300
+Processing by Admin::DashboardController#index as HTML
+  [1m[36mAdminUser Load (1.3ms)[0m  [1m[34mSELECT  "admin_users".* FROM "admin_users" WHERE "admin_users"."id" = $1 ORDER BY "admin_users"."id" ASC LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ /home/hebert/.rvm/gems/ruby-2.5.1@patio-digital/gems/activerecord-5.2.0/lib/active_record/log_subscriber.rb:98
+  Rendering /home/hebert/.rvm/gems/ruby-2.5.1@patio-digital/gems/activeadmin-1.3.0/app/views/active_admin/page/index.html.arb
+  Rendered /home/hebert/.rvm/gems/ruby-2.5.1@patio-digital/gems/activeadmin-1.3.0/app/views/active_admin/page/index.html.arb (86.2ms)
+Completed 200 OK in 150ms (Views: 124.9ms | ActiveRecord: 1.3ms)
+
+
+[21492] - Gracefully shutting down workers...
+[21492] === puma shutdown: 2018-05-09 20:52:33 -0300 ===
+[21492] - Goodbye!
+Exiting
