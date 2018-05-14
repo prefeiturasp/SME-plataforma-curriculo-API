@@ -17,19 +17,14 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  database: <%= ENV['PLATAFORMA_DATABASE'] %>
-  username: <%= ENV['PLATAFORMA_USERNAME'] %>
-  password: <%= ENV['PLATAFORMA_PASSWORD'] %>
-  host: <%= ENV['PLATAFORMA_HOST'] %>
+  host: localhost
+  username:
+  password:
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
-  pool: 5
-  database:
-  host:
-  username:
-  password:
+  database: app_development
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -63,12 +58,14 @@ development:
 # Do not set this db to the same as development or production.
 staging:
   <<: *default
+  database: app_staging
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
+  database: app_test
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -91,4 +88,5 @@ test:
 #
 production:
   <<: *default
+  database: app_production
 
