@@ -23,3 +23,4 @@
 /config/database.yml
 /docker/web/nginx.conf
 /shared
+docker-compose.yml
