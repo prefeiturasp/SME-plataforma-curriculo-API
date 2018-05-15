@@ -94,3 +94,12 @@ If it is the first run run the commands below to create and run the database mig
 
   `$ cap <environment> docker:setup_db`
   `$ cap <environment> docker:migrate`
+
+Tools
+---------------------------
+
+* Run the test suite
+
+```ruby
+    $ rspec
+```
