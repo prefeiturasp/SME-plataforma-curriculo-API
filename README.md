@@ -103,3 +103,11 @@ Tools
 ```ruby
     $ rspec
 ```
+
+*  Run the ruby static code analyzer
+
+This project uses rubocop gem to ruby static code analyzer, to run the analysis
+
+```console
+    $ rubocop
+```
