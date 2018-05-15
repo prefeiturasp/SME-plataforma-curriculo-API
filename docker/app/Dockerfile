@@ -12,9 +12,11 @@ WORKDIR /tmp/ruby-2.5.1
 RUN ./configure && make && make install
 
 # Configuring main directory
-RUN mkdir -p /mnt/data/patio-digital
+ARG APPLICATION_ROOT_PATH
 
-ENV APP_ROOT /mnt/data/patio-digital
+RUN mkdir -p $APPLICATION_ROOT_PATH
+
+ENV APP_ROOT $APPLICATION_ROOT_PATH
 
 WORKDIR $APP_ROOT
 
