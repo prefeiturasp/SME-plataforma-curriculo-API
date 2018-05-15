@@ -3,10 +3,9 @@ FROM centos:7
 RUN yum install -y epel-release
 RUN yum install -y nginx
 
-# establish where Nginx should look for files
-ENV RAILS_ROOT /mnt/data/patio-digital
+ARG APPLICATION_ROOT_PATH
+ENV RAILS_ROOT $APPLICATION_ROOT_PATH
 
-# Set our working directory inside the image
 WORKDIR $RAILS_ROOT
 
 # create log directory

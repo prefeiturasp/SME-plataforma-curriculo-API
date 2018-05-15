@@ -22,6 +22,7 @@ On first you'll need set environment variables on your docker-compose, make sure
 
 - Rails application environment variables (production environment):
 
+    APPLICATION_ROOT_PATH
     PLATAFORMA_USERNAME
     PLATAFORMA_DATABASE
     PLATAFORMA_PASSWORD
