@@ -42,12 +42,10 @@ module Api
 
       private
 
-      # Use callbacks to share common setup or constraints between actions.
       def set_activity_type
         @activity_type = ActivityType.find(params[:id])
       end
 
-      # Only allow a trusted parameter "white list" through.
       def activity_type_params
         params.require(:activity_type).permit(:name)
       end

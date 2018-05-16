@@ -1,12 +1,14 @@
 AllCops:
+  Include:
+    - 'db/seeds.rb'
   Exclude:
     - 'Rakefile'
     - 'Gemfile'
-    - 'db/**/*'
+    - 'db/schema.rb'
+    - 'db/migrate/*'
     - 'config/**/*'
     - 'script/**/*'
     - 'bin/*'
-    - 'spec/**/*'
 Metrics/ClassLength:
   Max: 1500
 
@@ -18,6 +20,9 @@ Metrics/LineLength:
 
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+Style/BlockDelimiters:
+  EnforcedStyle: braces_for_chaining
 
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'register']
