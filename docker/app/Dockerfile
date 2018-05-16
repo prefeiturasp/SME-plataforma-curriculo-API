@@ -1,6 +1,6 @@
 FROM centos:7
 
-RUN yum install -y git-core zlib zlib-devel gcc-c++ patch readline readline-devel libyaml-devel libffi-devel openssl-devel make bzip2 autoconf automake libtool bison curl
+RUN yum install -y git-core zlib zlib-devel gcc-c++ patch readline readline-devel libyaml-devel libffi-devel openssl-devel make bzip2 autoconf automake libtool bison curl gettext
 
 RUN yum install -y postgresql-devel
 WORKDIR /tmp
@@ -35,7 +35,7 @@ RUN bundle install --jobs 20 --retry 5 --without development test
 
 COPY ./docker-compose.yml /tmp/docker-compose-template.yml
 
-RUN envsubst '$APP_ROOT' < "/tmp/docker-compose-template.yml" > $APP_ROOT
+RUN envsubst '$APP_ROOT' < "/tmp/docker-compose-template.yml" > $APP_ROOT/docker-compose.yml
 
 # Adding project files
 COPY . $APP_ROOT
