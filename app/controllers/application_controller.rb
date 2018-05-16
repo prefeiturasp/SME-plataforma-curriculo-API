@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
     authenticate_user!
     return if current_user.superadmin?
     flash[:alert] = 'Unauthorized Access!'
-    redirect_to '/'
+    sign_out current_user
+    redirect_to new_user_session_path
   end
 end
