@@ -1,7 +1,8 @@
 SME-plataforma-curriculo-API
 =====
 
-Project description here!
+[![Maintainability](https://api.codeclimate.com/v1/badges/ba5de8ada9b8fffe5bc2/maintainability)](https://codeclimate.com/github/prefeiturasp/SME-plataforma-curriculo-API/maintainability)
+
 
 System Dependencies
 -------------------
