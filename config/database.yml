@@ -1,0 +1,23 @@
+default: &default
+  adapter:  postgresql
+  encoding: unicode
+  host:     <%= ENV['SME-PLATAFORMA_HOST'] %>
+  username: <%= ENV['SME-PLATAFORMA_DATABASE_USERNAME'] %>
+  password: <%= ENV['SME-PLATAFORMA_DATABASE_PASSWORD'] %>
+  pool:     <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: <%= ENV['SME-PLATAFORMA_DATABASE_DEVELOPMENT'] %>
+
+staging:
+  <<: *default
+  database: <%= ENV['SME-PLATAFORMA_DATABASE_STAGING'] %>
+
+test:
+  <<: *default
+  database: <%= ENV['SME-PLATAFORMA_DATABASE_TEST'] %>
+
+production:
+  <<: *default
+  database: <%= ENV['SME-PLATAFORMA_DATABASE_PRODUCTION'] %>
