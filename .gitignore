@@ -34,3 +34,4 @@ docker-compose.yml
 .rspec
 .ruby-gemset
 /config/database.yml
+/db/schema.rb
