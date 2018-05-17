@@ -17,16 +17,14 @@ ActiveAdmin.register User do
       f.input :email
       f.input :password
       f.input :password_confirmation
-      f.input :superadmin, :label => "Super Administrator"
+      f.input :superadmin, label: 'Super Administrator'
     end
     f.actions
   end
 
   controller do
     def update
-      if params[:user][:password].blank?
-        %w(password password_confirmation).each { |p| params[:user].delete(p) }
-      end
+      %w[password password_confirmation].each { |p| params[:user].delete(p) } if params[:user][:password].blank?
       super
     end
   end

@@ -1,7 +1,8 @@
 SME-plataforma-curriculo-API
 =====
 
-Project description here!
+[![Maintainability](https://api.codeclimate.com/v1/badges/ba5de8ada9b8fffe5bc2/maintainability)](https://codeclimate.com/github/prefeiturasp/SME-plataforma-curriculo-API/maintainability)
+
 
 System Dependencies
 -------------------
@@ -94,3 +95,20 @@ If it is the first run run the commands below to create and run the database mig
 
   `$ cap <environment> docker:setup_db`
   `$ cap <environment> docker:migrate`
+
+Tools
+---------------------------
+
+* Run the test suite
+
+```ruby
+    $ rspec
+```
+
+*  Run the ruby static code analyzer
+
+This project uses rubocop gem to ruby static code analyzer, to run the analysis
+
+```console
+    $ rubocop
+```

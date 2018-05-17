@@ -44,6 +44,8 @@ namespace :docker do
 
         execute "rm #{release_path}/docker/web/nginx.conf && cp #{shared_path}/docker/web/nginx.conf #{release_path}/docker/web/nginx.conf"
         
+        execute "docker-compose -p #{fetch(:application)} -f #{release_path}/docker-compose.yml build app"
+
         execute "docker-compose -p #{fetch(:application)} -f #{release_path}/docker-compose.yml build web"
       end
     end
@@ -54,6 +56,8 @@ namespace :docker do
     on roles(:all) do
       within release_path do
         execute "docker-compose -p #{fetch(:application)} -f #{release_path}/docker-compose.yml stop -t 30 web && docker-compose -p #{fetch(:application)} -f #{release_path}/docker-compose.yml rm --force -v web"
+
+        execute "docker-compose -p #{fetch(:application)} -f #{release_path}/docker-compose.yml stop -t 30 app && docker-compose -p #{fetch(:application)} -f #{release_path}/docker-compose.yml rm --force -v app"
       end
     end
   end
@@ -145,6 +149,7 @@ namespace :docker do
 end
 
 namespace :deploy do
+  after :publishing, 'docker:stop'
   after :publishing, 'docker:build'
   after :publishing, 'docker:start'
 end

@@ -1,5 +1,14 @@
 Rails.application.routes.draw do
-  devise_for :users
+  devise_for :users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
+  root to: 'admin/dashboard#index'
+
+  namespace :api do
+    namespace :v1 do
+      resources :axes
+      resources :activity_types
+      resources :curricular_components
+    end
+  end
 end
