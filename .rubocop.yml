@@ -1,6 +1,4 @@
 AllCops:
-  Include:
-    - 'db/seeds.rb'
   Exclude:
     - 'Rakefile'
     - 'Gemfile'

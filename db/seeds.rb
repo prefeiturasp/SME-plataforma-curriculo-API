@@ -1,8 +1,8 @@
 if Rails.env.development?
   User.create!(
-    email: 'admin@example.com',
-    password: 'password',
-    password_confirmation: 'password',
+    email: 'admin@jurema.la',
+    password: 'senhasegura',
+    password_confirmation: 'senhasegura',
     superadmin: true
   )
 end

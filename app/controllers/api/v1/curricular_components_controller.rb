@@ -1,6 +1,6 @@
 module Api
   module V1
-    class CurricularComponentsController < ApplicationController
+    class CurricularComponentsController < ApiController
       before_action :set_curricular_component, only: %i[show update destroy]
 
       # GET /curricular_components

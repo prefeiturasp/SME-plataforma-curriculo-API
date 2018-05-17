@@ -32,4 +32,5 @@ config/initializers/secret_token.rb
 docker-compose.yml
 
 .rspec
+.ruby-gemset
 /config/database.yml

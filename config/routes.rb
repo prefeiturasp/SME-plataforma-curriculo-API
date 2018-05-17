@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      resources :axes
       resources :activity_types
       resources :curricular_components
     end
