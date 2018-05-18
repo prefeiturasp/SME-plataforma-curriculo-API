@@ -14,7 +14,7 @@ RSpec.describe Api::V1::CurricularComponentsController, type: :controller do
   describe 'GET #index' do
     it 'returns a success response' do
       get :index, params: {}, session: valid_session
-      expect(response).to be_success
+      expect(response).to be_successful
     end
   end
 
@@ -23,7 +23,7 @@ RSpec.describe Api::V1::CurricularComponentsController, type: :controller do
       curricular_component = create :curricular_component
       get :show, params: { id: curricular_component.to_param }, session: valid_session
 
-      expect(response).to be_success
+      expect(response).to be_successful
     end
   end
 

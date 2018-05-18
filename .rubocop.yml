@@ -24,3 +24,6 @@ Style/BlockDelimiters:
 
 Metrics/BlockLength:
   ExcludedMethods: ['describe', 'context', 'register']
+
+Style/Lambda:
+  EnforcedStyle: literal

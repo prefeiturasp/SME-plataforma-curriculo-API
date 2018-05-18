@@ -15,7 +15,7 @@ RSpec.describe Admin::DashboardController, type: :controller do
     context 'logged users' do
       it 'returns a success response' do
         get :index
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
