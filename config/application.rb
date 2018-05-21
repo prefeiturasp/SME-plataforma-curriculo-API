@@ -37,5 +37,9 @@ module SMEPlataformaCurriculoApi
     config.middleware.use ActionDispatch::Flash
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore
+
+    # Config locales
+    config.i18n.available_locales = [:en, :"pt-BR"]
+    config.i18n.default_locale = 'pt-BR'
   end
 end

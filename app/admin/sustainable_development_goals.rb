@@ -1,8 +1,7 @@
 ActiveAdmin.register SustainableDevelopmentGoal do
   permit_params :sequence, :name, :description, :goals, :icon
 
-  filter :name
-  filter :description
+  config.filters = false
 
   index do
     config.sort_order = 'sequence DESC'

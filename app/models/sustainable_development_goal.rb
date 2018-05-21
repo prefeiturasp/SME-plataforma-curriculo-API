@@ -23,6 +23,6 @@ class SustainableDevelopmentGoal < ApplicationRecord
   end
 
   def goals_raw
-    goals.split(';').join('<br />').html_safe if goals.present?
+    goals.gsub("\n", '<br />').split(';').join('<br />').html_safe if goals.present?
   end
 end

@@ -1,32 +1,32 @@
-# if Rails.env.development?
-#   User.create!(
-#     email: 'admin@jurema.la',
-#     password: 'senhasegura',
-#     password_confirmation: 'senhasegura',
-#     superadmin: true
-#   )
-# end
+if Rails.env.development?
+  User.create!(
+    email: 'admin@jurema.la',
+    password: 'senhasegura',
+    password_confirmation: 'senhasegura',
+    superadmin: true
+  )
+end
 
-# ActivityType.create(
-#   [
-#     { name: 'Exterior' },
-#     { name: 'Interior' }
-#   ]
-# )
+ActivityType.create(
+  [
+    { name: 'Exterior' },
+    { name: 'Interior' }
+  ]
+)
 
-# CurricularComponent.create(
-#   [
-#     { name: 'Arte' },
-#     { name: 'Ciências Naturais' },
-#     { name: 'Educação Física' },
-#     { name: 'Geografia' },
-#     { name: 'História' },
-#     { name: 'Língua Portuguesa' },
-#     { name: 'Língua Inglesa' },
-#     { name: 'Matemática' },
-#     { name: 'Tecnologias de Aprendizagem' }
-#   ]
-# )
+CurricularComponent.create(
+  [
+    { name: 'Arte' },
+    { name: 'Ciências Naturais' },
+    { name: 'Educação Física' },
+    { name: 'Geografia' },
+    { name: 'História' },
+    { name: 'Língua Portuguesa' },
+    { name: 'Língua Inglesa' },
+    { name: 'Matemática' },
+    { name: 'Tecnologias de Aprendizagem' }
+  ]
+)
 
 [
   {
@@ -38,7 +38,7 @@
   {
     sequence: 2,
     name: 'Fome zera e agricultura sustentável',
-    description: 'Acabar com a fome, alcançar a segurança alimentar e melhoria da nutrição\
+    description: 'Acabar com a fome, alcançar a segurança alimentar e melhoria da nutrição
      e promover a agricultura sustentável',
     goals: 'goals example;'
   },
@@ -51,7 +51,7 @@
   {
     sequence: 4,
     name: 'Educação de Qualidade',
-    description: 'Assegurar a educação inclusiva e equitativa e de qualidade, e promover\
+    description: 'Assegurar a educação inclusiva e equitativa e de qualidade, e promover
      oportunidades de aprendizagem ao longo da vida para todos',
     goals: 'goals example;'
   },
@@ -76,14 +76,14 @@
   {
     sequence: 8,
     name: 'Trabalho decente e crescimento econômico',
-    description: 'Promover o crescimento econômico sustentado, inclusivo e sustentável, emprego pleno e\
+    description: 'Promover o crescimento econômico sustentado, inclusivo e sustentável, emprego pleno e
      produtivo e trabalho decente para todos',
     goals: 'goals example;'
   },
   {
     sequence: 9,
     name: 'Indústria, inovação, e infraestrutura',
-    description: 'Construir infraestruturas resilientes, promover a industrialização inclusiva e\
+    description: 'Construir infraestruturas resilientes, promover a industrialização inclusiva e
      sustentável e fomentar a inovação',
     goals: 'goals example;'
   },
@@ -114,30 +114,30 @@
   {
     sequence: 14,
     name: 'Vida na água',
-    description: 'Conservação e uso sustentável dos oceanos, dos mares e dos recursos marinhos para o\
+    description: 'Conservação e uso sustentável dos oceanos, dos mares e dos recursos marinhos para o
      desenvolvimento sustentável',
     goals: 'goals example;'
   },
   {
     sequence: 15,
     name: 'Vida terrestre',
-    description: 'Proteger, recuperar e promover o uso sustentável dos ecossistemas terrestres, gerir\
-     de forma sustentável as florestas, combater a desertificação, deter e reverter a degradação da terra\
+    description: 'Proteger, recuperar e promover o uso sustentável dos ecossistemas terrestres, gerir
+     de forma sustentável as florestas, combater a desertificação, deter e reverter a degradação da terra
       e deter a perda de biodiversidade',
     goals: 'goals example;'
   },
   {
     sequence: 16,
     name: 'Paz, justiça e instituições eficazes',
-    description: 'Promover sociedades pacíficas e inclusivas para o desenvolvimento sustentável,\
-     proporcionar o acesso à justiça para todos e construir instituições eficazes, responsáveis e\
+    description: 'Promover sociedades pacíficas e inclusivas para o desenvolvimento sustentável,
+     proporcionar o acesso à justiça para todos e construir instituições eficazes, responsáveis e
       inclusivas em todos os níveis',
     goals: 'goals example;'
   },
   {
     sequence: 17,
     name: 'Parcerias e meios de implementação',
-    description: 'Fortalecer os meios de implementação e revitalizar a parceria global para o\
+    description: 'Fortalecer os meios de implementação e revitalizar a parceria global para o
      desenvolvimento sustentável',
     goals: 'goals example;'
   }

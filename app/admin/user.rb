@@ -1,6 +1,8 @@
 ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation, :superadmin
 
+  config.filters = false
+
   index do
     selectable_column
     id_column
@@ -8,7 +10,6 @@ ActiveAdmin.register User do
     column :current_sign_in_at
     column :sign_in_count
     column :created_at
-    column :superadmin
     actions
   end
 
@@ -17,7 +18,6 @@ ActiveAdmin.register User do
       f.input :email
       f.input :password
       f.input :password_confirmation
-      f.input :superadmin, label: 'Super Administrator'
     end
     f.actions
   end
