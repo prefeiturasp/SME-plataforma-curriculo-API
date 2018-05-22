@@ -70,6 +70,23 @@ ActiveRecord::Schema.define(version: 2018_05_22_172051) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "learning_objectives", force: :cascade do |t|
+    t.integer "year"
+    t.string "code"
+    t.string "description"
+    t.bigint "curricular_component_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["curricular_component_id"], name: "index_learning_objectives_on_curricular_component_id"
+  end
+
+  create_table "learning_objectives_sustainable_development_goals", id: false, force: :cascade do |t|
+    t.bigint "sustainable_development_goal_id", null: false
+    t.bigint "learning_objective_id", null: false
+    t.index ["learning_objective_id", "sustainable_development_goal_id"], name: "index_sdg_lo_on_lo_id_asdg_id"
+    t.index ["sustainable_development_goal_id", "learning_objective_id"], name: "index_sdg_lo_on_sdg_id_alo_id"
+  end
+
   create_table "sustainable_development_goals", force: :cascade do |t|
     t.integer "sequence"
     t.string "name"
@@ -97,4 +114,5 @@ ActiveRecord::Schema.define(version: 2018_05_22_172051) do
   end
 
   add_foreign_key "axes", "curricular_components"
+  add_foreign_key "learning_objectives", "curricular_components"
 end
