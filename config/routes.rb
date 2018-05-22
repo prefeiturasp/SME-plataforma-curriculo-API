@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       resources :axes
       resources :activity_types
       resources :curricular_components
+      resources :learning_objectives
       resources :sustainable_development_goals
     end
   end

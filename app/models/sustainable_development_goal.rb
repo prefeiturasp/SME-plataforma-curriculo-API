@@ -1,4 +1,5 @@
 class SustainableDevelopmentGoal < ApplicationRecord
+  has_and_belongs_to_many :learning_objectives
   has_one_attached :icon
 
   validates :sequence, presence: true, uniqueness: true

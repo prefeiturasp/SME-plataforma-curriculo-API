@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :sustainable_development_goal do
-    add_attribute :sequence, 1
-    name 'Sustainable Name'
-    description 'Sustainable Description'
+    add_attribute(:sequence) { Faker::Number.between(1, 500) }
+    name { Faker::Name.name }
+    description { Faker::Name.name }
     goals 'Goal 1; Goal 2, Goal 3'
 
     after(:build) do |sustainable_development_goal|

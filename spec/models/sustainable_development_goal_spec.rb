@@ -3,6 +3,12 @@ require 'rails_helper'
 RSpec.describe SustainableDevelopmentGoal, type: :model do
   let(:subject) { build :sustainable_development_goal }
 
+  describe 'Associations' do
+    it 'has and belongs to many learning objectives' do
+      should have_and_belong_to_many(:learning_objectives)
+    end
+  end
+
   describe 'Validations' do
     context 'is valid' do
       it 'with valid attributes' do

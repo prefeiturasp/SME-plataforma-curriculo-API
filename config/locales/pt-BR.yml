@@ -10,6 +10,9 @@ pt-BR:
       curricular_component:
         one: "Componente Curricular"
         other: "Componentes Curriculares"
+      learning_objective:
+        one: "Objetivo de Aprendizagem"
+        other: "Objetivos de Aprendizagem"
       sustainable_development_goal:
         one: "Objetivo de Desenvolvimento Sustentável"
         other: "Objetivos de Desenvolvimento Sustentável"
@@ -30,6 +33,19 @@ pt-BR:
         name: "Nome"
         axes: "Eixos"
         details: "Detalhes"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      learning_objective:
+        year: "Ano"
+        description: "Descrição"
+        curricular_component: "Componente Curricular"
+        curricular_component_id: "Componente Curricular"
+        sustainable_development_goals: "Objetivos de Desenvolvimento Sustentável"
+        year: "Ano"
+        years:
+          first: "1º"
+          second: "2º"
+          third: "3º"
         created_at: "Criado em"
         updated_at: "Atualizado em"
       sustainable_development_goal:
@@ -65,6 +81,12 @@ pt-BR:
         unlock_token: Token de desbloqueio
         created_at: Criado em
         updated_at: Atualizado em
+    errors:
+      messages:
+        record_invalid: 'A validação falhou: %{errors}'
+        restrict_dependent_destroy:
+          has_one: Não é possível excluir o registro pois existe um %{record} dependente
+          has_many: Não é possível excluir o registro pois existem %{record} dependentes
 
   active_admin:
     dashboard: "Painel Administrativo"
