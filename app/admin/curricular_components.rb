@@ -1,7 +1,7 @@
 ActiveAdmin.register CurricularComponent do
   permit_params :name, axes_attributes: %i[id description _destroy _create _update]
 
-  filter :axes, collection: Axis.all.map { |a| [a.description, a.id] }, as: :select
+  config.filters = false
 
   show do
     attributes_table do
@@ -10,7 +10,7 @@ ActiveAdmin.register CurricularComponent do
       row :updated_at
     end
 
-    panel 'Axes' do
+    panel I18n.t('activerecord.models.axis', count: 2) do
       table_for curricular_component.axes do
         column :description
       end
@@ -18,11 +18,11 @@ ActiveAdmin.register CurricularComponent do
   end
 
   form do |f|
-    f.inputs 'Details' do
+    f.inputs CurricularComponent.human_attribute_name(:details) do
       f.input :name
     end
 
-    f.inputs 'Contacts' do
+    f.inputs I18n.t('activerecord.models.axis', count: 2) do
       f.has_many :axes do |c|
         c.input :description
       end

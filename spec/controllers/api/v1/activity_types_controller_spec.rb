@@ -14,7 +14,7 @@ RSpec.describe Api::V1::ActivityTypesController, type: :controller do
   describe 'GET #index' do
     it 'returns a success response' do
       get :index, params: {}, session: valid_session
-      expect(response).to be_success
+      expect(response).to be_successful
     end
   end
 
@@ -22,7 +22,7 @@ RSpec.describe Api::V1::ActivityTypesController, type: :controller do
     it 'returns a success response' do
       activity_type = create :activity_type
       get :show, params: { id: activity_type.to_param }, session: valid_session
-      expect(response).to be_success
+      expect(response).to be_successful
     end
   end
 
