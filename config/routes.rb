@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       resources :curricular_components
       resources :learning_objectives
       resources :sustainable_development_goals
+      resources :knowledge_matrices
     end
   end
 end

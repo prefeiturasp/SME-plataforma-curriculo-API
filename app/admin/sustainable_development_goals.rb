@@ -2,9 +2,9 @@ ActiveAdmin.register SustainableDevelopmentGoal do
   permit_params :sequence, :name, :description, :goals, :icon
 
   config.filters = false
+  config.sort_order = 'sequence_asc'
 
   index do
-    config.sort_order = 'sequence DESC'
     selectable_column
     column :icon do |i|
       image_tag url_for(i.icon) if i.icon.attached?

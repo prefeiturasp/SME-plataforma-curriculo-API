@@ -151,3 +151,73 @@ CurricularComponent.create(
   )
   sdg.save(validate: false)
 end
+
+KnowledgeMatrix.create(
+  [
+    { sequence: '1',
+      title: 'Pensamento Científico, Crítico e Criativo',
+      know_description: 'Acessar, selecionar e organizar o conhecimento com curiosidade, '\
+        'pensamento científico, criticidade e criatividade;',
+      for_description: 'Observar, questionar, investigar causas, elaborar e testar hipóteses; '\
+        'refletir, interpretar e analisar ideias e fatos em profundidade; produzir e '\
+        'utilizar evidências.' },
+    { sequence: '2',
+      title: 'Resolução de Problemas',
+      know_description: 'Descobrir possibilidades diferentes, avaliar e gerenciar, ter '\
+        'ideias originais e criar soluções, problemas e perguntas;',
+      for_description: 'Inventar, reinventar-se, resolver problemas individuais e coletivos e '\
+        'agir de forma propositiva em relação aos desa!os contemporâneos.' },
+    { sequence: '3',
+      title: 'Comunicação',
+      know_description: 'Utilizar as linguagens verbal, verbo-visual, corporal, multimodal, '\
+        'artística, matemática, científica, LIBRAS, tecnológica e digital para expressar-se, '\
+        'partilhar informações, experiências, ideias e sentimentos em diferentes contextos e '\
+        'produzir sentidos que levem ao entendimento mútuo;',
+      for_description: 'Exercitar-se como sujeito dialógico, criativo e sensível, compartilhar '\
+        'saberes, reorganizando o que já sabe e criando novos significados, e compreender o mundo, '\
+        'situando-se em diferentes contextos socioculturais.' },
+    { sequence: '4',
+      title: 'Autoconhecimento e Autocuidado',
+      know_description: 'Conhecer e cuidar de seu corpo, sua mente, suas emoções, suas aspirações
+        e seu bem-estar e ter autocrítica;',
+      for_description: 'Reconhecer limites, potências e interesses pessoais, apreciar suas próprias '\
+        'qualidades, a fim de estabelecer objetivos de vida, evitar situações de risco, adotar '\
+        'hábitos saudáveis, gerir suas emoções e comportamentos, dosar impulsos e saber lidar com '\
+        'a influência de grupos.' },
+    { sequence: '5',
+      title: 'Autonomia e Determinação',
+      know_description: 'Organizar-se, definir metas e perseverar para alcançar seus objetivos;',
+      for_description: 'Agir com autonomia e responsabilidade, fazer escolhas, vencer obstáculos '\
+        'e ter confiança para planejar e realizar projetos pessoais, profissionais e de interesse '\
+        'coletivo.' },
+    { sequence: '6',
+      title: 'Abertura à Diversidade',
+      know_description: 'Abrir-se ao novo, respeitar e valorizar diferenças e acolher a diversidade;',
+      for_description: 'Agir com "exibilidade e sem preconceito de qualquer natureza, conviver '\
+        'harmonicamente com os diferentes, apreciar, fruir e produzir bens culturais diversos, '\
+        'valorizar as identidades e culturas locais.' },
+    { sequence: '7',
+      title: 'Responsabilidade e Participação',
+      know_description: 'Reconhecer e exercer direitos e deveres, tomar decisões éticas e
+        responsáveis para consigo, o outro e o planeta;',
+      for_description: 'Agir de forma solidária, engajada e sustentável, respeitar e promover os '\
+        'direitos humanos e ambientais, participar da vida cidadã e perceber-se como agente de '\
+        'transformação.' },
+    { sequence: '8',
+      title: 'Empatia e Colaboração',
+      know_description: 'Considerar a perspectiva e os sentimentos do outro, colaborar com os '\
+        'demais e tomar decisões coletivas;',
+      for_description: 'Agir com empatia, trabalhar em grupo, criar, pactuar e respeitar princípios '\
+        'de convivência, solucionar conflitos, desenvolver a tolerância à frustração e promover a '\
+        'cultura da paz.' },
+    { sequence: '9',
+      title: 'Repertório Cultural',
+      know_description: 'Desenvolver repertório cultural e senso estético para reconhecer, '\
+        'valorizar e fruir as diversas identidades e manifestações artísticas e culturais e '\
+        'participar de práticas diversificadas de produção sociocultural;',
+      for_description: 'Ampliar e diversificar suas possibilidades de acesso a produções culturais '\
+        'e suas experiências emocionais, corporais, sensoriais, expressivas, cognitivas, sociais e '\
+        'relacionais, desenvolvendo seus conhecimentos, sua imaginação, criatividade, percepção, '\
+        'intuição e emoção.' }
+  ]
+)

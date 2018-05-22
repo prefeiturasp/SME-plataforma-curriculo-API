@@ -24,6 +24,8 @@ ActiveAdmin.register LearningObjective do
     column :curricular_component
     column :created_at
     column :updated_at
+
+    actions
   end
 
   show do
