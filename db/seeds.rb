@@ -2,8 +2,7 @@ if Rails.env.development?
   User.create!(
     email: 'admin@jurema.la',
     password: 'senhasegura',
-    password_confirmation: 'senhasegura',
-    superadmin: true
+    password_confirmation: 'senhasegura'
   )
 end
 

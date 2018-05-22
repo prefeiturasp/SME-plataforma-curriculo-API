@@ -61,7 +61,6 @@ pt-BR:
         reset_password_sent_at: Resetar senha enviado em
         reset_password_token: Resetar token de senha
         sign_in_count: Contagem de acessos
-        superadmin: "Super administrador"
         unconfirmed_email: E-mail não confirmado
         unlock_token: Token de desbloqueio
         created_at: Criado em
