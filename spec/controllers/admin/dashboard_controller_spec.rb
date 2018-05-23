@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Admin::DashboardController, type: :controller do
-
   describe 'GET #index' do
     context 'logged users' do
       it 'returns a success response' do
