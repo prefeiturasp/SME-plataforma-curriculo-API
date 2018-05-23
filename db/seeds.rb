@@ -149,7 +149,7 @@ CurricularComponent.create(
     filename: "obj#{sequence}.jpg",
     content_type: 'image/jpg'
   )
-  sdg.save(validate: false)
+  sdg.save
 end
 
 KnowledgeMatrix.create(

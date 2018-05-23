@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_22_191545) do
+ActiveRecord::Schema.define(version: 2018_05_23_184437) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,25 @@ ActiveRecord::Schema.define(version: 2018_05_22_191545) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "activity_sequences", force: :cascade do |t|
+    t.string "title"
+    t.text "presentation_text"
+    t.text "books"
+    t.integer "estimated_time"
+    t.integer "status"
+    t.bigint "main_curricular_component_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["main_curricular_component_id"], name: "index_activity_sequences_on_main_curricular_component_id"
+  end
+
+  create_table "activity_sequences_curricular_components", id: false, force: :cascade do |t|
+    t.bigint "activity_sequence_id", null: false
+    t.bigint "curricular_component_id", null: false
+    t.index ["activity_sequence_id", "curricular_component_id"], name: "index_activity_component_on_activity_id_and_component_id"
+    t.index ["curricular_component_id", "activity_sequence_id"], name: "index_activity_component_on_component_id_and_activity_id"
   end
 
   create_table "activity_types", force: :cascade do |t|
@@ -122,6 +141,7 @@ ActiveRecord::Schema.define(version: 2018_05_22_191545) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "activity_sequences", "curricular_components", column: "main_curricular_component_id"
   add_foreign_key "axes", "curricular_components"
   add_foreign_key "learning_objectives", "curricular_components"
 end
