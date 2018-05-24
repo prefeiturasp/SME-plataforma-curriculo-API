@@ -1,6 +1,9 @@
 pt-BR:
   activerecord:
     models:
+      activity_sequence:
+        one: "Sequência de Atividades"
+        other: "Sequência de Atividades"
       activity_type:
         one: "Tipo de atividade"
         other: "Tipos de atividades"
@@ -23,6 +26,29 @@ pt-BR:
         one: "Usuário"
         other: "Usuários"
     attributes:
+      activity_sequence:
+        id: "Identificador"
+        books: "Livros"
+        curricular_components: "Componentes Curriculares relacionados"
+        estimated_time: "Tempo estimado(aulas)"
+        image: "Imagem"
+        knowledge_matrices: "Matriz dos Saberes"
+        learning_objectives: "Objetivos de Aprendizagem"
+        main_curricular_component: "Componente Curricular Principal"
+        presentation_text: "Texto de apresrntação"
+        status: "Status"
+        statuses:
+          draft: "Rascunho"
+          published: "Publicada"
+        sustainable_development_goals: "Objetivos de Desenvolvimento Sustentável"
+        title: "Título"
+        year: "Ano"
+        years:
+          first: "1º"
+          second: "2º"
+          third: "3º"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
       activity_type:
         name: "Nome"
         created_at: "Criado em"
@@ -47,6 +73,7 @@ pt-BR:
         updated_at: "Atualizado em"
       learning_objective:
         year: "Ano"
+        code: "Código"
         description: "Descrição"
         curricular_component: "Componente Curricular"
         curricular_component_id: "Componente Curricular"

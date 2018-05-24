@@ -7,6 +7,14 @@ RSpec.describe CurricularComponent, type: :model do
     it 'has many axes' do
       should have_many(:axes)
     end
+
+    it 'has and belongs to many activity sequences' do
+      should have_and_belong_to_many(:activity_sequences)
+    end
+
+    it 'has many main activity sequences' do
+      should have_many(:main_activity_sequences)
+    end
   end
 
   describe 'Validations' do

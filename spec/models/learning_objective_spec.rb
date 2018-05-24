@@ -5,8 +5,16 @@ RSpec.describe LearningObjective, type: :model do
   let(:subject) { build :learning_objective, sustainable_development_goals: [sustainable_development_goal] }
 
   describe 'Associations' do
+    it 'belongs to curricular component' do
+      should belong_to(:curricular_component)
+    end
+
     it 'has and belongs to many sustainable development goals' do
       should have_and_belong_to_many(:sustainable_development_goals)
+    end
+
+    it 'has and belongs to many activity sequences' do
+      should have_and_belong_to_many(:activity_sequences)
     end
   end
 

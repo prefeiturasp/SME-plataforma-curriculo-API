@@ -7,6 +7,10 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
     it 'has and belongs to many learning objectives' do
       should have_and_belong_to_many(:learning_objectives)
     end
+
+    it 'has and belongs to many activity sequences' do
+      should have_and_belong_to_many(:activity_sequences)
+    end
   end
 
   describe 'Validations' do

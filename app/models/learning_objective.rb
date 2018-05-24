@@ -1,6 +1,7 @@
 class LearningObjective < ApplicationRecord
   belongs_to :curricular_component
   has_and_belongs_to_many :sustainable_development_goals
+  has_and_belongs_to_many :activity_sequences
 
   enum year: { first: 1, second: 2, third: 3 }, _suffix: true
 
@@ -23,5 +24,9 @@ class LearningObjective < ApplicationRecord
   def next_sequential_code_number(code_prefix)
     learnig_objective = LearningObjective.where('code like ?', "%#{code_prefix}%").last
     learnig_objective.blank? ? 1 : (learnig_objective.code.last(2).to_i + 1)
+  end
+
+  def code_and_description
+    "#{code} - #{description}"
   end
 end

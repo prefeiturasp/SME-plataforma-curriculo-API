@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_23_184437) do
+ActiveRecord::Schema.define(version: 2018_05_23_210451) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 2018_05_23_184437) do
 
   create_table "activity_sequences", force: :cascade do |t|
     t.string "title"
+    t.integer "year"
     t.text "presentation_text"
     t.text "books"
     t.integer "estimated_time"
@@ -65,8 +66,29 @@ ActiveRecord::Schema.define(version: 2018_05_23_184437) do
   create_table "activity_sequences_curricular_components", id: false, force: :cascade do |t|
     t.bigint "activity_sequence_id", null: false
     t.bigint "curricular_component_id", null: false
-    t.index ["activity_sequence_id", "curricular_component_id"], name: "index_activity_component_on_activity_id_and_component_id"
-    t.index ["curricular_component_id", "activity_sequence_id"], name: "index_activity_component_on_component_id_and_activity_id"
+    t.index ["activity_sequence_id", "curricular_component_id"], name: "index_activity_component_on_activity_seq_id_and_component_id"
+    t.index ["curricular_component_id", "activity_sequence_id"], name: "index_activity_component_on_component_id_and_activity_seq_id"
+  end
+
+  create_table "activity_sequences_knowledge_matrices", id: false, force: :cascade do |t|
+    t.bigint "activity_sequence_id", null: false
+    t.bigint "knowledge_matrix_id", null: false
+    t.index ["activity_sequence_id", "knowledge_matrix_id"], name: "idx_activity_seq_knowledge_on_activity_id_and_knowledge_id"
+    t.index ["knowledge_matrix_id", "activity_sequence_id"], name: "idx_activity_seq_knowledge_on_knowledge_id_and_activity_id"
+  end
+
+  create_table "activity_sequences_learning_objectives", id: false, force: :cascade do |t|
+    t.bigint "activity_sequence_id", null: false
+    t.bigint "learning_objective_id", null: false
+    t.index ["activity_sequence_id", "learning_objective_id"], name: "idx_activity_seq_learning_on_activity_seq_id_and_lo_id"
+    t.index ["learning_objective_id", "activity_sequence_id"], name: "idx_activity_seq_learning_on_lo_id_and_activity_seq_id"
+  end
+
+  create_table "activity_sequences_sustainable_development_goals", id: false, force: :cascade do |t|
+    t.bigint "activity_sequence_id", null: false
+    t.bigint "sustainable_development_goal_id", null: false
+    t.index ["activity_sequence_id", "sustainable_development_goal_id"], name: "index_activity_seq_sdg_on_activity_seq_id_and_sdg_id"
+    t.index ["sustainable_development_goal_id", "activity_sequence_id"], name: "index_activity_seq_sdg_on_sdg_id_and_activity_seq_id"
   end
 
   create_table "activity_types", force: :cascade do |t|
