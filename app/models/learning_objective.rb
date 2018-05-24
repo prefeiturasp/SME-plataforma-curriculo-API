@@ -1,9 +1,8 @@
 class LearningObjective < ApplicationRecord
+  include SharedEnums
   belongs_to :curricular_component
   has_and_belongs_to_many :sustainable_development_goals
   has_and_belongs_to_many :activity_sequences
-
-  enum year: { first: 1, second: 2, third: 3 }, _suffix: true
 
   validates :year, presence: true
   validates :description, presence: true

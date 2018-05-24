@@ -33,6 +33,22 @@ ActiveAdmin.register ActivitySequence do
     f.actions
   end
 
+  index do
+    selectable_column
+    column :id
+    column :title
+    column :presentation_text
+    column :estimated_time
+    column :year do |activity_sequence|
+      ActivitySequence.human_enum_name(:year, activity_sequence.year, true)
+    end
+    column :main_curricular_component
+    column :status do |activity_sequence|
+      ActivitySequence.human_enum_name(:status, activity_sequence.status)
+    end
+    actions
+  end
+
   show do
     render 'show', context: self
   end

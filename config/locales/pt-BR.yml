@@ -43,10 +43,6 @@ pt-BR:
         sustainable_development_goals: "Objetivos de Desenvolvimento Sustentável"
         title: "Título"
         year: "Ano"
-        years:
-          first: "1º"
-          second: "2º"
-          third: "3º"
         created_at: "Criado em"
         updated_at: "Atualizado em"
       activity_type:
@@ -79,10 +75,6 @@ pt-BR:
         curricular_component_id: "Componente Curricular"
         sustainable_development_goals: "Objetivos de Desenvolvimento Sustentável"
         year: "Ano"
-        years:
-          first: "1º"
-          second: "2º"
-          third: "3º"
         created_at: "Criado em"
         updated_at: "Atualizado em"
       sustainable_development_goal:
@@ -118,6 +110,11 @@ pt-BR:
         unlock_token: Token de desbloqueio
         created_at: Criado em
         updated_at: Atualizado em
+    shared_enums:
+      years:
+        first: "1º"
+        second: "2º"
+        third: "3º"
     errors:
       messages:
         record_invalid: 'A validação falhou: %{errors}'

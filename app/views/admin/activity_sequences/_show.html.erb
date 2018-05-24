@@ -6,7 +6,7 @@
     end
     row :presentation_text
     row :year do |activity_sequence|
-      ActivitySequence.human_enum_name(:year, activity_sequence.year)
+      ActivitySequence.human_enum_name(:year, activity_sequence.year, true)
     end
     row :main_curricular_component
     row :books
