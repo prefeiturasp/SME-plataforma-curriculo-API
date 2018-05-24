@@ -3,7 +3,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   def self.human_enum_name(enum_name, enum_value, shared = false)
     if shared
-      I18n.t("activerecord.shared_enums.#{enum_name.to_s.pluralize}.#{enum_value}")
+      I18n.t("activerecord.attributes.enums.#{enum_name.to_s.pluralize}.#{enum_value}")
     else
       I18n.t("activerecord.attributes.#{model_name.i18n_key}.#{enum_name.to_s.pluralize}.#{enum_value}")
     end

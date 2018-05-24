@@ -1,4 +1,4 @@
-module SharedEnums
+module YearsEnum
   extend ActiveSupport::Concern
 
   included do

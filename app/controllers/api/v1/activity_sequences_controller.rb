@@ -18,7 +18,6 @@ module Api
       # POST /activity_sequences
       def create
         @activity_sequence = ActivitySequence.new(activity_sequence_params)
-        @activity_sequence.image.attach(activity_sequence_params[:image])
 
         if @activity_sequence.save
           render json: @activity_sequence, status: :created
@@ -29,7 +28,6 @@ module Api
 
       # PATCH/PUT /activity_sequences/1
       def update
-        @activity_sequence.image.attach(activity_sequence_params[:image]) if activity_sequence_params[:image].present?
         if @activity_sequence.update(activity_sequence_params)
           render json: @activity_sequence
         else
@@ -39,7 +37,6 @@ module Api
 
       # DELETE /activity_sequences/1
       def destroy
-        @activity_sequence.image.purge
         @activity_sequence.destroy
       end
 

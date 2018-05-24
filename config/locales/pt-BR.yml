@@ -110,11 +110,11 @@ pt-BR:
         unlock_token: Token de desbloqueio
         created_at: Criado em
         updated_at: Atualizado em
-    shared_enums:
-      years:
-        first: "1º"
-        second: "2º"
-        third: "3º"
+      enums:
+        years:
+          first: "1º"
+          second: "2º"
+          third: "3º"
     errors:
       messages:
         record_invalid: 'A validação falhou: %{errors}'

@@ -1,5 +1,5 @@
 class LearningObjective < ApplicationRecord
-  include SharedEnums
+  include YearsEnum
   belongs_to :curricular_component
   has_and_belongs_to_many :sustainable_development_goals
   has_and_belongs_to_many :activity_sequences

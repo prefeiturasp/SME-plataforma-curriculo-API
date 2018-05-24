@@ -41,6 +41,9 @@ RSpec.describe Api::V1::ActivitySequencesController, type: :controller do
         expect {
           post :create, params: { activity_sequence: valid_attributes }, session: valid_session
         }.to change(ActivitySequence, :count).by(1)
+        activity_sequence = ActivitySequence.last
+
+        expect(activity_sequence.image.attached?).to be true
       end
 
       it 'renders a JSON response with the new activity_sequence' do
@@ -62,7 +65,7 @@ RSpec.describe Api::V1::ActivitySequencesController, type: :controller do
   describe 'PUT #update' do
     context 'with valid params' do
       let(:new_attributes) do
-        file = fixture_file_upload(Rails.root.join('spec', 'factories', 'images', 'ruby.png'), 'image/png')
+        file = fixture_file_upload(Rails.root.join('spec', 'factories', 'images', 'new.png'), 'image/png')
         attributes_for(
           :activity_sequence,
           title: 'New Title',
@@ -76,6 +79,7 @@ RSpec.describe Api::V1::ActivitySequencesController, type: :controller do
 
       it 'updates the requested activity_sequence' do
         activity_sequence = create :activity_sequence
+        expect(activity_sequence.image.filename).to eq('ruby.png')
         put :update, params: {
           id: activity_sequence.to_param,
           activity_sequence: new_attributes
@@ -83,6 +87,7 @@ RSpec.describe Api::V1::ActivitySequencesController, type: :controller do
 
         activity_sequence.reload
         expect(activity_sequence.title).to eq('New Title')
+        expect(activity_sequence.image.filename).to eq('new.png')
       end
 
       it 'renders a JSON response with the activity_sequence' do
