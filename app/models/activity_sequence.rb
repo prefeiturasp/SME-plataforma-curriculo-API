@@ -5,6 +5,7 @@ class ActivitySequence < ApplicationRecord
   has_and_belongs_to_many :sustainable_development_goals
   has_and_belongs_to_many :knowledge_matrices
   has_and_belongs_to_many :learning_objectives
+  has_many :activities
 
   has_one_attached :image
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_23_210451) do
+ActiveRecord::Schema.define(version: 2018_05_24_195549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,24 @@ ActiveRecord::Schema.define(version: 2018_05_23_210451) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "activities", force: :cascade do |t|
+    t.integer "sequence"
+    t.string "title"
+    t.integer "estimated_time"
+    t.json "content"
+    t.bigint "activity_sequence_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_sequence_id"], name: "index_activities_on_activity_sequence_id"
+  end
+
+  create_table "activities_activity_types", id: false, force: :cascade do |t|
+    t.bigint "activity_id", null: false
+    t.bigint "activity_type_id", null: false
+    t.index ["activity_id", "activity_type_id"], name: "idx_act_act_types_on_activity_id_and_activity_type_id"
+    t.index ["activity_type_id", "activity_id"], name: "idx_act_act_types_on_activity_type_id_and_activity_id"
   end
 
   create_table "activity_sequences", force: :cascade do |t|
@@ -163,6 +181,7 @@ ActiveRecord::Schema.define(version: 2018_05_23_210451) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "activities", "activity_sequences"
   add_foreign_key "activity_sequences", "curricular_components", column: "main_curricular_component_id"
   add_foreign_key "axes", "curricular_components"
   add_foreign_key "learning_objectives", "curricular_components"

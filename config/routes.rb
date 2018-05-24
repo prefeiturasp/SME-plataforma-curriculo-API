@@ -6,9 +6,10 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :axes
+      resources :activities
       resources :activity_sequences
       resources :activity_types
+      resources :axes
       resources :curricular_components
       resources :learning_objectives
       resources :sustainable_development_goals
