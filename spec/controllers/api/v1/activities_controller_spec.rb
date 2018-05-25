@@ -2,7 +2,11 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::ActivitiesController, type: :controller do
   let(:valid_attributes) do
-    attributes_for :activity, activity_sequence_id: create(:activity_sequence)
+    file = fixture_file_upload(Rails.root.join('spec', 'factories', 'images', 'ruby.png'), 'image/png')
+    attributes_for(
+      :activity,
+      activity_sequence_id: create(:activity_sequence).id
+    ).merge(image: file)
   end
 
   let(:invalid_attributes) do
@@ -13,7 +17,6 @@ RSpec.describe Api::V1::ActivitiesController, type: :controller do
 
   describe 'GET #index' do
     it 'returns a success response' do
-      activity = create :activity
       get :index, params: {}, session: valid_session
       expect(response).to be_successful
     end

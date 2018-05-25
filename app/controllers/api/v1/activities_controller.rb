@@ -52,6 +52,7 @@ module Api
           :title,
           :estimated_time,
           :content,
+          :image,
           :activity_sequence_id,
           activity_type_ids: []
         )

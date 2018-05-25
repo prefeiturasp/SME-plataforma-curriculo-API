@@ -4,6 +4,7 @@ ActiveAdmin.register Activity do
                 :estimated_time,
                 :content,
                 :activity_sequence_id,
+                :image,
                 activity_type_ids: []
 
   index do
@@ -20,16 +21,6 @@ ActiveAdmin.register Activity do
   end
 
   show do
-    attributes_table do
-      row :sequence
-      row :title
-      row :estimated_time
-      row :activity_sequence
-      row :content do |activity|
-        raw(activity.content)
-      end
-      row :created_at
-      row :updated_at
-    end
+    render 'show', context: self
   end
 end

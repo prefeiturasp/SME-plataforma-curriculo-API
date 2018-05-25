@@ -6,4 +6,6 @@ class Activity < ApplicationRecord
   validates :sequence, presence: true, uniqueness: true
   validates :estimated_time, presence: true
   validates :content, presence: true
+
+  include ImageConcern
 end

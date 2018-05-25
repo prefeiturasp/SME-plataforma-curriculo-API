@@ -1,0 +1,25 @@
+<% context.instance_eval do
+  attributes_table do
+    row :activity_sequence
+    row :sequence
+    row :title
+    row :year do |activity|
+      ActivitySequence.human_enum_name(:year, activity.activity_sequence.year, true)
+    end
+    row :main_curricular_component do |activity|
+      activity.activity_sequence.main_curricular_component
+    end
+    row :image do |activity|
+      image_tag url_for(activity.image) if activity.image.attached?
+    end
+    row :estimated_time
+    row :activity_types do |activity|
+      activity.activity_types.map { |at| at.name }.join('; ')
+    end
+    row :content do |activity|
+      raw(activity.content)
+    end
+    row :created_at
+    row :updated_at
+  end
+end %>

@@ -4,7 +4,7 @@ module Admin
       LearningObjective.years.map { |k, _v| [I18n.t("activerecord.attributes.enums.years.#{k}"), k] }
     end
 
-    def toolbar_options
+    def toolbar_options # rubocop:disable Metrics/MethodLength
       [%w[bold italic underline strike],
        ['blockquote', 'code-block'],
        [{ 'header': 1 }, { 'header': 2 }],

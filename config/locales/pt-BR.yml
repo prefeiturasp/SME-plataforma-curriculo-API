@@ -30,13 +30,16 @@ pt-BR:
         other: "Usuários"
     attributes:
       activity:
-        id: "Identificador"
-        sequence: "Sequência"
-        title: "Título"
-        estimated_time: "Tempo estimado"
-        content: "Conteúdo"
         activity_sequence: "Sequência de Atividade"
         activity_types: "Tipo de Atividade"
+        content: "Conteúdo"
+        estimated_time: "Tempo estimado"
+        id: "Identificador"
+        image: "Imagem"
+        main_curricular_component: "Componente Curricular Principal"
+        sequence: "Sequência"
+        title: "Título"
+        year: "Ano"
         created_at: "Criado em"
         updated_at: "Atualizado em"
       activity_sequence:
