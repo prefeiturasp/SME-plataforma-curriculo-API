@@ -1,0 +1,22 @@
+<% 
+  f.inputs do
+    f.input :sequence
+    f.input :image, required: true, as: :file
+    f.input :title
+    f.input :estimated_time
+    f.input :activity_sequence
+    f.input :activity_types, as: :select, input_html: { multiple: true }
+    f.input :content, as: :quill_editor, input_html: {
+      data: {
+        options: {
+          modules: {
+            toolbar: toolbar_options
+          },
+          theme: 'snow'
+        }
+      }
+    }
+
+  end
+  f.actions
+%>

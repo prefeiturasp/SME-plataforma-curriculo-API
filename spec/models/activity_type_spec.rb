@@ -3,20 +3,32 @@ require 'rails_helper'
 RSpec.describe ActivityType, type: :model do
   let(:subject) { build :activity_type }
 
-  it 'is valid with valid attributes' do
-    expect(subject).to be_valid
+  describe 'Associations' do
+    it 'has and belongs to many' do
+      should have_and_belong_to_many(:activities)
+    end
   end
 
-  it 'is not valid without a name' do
-    subject.name = nil
+  describe 'Validations' do
+    context 'is valid' do
+      it 'with valid attributes' do
+        expect(subject).to be_valid
+      end
+    end
 
-    expect(subject).to_not be_valid
-  end
+    context 'is not valid' do
+      it 'valid without a name' do
+        subject.name = nil
 
-  it 'is not valid if the name already exists' do
-    subject.save
-    new_object = build :activity_type, name: subject.name
+        expect(subject).to_not be_valid
+      end
 
-    expect(new_object).to_not be_valid
+      it 'if the name already exists' do
+        subject.save
+        new_object = build :activity_type, name: subject.name
+
+        expect(new_object).to_not be_valid
+      end
+    end
   end
 end

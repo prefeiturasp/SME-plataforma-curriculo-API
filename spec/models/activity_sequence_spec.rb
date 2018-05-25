@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ActivitySequence, type: :model do
+  include_examples 'image_concern'
   let(:subject) { build :activity_sequence }
 
   describe 'Associations' do
@@ -75,23 +76,7 @@ RSpec.describe ActivitySequence, type: :model do
 
         expect(subject).to_not be_valid
       end
-
-      it 'without a image' do
-        subject.image.purge
-
-        expect(subject).to_not be_valid
-      end
-
-      it 'if it is not the image format' do
-        subject.image.purge
-        subject.image.attach(
-          io: File.open(Rails.root.join('spec', 'factories', 'images', 'format_test.txt')),
-          filename: 'format_test.txt',
-          content_type: 'text/plain'
-        )
-
-        expect(subject).to_not be_valid
-      end
     end
   end
+  it_behaves_like 'image_concern'
 end

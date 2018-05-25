@@ -9,7 +9,9 @@ end
 ActivityType.create(
   [
     { name: 'Exterior' },
-    { name: 'Interior' }
+    { name: 'Interior' },
+    { name: 'Grupo' },
+    { name: 'Individual' }
   ]
 )
 

@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :axis do
-    description 'Axis 1'
+    description { Faker::Lorem.sentence(10) }
     association :curricular_component, factory: :curricular_component
 
     trait :invalid_description do
