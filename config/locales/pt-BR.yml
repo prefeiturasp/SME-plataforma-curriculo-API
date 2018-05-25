@@ -1,6 +1,9 @@
 pt-BR:
   activerecord:
     models:
+      activity:
+        one: "Atividade"
+        other: "Atividades"
       activity_sequence:
         one: "Sequência de Atividades"
         other: "Sequência de Atividades"
@@ -26,6 +29,16 @@ pt-BR:
         one: "Usuário"
         other: "Usuários"
     attributes:
+      activity:
+        id: "Identificador"
+        sequence: "Sequência"
+        title: "Título"
+        estimated_time: "Tempo estimado"
+        content: "Conteúdo"
+        activity_sequence: "Sequência de Atividade"
+        activity_types: "Tipo de Atividade"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
       activity_sequence:
         id: "Identificador"
         books: "Livros"

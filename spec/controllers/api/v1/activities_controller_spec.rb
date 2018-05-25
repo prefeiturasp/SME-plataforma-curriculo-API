@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::ActivitiesController, type: :controller do
-
   let(:valid_attributes) do
     attributes_for :activity, activity_sequence_id: create(:activity_sequence)
   end
@@ -55,11 +54,11 @@ RSpec.describe Api::V1::ActivitiesController, type: :controller do
   describe 'PUT #update' do
     context 'with valid params' do
       let(:new_attributes) do
-          attributes_for :activity,
-            title: 'New Title',
-            estimated_time: 1001,
-            content: 'New Content',
-            activity_sequence_id: create(:activity_sequence).id
+        attributes_for :activity,
+                       title: 'New Title',
+                       estimated_time: 1001,
+                       content: 'New Content',
+                       activity_sequence_id: create(:activity_sequence).id
       end
 
       it 'updates the requested activity' do

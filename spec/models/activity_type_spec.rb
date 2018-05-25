@@ -31,6 +31,4 @@ RSpec.describe ActivityType, type: :model do
       end
     end
   end
-
-
 end

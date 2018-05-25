@@ -21,9 +21,8 @@ RSpec.describe Activity, type: :model do
     end
 
     context 'is not valid' do
-
       it 'without a sequence' do
-        subject.sequence= nil
+        subject.sequence = nil
 
         expect(subject).to_not be_valid
       end
