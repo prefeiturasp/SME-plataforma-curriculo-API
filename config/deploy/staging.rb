@@ -80,20 +80,11 @@ namespace :docker do
     end
   end
 
-  desc "Docker container access"
-  task :bash do
-    on roles(:all) do
-      within release_path do
-        execute "docker-compose -p #{fetch(:application)} -f #{release_path}/docker-compose.yml run web /bin/bash"
-      end
-    end
-  end
-
   desc "Build project"
   task :migrate do
     on roles(:all) do
       within release_path do
-        execute "docker-compose -p #{fetch(:application)} -f #{release_path}/docker-compose.yml run web rake db:migrate"  
+        execute "docker-compose -p #{fetch(:application)} -f #{release_path}/docker-compose.yml run app bundle exec rake db:migrate"
       end
     end
   end

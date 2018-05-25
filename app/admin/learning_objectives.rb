@@ -18,7 +18,7 @@ ActiveAdmin.register LearningObjective do
     selectable_column
     column :code
     column :year do |learning_objective|
-      LearningObjective.human_enum_name(:year, learning_objective.year)
+      LearningObjective.human_enum_name(:year, learning_objective.year, true)
     end
     column :description
     column :curricular_component
@@ -31,7 +31,9 @@ ActiveAdmin.register LearningObjective do
   show do
     attributes_table do
       row :code
-      row :year
+      row :year do |learning_objective|
+        LearningObjective.human_enum_name(:year, learning_objective.year, true)
+      end
       row :description
       row :curricular_component
       row :created_at

@@ -3,6 +3,12 @@ require 'rails_helper'
 RSpec.describe KnowledgeMatrix, type: :model do
   let(:subject) { build :knowledge_matrix }
 
+  describe 'Associations' do
+    it 'has and belongs to many activity sequences' do
+      should have_and_belong_to_many(:activity_sequences)
+    end
+  end
+
   describe 'Validations' do
     context 'is valid' do
       it 'with valid attributes' do
@@ -11,7 +17,6 @@ RSpec.describe KnowledgeMatrix, type: :model do
     end
 
     context 'is not valid' do
-
       it 'without a title' do
         subject.title = nil
 

@@ -1,5 +1,7 @@
 class CurricularComponent < ApplicationRecord
+  has_and_belongs_to_many :activity_sequences
   has_many :axes, dependent: :destroy
+  has_many :main_activity_sequences, class_name: 'ActivitySequence', foreign_key: :main_curricular_component_id
 
   validates :name, presence: true, uniqueness: true
 
