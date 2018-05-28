@@ -60,7 +60,6 @@ RSpec.describe Api::V1::ActivitiesController, type: :controller do
         attributes_for :activity,
                        title: 'New Title',
                        estimated_time: 1001,
-                       content: 'New Content',
                        activity_sequence_id: create(:activity_sequence).id
       end
 
@@ -70,7 +69,6 @@ RSpec.describe Api::V1::ActivitiesController, type: :controller do
         activity.reload
 
         expect(activity.title).to eq('New Title')
-        expect(activity.content).to eq('New Content')
       end
 
       it 'renders a JSON response with the activity' do

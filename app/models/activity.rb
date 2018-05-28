@@ -1,4 +1,5 @@
 class Activity < ApplicationRecord
+  include ImageConcern
   belongs_to :activity_sequence
   has_and_belongs_to_many :activity_types
 
@@ -7,5 +8,11 @@ class Activity < ApplicationRecord
   validates :estimated_time, presence: true
   validates :content, presence: true
 
-  include ImageConcern
+
+  has_many_attached :content_images
+
+
+  before_save do
+    JSON.parse(content)
+  end
 end
