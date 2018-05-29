@@ -1,4 +1,9 @@
 ActiveAdmin.register ActivitySequence do
+  action_item :new, only: :show do
+    link_to t('active_admin.new_model', model: Activity.model_name.human),
+            new_admin_activity_sequence_activity_path(activity_sequence)
+  end
+
   permit_params :title,
                 :year,
                 :presentation_text,

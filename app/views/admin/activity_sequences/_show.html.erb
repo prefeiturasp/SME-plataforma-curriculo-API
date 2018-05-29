@@ -44,4 +44,19 @@
       column :description
     end
   end
+
+  panel I18n.t('activerecord.attributes.activity_sequence.activities') do
+    table_for activity_sequence.activities do
+      column :title
+      column :sequence
+      column :estimated_time
+      column do |activity|
+        span link_to t('helpers.links.show'), admin_activity_sequence_activity_path(activity_sequence, activity)
+        span link_to t('helpers.links.edit'),edit_admin_activity_sequence_activity_path(activity_sequence, activity)
+        span link_to t('helpers.links.destroy'),
+          admin_activity_sequence_activity_path(activity_sequence, activity),
+          method: :delete
+      end
+    end
+  end
 end %>

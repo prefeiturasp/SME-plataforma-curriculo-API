@@ -1,4 +1,16 @@
 ActiveAdmin.register Activity do
+  belongs_to :activity_sequence
+
+  action_item :back, only: %i[show edit] do
+    link_to t('active_admin.back_to_model', model: ActivitySequence.model_name.human),
+            admin_activity_sequence_path(activity.activity_sequence)
+  end
+
+  action_item :new, only: :show do
+    link_to t('active_admin.new_model', model: activity.model_name.human),
+            new_admin_activity_sequence_activity_path(activity.activity_sequence)
+  end
+
   permit_params :sequence,
                 :title,
                 :estimated_time,
@@ -8,12 +20,7 @@ ActiveAdmin.register Activity do
                 activity_type_ids: []
 
   index do
-    selectable_column
-    column :sequence
-    column :title
-    column :estimated_time
-    column :activity_sequence
-    actions
+    render 'index', content: self
   end
 
   form do |f|

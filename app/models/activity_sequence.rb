@@ -5,7 +5,7 @@ class ActivitySequence < ApplicationRecord
   has_and_belongs_to_many :sustainable_development_goals
   has_and_belongs_to_many :knowledge_matrices
   has_and_belongs_to_many :learning_objectives
-  has_many :activities
+  has_many :activities, -> { order 'sequence' }
 
   enum status: { draft: 0, published: 1 }
 
@@ -15,6 +15,8 @@ class ActivitySequence < ApplicationRecord
   validates :estimated_time, presence: true
   validates :year, presence: true
   validates :status, presence: true
+
+  accepts_nested_attributes_for :activities, allow_destroy: true
 
   include ImageConcern
 end
