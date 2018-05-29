@@ -43,12 +43,6 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
         expect(subject).to_not be_valid
       end
 
-      it 'without a goals' do
-        subject.goals = nil
-
-        expect(subject).to_not be_valid
-      end
-
       it 'without an icon' do
         subject.icon.purge
 
@@ -79,23 +73,6 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
 
         expect(subject).to_not be_valid
       end
-    end
-  end
-
-  describe 'Methods' do
-    it 'goals raw return safe buffer' do
-      subject.goals = 'Goals 1; Goals 2; Goals 3'
-
-      expect(subject.goals_raw).to be_an_instance_of(ActiveSupport::SafeBuffer)
-      expect(subject.goals_raw).to include('Goals 1')
-      expect(subject.goals_raw).to include('Goals 3')
-    end
-
-    it 'goals raw separate with <br />' do
-      subject.goals = 'Goals 1; Goals 2; Goals 3'
-
-      expect(subject.goals_raw).to include('Goals 1<br />')
-      expect(subject.goals_raw).to include('Goals 2<br />')
     end
   end
 end

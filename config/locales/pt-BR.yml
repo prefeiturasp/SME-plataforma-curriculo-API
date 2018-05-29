@@ -16,6 +16,9 @@ pt-BR:
       curricular_component:
         one: "Componente Curricular"
         other: "Componentes Curriculares"
+      goal:
+        one: "Meta"
+        other: "Metas"
       knowledge_matrix:
         one: "Matriz do Saber"
         other: "Matriz dos Saberes"
@@ -74,6 +77,11 @@ pt-BR:
         name: "Nome"
         axes: "Eixos"
         details: "Detalhes"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      goal:
+        id: "Identificador"
+        description: Descrição
         created_at: "Criado em"
         updated_at: "Atualizado em"
       knowledge_matrix:

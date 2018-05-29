@@ -1,15 +1,17 @@
 class SustainableDevelopmentGoal < ApplicationRecord
   has_and_belongs_to_many :activity_sequences
   has_and_belongs_to_many :learning_objectives
+  has_many :goals, dependent: :destroy
   has_one_attached :icon
 
   validates :sequence, presence: true, uniqueness: true
   validates :name, presence: true, uniqueness: true
   validates :description, presence: true
-  validates :goals, presence: true
 
   validate :icon?
   validate :icon_valid?
+
+  accepts_nested_attributes_for :goals, allow_destroy: true
 
   def icon?
     return if icon.attached?
@@ -22,9 +24,5 @@ class SustainableDevelopmentGoal < ApplicationRecord
     return true if icon.content_type.start_with? 'image/'
     icon.purge_later
     errors.add(:icon, 'needs to be only images')
-  end
-
-  def goals_raw
-    goals.gsub("\n", '<br />').split(';').join('<br />').html_safe if goals.present?
   end
 end
