@@ -49,7 +49,11 @@ module Api
 
       # Only allow a trusted parameter "white list" through.
       def axis_params
-        params.require(:axis).permit(:description, :curricular_component_id)
+        params.require(:axis).permit(
+          :description,
+          :year,
+          :curricular_component_id
+        )
       end
     end
   end

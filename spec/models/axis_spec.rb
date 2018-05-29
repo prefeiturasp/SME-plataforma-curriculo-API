@@ -25,6 +25,12 @@ RSpec.describe Axis, type: :model do
         expect(subject).to_not be_valid
       end
 
+      it 'without a year' do
+        subject.year = nil
+
+        expect(subject).to_not be_valid
+      end
+
       it 'if the description already exists' do
         subject.save
         subject.reload

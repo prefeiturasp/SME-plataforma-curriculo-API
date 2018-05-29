@@ -70,6 +70,7 @@ pt-BR:
         updated_at: "Atualizado em"
       axis:
         description: "Descrição"
+        year: "Ano"
         curricular_component: "Componente Curricular"
         created_at: "Criado em"
         updated_at: "Atualizado em"

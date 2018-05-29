@@ -1,5 +1,6 @@
 AllCops:
   Exclude:
+    - 'storage/**/*'
     - 'Rakefile'
     - 'Gemfile'
     - 'db/schema.rb'
