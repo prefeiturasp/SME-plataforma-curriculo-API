@@ -2,7 +2,6 @@ FactoryBot.define do
   factory :sustainable_development_goal do
     name { Faker::Name.name }
     description { Faker::Name.name }
-    goals 'Goal 1; Goal 2, Goal 3'
 
     sequence :sequence do |n|
       n
@@ -19,7 +18,6 @@ FactoryBot.define do
     trait :invalid do
       name nil
       description nil
-      goals nil
     end
   end
 end

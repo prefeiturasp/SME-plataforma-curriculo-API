@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_24_195549) do
+ActiveRecord::Schema.define(version: 2018_05_29_014836) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 2018_05_24_195549) do
     t.integer "sequence"
     t.string "title"
     t.integer "estimated_time"
-    t.json "content"
+    t.jsonb "content"
     t.bigint "activity_sequence_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -129,6 +129,14 @@ ActiveRecord::Schema.define(version: 2018_05_24_195549) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "goals", force: :cascade do |t|
+    t.text "description"
+    t.bigint "sustainable_development_goal_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sustainable_development_goal_id"], name: "index_goals_on_sustainable_development_goal_id"
+  end
+
   create_table "knowledge_matrices", force: :cascade do |t|
     t.string "title"
     t.string "know_description"
@@ -159,7 +167,6 @@ ActiveRecord::Schema.define(version: 2018_05_24_195549) do
     t.integer "sequence"
     t.string "name"
     t.string "description"
-    t.string "goals"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -184,5 +191,6 @@ ActiveRecord::Schema.define(version: 2018_05_24_195549) do
   add_foreign_key "activities", "activity_sequences"
   add_foreign_key "activity_sequences", "curricular_components", column: "main_curricular_component_id"
   add_foreign_key "axes", "curricular_components"
+  add_foreign_key "goals", "sustainable_development_goals"
   add_foreign_key "learning_objectives", "curricular_components"
 end
