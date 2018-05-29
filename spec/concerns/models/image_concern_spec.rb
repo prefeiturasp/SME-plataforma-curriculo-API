@@ -25,6 +25,12 @@ RSpec.shared_examples_for 'image_concern' do
 
         expect(subject).to_not be_valid
       end
+
+      it 'if image size greater than 2MB' do
+        subject.image.byte_size = 4.megabytes
+
+        expect(subject).to_not be_valid
+      end
     end
   end
 end

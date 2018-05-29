@@ -17,23 +17,49 @@ ActiveAdmin.register ActivitySequence do
                 knowledge_matrix_ids: [],
                 learning_objective_ids: []
 
+  collection_action :change_learning_objectives, method: :post do
+    @learning_objectives = LearningObjective.where(curricular_component_id: params[:main_curricular_component_id])
+    if @learning_objectives.present?
+      render plain: view_context.options_from_collection_for_select(@learning_objectives, :id, :code_and_description)
+    else
+      render plain: view_context.options_for_select([['Nenhum Objetivo de aprendizagem disponível para o componente curricular principal selecionado', nil]])
+    end
+  end
+
   form do |f|
     f.inputs do
       f.input :status
       f.input :title
       f.input :image, required: true, as: :file
       f.input :presentation_text
-      f.input :main_curricular_component
+      f.input :main_curricular_component,
+              input_html: {
+                onchange: remote_request(
+                  :post,
+                  :change_learning_objectives, {
+                    main_curricular_component_id: "$('#activity_sequence_main_curricular_component_id').val()"
+                  },
+                  :activity_sequence_learning_objective_ids
+                )
+              }
       f.input :year, as: :select, collection: human_attribute_years
       f.input :curricular_components, as: :select, input_html: { multiple: true }
       f.input :books
       f.input :estimated_time
-      f.input :sustainable_development_goals, as: :select, input_html: { multiple: true }
-      f.input :knowledge_matrices, as: :select, input_html: { multiple: true }
+      f.input :sustainable_development_goals,
+              as: :select,
+              collection: sustainable_development_goals_collection,
+              input_html: { multiple: true }
+      f.input :knowledge_matrices,
+              as: :select,
+              collection: knowledge_matrices_collection,
+              input_html: { multiple: true }
       f.input :learning_objectives,
               as: :select,
-              collection: learning_objectives_collection,
-              input_html: { multiple: true }
+              collection: [],
+              input_html: {
+                multiple: true
+              }
     end
     f.actions
   end

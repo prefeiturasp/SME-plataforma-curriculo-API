@@ -5,4 +5,8 @@ class KnowledgeMatrix < ApplicationRecord
   validates :know_description, presence: true
   validates :title, presence: true, uniqueness: true
   validates :sequence, presence: true, uniqueness: true
+
+  def sequence_and_title
+    "#{sequence} - #{title}"
+  end
 end

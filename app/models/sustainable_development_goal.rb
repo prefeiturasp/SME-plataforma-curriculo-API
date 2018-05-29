@@ -13,6 +13,10 @@ class SustainableDevelopmentGoal < ApplicationRecord
 
   accepts_nested_attributes_for :goals, allow_destroy: true
 
+  def sequence_and_name
+    "#{sequence} - #{name}"
+  end
+
   def icon?
     return if icon.attached?
     errors.add(:icon, 'Please upload icon.')

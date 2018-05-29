@@ -59,12 +59,6 @@ RSpec.describe ActivitySequence, type: :model do
         expect(subject).to_not be_valid
       end
 
-      it 'without a books' do
-        subject.books = nil
-
-        expect(subject).to_not be_valid
-      end
-
       it 'without a estimated time' do
         subject.estimated_time = nil
 
@@ -73,6 +67,12 @@ RSpec.describe ActivitySequence, type: :model do
 
       it 'without a status' do
         subject.status = nil
+
+        expect(subject).to_not be_valid
+      end
+
+      it 'without a learning objectives' do
+        subject.learning_objectives.destroy_all
 
         expect(subject).to_not be_valid
       end
