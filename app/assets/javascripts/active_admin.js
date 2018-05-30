@@ -39,18 +39,10 @@ window.onload = function() {
         var html_content = quillGetHTML(obj)
         input.value = html_content
         quill_editor_content[0].innerHTML = html_content
-        
       }
 
       var options = editors[i].getAttribute( 'data-options' ) ? JSON.parse( editors[i].getAttribute( 'data-options' ) ) : default_options;
       editors[i]['_quill-editor'] = new Quill( content, options );
-
-      // Override image toolbar
-      editor = editors[i]['_quill-editor']
-      editor.getModule('toolbar').addHandler('image', function() {
-        selectLocalImage(editor);
-      });
-      
     }
   }
 
@@ -66,48 +58,3 @@ window.onload = function() {
     };
   }
 };
-
-// Quill Editor - Select local image
-function selectLocalImage(editor) {
-  const input = document.createElement('input');
-  input.setAttribute('type', 'file');
-  input.click();
-
-  // Listen upload local image and save to server
-  input.onchange = () => {
-    const file = input.files[0];
-    // file type is only image.
-    if (/^image\//.test(file.type)) {
-      saveToServer(file, editor);
-    } else {
-      console.warn('You could only upload images.');
-    }
-  };
-}
-
-// Quill Editor - save image to server
-function saveToServer(file, editor) {
-  var id = document.getElementById('activity_id').value;
-  const fd = new FormData();
-  fd.append('activity[content_images]', file);
-  fd.append('image', file);
-
-  const xhr = new XMLHttpRequest();
-  xhr.open('POST', 'http://localhost:3000/api/v1/activities/'+id+'/file_uploads', true);
-  xhr.onload = () => {
-    console.log(xhr.status);
-    if (xhr.status === 201) {
-      // this is callback data: url
-      const url = JSON.parse(xhr.responseText);
-      insertToEditor(url, editor);
-    }
-  };
-  xhr.send(fd);
-}
-
- // Quill Editor - insert image url to rich editor.
-function insertToEditor(url, editor) {
-  // push image url to rich editor.
-  const range = editor.getSelection();
-  editor.insertEmbed(range.index, 'image', url);
-}

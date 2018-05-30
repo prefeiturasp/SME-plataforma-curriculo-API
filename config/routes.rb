@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'file_uploads/new'
   devise_for :users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
@@ -7,9 +6,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :activities do
-        resources :file_uploads, only: [:create]
-      end
+      resources :activities
       resources :activity_sequences
       resources :activity_types
       resources :axes
