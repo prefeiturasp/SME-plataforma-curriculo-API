@@ -1,6 +1,7 @@
 ActiveAdmin.register LearningObjective do
   permit_params :year,
                 :description,
+                :code,
                 :curricular_component_id,
                 sustainable_development_goal_ids: []
 
@@ -9,6 +10,7 @@ ActiveAdmin.register LearningObjective do
       f.input :year, as: :select, collection: human_attribute_years
       f.input :description
       f.input :curricular_component
+      f.input :code
       f.input :sustainable_development_goals, as: :select, input_html: { multiple: true }
     end
     f.actions
