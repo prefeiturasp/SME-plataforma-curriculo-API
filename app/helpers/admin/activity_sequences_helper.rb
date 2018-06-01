@@ -1,7 +1,8 @@
 module Admin
   module ActivitySequencesHelper
-    def learning_objectives_collection
-      LearningObjective.all.collect do |lo|
+    def learning_objectives_collection(main_curricular_component_id)
+      learning_objectives = LearningObjective.where(curricular_component_id: main_curricular_component_id)
+      learning_objectives.collect do |lo|
         [lo.code_and_description, lo.id]
       end
     end
@@ -18,7 +19,7 @@ module Admin
       end
     end
 
-    def remote_request(type, path, params = {}, target_tag_id)
+    def remote_request(type, path, target_tag_id, params = {})
       "$.#{type}('#{path}',
                  {#{params.collect { |p| "#{p[0]}: #{p[1]}" }.join(', ')}},
                  function(data) {$('##{target_tag_id}').html(data);}

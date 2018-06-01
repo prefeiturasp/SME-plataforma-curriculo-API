@@ -143,6 +143,7 @@ pt-BR:
           third: "3º"
     errors:
       messages:
+        none_learning_objectives: "Nenhum Objetivo de aprendizagem disponível para o componente curricular principal selecionado"
         record_invalid: 'A validação falhou: %{errors}'
         restrict_dependent_destroy:
           has_one: Não é possível excluir o registro pois existe um %{record} dependente
@@ -439,6 +440,7 @@ pt-BR:
         attendance_capacity: "Capacidade de atendimento"
     select:
       prompt: Por favor selecione
+      prompt_main_curricular: Selecione um componente curricular principal
     submit:
       create: Confirmar %{model}
       submit: Salvar %{model}
