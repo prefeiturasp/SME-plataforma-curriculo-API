@@ -8,6 +8,7 @@ module ImageConcern
 
     validate :image?
     validate :image_valid?
+    validate :image_valid_size?
   end
 
   private
@@ -23,6 +24,12 @@ module ImageConcern
     return true if image.content_type.start_with? 'image/'
     image.purge_later
     errors.add(:image, 'needs to be only images')
+  end
+
+  def image_valid_size?
+    return false unless image.attached?
+    return true unless image.byte_size > 2.megabytes
+    errors.add(:image, 'should be less than 2MB')
   end
 
   def purge_image

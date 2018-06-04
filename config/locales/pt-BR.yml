@@ -40,12 +40,13 @@ pt-BR:
         id: "Identificador"
         image: "Imagem"
         main_curricular_component: "Componente Curricular Principal"
-        sequence: "Sequência"
+        sequence: "Número de Atividade"
         title: "Título"
         year: "Ano"
         created_at: "Criado em"
         updated_at: "Atualizado em"
       activity_sequence:
+        activities: "Atividades"
         id: "Identificador"
         books: "Livros"
         curricular_components: "Componentes Curriculares relacionados"
@@ -54,7 +55,7 @@ pt-BR:
         knowledge_matrices: "Matriz dos Saberes"
         learning_objectives: "Objetivos de Aprendizagem"
         main_curricular_component: "Componente Curricular Principal"
-        presentation_text: "Texto de apresrntação"
+        presentation_text: "Texto de apresentação"
         status: "Status"
         statuses:
           draft: "Rascunho"
@@ -70,6 +71,7 @@ pt-BR:
         updated_at: "Atualizado em"
       axis:
         description: "Descrição"
+        year: "Ano"
         curricular_component: "Componente Curricular"
         created_at: "Criado em"
         updated_at: "Atualizado em"
@@ -141,6 +143,7 @@ pt-BR:
           third: "3º"
     errors:
       messages:
+        none_learning_objectives: "Nenhum Objetivo de aprendizagem disponível para o componente curricular principal selecionado"
         record_invalid: 'A validação falhou: %{errors}'
         restrict_dependent_destroy:
           has_one: Não é possível excluir o registro pois existe um %{record} dependente
@@ -158,6 +161,7 @@ pt-BR:
     create_another: "Criar outro %{model}"
     new_model: "Novo(a) %{model}"
     edit_model: "Editar %{model}"
+    back_to_model: "Voltar para %{model}"
     delete_model: "Remover %{model}"
     details: "Detalhes do(a) %{model}"
     cancel: "Cancelar"
@@ -436,6 +440,7 @@ pt-BR:
         attendance_capacity: "Capacidade de atendimento"
     select:
       prompt: Por favor selecione
+      prompt_main_curricular: Selecione um componente curricular principal
     submit:
       create: Confirmar %{model}
       submit: Salvar %{model}

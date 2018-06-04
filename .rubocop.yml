@@ -1,5 +1,6 @@
 AllCops:
   Exclude:
+    - 'storage/**/*'
     - 'Rakefile'
     - 'Gemfile'
     - 'db/schema.rb'
@@ -23,7 +24,7 @@ Style/BlockDelimiters:
   EnforcedStyle: braces_for_chaining
 
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context', 'register']
+  ExcludedMethods: ['describe', 'context', 'register', 'shared_examples_for']
 
 Style/Lambda:
   EnforcedStyle: literal

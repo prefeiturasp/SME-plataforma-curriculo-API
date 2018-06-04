@@ -1,4 +1,9 @@
 ActiveAdmin.register ActivitySequence do
+  action_item :new, only: :show do
+    link_to t('active_admin.new_model', model: Activity.model_name.human),
+            new_admin_activity_sequence_activity_path(activity_sequence)
+  end
+
   permit_params :title,
                 :year,
                 :presentation_text,
@@ -12,25 +17,21 @@ ActiveAdmin.register ActivitySequence do
                 knowledge_matrix_ids: [],
                 learning_objective_ids: []
 
-  form do |f|
-    f.inputs do
-      f.input :status
-      f.input :title
-      f.input :image, required: true, as: :file
-      f.input :presentation_text
-      f.input :main_curricular_component
-      f.input :year, as: :select, collection: human_attribute_years
-      f.input :curricular_components, as: :select, input_html: { multiple: true }
-      f.input :books
-      f.input :estimated_time
-      f.input :sustainable_development_goals, as: :select, input_html: { multiple: true }
-      f.input :knowledge_matrices, as: :select, input_html: { multiple: true }
-      f.input :learning_objectives,
-              as: :select,
-              collection: learning_objectives_collection,
-              input_html: { multiple: true }
+  collection_action :change_learning_objectives, method: :get do
+    @learning_objectives = LearningObjective.where(curricular_component_id: params[:main_curricular_component_id])
+    if @learning_objectives.present?
+      render plain: view_context.options_from_collection_for_select(@learning_objectives, :id, :code_and_description)
+    else
+      render plain: view_context.options_for_select(
+        [
+          [t('activerecord.errors.messages.none_learning_objectives'), nil]
+        ]
+      )
     end
-    f.actions
+  end
+
+  form do |f|
+    render 'form', f: f, activity_sequence: activity_sequence
   end
 
   index do

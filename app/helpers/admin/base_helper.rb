@@ -6,7 +6,7 @@ module Admin
 
     def toolbar_options # rubocop:disable Metrics/MethodLength
       [%w[bold italic underline strike],
-       ['blockquote', 'code-block'],
+       ['blockquote'],
        [{ 'header': 1 }, { 'header': 2 }],
        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
        [{ 'script': 'sub' }, { 'script': 'super' }],
@@ -15,9 +15,6 @@ module Admin
        [{ 'size': ['small', false, 'large', 'huge'] }],
        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
        ['image'],
-       [{ 'color': [] }, { 'background': [] }],
-       [{ 'font': [] }],
-       [{ 'align': [] }],
        ['clean']]
     end
   end
