@@ -38,6 +38,12 @@ RSpec.describe LearningObjective, type: :model do
         expect(subject).to_not be_valid
       end
 
+      it 'without a code' do
+        subject.code = nil
+
+        expect(subject).to_not be_valid
+      end
+
       it 'without a curricular component' do
         subject.curricular_component_id = nil
 
@@ -48,69 +54,6 @@ RSpec.describe LearningObjective, type: :model do
         subject.sustainable_development_goal_ids = []
 
         expect(subject).to_not be_valid
-      end
-    end
-  end
-
-  describe 'code' do
-    it 'was generated' do
-      subject.save
-
-      expect(subject.code).not_to be_nil
-    end
-
-    it 'not generated if learning objective is not valid' do
-      learning_objective = build :learning_objective,
-                                 year: 1,
-                                 curricular_component: nil
-
-      expect(learning_objective.generate_code).to be_nil
-    end
-
-    it 'generate sequential code number' do
-      curricular_component = create :curricular_component, name: 'Ciências Naturais'
-      learning_objective = create :learning_objective,
-                                  year: 1,
-                                  curricular_component: curricular_component,
-                                  sustainable_development_goals: [sustainable_development_goal]
-
-      expect(learning_objective.next_sequential_code_number('EF01C')).to eq(2)
-    end
-
-    context 'was generated correctly' do
-      it 'first number' do
-        curricular_component = build :curricular_component, name: 'Ciências Naturais'
-        learning_objective = build :learning_objective,
-                                   year: 1,
-                                   curricular_component: curricular_component,
-                                   sustainable_development_goals: [sustainable_development_goal]
-
-        expect(learning_objective.generate_code).to eq('EF01C01')
-      end
-
-      it 'if destroy and recreate' do
-        curricular_component = create :curricular_component, name: 'Ciências Naturais'
-        learning_objective = build :learning_objective,
-                                   year: 1,
-                                   curricular_component: curricular_component,
-                                   sustainable_development_goals: [sustainable_development_goal]
-
-        learning_objective.save
-        expect(learning_objective.code).to eq('EF01C01')
-
-        learning_objective.destroy
-        learning_objective.save
-        expect(learning_objective.code).to eq('EF01C01')
-      end
-
-      it 'curricular_component equals Educacao Fisica' do
-        curricular_component = build :curricular_component, name: 'Educação Física'
-        learning_objective = build :learning_objective,
-                                   year: 3,
-                                   curricular_component: curricular_component,
-                                   sustainable_development_goals: [sustainable_development_goal]
-
-        expect(learning_objective.generate_code).to eq('EF03EF01')
       end
     end
   end

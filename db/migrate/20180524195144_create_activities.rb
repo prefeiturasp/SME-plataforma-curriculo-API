@@ -4,7 +4,7 @@ class CreateActivities < ActiveRecord::Migration[5.2]
       t.integer :sequence
       t.string :title
       t.integer :estimated_time
-      t.json :content
+      t.jsonb :content
       t.belongs_to :activity_sequence, foreign_key: true
 
       t.timestamps
