@@ -1,5 +1,5 @@
 ActiveAdmin.register CurricularComponent do
-  permit_params :name, axes_attributes: %i[id description _destroy _create _update]
+  permit_params :name, axes_attributes: %i[id year description _destroy _create _update]
 
   config.filters = false
 
@@ -27,6 +27,7 @@ ActiveAdmin.register CurricularComponent do
 
     f.inputs I18n.t('activerecord.models.axis', count: 2) do
       f.has_many :axes do |c|
+        c.input :year, as: :select, collection: human_attribute_years
         c.input :description
       end
     end
