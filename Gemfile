@@ -18,7 +18,7 @@ gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
 gem 'puma', '~> 3.11'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-# gem 'jbuilder', '~> 2.5'
+gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
@@ -50,7 +50,7 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 
-  gem 'capistrano'
+  gem 'capistrano', '~> 3.11.0'
   gem 'capistrano-rails'
 
   gem 'rubocop', require: false
@@ -65,3 +65,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # ActiveAdmin Quill Editor
 gem 'activeadmin_quill_editor'
+
+# Pretty URLs and work with human-friendly strings
+gem 'friendly_id', '~> 5.2.4', github: 'norman/friendly_id'

@@ -8,6 +8,7 @@ AllCops:
     - 'config/**/*'
     - 'script/**/*'
     - 'bin/*'
+    - 'temp/**/*'
 Metrics/ClassLength:
   Max: 1500
 

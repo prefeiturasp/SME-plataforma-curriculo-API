@@ -1,5 +1,5 @@
 # config valid for current version and patch releases of Capistrano
-lock "~> 3.10.2"
+lock "~> 3.11.0"
 
 set :application, "plataforma_api"
 set :repo_url, "https://github.com/prefeiturasp/SME-plataforma-curriculo-API.git"

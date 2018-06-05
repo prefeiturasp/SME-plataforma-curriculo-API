@@ -3,6 +3,12 @@ ActiveAdmin.register CurricularComponent do
 
   config.filters = false
 
+  controller do
+    def find_resource
+      scoped_collection.friendly.find(params[:id])
+    end
+  end
+
   show do
     attributes_table do
       row :name

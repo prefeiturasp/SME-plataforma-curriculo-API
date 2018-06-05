@@ -5,6 +5,11 @@ Rails.application.routes.draw do
   root to: 'admin/dashboard#index'
 
   namespace :api do
+    get 'filtros/sequencia_atividade', to: 'filters#activity_sequence_index'
+    get 'filtros/sequencia_atividade/ano/:year', to: 'filters#activity_sequece_index_filter'
+    get 'filtros/sequencia_atividade/ano/:year/componente/:curricular_component_friendly_id', to: 'filters#activity_sequece_index_filter'
+
+
     namespace :v1 do
       resources :activities
       resources :activity_sequences
