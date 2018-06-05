@@ -13,33 +13,32 @@ function quillGetHTML(inputDelta) {
 
 window.onload = function() {
   var editors = document.querySelectorAll( '.quill-editor' );
-
-  initializeQuillEditors(editors);
+  for( var i = 0; i < editors.length; i++ ) {
+    initializeQuillEditor(editors[i]);
+  }
   defineDividerIcon();
   convertContentToDelta(editors);
 };
 
-function initializeQuillEditors(editors){
-  for( var i = 0; i < editors.length; i++ ) {
-    var content = editors[i].querySelector( '.quill-editor-content' );
-    if( content ) {
-      var input = editors[i].querySelector( 'input[type="hidden"]' );
-      var quill_editor_content = editors[i].getElementsByClassName('quill-editor-content');
+function initializeQuillEditor(editor){
+  var content = editor.querySelector( '.quill-editor-content' );
+  if( content ) {
+    var input = editor.querySelector( 'input[type="hidden"]' );
+    var quill_editor_content = editor.getElementsByClassName('quill-editor-content');
 
-      if (input.value) {
-        var obj = JSON.parse(input.value);
-        var html_content = quillGetHTML(obj)
-        input.value = html_content
-        quill_editor_content[0].innerHTML = html_content
-      }
-
-      var options = editors[i].getAttribute( 'data-options' ) ? JSON.parse( editors[i].getAttribute( 'data-options' ) ) : getDefaultOptions();
-      editors[i]['_quill-editor'] = new Quill( content, options );
-      editor = editors[i]['_quill-editor']
-      editor.getModule('toolbar').addHandler('divider', () => {
-        addHrDividerOnEditor(editor);
-      });
+    if (input.value) {
+      var obj = JSON.parse(input.value);
+      var html_content = quillGetHTML(obj)
+      input.value = html_content
+      quill_editor_content[0].innerHTML = html_content
     }
+
+    var options = editor.getAttribute( 'data-options' ) ? JSON.parse( editor.getAttribute( 'data-options' ) ) : getDefaultOptions();
+    editor['_quill-editor'] = new Quill( content, options );
+    quill_editor = editor['_quill-editor']
+    quill_editor.getModule('toolbar').addHandler('divider', () => {
+      addHrDividerOnEditor(quill_editor);
+    });
   }
 }
 
