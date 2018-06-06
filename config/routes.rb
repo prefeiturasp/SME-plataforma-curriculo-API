@@ -4,10 +4,10 @@ Rails.application.routes.draw do
 
   root to: 'admin/dashboard#index'
 
-  namespace :api do
+  namespace :api, defaults: { format: 'json' } do
     get 'filtros/sequencia_atividade', to: 'filters#activity_sequence_index'
-    get 'filtros/sequencia_atividade/ano/:year', to: 'filters#activity_sequece_index_filter'
-    get 'filtros/sequencia_atividade/ano/:year/componente/:curricular_component_friendly_id', to: 'filters#activity_sequece_index_filter'
+    get 'filtros/sequencia_atividade/ano/:year', to: 'filters#activity_sequence_index_filter'
+    get 'filtros/sequencia_atividade/ano/:year/componente/:curricular_component_friendly_id', to: 'filters#activity_sequence_index_filter'
 
 
     namespace :v1 do
@@ -20,5 +20,7 @@ Rails.application.routes.draw do
       resources :sustainable_development_goals
       resources :knowledge_matrices
     end
+
+    match "*path", to: "errors#catch_404", via: :all
   end
 end

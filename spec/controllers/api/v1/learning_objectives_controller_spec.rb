@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe Api::V1::LearningObjectivesController, type: :controller do
   let(:valid_attributes) do
     attributes_for :learning_objective,
-                   curricular_component_id: create(:curricular_component),
-                   sustainable_development_goal_ids: [create(:sustainable_development_goal)]
+                   curricular_component_id: create(:curricular_component).id,
+                   sustainable_development_goal_ids: [create(:sustainable_development_goal).id]
   end
 
   let(:invalid_attributes) do

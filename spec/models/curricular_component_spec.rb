@@ -8,6 +8,10 @@ RSpec.describe CurricularComponent, type: :model do
       should have_many(:axes)
     end
 
+    it 'has many learning objectives' do
+      should have_many(:learning_objectives)
+    end
+
     it 'has and belongs to many activity sequences' do
       should have_and_belong_to_many(:activity_sequences)
     end
