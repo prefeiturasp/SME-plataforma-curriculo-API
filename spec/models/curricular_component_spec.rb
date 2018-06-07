@@ -42,5 +42,14 @@ RSpec.describe CurricularComponent, type: :model do
         expect(new_object).to_not be_valid
       end
     end
+
+    context "slug" do
+      it "should generate a slug" do
+        subject.name = "Hello World"
+        subject.save
+
+        expect(subject.slug).to eq('hello-world')
+      end
+    end
   end
 end

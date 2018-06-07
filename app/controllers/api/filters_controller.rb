@@ -4,6 +4,7 @@ module Api
 
     def activity_sequence_index
       @years = LearningObjective.years
+
       @curricular_components = CurricularComponent.all
       @sustainable_development_goals = SustainableDevelopmentGoal.select(:id, :sequence, :name)
       @learning_objectives = LearningObjective.all
@@ -11,7 +12,7 @@ module Api
       @axes = Axis.all
       @activity_types = ActivityType.all
 
-      render '/api/filters/activity_sequence_index'
+      @curricular_components.present? ? render(:activity_sequence_index) : render(json: {}, status: :no_content)
     end
 
     def activity_sequence_index_filter
@@ -21,11 +22,11 @@ module Api
         @axes = curricular_component.axes.where(year: params[:year])
         @learning_objectives = curricular_component.learning_objectives.where(year: params[:year])
       else
-        @axes = Axis.where(year: params[:year])
-        @learning_objectives = LearningObjective.where(year: params[:year])
+        @axes = Axis.where(year: params[:year].to_i)
+        @learning_objectives = LearningObjective.where(year: params[:year].to_i)
       end
 
-      render '/api/filters/activity_sequece_index_filter'
+      render :activity_sequence_index_filter
     end
 
     private
