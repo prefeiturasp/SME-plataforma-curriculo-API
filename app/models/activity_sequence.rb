@@ -20,25 +20,25 @@ class ActivitySequence < ApplicationRecord
 
   include ImageConcern
 
-  def self.where_optional_params(params)
-    all.build_query_year(params)
-       .build_query_curricular_component(params)
-       .build_query_axes(params)
-       .build_query_sustainable_development_goal(params)
-       .build_query_knowledge_matrices(params)
-       .build_query_learning_objectives(params)
-       .build_query_activity_types(params)
+  def self.where_optional_params(params = {})
+    all.all_or_with_year(params[:year])
+       .all_or_with_curricular_component(params)
+       .all_or_with_axes(params)
+       .all_or_with_sustainable_development_goal(params)
+       .all_or_with_knowledge_matrices(params)
+       .all_or_with_learning_objectives(params)
+       .all_or_with_activity_types(params)
   end
 
   # TODO
   def self.initialize_query(params); end
 
-  def self.build_query_year(params)
-    return all unless params[:year]
-    where(year: params[:year])
+  def self.all_or_with_year(year = nil)
+    return all unless year
+    where(year: year)
   end
 
-  def self.build_query_curricular_component(params)
+  def self.all_or_with_curricular_component(params = {})
     return all unless params[:curricular_component_friendly_id]
     joins(:curricular_components).where(
       curricular_components: {
@@ -47,7 +47,7 @@ class ActivitySequence < ApplicationRecord
     )
   end
 
-  def self.build_query_axes(params)
+  def self.all_or_with_axes(params = {})
     return all unless params[:axis_id]
     joins(curricular_components: :axes).where(
       curricular_components: {
@@ -59,7 +59,7 @@ class ActivitySequence < ApplicationRecord
     )
   end
 
-  def self.build_query_sustainable_development_goal(params)
+  def self.all_or_with_sustainable_development_goal(params = {})
     return all unless params[:sustainable_development_goal_id]
     joins(:sustainable_development_goals).where(
       sustainable_development_goals: {
@@ -68,7 +68,7 @@ class ActivitySequence < ApplicationRecord
     )
   end
 
-  def self.build_query_knowledge_matrices(params)
+  def self.all_or_with_knowledge_matrices(params = {})
     return all unless params[:knowledge_matrix_id]
     joins(:knowledge_matrices).where(
       knowledge_matrices: {
@@ -77,7 +77,7 @@ class ActivitySequence < ApplicationRecord
     )
   end
 
-  def self.build_query_learning_objectives(params)
+  def self.all_or_with_learning_objectives(params = {})
     return all unless params[:learning_objective_id]
     joins(:learning_objectives).where(
       learning_objectives: {
@@ -86,7 +86,7 @@ class ActivitySequence < ApplicationRecord
     )
   end
 
-  def self.build_query_activity_types(params)
+  def self.all_or_with_activity_types(params = {})
     return all unless params[:activity_type_id]
     joins(activities: :activity_types).where(
       activities: {
