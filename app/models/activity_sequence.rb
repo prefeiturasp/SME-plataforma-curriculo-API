@@ -1,4 +1,6 @@
 class ActivitySequence < ApplicationRecord
+  include FriendlyId
+  include ImageConcern
   include YearsEnum
   belongs_to :main_curricular_component, class_name: 'CurricularComponent'
   has_and_belongs_to_many :curricular_components
@@ -15,10 +17,15 @@ class ActivitySequence < ApplicationRecord
   validates :year, presence: true
   validates :status, presence: true
   validates :learning_objectives, presence: true
+  validates :slug, presence: true, uniqueness: true
+
+  friendly_id :title, use: :slugged
 
   accepts_nested_attributes_for :activities, allow_destroy: true
 
-  include ImageConcern
+  def should_generate_new_friendly_id?
+    title_changed? || super
+  end
 
   def self.where_optional_params(params = {})
     all.all_or_with_year(params[:year])

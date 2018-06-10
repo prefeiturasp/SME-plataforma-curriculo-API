@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_05_135532) do
+ActiveRecord::Schema.define(version: 2018_06_10_135709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -78,7 +78,9 @@ ActiveRecord::Schema.define(version: 2018_06_05_135532) do
     t.bigint "main_curricular_component_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug", null: false
     t.index ["main_curricular_component_id"], name: "index_activity_sequences_on_main_curricular_component_id"
+    t.index ["slug"], name: "index_activity_sequences_on_slug", unique: true
   end
 
   create_table "activity_sequences_curricular_components", id: false, force: :cascade do |t|
