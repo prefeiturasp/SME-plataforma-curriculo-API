@@ -19,7 +19,7 @@ class ActivitySequence < ApplicationRecord
   validates :learning_objectives, presence: true
   validates :slug, presence: true, uniqueness: true
 
-  friendly_id :title, use: :slugged
+  friendly_id :title, use: %i[slugged finders]
 
   accepts_nested_attributes_for :activities, allow_destroy: true
 

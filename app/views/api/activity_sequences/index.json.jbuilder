@@ -1,5 +1,6 @@
 json.array! @activity_sequences do |activity_sequence|
   json.id activity_sequence.id
+  json.slug activity_sequence.slug
   json.title activity_sequence.title
   json.main_curricular_component activity_sequence.main_curricular_component.name
   json.estimated_time activity_sequence.estimated_time

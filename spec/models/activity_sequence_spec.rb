@@ -25,6 +25,15 @@ RSpec.describe ActivitySequence, type: :model do
     end
   end
 
+  context "slug" do
+    it "should generate a slug" do
+      subject.title = "Hello World"
+      subject.save
+
+      expect(subject.slug).to eq('hello-world')
+    end
+  end
+
   describe 'Validations' do
     let(:subject) { build :activity_sequence }
 
