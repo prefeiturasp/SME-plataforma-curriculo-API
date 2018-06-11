@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     get 'sequencias/:activity_sequence_slug/atividades/:activity_slug', to: 'activities#show'
     get 'saberes', to: 'knowledge_matrices#index'
     get 'ods', to: 'sustainable_development_goals#index'
+    get 'ods/:id', to: 'sustainable_development_goals#show'
 
     namespace :v1 do
       resources :activities

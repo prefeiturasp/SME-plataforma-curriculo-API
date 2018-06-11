@@ -39,4 +39,46 @@ RSpec.describe Api::SustainableDevelopmentGoalsController, type: :controller do
       end
     end
   end
+
+  describe 'GET #show' do
+    let(:goal) { create :goal }
+    let(:sustainable_development_goal) { create :sustainable_development_goal,
+      goal_ids: [goal.id]
+    }
+
+    context 'returns http no content' do
+      it 'returns no content' do
+        get :show, params: { id: 9999 }
+
+        expect(response).to be_successful
+        expect(response).to have_http_status(:no_content)
+      end
+    end
+
+    context 'returns http success' do
+      it 'returns http success' do
+        get :show, params: { id: sustainable_development_goal.id }
+
+        expect(response.content_type).to eq('application/json')
+        expect(response).to be_successful
+      end
+
+      it 'return valid JSON all' do
+        get :show, params: { id: sustainable_development_goal.id }
+
+        expect(response_body['sequence']).to be_present
+        expect(response_body['name']).to be_present
+        expect(response_body['description']).to be_present
+        expect(response_body['icon']).to be_present
+        expect(response_body['goals']).to be_present
+      end
+
+      it 'return valid Goals json' do
+        get :show, params: { id: sustainable_development_goal.id }
+
+        expect(response_body['goals']).to be_present
+        expect(response_body['goals'][0]['description']).to be_present
+      end
+    end
+  end
 end
