@@ -27,6 +27,7 @@ RSpec.describe Api::FiltersController, type: :controller do
         create :activity_type
       end
 
+
       context 'without optional params' do
         it 'returns http success' do
           get :index
