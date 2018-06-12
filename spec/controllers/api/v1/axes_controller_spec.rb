@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Api::V1::AxesController, type: :controller do
   let(:valid_attributes) do
-    attributes_for(:axis, curricular_component_id: create(:curricular_component))
+    attributes_for(:axis, curricular_component_id: create(:curricular_component).id)
   end
 
   let(:invalid_attributes) do

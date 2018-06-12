@@ -43,7 +43,7 @@ module Api
       private
 
       def set_curricular_component
-        @curricular_component = CurricularComponent.find(params[:id])
+        @curricular_component = CurricularComponent.friendly.find(params[:id])
       end
 
       def curricular_component_params

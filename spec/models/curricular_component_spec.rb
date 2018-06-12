@@ -8,6 +8,10 @@ RSpec.describe CurricularComponent, type: :model do
       should have_many(:axes)
     end
 
+    it 'has many learning objectives' do
+      should have_many(:learning_objectives)
+    end
+
     it 'has and belongs to many activity sequences' do
       should have_and_belong_to_many(:activity_sequences)
     end
@@ -36,6 +40,15 @@ RSpec.describe CurricularComponent, type: :model do
         new_object = build :curricular_component, name: subject.name
 
         expect(new_object).to_not be_valid
+      end
+    end
+
+    context 'slug' do
+      it 'should generate a slug' do
+        subject.name = 'Hello World'
+        subject.save
+
+        expect(subject.slug).to eq('hello-world')
       end
     end
   end

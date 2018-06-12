@@ -46,4 +46,63 @@ RSpec.describe Axis, type: :model do
       end
     end
   end
+
+  describe 'Queries' do
+    before do
+      create_list(:axis, 4)
+      create :axis,
+             curricular_component_id: c1.id
+    end
+
+    let(:all_response) { Axis.all }
+    let(:c1) { create :curricular_component }
+    let(:params) { nil }
+
+    context 'with curricular component' do
+      let(:response) { Axis.all_or_with_curricular_component(params) }
+      let(:params) { c1.slug }
+
+      it 'return all with none params' do
+        params = nil
+        response = Axis.all_or_with_curricular_component(params)
+
+        expect(all_response).to eq(response)
+      end
+
+      it 'include on response' do
+        expect(response).to include(c1.axes.first)
+      end
+
+      it 'not include on response' do
+        new_curricular = create :curricular_component
+        create :axis, curricular_component_id: new_curricular.id
+
+        expect(response).to_not include(new_curricular.axes.first)
+      end
+    end
+
+    context 'with year' do
+      let(:params)   { { year: :second } }
+      let(:response) { Axis.all_or_with_year(params[:year]) }
+
+      it 'return all with none params' do
+        params = nil
+        response = Axis.all_or_with_year(params)
+
+        expect(all_response).to eq(response)
+      end
+
+      it 'include' do
+        a = create :axis,
+                   year: :second
+        expect(response).to include(a)
+      end
+
+      it 'not include' do
+        a = create :axis,
+                   year: :third
+        expect(response).to_not include(a)
+      end
+    end
+  end
 end

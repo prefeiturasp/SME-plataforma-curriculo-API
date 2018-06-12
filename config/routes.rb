@@ -4,7 +4,10 @@ Rails.application.routes.draw do
 
   root to: 'admin/dashboard#index'
 
-  namespace :api do
+  namespace :api, defaults: { format: 'json' } do
+    get 'filtros', to: 'filters#index'
+    get 'sequencias', to: 'activity_sequences#index'
+
     namespace :v1 do
       resources :activities
       resources :activity_sequences
@@ -15,5 +18,7 @@ Rails.application.routes.draw do
       resources :sustainable_development_goals
       resources :knowledge_matrices
     end
+
+    match "*path", to: "errors#catch_404", via: :all
   end
 end

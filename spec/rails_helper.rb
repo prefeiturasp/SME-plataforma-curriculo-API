@@ -60,4 +60,6 @@ RSpec.configure do |config|
   # Need because of the Devise
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.extend ControllerMacros, type: :controller
+
+  config.render_views = true
 end
