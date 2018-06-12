@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Api::ActivitySequencesController, type: :controller do
-
   let(:response_body) { JSON.parse(response.body) }
   let(:first_body) { response_body[0] }
 

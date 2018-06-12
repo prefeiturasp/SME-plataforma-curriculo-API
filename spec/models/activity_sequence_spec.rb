@@ -84,7 +84,7 @@ RSpec.describe ActivitySequence, type: :model do
     before do
       create_list(:activity_sequence, 4)
       create :activity_sequence,
-      curricular_component_ids: [c1.id]
+             curricular_component_ids: [c1.id]
     end
 
     let(:all_response) { ActivitySequence.all }
@@ -93,10 +93,9 @@ RSpec.describe ActivitySequence, type: :model do
 
     context 'with curricular component' do
       let(:response) { ActivitySequence.all_or_with_curricular_component(params) }
-      let(:params) { {curricular_component_friendly_id: c1.slug } }
+      let(:params) { { curricular_component_friendly_id: c1.slug } }
 
       it 'return all with none params' do
-        params = nil
         response = ActivitySequence.all_or_with_curricular_component
 
         expect(all_response).to eq(response)
@@ -107,10 +106,10 @@ RSpec.describe ActivitySequence, type: :model do
       end
 
       it 'not include on response' do
-        c2 = create :curricular_component
-        create :activity_sequence, curricular_component_ids: [c2.id]
+        new_curricular_com = create :curricular_component
+        create :activity_sequence, curricular_component_ids: [new_curricular_com.id]
 
-        expect(response).to_not include(c2.activity_sequences.last)
+        expect(response).to_not include(new_curricular_com.activity_sequences.last)
       end
     end
 
@@ -119,7 +118,6 @@ RSpec.describe ActivitySequence, type: :model do
       let(:response) { ActivitySequence.all_or_with_year(params[:year]) }
 
       it 'return all with none params' do
-        params = nil
         response = ActivitySequence.all_or_with_year
 
         expect(all_response).to eq(response)
@@ -127,13 +125,13 @@ RSpec.describe ActivitySequence, type: :model do
 
       it 'include' do
         a = create :activity_sequence,
-          year: :second
+                   year: :second
         expect(response).to include(a)
       end
 
       it 'not include' do
         a = create :activity_sequence,
-          year: :third
+                   year: :third
         expect(response).to_not include(a)
       end
     end
@@ -144,31 +142,30 @@ RSpec.describe ActivitySequence, type: :model do
       let(:response) { ActivitySequence.all_or_with_axes(params) }
 
       it 'return all with none params' do
-        params = nil
         response = ActivitySequence.all_or_with_axes
 
         expect(all_response).to eq(response)
       end
 
       it 'include axis and year' do
-        c2 = create :curricular_component, axis_ids: [axis.id]
-        a = create :activity_sequence, curricular_component_ids: [c2.id]
+        new_curricular_com = create :curricular_component, axis_ids: [axis.id]
+        a = create :activity_sequence, curricular_component_ids: [new_curricular_com.id]
 
         expect(response).to include(a)
       end
 
       it 'not include axis id' do
         axis_2 = create :axis
-        c2 = create :curricular_component, axis_ids: [axis_2.id]
-        a = create :activity_sequence, curricular_component_ids: [c2.id]
+        new_curricular_com = create :curricular_component, axis_ids: [axis_2.id]
+        a = create :activity_sequence, curricular_component_ids: [new_curricular_com.id]
 
         expect(response).to_not include(a)
       end
 
       it 'not include year' do
         axis_2 = create :axis, year: :third
-        c2 = create :curricular_component, axis_ids: [axis_2.id]
-        a = create :activity_sequence, curricular_component_ids: [c2.id]
+        new_curricular_com = create :curricular_component, axis_ids: [axis_2.id]
+        a = create :activity_sequence, curricular_component_ids: [new_curricular_com.id]
 
         expect(response).to_not include(a)
       end
@@ -177,9 +174,8 @@ RSpec.describe ActivitySequence, type: :model do
     context 'with sustainable development goal' do
       let(:sdg) { create :sustainable_development_goal }
       let(:params) { { sustainable_development_goal_id: sdg.id } }
-      let(:response) { response = ActivitySequence.all_or_with_sustainable_development_goal(params) }
+      let(:response) { ActivitySequence.all_or_with_sustainable_development_goal(params) }
       it 'return all with none params' do
-        params = nil
         response = ActivitySequence.all_or_with_sustainable_development_goal
 
         expect(all_response).to eq(response)
@@ -202,9 +198,8 @@ RSpec.describe ActivitySequence, type: :model do
     context 'with knowledge matrix' do
       let(:knowledge_matrix) { create :knowledge_matrix }
       let(:params) { { knowledge_matrix_id: knowledge_matrix.id } }
-      let(:response) { response = ActivitySequence.all_or_with_knowledge_matrices(params) }
+      let(:response) { ActivitySequence.all_or_with_knowledge_matrices(params) }
       it 'return all with none params' do
-        params = nil
         response = ActivitySequence.all_or_with_knowledge_matrices
 
         expect(all_response).to eq(response)
@@ -227,9 +222,8 @@ RSpec.describe ActivitySequence, type: :model do
     context 'with learning objectives' do
       let(:learning_objective) { create :learning_objective }
       let(:params) { { learning_objective_id: learning_objective.id } }
-      let(:response) { response = ActivitySequence.all_or_with_learning_objectives(params) }
+      let(:response) { ActivitySequence.all_or_with_learning_objectives(params) }
       it 'return all with none params' do
-        params = nil
         response = ActivitySequence.all_or_with_learning_objectives
 
         expect(all_response).to eq(response)
@@ -254,9 +248,8 @@ RSpec.describe ActivitySequence, type: :model do
       let(:activity) { create :activity, activity_type_ids: [activity_type.id] }
 
       let(:params) { { activity_type_id: activity_type.id } }
-      let(:response) { response = ActivitySequence.all_or_with_activity_types(params) }
+      let(:response) { ActivitySequence.all_or_with_activity_types(params) }
       it 'return all with none params' do
-        params = nil
         response = ActivitySequence.all_or_with_activity_types
 
         expect(all_response).to eq(response)
@@ -276,7 +269,6 @@ RSpec.describe ActivitySequence, type: :model do
         expect(response).to_not include(a)
       end
     end
-
   end
 
   it_behaves_like 'image_concern'

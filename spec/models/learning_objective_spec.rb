@@ -57,4 +57,63 @@ RSpec.describe LearningObjective, type: :model do
       end
     end
   end
+
+  describe 'Queries' do
+    before do
+      create_list(:learning_objective, 4)
+      create :learning_objective,
+             curricular_component_id: c1.id
+    end
+
+    let(:all_response) { LearningObjective.all }
+    let(:c1) { create :curricular_component }
+    let(:params) { nil }
+
+    context 'with curricular component' do
+      let(:response) { LearningObjective.all_or_with_curricular_component(params) }
+      let(:params) { c1.slug }
+
+      it 'return all with none params' do
+        params = nil
+        response = LearningObjective.all_or_with_curricular_component(params)
+
+        expect(all_response).to eq(response)
+      end
+
+      it 'include on response' do
+        expect(response).to include(c1.learning_objectives.first)
+      end
+
+      it 'not include on response' do
+        new_curricular_com = create :curricular_component
+        create :learning_objective, curricular_component_id: new_curricular_com.id
+
+        expect(response).to_not include(new_curricular_com.learning_objectives.first)
+      end
+    end
+
+    context 'with year' do
+      let(:params)   { { year: :second } }
+      let(:response) { LearningObjective.all_or_with_year(params[:year]) }
+
+      it 'return all with none params' do
+        params = nil
+        response = LearningObjective.all_or_with_year(params)
+
+        expect(all_response).to eq(response)
+      end
+
+      it 'include' do
+        a = create :learning_objective,
+                   year: :second
+        expect(response).to include(a)
+      end
+
+      it 'not include' do
+        a = create :learning_objective,
+                   year: :third
+        expect(response).to_not include(a)
+      end
+    end
+  end
 end

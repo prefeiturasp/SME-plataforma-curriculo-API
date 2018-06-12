@@ -43,9 +43,9 @@ RSpec.describe CurricularComponent, type: :model do
       end
     end
 
-    context "slug" do
-      it "should generate a slug" do
-        subject.name = "Hello World"
+    context 'slug' do
+      it 'should generate a slug' do
+        subject.name = 'Hello World'
         subject.save
 
         expect(subject.slug).to eq('hello-world')
