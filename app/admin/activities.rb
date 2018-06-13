@@ -13,6 +13,7 @@ ActiveAdmin.register Activity do
 
   permit_params :sequence,
                 :title,
+                :slug,
                 :estimated_time,
                 :content,
                 :activity_sequence_id,
@@ -20,7 +21,7 @@ ActiveAdmin.register Activity do
                 activity_type_ids: []
 
   index do
-    render 'index', content: self
+    render 'index', context: self
   end
 
   form do |f|

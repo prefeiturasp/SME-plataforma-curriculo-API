@@ -1,5 +1,7 @@
 class Activity < ApplicationRecord
+  include FriendlyId
   include ImageConcern
+
   belongs_to :activity_sequence
   has_and_belongs_to_many :activity_types
 
@@ -7,10 +9,17 @@ class Activity < ApplicationRecord
   validates :sequence, presence: true, uniqueness: true
   validates :estimated_time, presence: true
   validates :content, presence: true
+  validates :slug, presence: true
 
   has_many_attached :content_images
 
+  friendly_id :title, use: %i[slugged finders]
+
   before_save :change_format_content_images
+
+  def should_generate_new_friendly_id?
+    title_changed? || super
+  end
 
   def change_format_content_images
     return nil if content.blank?

@@ -17,6 +17,12 @@ ActiveAdmin.register ActivitySequence do
                 knowledge_matrix_ids: [],
                 learning_objective_ids: []
 
+  controller do
+    def find_resource
+      scoped_collection.friendly.find(params[:id])
+    end
+  end
+
   collection_action :change_learning_objectives, method: :get do
     @learning_objectives = LearningObjective.where(curricular_component_id: params[:main_curricular_component_id])
     if @learning_objectives.present?

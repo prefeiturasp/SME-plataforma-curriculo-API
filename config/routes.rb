@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: 'json' } do
     get 'filtros', to: 'filters#index'
     get 'sequencias', to: 'activity_sequences#index'
+    get 'sequencias/:slug', to: 'activity_sequences#show'
+    get 'sequencias/:activity_sequence_slug/atividades/:activity_slug', to: 'activities#show'
 
     namespace :v1 do
       resources :activities

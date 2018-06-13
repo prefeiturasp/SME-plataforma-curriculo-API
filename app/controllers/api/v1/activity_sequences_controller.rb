@@ -44,7 +44,7 @@ module Api
 
       # Use callbacks to share common setup or constraints between actions.
       def set_activity_sequence
-        @activity_sequence = ActivitySequence.find(params[:id])
+        @activity_sequence = ActivitySequence.friendly.find(params[:id])
       end
 
       def activity_sequence_params # rubocop:disable Metrics/MethodLength
