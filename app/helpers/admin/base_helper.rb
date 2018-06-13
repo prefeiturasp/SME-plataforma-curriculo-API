@@ -5,7 +5,7 @@ module Admin
     end
 
     def human_attribute_roadmap_statuses
-      Roadmap.statuses.map { |k,_v| [I18n.t("activerecord.attributes.roadmap.statuses.#{k}"), k] }
+      Roadmap.statuses.map { |k, _v| [I18n.t("activerecord.attributes.roadmap.statuses.#{k}"), k] }
     end
 
     def toolbar_options # rubocop:disable Metrics/MethodLength
