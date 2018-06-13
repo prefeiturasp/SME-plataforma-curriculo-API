@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       resources :axes
       resources :curricular_components
       resources :learning_objectives
+      resources :roadmaps
       resources :sustainable_development_goals
       resources :knowledge_matrices
     end

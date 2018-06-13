@@ -25,6 +25,9 @@ pt-BR:
       learning_objective:
         one: "Objetivo de Aprendizagem"
         other: "Objetivos de Aprendizagem"
+      roadmap:
+        one: "Roteiro"
+        other: "Roteiros"
       sustainable_development_goal:
         one: "Objetivo de Desenvolvimento Sustentável"
         other: "Objetivos de Desenvolvimento Sustentável"
@@ -103,6 +106,13 @@ pt-BR:
         year: "Ano"
         created_at: "Criado em"
         updated_at: "Atualizado em"
+      roadmap:
+        title: "Título"
+        description: "Descrição"
+        status: "Status"
+        statuses:
+          soon: "Em breve"
+          executed: "Executado"
       sustainable_development_goal:
         sequence: "Sequência"
         name: "Nome"

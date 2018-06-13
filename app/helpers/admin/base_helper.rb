@@ -4,6 +4,10 @@ module Admin
       LearningObjective.years.map { |k, _v| [I18n.t("activerecord.attributes.enums.years.#{k}"), k] }
     end
 
+    def human_attribute_roadmap_statuses
+      Roadmap.statuses.map { |k,_v| [I18n.t("activerecord.attributes.roadmap.statuses.#{k}"), k] }
+    end
+
     def toolbar_options # rubocop:disable Metrics/MethodLength
       [%w[bold italic underline strike],
        ['blockquote'],
