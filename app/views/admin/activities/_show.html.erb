@@ -10,7 +10,7 @@
       activity.activity_sequence.main_curricular_component
     end
     row :image do |activity|
-      image_tag url_for(activity.image) if activity.image.attached?
+      image_tag variant_url(activity.image, :large) if activity.image.attached?
     end
     row :estimated_time
     row :activity_types do |activity|

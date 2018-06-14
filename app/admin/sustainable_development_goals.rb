@@ -12,7 +12,7 @@ ActiveAdmin.register SustainableDevelopmentGoal do
   index do
     selectable_column
     column :icon do |i|
-      image_tag url_for(i.icon) if i.icon.attached?
+      image_tag variant_url(i.icon, :icon) if i.icon.attached?
     end
     column :name
     column :description

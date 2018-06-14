@@ -45,7 +45,7 @@ ActiveAdmin.register LearningObjective do
     panel I18n.t('activerecord.models.sustainable_development_goal', count: 2) do
       table_for learning_objective.sustainable_development_goals do
         column :icon do |i|
-          image_tag url_for(i.icon) if i.icon.attached?
+          image_tag variant_url(i.icon, :icon) if i.icon.attached?
         end
         column :name
       end

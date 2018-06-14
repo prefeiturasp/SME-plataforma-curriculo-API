@@ -20,17 +20,17 @@ json.learning_objectives @activity_sequence.learning_objectives do |learning_obj
 end
 
 json.sustainable_development_goals @activity_sequence.sustainable_development_goals do |sds|
-  json.icon_url url_for(sds.icon)
+  json.icon_url variant_url(sds.icon, :icon)
 end
 
 json.books @activity_sequence.books
 
-json.image url_for(@activity_sequence.image)
+json.image variant_url(@activity_sequence.image, :large)
 json.presentation_text @activity_sequence.presentation_text
 
 json.activities @activity_sequence.activities do |activity|
   json.slug activity.slug
-  json.image url_for(activity.image)
+  json.image variant_url(activity.image, :medium)
   json.title activity.title
   json.estimated_time activity.estimated_time
 end
