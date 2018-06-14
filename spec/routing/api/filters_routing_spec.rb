@@ -2,16 +2,14 @@ require 'rails_helper'
 
 RSpec.describe Api::FiltersController, type: :routing do
   describe 'routing' do
-    context 'routes to #activity_sequence_index' do
+    context 'routes to filters#index' do
       it 'show all' do
         expect(get: '/api/filtros').to route_to(
           'api/filters#index',
           format: 'json'
         )
       end
-    end
 
-    context 'routes to #activity_sequence_index_filter' do
       it 'find by year' do
         expect(get: '/api/filtros?year=2').to route_to(
           'api/filters#index',

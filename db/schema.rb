@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_11_194949) do
+ActiveRecord::Schema.define(version: 2018_06_12_211123) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,9 +58,7 @@ ActiveRecord::Schema.define(version: 2018_06_11_194949) do
     t.bigint "activity_sequence_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "slug", null: false
     t.index ["activity_sequence_id"], name: "index_activities_on_activity_sequence_id"
-    t.index ["slug"], name: "index_activities_on_slug", unique: true
   end
 
   create_table "activities_activity_types", id: false, force: :cascade do |t|
@@ -80,9 +78,7 @@ ActiveRecord::Schema.define(version: 2018_06_11_194949) do
     t.bigint "main_curricular_component_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "slug", null: false
     t.index ["main_curricular_component_id"], name: "index_activity_sequences_on_main_curricular_component_id"
-    t.index ["slug"], name: "index_activity_sequences_on_slug", unique: true
   end
 
   create_table "activity_sequences_curricular_components", id: false, force: :cascade do |t|
@@ -158,8 +154,8 @@ ActiveRecord::Schema.define(version: 2018_06_11_194949) do
 
   create_table "knowledge_matrices", force: :cascade do |t|
     t.string "title"
-    t.text "know_description"
-    t.text "for_description"
+    t.string "know_description"
+    t.string "for_description"
     t.integer "sequence"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -182,10 +178,18 @@ ActiveRecord::Schema.define(version: 2018_06_11_194949) do
     t.index ["sustainable_development_goal_id", "learning_objective_id"], name: "index_sdg_lo_on_sdg_id_alo_id"
   end
 
+  create_table "roadmaps", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "sustainable_development_goals", force: :cascade do |t|
     t.integer "sequence"
     t.string "name"
-    t.text "description"
+    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

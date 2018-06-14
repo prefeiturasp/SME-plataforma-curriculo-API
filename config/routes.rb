@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     get 'saberes', to: 'knowledge_matrices#index'
     get 'ods', to: 'sustainable_development_goals#index'
     get 'ods/:id', to: 'sustainable_development_goals#show'
+    get 'roteiros', to: 'roadmaps#index'
 
     namespace :v1 do
       resources :activities
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
       resources :axes
       resources :curricular_components
       resources :learning_objectives
+      resources :roadmaps
       resources :sustainable_development_goals
       resources :knowledge_matrices
     end
