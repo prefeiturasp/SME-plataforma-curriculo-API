@@ -96,7 +96,7 @@ pt-BR:
       knowledge_matrix:
         for_description: "Para"
         know_description: "Saber"
-        sequence: "Sequência"
+        sequence: "Ordem"
         title: "Título"
         created_at: "Criado em"
         updated_at: "Atualizado em"
@@ -118,7 +118,7 @@ pt-BR:
           soon: "Em breve"
           executed: "Executado"
       sustainable_development_goal:
-        sequence: "Sequência"
+        sequence: "Ordem"
         name: "Nome"
         description: "Descrição"
         goals: "Metas"
