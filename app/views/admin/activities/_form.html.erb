@@ -9,7 +9,8 @@
     f.input :title
     f.input :estimated_time
     f.input :activity_sequence, as: :hidden
-    f.input :activity_types, as: :select, input_html: { multiple: true }
+    f.input :environment, as: :select, collection: human_attribute_environments
+    f.input :activity_types, as: :select
     f.input :content, as: :quill_editor, input_html: {
       data: {
         options: {

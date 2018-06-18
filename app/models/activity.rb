@@ -11,6 +11,8 @@ class Activity < ApplicationRecord
   validates :content, presence: true
   validates :slug, presence: true
 
+  enum environment: { interior: 0, exterior: 1 }
+
   has_many_attached :content_images
 
   friendly_id :title, use: %i[slugged finders]

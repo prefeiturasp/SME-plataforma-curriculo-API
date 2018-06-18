@@ -18,6 +18,7 @@ ActiveAdmin.register Activity do
                 :content,
                 :activity_sequence_id,
                 :image,
+                :environment,
                 activity_type_ids: []
 
   index do
