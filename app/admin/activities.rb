@@ -25,7 +25,7 @@ ActiveAdmin.register Activity do
   end
 
   form do |f|
-    render 'form', f: f
+    render 'form', f: f, activity: activity
   end
 
   show do

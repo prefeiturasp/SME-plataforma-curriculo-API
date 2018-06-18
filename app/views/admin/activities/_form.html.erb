@@ -1,7 +1,10 @@
 <% 
   f.inputs do
     f.input :id, as: :hidden
-    f.input :sequence
+    f.input :sequence,
+        as: :select,
+        collection: sequence_options(activity.class),
+        selected: activity.sequence.present? ? activity.sequence : sequence_options(Activity).last
     f.input :image, required: true, as: :file
     f.input :title
     f.input :estimated_time

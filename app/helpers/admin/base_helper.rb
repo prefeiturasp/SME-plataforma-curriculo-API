@@ -8,6 +8,11 @@ module Admin
       Roadmap.statuses.map { |k, _v| [I18n.t("activerecord.attributes.roadmap.statuses.#{k}"), k] }
     end
 
+    def sequence_options(_model)
+      options = _model.order(:sequence).pluck(:sequence)
+      options << (options[-1].nil? ? [1] : (options[-1] + 1))
+    end
+
     def toolbar_options # rubocop:disable Metrics/MethodLength
       [%w[bold italic underline strike],
        ['blockquote'],
