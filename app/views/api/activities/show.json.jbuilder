@@ -1,7 +1,7 @@
 json.sequence @activity.sequence
 json.title @activity.title
 json.estimated_time @activity.estimated_time
-json.image url_for(@activity.image)
+json.image variant_url(@activity.image, :large)
 
 json.content @activity.content
 

@@ -6,7 +6,7 @@ json.array! @activity_sequences do |activity_sequence|
   json.estimated_time activity_sequence.estimated_time
   json.status activity_sequence.status
   json.number_of_activities activity_sequence.activities.count
-  json.image url_for(activity_sequence.image)
+  json.image variant_url(activity_sequence.image, :medium)
 
   json.knowledge_matrices activity_sequence.knowledge_matrices do |knowledge_matrix|
     json.sequence knowledge_matrix.sequence
@@ -18,6 +18,6 @@ json.array! @activity_sequences do |activity_sequence|
   end
 
   json.sustainable_development_goals activity_sequence.sustainable_development_goals do |sds|
-    json.icon_url url_for(sds.icon)
+    json.icon_url variant_url(sds.icon, :icon)
   end
 end

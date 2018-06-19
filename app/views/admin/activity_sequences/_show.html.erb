@@ -2,7 +2,7 @@
   attributes_table do
     row :title
     row :image do |i|
-      image_tag url_for(i.image) if i.image.attached?
+      image_tag variant_url(i.image, :large) if i.image.attached?
     end
     row :presentation_text
     row :year do |activity_sequence|
@@ -25,7 +25,7 @@
   panel I18n.t('activerecord.attributes.activity_sequence.sustainable_development_goals') do
     table_for activity_sequence.sustainable_development_goals do
       column :icon do |i|
-        image_tag url_for(i.icon) if i.icon.attached?
+        image_tag variant_url(i.icon, :icon) if i.icon.attached?
       end
       column :name
       column :description

@@ -1,4 +1,5 @@
 class ApiController < ActionController::API
+  helper ApplicationHelper
   rescue_from ActionController::RoutingError, with: :render_not_found
   rescue_from ActiveRecord::RecordNotFound, with: :render_no_content
 
