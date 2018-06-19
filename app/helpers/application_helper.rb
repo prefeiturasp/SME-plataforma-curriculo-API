@@ -6,7 +6,8 @@ module ApplicationHelper
   def image_sizes
     {
       icon: '60x60',
-      medium: '256x128',
+      small: '256x128',
+      medium: '256x160',
       large: '1110x568'
     }
   end

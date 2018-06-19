@@ -30,7 +30,7 @@ json.presentation_text @activity_sequence.presentation_text
 
 json.activities @activity_sequence.activities do |activity|
   json.slug activity.slug
-  json.image variant_url(activity.image, :medium)
+  json.image variant_url(activity.image, :small)
   json.title activity.title
   json.estimated_time activity.estimated_time
 end
