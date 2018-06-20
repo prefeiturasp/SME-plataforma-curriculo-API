@@ -14,16 +14,16 @@ RUN ./configure && make && make install
 # Configuring main directory
 ARG APPLICATION_ROOT_PATH
 
-RUN mkdir -p $APPLICATION_ROOT_PATH
-WORKDIR $APPLICATION_ROOT_PATH
+RUN mkdir -p /app
+WORKDIR /app
 
 # Setting env up
 ENV RAILS_ENV='development'
 ENV RAKE_ENV='development'
 
 # Adding gems
-COPY Gemfile $APPLICATION_ROOT_PATH/Gemfile
-COPY Gemfile.lock $APPLICATION_ROOT_PATH/Gemfile.lock
+COPY Gemfile /app/Gemfile
+COPY Gemfile.lock /app/Gemfile.lock
 
 # Install bundle and Gems
 RUN gem install bundler
@@ -33,9 +33,13 @@ RUN bundle install --jobs 20 --retry 5
 RUN mkdir -p shared/pids shared/sockets shared/log
 
 # Adding project files
-COPY . /mnt/data/patio-digital
+COPY . /app
 RUN rm -rf tmp/pids/
 
-EXPOSE 3000
+CMD ["bundle", "exec", "rails", "credentials:edit"]
 
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+CMD ["bundle", "exec", "rake", "db:migrate"]
+CMD ["bundle", "exec", "rake", "db:seed"]
+CMD ["bundle", "exec", "rake", "assets:precompile"]
+
+EXPOSE 3000

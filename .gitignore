@@ -33,5 +33,6 @@ docker-compose.yml
 
 .rspec
 .ruby-gemset
+.docker-env-dev
 /config/database.yml
 /config/secrets.yml
