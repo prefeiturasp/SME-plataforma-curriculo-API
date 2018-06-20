@@ -4,6 +4,7 @@ ActiveAdmin.register Roadmap do
                 :status
 
   config.filters = false
+  config.sort_order = 'id_asc'
 
   form do |f|
     f.inputs do
