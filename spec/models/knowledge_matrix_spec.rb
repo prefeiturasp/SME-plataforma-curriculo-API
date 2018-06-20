@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe KnowledgeMatrix, type: :model do
+  include_examples 'sequence_concern_spec'
   let(:subject) { build :knowledge_matrix }
 
   describe 'Associations' do
@@ -47,13 +48,7 @@ RSpec.describe KnowledgeMatrix, type: :model do
 
         expect(new_object).to_not be_valid
       end
-
-      it 'if the sequence already exists' do
-        subject.save
-        new_object = build :knowledge_matrix, sequence: subject.sequence
-
-        expect(new_object).to_not be_valid
-      end
     end
   end
+  it_behaves_like 'sequence_concern_spec'
 end

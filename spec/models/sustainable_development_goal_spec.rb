@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe SustainableDevelopmentGoal, type: :model do
+  include_examples 'sequence_concern_spec'
   let(:subject) { build :sustainable_development_goal }
 
   describe 'Associations' do
@@ -51,13 +52,6 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
 
       it 'if the sequence already exists' do
         subject.save
-        new_subject = build :sustainable_development_goal, sequence: subject.sequence
-
-        expect(new_subject).to_not be_valid
-      end
-
-      it 'if the sequence already exists' do
-        subject.save
         new_subject = build :sustainable_development_goal, name: subject.name
 
         expect(new_subject).to_not be_valid
@@ -75,4 +69,5 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
       end
     end
   end
+  it_behaves_like 'sequence_concern_spec'
 end
