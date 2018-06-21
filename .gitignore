@@ -12,6 +12,12 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
+/shared/pids/*
+/shared/sockets/*
+/shared/log/*
+!/shared/pids/.keep
+!/shared/sockets/.keep
+!/shared/log/.keep
 
 # Ignore uploaded files in development
 /storage/*
@@ -25,7 +31,6 @@ config/initializers/secret_token.rb
 
 /config/database.yml
 /docker/web/nginx.conf
-/shared
 /tmp
 /vendor
 

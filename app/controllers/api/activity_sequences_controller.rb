@@ -18,13 +18,13 @@ module Api
     def activity_sequence_params
       params.permit(
         :slug,
-        :year,
-        :curricular_component_friendly_id,
-        :sustainable_development_goal_id,
-        :knowledge_matrix_id,
-        :learning_objective_id,
-        :axis_id,
-        :activity_type_id
+        :years,
+        :curricular_component_friendly_ids,
+        :sustainable_development_goal_ids,
+        :knowledge_matrix_ids,
+        :learning_objective_ids,
+        :axis_ids,
+        :activity_type_ids
       )
     end
 
