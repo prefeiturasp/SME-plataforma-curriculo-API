@@ -29,6 +29,7 @@ class ActivitySequence < ApplicationRecord
 
   def self.where_optional_params(params = {})
     all.all_or_with_year(params[:years])
+       .all_or_with_main_curricular_component(params)
        .all_or_with_curricular_component(params)
        .all_or_with_axes(params)
        .all_or_with_sustainable_development_goal(params)
@@ -42,14 +43,23 @@ class ActivitySequence < ApplicationRecord
 
   def self.all_or_with_year(years = nil)
     return all unless years
-    where(year: JSON.parse(years))
+    where(year: years)
+  end
+
+  def self.all_or_with_main_curricular_component(params = {})
+    return all unless params[:curricular_component_friendly_ids]
+    joins(:main_curricular_component).merge(
+      CurricularComponent.where(
+        slug: params[:curricular_component_friendly_ids]
+      )
+    )
   end
 
   def self.all_or_with_curricular_component(params = {})
     return all unless params[:curricular_component_friendly_ids]
     joins(:curricular_components).where(
       curricular_components: {
-        slug: JSON.parse(params[:curricular_component_friendly_ids])
+        slug: params[:curricular_component_friendly_ids]
       }
     )
   end
@@ -59,8 +69,8 @@ class ActivitySequence < ApplicationRecord
     joins(curricular_components: :axes).where(
       curricular_components: {
         axes: {
-          id: JSON.parse(params[:axis_ids]),
-          year: JSON.parse(params[:years])
+          id: params[:axis_ids],
+          year: params[:years]
         }
       }
     )
@@ -70,7 +80,7 @@ class ActivitySequence < ApplicationRecord
     return all unless params[:sustainable_development_goal_ids]
     joins(:sustainable_development_goals).where(
       sustainable_development_goals: {
-        id: JSON.parse(params[:sustainable_development_goal_ids])
+        id: params[:sustainable_development_goal_ids]
       }
     )
   end
@@ -79,7 +89,7 @@ class ActivitySequence < ApplicationRecord
     return all unless params[:knowledge_matrix_ids]
     joins(:knowledge_matrices).where(
       knowledge_matrices: {
-        id: JSON.parse(params[:knowledge_matrix_ids])
+        id: params[:knowledge_matrix_ids]
       }
     )
   end
@@ -88,7 +98,7 @@ class ActivitySequence < ApplicationRecord
     return all unless params[:learning_objective_ids]
     joins(:learning_objectives).where(
       learning_objectives: {
-        id: JSON.parse(params[:learning_objective_ids])
+        id: params[:learning_objective_ids]
       }
     )
   end
@@ -98,7 +108,7 @@ class ActivitySequence < ApplicationRecord
     joins(activities: :activity_types).where(
       activities: {
         activity_types: {
-          id: JSON.parse(params[:activity_type_ids])
+          id: params[:activity_type_ids]
         }
       }
     )
