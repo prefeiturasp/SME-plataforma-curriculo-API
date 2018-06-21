@@ -1,3 +1,4 @@
+json.id @sustainable_development_goal.id
 json.sequence @sustainable_development_goal.sequence
 json.name @sustainable_development_goal.name
 json.description @sustainable_development_goal.description

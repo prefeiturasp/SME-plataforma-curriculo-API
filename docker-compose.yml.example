@@ -73,6 +73,7 @@ services:
       - "3000:3000"
     links:
       - db_development
+    command: rails s
 
 volumes:
   db-data:
