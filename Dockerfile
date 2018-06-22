@@ -1,31 +1,35 @@
-FROM ubuntu:18.04
+FROM ruby:2.5-alpine
 
-#Set the timezone
-ENV TZ=America/Sao_Paulo
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN apt-get update -qq && apt-get install -y tzdata
+ENV LANG en_US.UTF-8 
+ENV LANGUAGE en_US:en 
+ENV LC_ALL en_US.UTF-8
 
-# Install dependencies
-RUN apt-get update -y
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev nodejs ruby libffi-dev libxml2 patch ruby-dev zlib1g-dev liblzma-dev
+RUN mkdir -p /app 
+WORKDIR /app
 
-# Configuring main directory
-RUN mkdir -p /mnt/data/patio-digital
-WORKDIR /mnt/data/patio-digital
+RUN apk update && apk upgrade
 
-# Setting env up
-ENV RAILS_ENV='staging'
-ENV RAKE_ENV='staging'
+RUN apk add -U --no-cache \
+			build-base \
+			git \
+			imagemagick \
+			libxml2-dev \
+			libxslt-dev \
+			nodejs \
+			postgresql-dev \
+			tzdata \
+			yaml-dev \
+			yarn \
+			zlib-dev
 
-# Adding gems
-COPY Gemfile /mnt/data/patio-digital/Gemfile
-COPY Gemfile.lock /mnt/data/patio-digital/Gemfile.lock
+RUN npm install -g yarn
+RUN yarn install
 
+COPY Gemfile Gemfile.lock ./ 
 RUN gem install bundler
-RUN bundle install --jobs 20 --retry 5 --without development test
+RUN bundle install --jobs 20 --retry 5
 
-# Adding project files
-COPY . /mnt/data/patio-digital
-RUN bundle exec rake assets:precompile
-EXPOSE 80
-CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
+COPY . ./
+EXPOSE 8666
+
+CMD bundle exec puma -v -C config/puma.rb

@@ -30,11 +30,9 @@
 config/initializers/secret_token.rb
 
 /config/database.yml
-/docker/web/nginx.conf
 /tmp
 /vendor
 
-docker-compose.yml
 
 .rspec
 .ruby-gemset
