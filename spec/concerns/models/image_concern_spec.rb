@@ -3,8 +3,8 @@ RSpec.shared_examples_for 'image_concern' do
 
   describe 'Validations' do
     context 'is valid' do
-      subject 'contains image' do
-        expect(subject.attached?).to eq(true)
+      it 'contains image' do
+        expect(subject.image.attached?).to eq(true)
       end
     end
 

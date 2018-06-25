@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Activity, type: :model do
-  include_examples 'image_concern'
+  include_examples 'image_concern', 'sequence_concern_spec'
 
   let(:subject) { build :activity }
 
@@ -27,13 +27,6 @@ RSpec.describe Activity, type: :model do
         subject.sequence = nil
 
         expect(subject).to_not be_valid
-      end
-
-      it 'if the sequence already exists' do
-        subject.save
-        new_object = build :activity, sequence: subject.sequence
-
-        expect(new_object).to_not be_valid
       end
 
       it 'without a title' do
@@ -68,5 +61,5 @@ RSpec.describe Activity, type: :model do
       end
     end
   end
-  it_behaves_like 'image_concern'
+  it_behaves_like 'image_concern', 'sequence_concern_spec'
 end

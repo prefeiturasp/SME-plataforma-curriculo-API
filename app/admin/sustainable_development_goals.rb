@@ -38,7 +38,10 @@ ActiveAdmin.register SustainableDevelopmentGoal do
   form do |f|
     f.inputs do
       f.input :icon, required: true, as: :file
-      f.input :sequence
+      f.input :sequence,
+        as: :select,
+        collection: sequence_options(SustainableDevelopmentGoal),
+        selected: sustainable_development_goal.sequence.present? ? sustainable_development_goal.sequence : sequence_options(KnowledgeMatrix).last
       f.input :name
       f.input :description
 

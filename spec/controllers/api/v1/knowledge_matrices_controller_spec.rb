@@ -66,7 +66,7 @@ RSpec.describe Api::V1::KnowledgeMatricesController, type: :controller do
         expect(knowledge_matrix.title).to eq('New Title')
         expect(knowledge_matrix.know_description).to eq('New Saber')
         expect(knowledge_matrix.for_description).to eq('New Para')
-        expect(knowledge_matrix.sequence).to eq(1001)
+        expect(knowledge_matrix.sequence).to eq(1)
       end
 
       it 'renders a JSON response with the knowledge_matrix' do

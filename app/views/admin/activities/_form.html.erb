@@ -1,12 +1,16 @@
 <% 
   f.inputs do
     f.input :id, as: :hidden
-    f.input :sequence
+    f.input :sequence,
+        as: :select,
+        collection: sequence_options(activity.class),
+        selected: activity.sequence.present? ? activity.sequence : sequence_options(Activity).last
     f.input :image, required: true, as: :file
     f.input :title
     f.input :estimated_time
     f.input :activity_sequence, as: :hidden
-    f.input :activity_types, as: :select, input_html: { multiple: true }
+    f.input :environment, as: :select, collection: human_attribute_environments
+    f.input :activity_types, as: :select
     f.input :content, as: :quill_editor, input_html: {
       data: {
         options: {
