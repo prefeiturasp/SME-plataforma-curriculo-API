@@ -19,6 +19,24 @@ class Activity < ApplicationRecord
 
   before_save :change_format_content_images
 
+  def next_activity
+    Activity.find_by(sequence: next_sequence)
+  end
+
+  def last_activity
+    return nil unless last_sequence
+    Activity.find_by(sequence: last_sequence)
+  end
+
+  def next_sequence
+    sequence + 1
+  end
+
+  def last_sequence
+    return nil if sequence <= 1
+    sequence - 1
+  end
+
   def should_generate_new_friendly_id?
     title_changed? || super
   end
