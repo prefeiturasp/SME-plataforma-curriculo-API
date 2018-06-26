@@ -24,8 +24,7 @@ class Activity < ApplicationRecord
   end
 
   def last_activity
-    return nil unless last_sequence
-    Activity.find_by(sequence: last_sequence)
+    Activity.find_by(sequence: last_sequence) if last_sequence
   end
 
   def next_sequence
