@@ -102,7 +102,7 @@ RSpec.describe ActivitySequence, type: :model do
 
     context 'with curricular component' do
       let(:response) { ActivitySequence.all_or_with_curricular_component(params) }
-      let(:params) { { curricular_component_friendly_id: c1.slug } }
+      let(:params) { { curricular_component_friendly_ids: c1.slug } }
 
       it 'return all with none params' do
         response = ActivitySequence.all_or_with_curricular_component
@@ -147,7 +147,7 @@ RSpec.describe ActivitySequence, type: :model do
 
     context 'with axes' do
       let(:axis) { create :axis, year: :second }
-      let(:params) { { axis_id: axis.id, year: :second } }
+      let(:params) { { axis_ids: axis.id, years: :second } }
       let(:response) { ActivitySequence.all_or_with_axes(params) }
 
       it 'return all with none params' do
@@ -182,7 +182,7 @@ RSpec.describe ActivitySequence, type: :model do
 
     context 'with sustainable development goal' do
       let(:sdg) { create :sustainable_development_goal }
-      let(:params) { { sustainable_development_goal_id: sdg.id } }
+      let(:params) { { sustainable_development_goal_ids: sdg.id } }
       let(:response) { ActivitySequence.all_or_with_sustainable_development_goal(params) }
       it 'return all with none params' do
         response = ActivitySequence.all_or_with_sustainable_development_goal
@@ -206,7 +206,7 @@ RSpec.describe ActivitySequence, type: :model do
 
     context 'with knowledge matrix' do
       let(:knowledge_matrix) { create :knowledge_matrix }
-      let(:params) { { knowledge_matrix_id: knowledge_matrix.id } }
+      let(:params) { { knowledge_matrix_ids: knowledge_matrix.id } }
       let(:response) { ActivitySequence.all_or_with_knowledge_matrices(params) }
       it 'return all with none params' do
         response = ActivitySequence.all_or_with_knowledge_matrices
@@ -230,7 +230,7 @@ RSpec.describe ActivitySequence, type: :model do
 
     context 'with learning objectives' do
       let(:learning_objective) { create :learning_objective }
-      let(:params) { { learning_objective_id: learning_objective.id } }
+      let(:params) { { learning_objective_ids: learning_objective.id } }
       let(:response) { ActivitySequence.all_or_with_learning_objectives(params) }
       it 'return all with none params' do
         response = ActivitySequence.all_or_with_learning_objectives
@@ -256,7 +256,7 @@ RSpec.describe ActivitySequence, type: :model do
       let(:activity_type) { create :activity_type }
       let(:activity) { create :activity, activity_type_ids: [activity_type.id] }
 
-      let(:params) { { activity_type_id: activity_type.id } }
+      let(:params) { { activity_type_ids: activity_type.id } }
       let(:response) { ActivitySequence.all_or_with_activity_types(params) }
       it 'return all with none params' do
         response = ActivitySequence.all_or_with_activity_types

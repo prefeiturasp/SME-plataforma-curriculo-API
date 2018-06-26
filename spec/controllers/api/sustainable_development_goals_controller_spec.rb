@@ -66,11 +66,13 @@ RSpec.describe Api::SustainableDevelopmentGoalsController, type: :controller do
       it 'return valid JSON all' do
         get :show, params: { id: sustainable_development_goal.id }
 
+        expect(response_body['id']).to be_present
         expect(response_body['sequence']).to be_present
         expect(response_body['name']).to be_present
         expect(response_body['description']).to be_present
         expect(response_body['icon']).to be_present
         expect(response_body['goals']).to be_present
+        expect(response_body['color']).to be_present
       end
 
       it 'return valid Goals json' do
