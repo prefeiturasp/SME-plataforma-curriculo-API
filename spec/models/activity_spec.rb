@@ -61,5 +61,59 @@ RSpec.describe Activity, type: :model do
       end
     end
   end
+
+  describe 'methods' do
+    context 'sequences' do
+      it 'next return valid' do
+        subject.save
+
+        expect(subject.next_sequence).to eq(subject.sequence + 1)
+      end
+
+      it 'last return valid' do
+        create_list(:activity, 3)
+        second_activity = Activity.where(sequence: 2).last
+
+        expect(second_activity.last_sequence).to eq(second_activity.sequence - 1)
+      end
+
+      it 'last sequence return nil if sequence <= 1' do
+        subject.sequence = 1
+        subject.save
+
+        expect(subject.last_sequence).to eq(nil)
+      end
+    end
+
+    context 'next activity' do
+      it 'return nil if not exists' do
+        subject.save
+
+        expect(subject.next_activity).to be_nil
+      end
+
+      it 'return valid next activity' do
+        create_list(:activity, 2)
+        activities = Activity.all
+
+        expect(activities.first.next_activity).to eq(activities.last)
+      end
+    end
+
+    context 'last activity' do
+      it 'return nil if not exists' do
+        subject.save
+
+        expect(subject.last_activity).to be_nil
+      end
+
+      it 'return valid last activity' do
+        create_list(:activity, 2)
+        activities = Activity.all
+
+        expect(activities.last.last_activity).to eq(activities.first)
+      end
+    end
+  end
   it_behaves_like 'image_concern', 'sequence_concern_spec'
 end

@@ -137,6 +137,7 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
         expect(response_body['learning_objectives']).to be_present
         expect(response_body['learning_objectives'][0]['code']).to be_present
         expect(response_body['learning_objectives'][0]['description']).to be_present
+        expect(response_body['learning_objectives'][0]['color']).to be_present
       end
 
       it 'return valid curricular components JSON' do
@@ -151,6 +152,14 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
 
         expect(response_body['sustainable_development_goals']).to be_present
         expect(response_body['sustainable_development_goals'][0]['icon_url']).to be_present
+      end
+
+      it 'return valid main curricular component JSON' do
+        get :show, params: { slug: activity_sequence.slug }
+
+        expect(response_body['main_curricular_component']).to be_present
+        expect(response_body['main_curricular_component']['name']).to be_present
+        expect(response_body['main_curricular_component']['color']).to be_present
       end
 
       it 'return valid activities JSON' do

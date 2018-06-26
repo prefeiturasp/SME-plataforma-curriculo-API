@@ -39,7 +39,7 @@ end
   },
   {
     sequence: 2,
-    name: 'Fome zera e agricultura sustentável',
+    name: 'Fome zero e agricultura sustentável',
     description: 'Acabar com a fome, alcançar a segurança alimentar e melhoria da nutrição
      e promover a agricultura sustentável',
     color: '#eea72b'

@@ -1,10 +1,13 @@
 json.slug @activity_sequence.slug
 json.title @activity_sequence.title
 json.year t("activerecord.attributes.enums.years.#{@activity_sequence.year}")
-json.main_curricular_component @activity_sequence.main_curricular_component.name
-json.main_curricular_component_color @activity_sequence.main_curricular_component.color
 json.estimated_time @activity_sequence.estimated_time
 json.status @activity_sequence.status
+
+json.main_curricular_component do
+  json.name @activity_sequence.main_curricular_component.name
+  json.color @activity_sequence.main_curricular_component.color
+end
 
 json.curricular_components @activity_sequence.curricular_components do |curricular_component|
   json.name curricular_component.name
