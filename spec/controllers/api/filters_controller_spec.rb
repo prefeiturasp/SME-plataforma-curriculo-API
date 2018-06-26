@@ -116,8 +116,8 @@ RSpec.describe Api::FiltersController, type: :controller do
 
         let(:params) do
           {
-            year: axis.year,
-            curricular_component_slug: curricular_component.slug
+            years: [axis.year],
+            curricular_component_slugs: [curricular_component.slug]
           }
         end
 
