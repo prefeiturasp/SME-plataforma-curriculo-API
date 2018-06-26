@@ -50,6 +50,20 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
         expect(subject).to_not be_valid
       end
 
+      it 'without a color' do
+        subject.color = nil
+
+        expect(subject).to_not be_valid
+      end
+
+      it 'if the color already exists' do
+        subject.save
+        new_subject = build :sustainable_development_goal, color: subject.color
+
+        expect(new_subject).to_not be_valid
+      end
+
+
       it 'if the sequence already exists' do
         subject.save
         new_subject = build :sustainable_development_goal, name: subject.name

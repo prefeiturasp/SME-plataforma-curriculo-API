@@ -7,6 +7,7 @@ class SustainableDevelopmentGoal < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
   validates :description, presence: true
+  validates :color, presence: true, uniqueness: true
 
   validate :icon?
   validate :icon_valid?

@@ -47,7 +47,7 @@ module Api
       end
 
       def curricular_component_params
-        params.require(:curricular_component).permit(:name)
+        params.require(:curricular_component).permit(:name, :color)
       end
     end
   end

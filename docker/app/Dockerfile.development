@@ -29,6 +29,8 @@ COPY Gemfile.lock /app/Gemfile.lock
 RUN gem install bundler
 RUN bundle install --jobs 20 --retry 5
 
+RUN yum install -y ImageMagick ImageMagick-devel
+
 # Add puma directories
 RUN mkdir -p shared/pids shared/sockets shared/log
 

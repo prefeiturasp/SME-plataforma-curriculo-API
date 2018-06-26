@@ -1,5 +1,7 @@
 ActiveAdmin.register CurricularComponent do
-  permit_params :name, axes_attributes: %i[id year description _destroy _create _update]
+  permit_params :name,
+    :color,
+  axes_attributes: %i[id year description _destroy _create _update]
 
   config.filters = false
 
@@ -9,9 +11,25 @@ ActiveAdmin.register CurricularComponent do
     end
   end
 
+  index do
+    selectable_column
+    column :name
+    column :slug
+    column :color do |curricular_component|
+      raw "<div class='pick_color'>#{curricular_component.color}</div>"
+    end
+    column :created_at
+    column :updated_at
+    actions
+  end
+
   show do
     attributes_table do
       row :name
+      row :slug
+      row :color do |curricular_component|
+        raw "<div class='pick_color'>#{curricular_component.color}</div>"
+      end
       row :created_at
       row :updated_at
     end
@@ -29,6 +47,7 @@ ActiveAdmin.register CurricularComponent do
   form do |f|
     f.inputs CurricularComponent.human_attribute_name(:details) do
       f.input :name
+      f.input :color, as: :color
     end
 
     f.inputs I18n.t('activerecord.models.axis', count: 2) do

@@ -1,10 +1,10 @@
+# encoding: utf-8
 # rubocop:disable Style/AsciiComments
 if Rails.env.development?
-  User.create!(
-    email: 'admin@jurema.la',
-    password: 'senhasegura',
-    password_confirmation: 'senhasegura'
-  )
+  admin = User.find_or_create_by(email: 'admin@jurema.la')
+  admin.password = 'senhasegura'
+  admin.password_confirmation = 'senhasegura'
+  admin.save
 end
 
 ActivityType.create(
@@ -14,115 +14,134 @@ ActivityType.create(
   ]
 )
 
-CurricularComponent.create(
-  [
-    { name: 'Arte' },
-    { name: 'Ciências Naturais' },
-    { name: 'Educação Física' },
-    { name: 'Geografia' },
-    { name: 'História' },
-    { name: 'Língua Portuguesa' },
-    { name: 'Língua Inglesa' },
-    { name: 'Matemática' },
-    { name: 'Tecnologias de Aprendizagem' }
-  ]
-)
+[
+  { name: 'Arte'},
+  { name: 'Ciências Naturais' },
+  { name: 'Educação Física' },
+  { name: 'Geografia' },
+  { name: 'História' },
+  { name: 'Língua Portuguesa' },
+  { name: 'Língua Inglesa' },
+  { name: 'Matemática' },
+  { name: 'Tecnologias de Aprendizagem' }
+].each do |attributes|
+  cc = CurricularComponent.new(attributes)
+  cc.color = Faker::Color.hex_color
+  cc.save
+end
 
 [
   {
     sequence: 1,
     name: 'Erradicação da Pobreza',
-    description: 'Acabar com a pobreza em todas as suas formas, em todos os lugares'
+    description: 'Acabar com a pobreza em todas as suas formas, em todos os lugares',
+    color: '#ff1f39',
   },
   {
     sequence: 2,
     name: 'Fome zera e agricultura sustentável',
     description: 'Acabar com a fome, alcançar a segurança alimentar e melhoria da nutrição
-     e promover a agricultura sustentável'
+     e promover a agricultura sustentável',
+    color: '#eea72b'
   },
   {
     sequence: 3,
     name: 'Saúde e Bem Estar',
-    description: 'Assegurar uma vida saudável e promover o bem-estar para todos, em todas as idades'
+    description: 'Assegurar uma vida saudável e promover o bem-estar para todos, em todas as idades',
+    color: '#009f29'
   },
   {
     sequence: 4,
     name: 'Educação de Qualidade',
     description: 'Assegurar a educação inclusiva e equitativa e de qualidade, e promover
-     oportunidades de aprendizagem ao longo da vida para todos'
+     oportunidades de aprendizagem ao longo da vida para todos',
+    color: '#e6132a'
   },
   {
     sequence: 5,
     name: 'Igualdade de Genêro',
-    description: 'Alcançar a igualdade de gênero e empoderar todas as mulheres e meninas'
+    description: 'Alcançar a igualdade de gênero e empoderar todas as mulheres e meninas',
+    color: '#ff3718'
   },
   {
     sequence: 6,
     name: 'Água Portável e Saneamento',
-    description: 'Assegurar a disponibilidade e gestão sustentável da água e saneamento para todos'
+    description: 'Assegurar a disponibilidade e gestão sustentável da água e saneamento para todos',
+    color: '#00bee4'
   },
   {
     sequence: 7,
     name: 'Energia Limpa e Acessível',
-    description: 'Assegurar o acesso confiável, sustentável, moderno e a preço acessível à energia para todos'
+    description: 'Assegurar o acesso confiável, sustentável, moderno e a preço acessível à energia para todos',
+    color: '#ffc400'
   },
   {
     sequence: 8,
     name: 'Trabalho decente e crescimento econômico',
     description: 'Promover o crescimento econômico sustentado, inclusivo e sustentável, emprego pleno e
-     produtivo e trabalho decente para todos'
+     produtivo e trabalho decente para todos',
+    color: '#be1341'
   },
   {
     sequence: 9,
     name: 'Indústria, inovação, e infraestrutura',
     description: 'Construir infraestruturas resilientes, promover a industrialização inclusiva e
-     sustentável e fomentar a inovação'
+     sustentável e fomentar a inovação',
+    color: '#ff680b'
   },
   {
     sequence: 10,
     name: 'Redução das desigualdades',
-    description: 'Reduzir a desigualdade dentro dos países e entre eles'
+    description: 'Reduzir a desigualdade dentro dos países e entre eles',
+    color: '#fb126b'
   },
   {
     sequence: 11,
     name: 'Cidades e comunidades sustentáveis',
-    description: 'Tornar as cidades e os assentamentos humanos inclusivos, seguros, resilientes e sustentáveis'
+    description: 'Tornar as cidades e os assentamentos humanos inclusivos, seguros, resilientes e sustentáveis',
+    color: '#ff9e00'
   },
   {
     sequence: 12,
     name: 'Consumo e produção responsáveis',
-    description: 'Assegurar padrões de produção e de consumo sustentáveis'
+    description: 'Assegurar padrões de produção e de consumo sustentáveis',
+    color: '#ca8916'
   },
   {
     sequence: 13,
     name: 'Ação contra a mudança global do clima',
-    description: 'Tomar medidas urgentes para combater a mudança do clima e seus impactos'
+    description: 'Tomar medidas urgentes para combater a mudança do clima e seus impactos',
+    color: '#007f3f'
   },
   {
     sequence: 14,
     name: 'Vida na água',
     description: 'Conservação e uso sustentável dos oceanos, dos mares e dos recursos marinhos para o
-     desenvolvimento sustentável'
+     desenvolvimento sustentável',
+    color: '#0098dc'
   },
   {
     sequence: 15,
     name: 'Vida terrestre',
     description: 'Proteger, recuperar e promover o uso sustentável dos ecossistemas terrestres, gerir
      de forma sustentável as florestas, combater a desertificação, deter e reverter a degradação da terra
-      e deter a perda de biodiversidade'
+      e deter a perda de biodiversidade',
+    color: '#00c614'
   },
   {
     sequence: 16,
     name: 'Paz, justiça e instituições eficazes',
     description: 'Promover sociedades pacíficas e inclusivas para o desenvolvimento sustentável,
      proporcionar o acesso à justiça para todos e construir instituições eficazes, responsáveis e
-      inclusivas em todos os níveis'
+      inclusivas em todos os níveis',
+    color: '#0068a0'
   },
   {
     sequence: 17,
     name: 'Parcerias e meios de implementação',
     description: 'Fortalecer os meios de implementação e revitalizar a parceria global para o
-     desenvolvimento sustentável'
+     desenvolvimento sustentável',
+     color: '#00466b'
   }
 ].each do |attributes|
   sequence = attributes[:sequence]
@@ -137,6 +156,7 @@ CurricularComponent.create(
     content_type: 'image/jpg'
   )
   sdg.save
+  sdg.reload
 end
 
 KnowledgeMatrix.create(

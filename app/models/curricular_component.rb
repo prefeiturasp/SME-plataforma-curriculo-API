@@ -7,6 +7,7 @@ class CurricularComponent < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
   validates :slug, presence: true, uniqueness: true
+  validates :color, presence: true, uniqueness: true
 
   friendly_id :name, use: :slugged
 
