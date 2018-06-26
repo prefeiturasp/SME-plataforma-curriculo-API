@@ -2,6 +2,7 @@ json.slug @activity_sequence.slug
 json.title @activity_sequence.title
 json.year t("activerecord.attributes.enums.years.#{@activity_sequence.year}")
 json.main_curricular_component @activity_sequence.main_curricular_component.name
+json.main_curricular_component_color @activity_sequence.main_curricular_component.color
 json.estimated_time @activity_sequence.estimated_time
 json.status @activity_sequence.status
 
@@ -17,9 +18,11 @@ end
 json.learning_objectives @activity_sequence.learning_objectives do |learning_objective|
   json.code learning_objective.code
   json.description learning_objective.description
+  json.color learning_objective.curricular_component.color
 end
 
 json.sustainable_development_goals @activity_sequence.sustainable_development_goals do |sds|
+  json.name sds.name
   json.icon_url variant_url(sds.icon, :icon)
 end
 

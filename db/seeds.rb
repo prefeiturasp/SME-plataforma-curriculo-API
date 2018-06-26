@@ -14,21 +14,18 @@ ActivityType.create(
   ]
 )
 
-CurricularComponent.create(
-  [
-    { name: 'Arte'},
-    { name: 'Ciências Naturais' },
-    { name: 'Educação Física' },
-    { name: 'Geografia' },
-    { name: 'História' },
-    { name: 'Língua Portuguesa' },
-    { name: 'Língua Inglesa' },
-    { name: 'Matemática' },
-    { name: 'Tecnologias de Aprendizagem' }
-  ]
-)
-
-CurricularComponent.all.each do |cc|
+[
+  { name: 'Arte'},
+  { name: 'Ciências Naturais' },
+  { name: 'Educação Física' },
+  { name: 'Geografia' },
+  { name: 'História' },
+  { name: 'Língua Portuguesa' },
+  { name: 'Língua Inglesa' },
+  { name: 'Matemática' },
+  { name: 'Tecnologias de Aprendizagem' }
+].each do |attributes|
+  cc = CurricularComponent.new(attributes)
   cc.color = Faker::Color.hex_color
   cc.save
 end
