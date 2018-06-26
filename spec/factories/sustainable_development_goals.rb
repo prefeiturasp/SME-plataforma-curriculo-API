@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :sustainable_development_goal do
     name { Faker::Name.name }
     description { Faker::Name.name }
+    color { Faker::Color.hex_color }
 
     sequence :sequence do |n|
       n
