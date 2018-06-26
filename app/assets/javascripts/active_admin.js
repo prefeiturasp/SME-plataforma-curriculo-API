@@ -12,6 +12,7 @@ function quillGetHTML(inputDelta) {
 }
 
 window.onload = function() {
+  set_colors();
   var editors = document.querySelectorAll( '.quill-editor' );
   for( var i = 0; i < editors.length; i++ ) {
     initializeQuillEditor(editors[i]);
@@ -85,4 +86,33 @@ function getDefaultOptions(){
   };
 
   return default_options
+}
+
+// function set_colors(){
+//   var color_divs = document.querySelectorAll('td.col-color');
+
+//   for( var i = 0; i < color_divs.length; i++ ) {
+//     var div = document.createElement("div");
+//     color_value = color_divs[i].innerHTML;
+//     color_divs[i].innerHTML = null;
+//     div.style.width = "45px";
+//     div.style.height = "45px";
+//     div.style.borderRadius = '50%';
+//     div.style.background = color_value;
+//     color_divs[i].appendChild(div);
+//   }
+// }
+
+
+function set_colors(){
+  var color_divs = document.querySelectorAll('div.pick_color');
+
+  for( var i = 0; i < color_divs.length; i++ ) {
+    color_value = color_divs[i].innerHTML;
+    color_divs[i].innerHTML = null;
+    color_divs[i].style.width = "45px";
+    color_divs[i].style.height = "45px";
+    color_divs[i].style.borderRadius = '50%';
+    color_divs[i].style.background = color_value;
+  }
 }

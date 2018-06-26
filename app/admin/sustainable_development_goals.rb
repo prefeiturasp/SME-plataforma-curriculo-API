@@ -4,6 +4,7 @@ ActiveAdmin.register SustainableDevelopmentGoal do
                 :description,
                 :goals,
                 :icon,
+                :color,
                 goals_attributes: %i[id description _destroy _create _update]
 
   config.filters = false
@@ -16,6 +17,9 @@ ActiveAdmin.register SustainableDevelopmentGoal do
     end
     column :name
     column :description
+    column :color do |sdg|
+      raw "<div class='pick_color'>#{sdg.color}</div>"
+    end
     actions
   end
 
@@ -24,6 +28,9 @@ ActiveAdmin.register SustainableDevelopmentGoal do
       row :sequence
       row :name
       row :description
+      row :color do |sdg|
+        raw "<div class='pick_color'>#{sdg.color}</div>"
+      end
       row :icon do |i|
         image_tag url_for(i.icon) if i.icon.attached?
       end
@@ -44,6 +51,7 @@ ActiveAdmin.register SustainableDevelopmentGoal do
         selected: sustainable_development_goal.sequence.present? ? sustainable_development_goal.sequence : sequence_options(KnowledgeMatrix).last
       f.input :name
       f.input :description
+      f.input :color, as: :color
 
       f.has_many :goals do |c|
         c.input :description

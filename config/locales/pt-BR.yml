@@ -118,6 +118,7 @@ pt-BR:
           soon: "Em breve"
           executed: "Executado"
       sustainable_development_goal:
+        color: "Cor"
         sequence: "Ordem"
         name: "Nome"
         description: "Descrição"

@@ -25,6 +25,8 @@ ENV RAILS_ENV='staging'
 ENV RAKE_ENV='staging'
 ENV PUMA_PORT=3000
 
+RUN yum install -y ImageMagick ImageMagick-devel
+
 # Adding gems
 COPY Gemfile $APP_ROOT/Gemfile
 COPY Gemfile.lock $APP_ROOT/Gemfile.lock
