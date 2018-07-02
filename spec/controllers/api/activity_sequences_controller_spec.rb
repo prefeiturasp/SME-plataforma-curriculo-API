@@ -41,6 +41,7 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
         expect(first_body['status']).to be_present
         expect(first_body['number_of_activities']).to be_present
         expect(first_body['image']).to be_present
+        expect(first_body['year']).to be_present
         expect(first_body['knowledge_matrices']).to be_present
         expect(first_body['learning_objectives']).to be_present
         expect(first_body['sustainable_development_goals']).to be_present
