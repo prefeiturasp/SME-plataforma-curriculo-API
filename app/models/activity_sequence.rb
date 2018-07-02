@@ -47,19 +47,19 @@ class ActivitySequence < ApplicationRecord
   end
 
   def self.all_or_with_main_curricular_component(params = {})
-    return all unless params[:curricular_component_friendly_ids]
+    return all unless params[:curricular_component_slugs]
     joins(:main_curricular_component).merge(
       CurricularComponent.where(
-        slug: params[:curricular_component_friendly_ids]
+        slug: params[:curricular_component_slugs]
       )
     )
   end
 
   def self.all_or_with_curricular_component(params = {})
-    return all unless params[:curricular_component_friendly_ids]
+    return all unless params[:curricular_component_slugs]
     joins(:curricular_components).where(
       curricular_components: {
-        slug: params[:curricular_component_friendly_ids]
+        slug: params[:curricular_component_slugs]
       }
     )
   end

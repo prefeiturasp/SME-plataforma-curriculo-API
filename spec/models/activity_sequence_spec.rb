@@ -102,7 +102,7 @@ RSpec.describe ActivitySequence, type: :model do
 
     context 'with curricular component' do
       let(:response) { ActivitySequence.all_or_with_curricular_component(params) }
-      let(:params) { { curricular_component_friendly_ids: c1.slug } }
+      let(:params) { { curricular_component_slugs: c1.slug } }
 
       it 'return all with none params' do
         response = ActivitySequence.all_or_with_curricular_component
