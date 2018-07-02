@@ -63,6 +63,7 @@ RSpec.describe Api::FiltersController, type: :controller do
           expect(json['curricular_components']).to be_present
           expect(json['curricular_components'][0]['slug']).to be_present
           expect(json['curricular_components'][0]['name']).to be_present
+          expect(json['curricular_components'][0]['color']).to be_present
         end
 
         it 'return valid sustainable development goals JSON' do
@@ -148,6 +149,7 @@ RSpec.describe Api::FiltersController, type: :controller do
           expect(json['learning_objectives'][0]['id']).to be_present
           expect(json['learning_objectives'][0]['code']).to be_present
           expect(json['learning_objectives'][0]['description']).to be_present
+          expect(json['learning_objectives'][0]['color']).to be_present
         end
       end
     end
