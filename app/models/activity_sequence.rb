@@ -30,7 +30,6 @@ class ActivitySequence < ApplicationRecord
   def self.where_optional_params(params = {})
     all.all_or_with_year(params[:years])
        .all_or_with_main_curricular_component(params)
-       .all_or_with_curricular_component(params)
        .all_or_with_axes(params)
        .all_or_with_sustainable_development_goal(params)
        .all_or_with_knowledge_matrices(params)
@@ -52,15 +51,6 @@ class ActivitySequence < ApplicationRecord
       CurricularComponent.where(
         slug: params[:curricular_component_slugs]
       )
-    )
-  end
-
-  def self.all_or_with_curricular_component(params = {})
-    return all unless params[:curricular_component_slugs]
-    joins(:curricular_components).where(
-      curricular_components: {
-        slug: params[:curricular_component_slugs]
-      }
     )
   end
 
