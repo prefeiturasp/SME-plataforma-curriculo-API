@@ -93,25 +93,25 @@ RSpec.describe ActivitySequence, type: :model do
     before do
       create_list(:activity_sequence, 4)
       create :activity_sequence,
-             curricular_component_ids: [c1.id]
+             main_curricular_component_id: c1.id
     end
 
     let(:all_response) { ActivitySequence.all }
     let(:c1) { create :curricular_component }
     let(:params) { {} }
 
-    context 'with curricular component' do
-      let(:response) { ActivitySequence.all_or_with_curricular_component(params) }
-      let(:params) { { curricular_component_friendly_ids: c1.slug } }
+    context 'with main curricular component' do
+      let(:response) { ActivitySequence.all_or_with_main_curricular_component(params) }
+      let(:params) { { curricular_component_slugs: c1.slug } }
 
       it 'return all with none params' do
-        response = ActivitySequence.all_or_with_curricular_component
+        response = ActivitySequence.all_or_with_main_curricular_component
 
         expect(all_response).to eq(response)
       end
 
       it 'include on response' do
-        expect(response).to include(c1.activity_sequences.first)
+        expect(response).to include(c1.main_activity_sequences.first)
       end
 
       it 'not include on response' do

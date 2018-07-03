@@ -11,7 +11,7 @@ json.content @activity.content
 json.activity_sequence do
   json.slug @activity.activity_sequence.slug
   json.title @activity.activity_sequence.title
-  json.year @activity.activity_sequence.year
+  json.year ActivitySequence.human_enum_name(:year, @activity.activity_sequence.year, true)
   json.main_curricular_component do
     json.name @activity.activity_sequence.main_curricular_component.name
     json.color @activity.activity_sequence.main_curricular_component.color

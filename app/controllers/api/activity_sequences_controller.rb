@@ -19,7 +19,7 @@ module Api
       params.permit(
         :slug,
         :years,
-        :curricular_component_friendly_ids,
+        :curricular_component_slugs,
         :sustainable_development_goal_ids,
         :knowledge_matrix_ids,
         :learning_objective_ids,

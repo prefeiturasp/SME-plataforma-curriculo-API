@@ -6,6 +6,7 @@ json.array! @activity_sequences do |activity_sequence|
   json.status activity_sequence.status
   json.number_of_activities activity_sequence.activities.count
   json.image variant_url(activity_sequence.image, :medium)
+  json.year ActivitySequence.human_enum_name(:year, activity_sequence.year, true)
 
   json.main_curricular_component do
     json.name activity_sequence.main_curricular_component.name
