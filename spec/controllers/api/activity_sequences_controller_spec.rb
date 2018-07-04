@@ -16,11 +16,20 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
         expect(response).to be_successful
         expect(response).to have_http_status(:no_content)
       end
+
+      it 'returns no content with activity sequence in draft' do
+        create :activity_sequence, status: :draft
+
+        get :index
+
+        expect(response).to be_successful
+        expect(response).to have_http_status(:no_content)
+      end
     end
 
     context 'returns http success' do
       before do
-        create :activity_sequence
+        create :activity_sequence, status: :published
       end
 
       it 'returns http success' do
