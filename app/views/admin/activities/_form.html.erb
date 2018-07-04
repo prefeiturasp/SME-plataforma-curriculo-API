@@ -5,7 +5,7 @@
         as: :select,
         collection: sequence_options(activity.class),
         selected: activity.sequence.present? ? activity.sequence : sequence_options(Activity).last
-    f.input :image, required: true, as: :file
+    f.input :image, as: :file
     f.input :title
     f.input :estimated_time
     f.input :activity_sequence, as: :hidden
