@@ -27,6 +27,7 @@ end
 json.sustainable_development_goals @activity_sequence.sustainable_development_goals do |sds|
   json.name sds.name
   json.icon_url variant_url(sds.icon, :icon)
+  json.sub_icon_url variant_url(sds.sub_icon, :icon) #TODO verify size
 end
 
 json.books @activity_sequence.books

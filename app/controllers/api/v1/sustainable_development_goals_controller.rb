@@ -54,7 +54,7 @@ module Api
 
       # Only allow a trusted parameter "white list" through.
       def sustainable_development_goal_params
-        params.require(:sustainable_development_goal).permit(:sequence, :name, :description, :goals, :icon, :color)
+        params.require(:sustainable_development_goal).permit(:sequence, :name, :description, :goals, :icon, :color, :sub_icon)
       end
     end
   end

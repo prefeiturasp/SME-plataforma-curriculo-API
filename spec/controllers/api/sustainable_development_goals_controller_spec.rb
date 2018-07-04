@@ -36,6 +36,7 @@ RSpec.describe Api::SustainableDevelopmentGoalsController, type: :controller do
         expect(first_body['sequence']).to be_present
         expect(first_body['name']).to be_present
         expect(first_body['icon']).to be_present
+        expect(first_body['sub_icon']).to be_present
       end
     end
   end
@@ -71,6 +72,7 @@ RSpec.describe Api::SustainableDevelopmentGoalsController, type: :controller do
         expect(response_body['name']).to be_present
         expect(response_body['description']).to be_present
         expect(response_body['icon']).to be_present
+        expect(response_body['sub_icon']).to be_present
         expect(response_body['goals']).to be_present
         expect(response_body['color']).to be_present
       end
