@@ -5,7 +5,7 @@ json.array! @activity_sequences do |activity_sequence|
   json.estimated_time activity_sequence.estimated_time
   json.status activity_sequence.status
   json.number_of_activities activity_sequence.activities.count
-  json.image variant_url(activity_sequence.image, :medium)
+  json.partial! "api/images/image", image_param: activity_sequence.image, sizes: [:thumb, :extra_thumb]
   json.year ActivitySequence.human_enum_name(:year, activity_sequence.year, true)
 
   json.main_curricular_component do

@@ -49,11 +49,19 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
         expect(first_body['estimated_time']).to be_present
         expect(first_body['status']).to be_present
         expect(first_body['number_of_activities']).to be_present
-        expect(first_body['image']).to be_present
+        expect(first_body['image_attributes']).to be_present
         expect(first_body['year']).to be_present
         expect(first_body['knowledge_matrices']).to be_present
         expect(first_body['learning_objectives']).to be_present
         expect(first_body['sustainable_development_goals']).to be_present
+      end
+
+      it 'return valid image attributes JSON' do
+        get :index
+
+        expect(first_body['image_attributes']).to be_present
+        expect(first_body['image_attributes']['default_url']).to be_present
+        expect(first_body['image_attributes']['default_size']).to be_present
       end
 
       it 'return valid knowledge matrices JSON' do
@@ -124,7 +132,7 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
         expect(response_body['estimated_time']).to be_present
         expect(response_body['status']).to be_present
         expect(response_body['books']).to be_present
-        expect(response_body['image']).to be_present
+        expect(response_body['image_attributes']).to be_present
         expect(response_body['presentation_text']).to be_present
         expect(response_body['curricular_components']).to be_present
         expect(response_body['knowledge_matrices']).to be_present
@@ -161,7 +169,10 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
         get :show, params: { slug: activity_sequence.slug }
 
         expect(response_body['sustainable_development_goals']).to be_present
+        expect(response_body['sustainable_development_goals'][0]['id']).to be_present
+        expect(response_body['sustainable_development_goals'][0]['name']).to be_present
         expect(response_body['sustainable_development_goals'][0]['icon_url']).to be_present
+        expect(response_body['sustainable_development_goals'][0]['sub_icon_url']).to be_present
       end
 
       it 'return valid main curricular component JSON' do
@@ -176,7 +187,7 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
         get :show, params: { slug: activity_sequence.slug }
 
         expect(response_body['activities']).to be_present
-        expect(response_body['activities'][0]['image']).to be_present
+        expect(response_body['activities'][0]['image_attributes']).to be_present
         expect(response_body['activities'][0]['title']).to be_present
         expect(response_body['activities'][0]['estimated_time']).to be_present
       end
