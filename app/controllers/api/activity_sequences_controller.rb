@@ -3,7 +3,7 @@ module Api
     before_action :set_activity_sequence, only: %i[show]
 
     def index
-      @activity_sequences = ActivitySequence.where(status: :published).where_optional_params(params)
+      @activity_sequences = paginate(ActivitySequence.where(status: :published).where_optional_params(params))
       raise ActiveRecord::RecordNotFound unless @activity_sequences.present?
 
       render :index
