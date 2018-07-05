@@ -25,7 +25,8 @@ RUN apk add -U --no-cache \
 RUN npm install -g yarn
 RUN yarn install
 
-COPY Gemfile Gemfile.lock ./ 
+COPY Gemfile Gemfile.lock ./
+
 RUN gem install bundler
 RUN bundle install --jobs 20 --retry 5
 

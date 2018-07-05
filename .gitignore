@@ -29,13 +29,11 @@
 /config/credentials.yml.enc
 config/initializers/secret_token.rb
 
-/config/database.yml
 /tmp
 /vendor
-
 
 .rspec
 .ruby-gemset
 .docker-env-dev
-/config/database.yml
 /config/secrets.yml
+._*
