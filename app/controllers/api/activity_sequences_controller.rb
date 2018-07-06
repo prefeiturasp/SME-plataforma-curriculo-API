@@ -4,7 +4,6 @@ module Api
 
     def index
       @activity_sequences = paginate(ActivitySequence.where(status: :published).where_optional_params(params))
-      raise ActiveRecord::RecordNotFound unless @activity_sequences.present?
 
       render :index
     end

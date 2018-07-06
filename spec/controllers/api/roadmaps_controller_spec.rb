@@ -14,7 +14,7 @@ RSpec.describe Api::RoadmapsController, type: :controller do
         get :index
 
         expect(response).to be_successful
-        expect(response).to have_http_status(:no_content)
+        expect(response).to have_http_status(:ok)
       end
     end
 
