@@ -157,9 +157,9 @@ end
 
   #TODO change to sub_icon image
   sdg.sub_icon.attach(
-    io: File.open("public/seeds/obj#{sequence}.jpg"),
-    filename: "obj#{sequence}.jpg",
-    content_type: 'image/jpg'
+    io: File.open("public/seeds/sub_icon#{sequence}.png"),
+    filename: "sub_icon#{sequence}.png",
+    content_type: 'image/png'
   )
   File.read("public/seeds/obj#{sequence}").split(';').each do |goal|
     sdg.goals << Goal.find_or_create_by(description: goal)
