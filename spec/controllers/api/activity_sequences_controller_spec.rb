@@ -14,7 +14,7 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
         get :index
 
         expect(response).to be_successful
-        expect(response).to have_http_status(:no_content)
+        expect(response).to have_http_status(:ok)
       end
 
       it 'returns no content with activity sequence in draft' do
@@ -23,7 +23,7 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
         get :index
 
         expect(response).to be_successful
-        expect(response).to have_http_status(:no_content)
+        expect(response).to have_http_status(:ok)
       end
     end
 

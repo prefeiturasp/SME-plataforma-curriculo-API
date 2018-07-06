@@ -4,7 +4,6 @@ module Api
 
     def index
       @sustainable_development_goals = SustainableDevelopmentGoal.all.with_attached_icon.order(:sequence)
-      raise ActiveRecord::RecordNotFound unless @sustainable_development_goals.present?
 
       render :index
     end
