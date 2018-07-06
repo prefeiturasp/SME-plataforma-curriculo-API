@@ -14,6 +14,12 @@ FactoryBot.define do
         filename: 'ruby.png',
         content_type: 'image/png'
       )
+
+      sustainable_development_goal.sub_icon.attach(
+        io: File.open(Rails.root.join('spec', 'factories', 'images', 'ruby.png')),
+        filename: 'ruby.png',
+        content_type: 'image/png'
+      )
     end
 
     trait :invalid do

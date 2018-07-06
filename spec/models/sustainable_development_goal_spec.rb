@@ -23,6 +23,10 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
       it 'contains icon' do
         expect(subject.icon).to be_an_instance_of(ActiveStorage::Attached::One)
       end
+
+      it 'contains sub_icon' do
+        expect(subject.sub_icon).to be_an_instance_of(ActiveStorage::Attached::One)
+      end
     end
 
     context 'is not valid' do
@@ -50,6 +54,13 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
         expect(subject).to_not be_valid
       end
 
+
+      it 'without a sub icon' do
+        subject.sub_icon.purge
+
+        expect(subject).to_not be_valid
+      end
+
       it 'without a color' do
         subject.color = nil
 
@@ -71,9 +82,20 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
         expect(new_subject).to_not be_valid
       end
 
-      it 'if it is not the image format' do
+      it 'if icon it is not the image format' do
         subject.icon.purge
         subject.icon.attach(
+          io: File.open(Rails.root.join('spec', 'factories', 'images', 'format_test.txt')),
+          filename: 'format_test.txt',
+          content_type: 'text/plain'
+        )
+
+        expect(subject).to_not be_valid
+      end
+
+      it 'if sub icon it is not the image format' do
+        subject.sub_icon.purge
+        subject.sub_icon.attach(
           io: File.open(Rails.root.join('spec', 'factories', 'images', 'format_test.txt')),
           filename: 'format_test.txt',
           content_type: 'text/plain'

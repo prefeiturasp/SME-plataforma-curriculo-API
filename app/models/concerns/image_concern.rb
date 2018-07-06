@@ -6,18 +6,11 @@ module ImageConcern
 
     before_destroy :purge_image
 
-    validate :image?
     validate :image_valid?
     validate :image_valid_size?
   end
 
   private
-
-  def image?
-    return if image.attached?
-    errors.add(:image, 'Please upload image.')
-    image.purge_later
-  end
 
   def image_valid?
     return false unless image.attached?

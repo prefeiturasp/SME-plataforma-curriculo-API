@@ -69,3 +69,9 @@ gem 'activeadmin_quill_editor'
 
 # Pretty URLs and work with human-friendly strings
 gem 'friendly_id', '~> 5.2.4', github: 'norman/friendly_id'
+
+# Pagination library
+gem 'kaminari'
+
+# Paginate in your headers
+gem 'api-pagination'

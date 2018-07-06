@@ -25,18 +25,19 @@ json.learning_objectives @activity_sequence.learning_objectives do |learning_obj
 end
 
 json.sustainable_development_goals @activity_sequence.sustainable_development_goals do |sds|
+  json.id sds.id
   json.name sds.name
   json.icon_url variant_url(sds.icon, :icon)
+  json.sub_icon_url variant_url(sds.sub_icon, :icon) #TODO verify size
 end
 
 json.books @activity_sequence.books
-
-json.image variant_url(@activity_sequence.image, :large)
+json.partial! "api/images/image", image_param: @activity_sequence.image, sizes: [:large, :extra_large]
 json.presentation_text @activity_sequence.presentation_text
 
 json.activities @activity_sequence.activities do |activity|
   json.slug activity.slug
-  json.image variant_url(activity.image, :small)
   json.title activity.title
   json.estimated_time activity.estimated_time
+  json.partial! "api/images/image", image_param: activity.image, sizes: [:small, :extra_small]
 end
