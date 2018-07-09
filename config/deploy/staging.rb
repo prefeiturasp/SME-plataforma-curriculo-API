@@ -80,11 +80,20 @@ namespace :docker do
     end
   end
 
-  desc "Build project"
+  desc "Run database migrations"
   task :migrate do
     on roles(:all) do
       within release_path do
         execute "docker-compose -p #{fetch(:application)} -f #{release_path}/docker-compose.yml run app bundle exec rake db:migrate"
+      end
+    end
+  end
+
+  desc "Run database seed"
+  task :seed do
+    on roles(:all) do
+      within release_path do
+        execute "docker-compose -p #{fetch(:application)} -f #{release_path}/docker-compose.yml run app bundle exec rake db:seed"
       end
     end
   end

@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :sustainable_development_goal do
     name { Faker::Name.name }
     description { Faker::Name.name }
+    color { Faker::Color.hex_color }
 
     sequence :sequence do |n|
       n
@@ -9,6 +10,12 @@ FactoryBot.define do
 
     after(:build) do |sustainable_development_goal|
       sustainable_development_goal.icon.attach(
+        io: File.open(Rails.root.join('spec', 'factories', 'images', 'ruby.png')),
+        filename: 'ruby.png',
+        content_type: 'image/png'
+      )
+
+      sustainable_development_goal.sub_icon.attach(
         io: File.open(Rails.root.join('spec', 'factories', 'images', 'ruby.png')),
         filename: 'ruby.png',
         content_type: 'image/png'

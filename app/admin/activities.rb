@@ -18,6 +18,7 @@ ActiveAdmin.register Activity do
                 :content,
                 :activity_sequence_id,
                 :image,
+                :environment,
                 activity_type_ids: []
 
   index do
@@ -25,7 +26,7 @@ ActiveAdmin.register Activity do
   end
 
   form do |f|
-    render 'form', f: f
+    render 'form', f: f, activity: activity
   end
 
   show do

@@ -39,6 +39,10 @@ pt-BR:
         activity_sequence: "Sequência de Atividade"
         activity_types: "Tipo de Atividade"
         content: "Conteúdo"
+        environment: "Ambiente"
+        environments:
+          interior: "Interior"
+          exterior: "Exterior"
         estimated_time: "Tempo estimado"
         id: "Identificador"
         image: "Imagem"
@@ -92,7 +96,7 @@ pt-BR:
       knowledge_matrix:
         for_description: "Para"
         know_description: "Saber"
-        sequence: "Sequência"
+        sequence: "Ordem"
         title: "Título"
         created_at: "Criado em"
         updated_at: "Atualizado em"
@@ -114,7 +118,8 @@ pt-BR:
           soon: "Em breve"
           executed: "Executado"
       sustainable_development_goal:
-        sequence: "Sequência"
+        color: "Cor"
+        sequence: "Ordem"
         name: "Nome"
         description: "Descrição"
         goals: "Metas"
@@ -147,6 +152,9 @@ pt-BR:
         created_at: Criado em
         updated_at: Atualizado em
       enums:
+        environments:
+          exterior: "Exterior"
+          interior: "Interior"
         years:
           first: "1º"
           second: "2º"

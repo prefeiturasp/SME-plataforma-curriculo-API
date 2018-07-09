@@ -35,9 +35,22 @@ RSpec.describe CurricularComponent, type: :model do
         expect(subject).to_not be_valid
       end
 
+      it 'is not valid without a color' do
+        subject.color = nil
+
+        expect(subject).to_not be_valid
+      end
+
       it 'is not valid if the name already exists' do
         subject.save
         new_object = build :curricular_component, name: subject.name
+
+        expect(new_object).to_not be_valid
+      end
+
+      it 'is not valid if the color already exists' do
+        subject.save
+        new_object = build :curricular_component, color: subject.color
 
         expect(new_object).to_not be_valid
       end

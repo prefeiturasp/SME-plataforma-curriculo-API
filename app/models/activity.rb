@@ -1,21 +1,40 @@
 class Activity < ApplicationRecord
   include FriendlyId
   include ImageConcern
+  include SequenceConcern
 
   belongs_to :activity_sequence
   has_and_belongs_to_many :activity_types
 
   validates :title, presence: true, uniqueness: true
-  validates :sequence, presence: true, uniqueness: true
   validates :estimated_time, presence: true
   validates :content, presence: true
   validates :slug, presence: true
+
+  enum environment: { interior: 0, exterior: 1 }
 
   has_many_attached :content_images
 
   friendly_id :title, use: %i[slugged finders]
 
   before_save :change_format_content_images
+
+  def next_activity
+    Activity.find_by(sequence: next_sequence)
+  end
+
+  def last_activity
+    Activity.find_by(sequence: last_sequence) if last_sequence
+  end
+
+  def next_sequence
+    sequence + 1
+  end
+
+  def last_sequence
+    return nil if sequence <= 1
+    sequence - 1
+  end
 
   def should_generate_new_friendly_id?
     title_changed? || super

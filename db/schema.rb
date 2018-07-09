@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_12_211123) do
+ActiveRecord::Schema.define(version: 2018_06_26_170737) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 2018_06_12_211123) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug", null: false
+    t.integer "environment"
     t.index ["activity_sequence_id"], name: "index_activities_on_activity_sequence_id"
     t.index ["slug"], name: "index_activities_on_slug", unique: true
   end
@@ -187,6 +188,7 @@ ActiveRecord::Schema.define(version: 2018_06_12_211123) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug", null: false
+    t.string "color"
     t.index ["slug"], name: "index_curricular_components_on_slug", unique: true
   end
 
@@ -398,6 +400,7 @@ ActiveRecord::Schema.define(version: 2018_06_12_211123) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "color"
   end
 
 # Could not dump table "tabblock" because of following StandardError

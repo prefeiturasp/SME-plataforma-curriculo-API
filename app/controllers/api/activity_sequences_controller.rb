@@ -3,8 +3,7 @@ module Api
     before_action :set_activity_sequence, only: %i[show]
 
     def index
-      @activity_sequences = ActivitySequence.where_optional_params(params)
-      raise ActiveRecord::RecordNotFound unless @activity_sequences.present?
+      @activity_sequences = paginate(ActivitySequence.where(status: :published).where_optional_params(params))
 
       render :index
     end
@@ -19,7 +18,7 @@ module Api
       params.permit(
         :slug,
         :years,
-        :curricular_component_friendly_ids,
+        :curricular_component_slugs,
         :sustainable_development_goal_ids,
         :knowledge_matrix_ids,
         :learning_objective_ids,

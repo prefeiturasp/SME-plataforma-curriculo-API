@@ -2,7 +2,7 @@
   f.inputs do
     f.input :status
     f.input :title
-    f.input :image, required: true, as: :file
+    f.input :image, as: :file
     f.input :presentation_text
     f.input :year, as: :select, collection: human_attribute_years
     f.input :main_curricular_component,

@@ -1,8 +1,7 @@
 module Api
   class KnowledgeMatricesController < ApiController
     def index
-      @knowledge_matrices = KnowledgeMatrix.all
-      raise ActiveRecord::RecordNotFound unless @knowledge_matrices.present?
+      @knowledge_matrices = KnowledgeMatrix.all.order(:sequence)
 
       render :index
     end

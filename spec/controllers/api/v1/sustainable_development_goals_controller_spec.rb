@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Api::V1::SustainableDevelopmentGoalsController, type: :controller do
   let(:valid_attributes) do
     file = fixture_file_upload(Rails.root.join('spec', 'factories', 'images', 'ruby.png'), 'image/png')
-    attributes_for(:sustainable_development_goal).merge(icon: file)
+    attributes_for(:sustainable_development_goal).merge(icon: file).merge(sub_icon: file)
   end
 
   let(:invalid_attributes) do
@@ -44,8 +44,8 @@ RSpec.describe Api::V1::SustainableDevelopmentGoalsController, type: :controller
       it 'attaches the uploaded file' do
         file = fixture_file_upload(Rails.root.join('spec', 'factories', 'images', 'ruby.png'), 'image/png')
         expect {
-          post :create, params: { sustainable_development_goal: valid_attributes.merge(icon: file) }
-        }.to change(ActiveStorage::Attachment, :count).by(1)
+          post :create, params: { sustainable_development_goal: valid_attributes.merge(icon: file).merge(sub_icon: file) }
+        }.to change(ActiveStorage::Attachment, :count).by(2)
       end
     end
 

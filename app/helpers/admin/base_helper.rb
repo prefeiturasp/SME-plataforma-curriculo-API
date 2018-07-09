@@ -4,8 +4,17 @@ module Admin
       LearningObjective.years.map { |k, _v| [I18n.t("activerecord.attributes.enums.years.#{k}"), k] }
     end
 
+    def human_attribute_environments
+      Activity.environments.map { |k,_v| [I18n.t("activerecord.attributes.enums.environments.#{k}"), k] }
+    end
+
     def human_attribute_roadmap_statuses
       Roadmap.statuses.map { |k, _v| [I18n.t("activerecord.attributes.roadmap.statuses.#{k}"), k] }
+    end
+
+    def sequence_options(_model)
+      options = _model.order(:sequence).pluck(:sequence)
+      options << (options[-1].nil? ? [1] : (options[-1] + 1))
     end
 
     def toolbar_options # rubocop:disable Metrics/MethodLength

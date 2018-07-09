@@ -18,21 +18,21 @@ module Api
 
     def set_activity_sequence_params
       params.permit(
-        :year,
-        :curricular_component_slug
+        :years,
+        :curricular_component_slugs
       )
     end
 
     def fetch_axes
-      return if params[:year].blank? && params[:curricular_component_slug].blank?
-      @axes = Axis.all_or_with_year(params[:year])
-                  .all_or_with_curricular_component(params[:curricular_component_slug])
+      return if params[:years].blank? && params[:curricular_component_slugs].blank?
+      @axes = Axis.all_or_with_year(params[:years])
+                  .all_or_with_curricular_component(params[:curricular_component_slugs])
     end
 
     def fetch_learning_objectives
-      return if params[:year].blank? && params[:curricular_component_slug].blank?
-      @learning_objectives = LearningObjective.all_or_with_year(params[:year])
-                                              .all_or_with_curricular_component(params[:curricular_component_slug])
+      return if params[:years].blank? && params[:curricular_component_slugs].blank?
+      @learning_objectives = LearningObjective.all_or_with_year(params[:years])
+                                              .all_or_with_curricular_component(params[:curricular_component_slugs])
     end
   end
 end

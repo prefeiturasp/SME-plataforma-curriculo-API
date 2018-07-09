@@ -3,17 +3,18 @@ RSpec.shared_examples_for 'image_concern' do
 
   describe 'Validations' do
     context 'is valid' do
-      subject 'contains image' do
-        expect(subject.attached?).to eq(true)
+      it 'contains image' do
+        expect(subject.image.attached?).to eq(true)
+      end
+
+      it 'without a image' do
+        subject.image.purge
+
+        expect(subject).to be_valid
       end
     end
 
     context 'is not valid' do
-      it 'without a image' do
-        subject.image.purge
-
-        expect(subject).to_not be_valid
-      end
 
       it 'if it is not the image format' do
         subject.image.purge

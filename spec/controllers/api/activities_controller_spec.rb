@@ -41,21 +41,25 @@ RSpec.describe Api::ActivitiesController, type: :controller do
       end
 
       it 'return valid JSON all filters' do
+        create_list :activity, 3, activity_type_ids: [activity_type.id]
+        middle_activity = Activity.all.last(3)[1]
         get :show, params: {
             activity_sequence_slug: activity_sequence.slug,
-            activity_slug: activity.slug
+            activity_slug: middle_activity.slug
         }
 
         expect(response_body['sequence']).to be_present
         expect(response_body['title']).to be_present
         expect(response_body['estimated_time']).to be_present
         expect(response_body['activity_sequence']).to be_present
-        expect(response_body['image']).to be_present
+        expect(response_body['image_attributes']).to be_present
         expect(response_body['activity_types']).to be_present
+        expect(response_body['next_activity']).to be_present
+        expect(response_body['last_activity']).to be_present
         expect(response_body['content']).to be_present
       end
 
-        it 'return valid activity sequence JSON' do
+      it 'return valid activity sequence JSON' do
         get :show, params: {
             activity_sequence_slug: activity_sequence.slug,
             activity_slug: activity.slug
@@ -63,6 +67,19 @@ RSpec.describe Api::ActivitiesController, type: :controller do
 
         expect(response_body['activity_sequence']).to be_present
         expect(response_body['activity_sequence']['title']).to be_present
+        expect(response_body['activity_sequence']['slug']).to be_present
+        expect(response_body['activity_sequence']['year']).to be_present
+      end
+
+      it 'return valid main_curricular_component on activity sequence JSON' do
+        get :show, params: {
+            activity_sequence_slug: activity_sequence.slug,
+            activity_slug: activity.slug
+        }
+
+        expect(response_body['activity_sequence']['main_curricular_component']).to be_present
+        expect(response_body['activity_sequence']['main_curricular_component']['name']).to be_present
+        expect(response_body['activity_sequence']['main_curricular_component']['color']).to be_present
       end
 
       it 'return valid activity types JSON' do

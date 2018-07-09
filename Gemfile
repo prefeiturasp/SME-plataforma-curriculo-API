@@ -22,6 +22,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
+gem 'faker'
 
 # Use ActiveStorage variant
 gem 'mini_magick', '~> 4.8'
@@ -65,3 +66,9 @@ gem 'activeadmin_quill_editor'
 
 # Pretty URLs and work with human-friendly strings
 gem 'friendly_id', '~> 5.2.4', github: 'norman/friendly_id'
+
+# Pagination library
+gem 'kaminari'
+
+# Paginate in your headers
+gem 'api-pagination'

@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe SustainableDevelopmentGoal, type: :model do
+  include_examples 'sequence_concern_spec'
   let(:subject) { build :sustainable_development_goal }
 
   describe 'Associations' do
@@ -21,6 +22,10 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
 
       it 'contains icon' do
         expect(subject.icon).to be_an_instance_of(ActiveStorage::Attached::One)
+      end
+
+      it 'contains sub_icon' do
+        expect(subject.sub_icon).to be_an_instance_of(ActiveStorage::Attached::One)
       end
     end
 
@@ -49,12 +54,26 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
         expect(subject).to_not be_valid
       end
 
-      it 'if the sequence already exists' do
+
+      it 'without a sub icon' do
+        subject.sub_icon.purge
+
+        expect(subject).to_not be_valid
+      end
+
+      it 'without a color' do
+        subject.color = nil
+
+        expect(subject).to_not be_valid
+      end
+
+      it 'if the color already exists' do
         subject.save
-        new_subject = build :sustainable_development_goal, sequence: subject.sequence
+        new_subject = build :sustainable_development_goal, color: subject.color
 
         expect(new_subject).to_not be_valid
       end
+
 
       it 'if the sequence already exists' do
         subject.save
@@ -63,7 +82,7 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
         expect(new_subject).to_not be_valid
       end
 
-      it 'if it is not the image format' do
+      it 'if icon it is not the image format' do
         subject.icon.purge
         subject.icon.attach(
           io: File.open(Rails.root.join('spec', 'factories', 'images', 'format_test.txt')),
@@ -73,6 +92,18 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
 
         expect(subject).to_not be_valid
       end
+
+      it 'if sub icon it is not the image format' do
+        subject.sub_icon.purge
+        subject.sub_icon.attach(
+          io: File.open(Rails.root.join('spec', 'factories', 'images', 'format_test.txt')),
+          filename: 'format_test.txt',
+          content_type: 'text/plain'
+        )
+
+        expect(subject).to_not be_valid
+      end
     end
   end
+  it_behaves_like 'sequence_concern_spec'
 end
