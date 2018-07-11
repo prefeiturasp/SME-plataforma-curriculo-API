@@ -23,6 +23,12 @@ RSpec.describe LearningObjective, type: :model do
       it 'with valid attributes' do
         expect(subject).to be_valid
       end
+
+      it 'without a sustainable development goal' do
+        subject.sustainable_development_goal_ids = []
+
+        expect(subject).to be_valid
+      end
     end
 
     context 'not is valid' do
@@ -46,12 +52,6 @@ RSpec.describe LearningObjective, type: :model do
 
       it 'without a curricular component' do
         subject.curricular_component_id = nil
-
-        expect(subject).to_not be_valid
-      end
-
-      it 'without a sustainable development goal' do
-        subject.sustainable_development_goal_ids = []
 
         expect(subject).to_not be_valid
       end
