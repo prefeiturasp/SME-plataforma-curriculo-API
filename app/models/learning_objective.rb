@@ -27,4 +27,8 @@ class LearningObjective < ApplicationRecord
       }
     )
   end
+
+  def code=(value)
+    super(value.to_s.upcase)
+  end
 end

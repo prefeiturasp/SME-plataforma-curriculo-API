@@ -58,6 +58,31 @@ RSpec.describe LearningObjective, type: :model do
     end
   end
 
+  describe 'Methods' do
+    context 'code must be in capital letter' do
+      it 'on create' do
+        subject.code = "asdf2"
+
+        expect(subject.code).to eq("ASDF2")
+      end
+
+      it 'on edit' do
+        subject.save
+        subject.code = "newcode"
+
+        expect(subject.code).to eq("NEWCODE")
+      end
+    end
+
+    it 'return code and description' do
+      subject.code = "COD1"
+      subject.description = "Description"
+      subject.save
+
+      expect(subject.code_and_description).to eq("COD1 - Description")
+    end
+  end
+
   describe 'Queries' do
     before do
       create_list(:learning_objective, 4)
