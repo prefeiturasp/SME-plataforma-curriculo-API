@@ -13,7 +13,7 @@ RSpec.describe CurricularComponent, type: :model do
     end
 
     it 'has and belongs to many activity sequences' do
-      should have_and_belong_to_many(:activity_sequences)
+      should have_and_belong_to_many(:activities)
     end
 
     it 'has many main activity sequences' do

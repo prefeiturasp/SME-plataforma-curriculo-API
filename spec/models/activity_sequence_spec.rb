@@ -8,10 +8,6 @@ RSpec.describe ActivitySequence, type: :model do
       should belong_to(:main_curricular_component)
     end
 
-    it 'has and belongs to many curricular components' do
-      should have_and_belong_to_many(:curricular_components)
-    end
-
     it 'has and belongs to many sustainable development goals' do
       should have_and_belong_to_many(:sustainable_development_goals)
     end
@@ -89,6 +85,27 @@ RSpec.describe ActivitySequence, type: :model do
     end
   end
 
+  describe 'Curricular components' do
+    let(:curricular_component) { create :curricular_component }
+    let(:activity) { create :activity, curricular_component_ids: [curricular_component.id]}
+    context 'list' do
+      it 'with has many of my activities' do
+        activity_sequence = create :activity_sequence, activity_ids: [activity.id]
+
+        expect(activity.curricular_components).to include(curricular_component)
+      end
+    end
+
+    context 'not list' do
+      it 'with not exists of my activities' do
+        new_curricular_com = create :curricular_component
+        activity_sequence = create :activity_sequence, activity_ids: [activity.id]
+
+        expect(activity.curricular_components).to_not include(new_curricular_com)
+      end
+    end
+  end
+
   describe 'Queries' do
     before do
       create_list(:activity_sequence, 4)
@@ -112,13 +129,6 @@ RSpec.describe ActivitySequence, type: :model do
 
       it 'include on response' do
         expect(response).to include(c1.main_activity_sequences.first)
-      end
-
-      it 'not include on response' do
-        new_curricular_com = create :curricular_component
-        create :activity_sequence, curricular_component_ids: [new_curricular_com.id]
-
-        expect(response).to_not include(new_curricular_com.activity_sequences.last)
       end
     end
 
