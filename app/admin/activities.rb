@@ -19,7 +19,8 @@ ActiveAdmin.register Activity do
                 :activity_sequence_id,
                 :image,
                 :environment,
-                activity_type_ids: []
+                activity_type_ids: [],
+                curricular_component_ids: []
 
   index do
     render 'index', context: self

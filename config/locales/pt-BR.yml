@@ -39,6 +39,7 @@ pt-BR:
         activity_sequence: "Sequência de Atividade"
         activity_types: "Tipo de Atividade"
         content: "Conteúdo"
+        curricular_components: "Componentes Curriculares relacionados"
         environment: "Ambiente"
         environments:
           interior: "Interior"

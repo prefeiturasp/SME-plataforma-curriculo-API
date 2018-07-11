@@ -12,7 +12,6 @@ ActiveAdmin.register ActivitySequence do
                 :status,
                 :image,
                 :main_curricular_component_id,
-                curricular_component_ids: [],
                 sustainable_development_goal_ids: [],
                 knowledge_matrix_ids: [],
                 learning_objective_ids: []

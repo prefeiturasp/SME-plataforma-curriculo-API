@@ -3,7 +3,6 @@ class ActivitySequence < ApplicationRecord
   include ImageConcern
   include YearsEnum
   belongs_to :main_curricular_component, class_name: 'CurricularComponent'
-  has_and_belongs_to_many :curricular_components
   has_and_belongs_to_many :sustainable_development_goals
   has_and_belongs_to_many :knowledge_matrices
   has_and_belongs_to_many :learning_objectives
@@ -37,8 +36,14 @@ class ActivitySequence < ApplicationRecord
        .all_or_with_activity_types(params)
   end
 
-  # TODO
-  def self.initialize_query(params); end
+  def curricular_components
+    CurricularComponent.joins(activities: :activity_sequence)
+      .where(
+        activities: {
+          activity_sequence_id:  id
+        }
+      )
+  end
 
   def self.all_or_with_year(years = nil)
     return all unless years
