@@ -12,7 +12,10 @@ ActiveAdmin.register LearningObjective do
       f.input :description
       f.input :curricular_component
       f.input :code
-      f.input :sustainable_development_goals, as: :select, input_html: { multiple: true }
+      f.input :sustainable_development_goals,
+              as: :select,
+              collection: sustainable_development_goals_collection,
+              input_html: { multiple: true }
     end
     f.actions
   end
