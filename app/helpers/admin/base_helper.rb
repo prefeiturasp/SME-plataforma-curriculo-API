@@ -20,7 +20,13 @@ module Admin
 
     def sequence_options(_model)
       options = _model.order(:sequence).pluck(:sequence)
-      options << (options[-1].nil? ? [1] : (options[-1] + 1))
+      options << (options[-1].nil? ? 1 : (options[-1] + 1))
+    end
+
+    def activity_sequence_options(activity)
+      activity_sequence = activity.activity_sequence
+      options = activity_sequence.activities.order(:sequence).pluck(:sequence)
+      options << (options[-1].nil? ? 1 : (options[-1] + 1))
     end
 
     def toolbar_options # rubocop:disable Metrics/MethodLength

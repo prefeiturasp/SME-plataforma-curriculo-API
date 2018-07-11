@@ -3,8 +3,8 @@
     f.input :id, as: :hidden
     f.input :sequence,
         as: :select,
-        collection: sequence_options(activity.class),
-        selected: activity.sequence.present? ? activity.sequence : sequence_options(Activity).last
+        collection: activity_sequence_options(activity),
+        selected: activity.sequence.present? ? activity.sequence : activity_sequence_options(activity).last
     f.input :image, as: :file
     f.input :title
     f.input :estimated_time

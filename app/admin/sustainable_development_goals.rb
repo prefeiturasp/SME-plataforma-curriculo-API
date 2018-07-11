@@ -56,7 +56,7 @@ ActiveAdmin.register SustainableDevelopmentGoal do
       f.input :sequence,
         as: :select,
         collection: sequence_options(SustainableDevelopmentGoal),
-        selected: sustainable_development_goal.sequence.present? ? sustainable_development_goal.sequence : sequence_options(KnowledgeMatrix).last
+        selected: sustainable_development_goal.sequence.present? ? sustainable_development_goal.sequence : sequence_options(SustainableDevelopmentGoal).last
       f.input :name
       f.input :description
       f.input :color, as: :color
