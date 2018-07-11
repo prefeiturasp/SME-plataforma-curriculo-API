@@ -9,6 +9,8 @@ class LearningObjective < ApplicationRecord
   validates :curricular_component, presence: true
   validates :code, presence: true
 
+  default_scope { order(code: :asc) }
+
   def code_and_description
     "#{code} - #{description}"
   end

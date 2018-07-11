@@ -1,4 +1,5 @@
 ActiveAdmin.register LearningObjective do
+  config.sort_order = 'code_asc'
   permit_params :year,
                 :description,
                 :code,

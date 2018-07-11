@@ -58,6 +58,15 @@ RSpec.describe LearningObjective, type: :model do
     end
   end
 
+  describe 'default scope' do
+    let!(:learning_objective_one) { create :learning_objective, code: "EF02" }
+    let!(:learning_objective_two) { create :learning_objective, code: "EF01" }
+
+    it 'orders by ascending code' do
+      expect(LearningObjective.all).to eq([learning_objective_two, learning_objective_one])
+    end
+  end
+
   describe 'Methods' do
     context 'code must be in capital letter' do
       it 'on create' do
