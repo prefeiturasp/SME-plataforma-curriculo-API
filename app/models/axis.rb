@@ -1,9 +1,18 @@
 class Axis < ApplicationRecord
   include YearsEnum
   belongs_to :curricular_component
+  has_and_belongs_to_many :activity_sequences
 
   validates :description, presence: true, uniqueness: true
   validates :year, presence: true
+
+  def year_and_description
+    "#{year_name} - #{curricular_component.name} - #{description}"
+  end
+
+  def year_name
+    I18n.t("activerecord.attributes.enums.years.#{year}")
+  end
 
   def self.all_or_with_year(year = nil)
     return all unless year

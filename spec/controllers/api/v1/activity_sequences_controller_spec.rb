@@ -82,7 +82,7 @@ RSpec.describe Api::V1::ActivitySequencesController, type: :controller do
         }, session: valid_session
 
         activity_sequence.reload
-        expect(activity_sequence.title).to eq('New Title')
+        expect(activity_sequence.title).to eq('NEW TITLE')
         expect(activity_sequence.image.filename).to eq('new.png')
       end
 

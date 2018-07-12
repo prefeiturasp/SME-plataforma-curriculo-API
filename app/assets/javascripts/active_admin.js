@@ -17,8 +17,8 @@ window.onload = function() {
   for( var i = 0; i < editors.length; i++ ) {
     initializeQuillEditor(editors[i]);
   }
-  defineDividerIcon();
   convertContentToDelta(editors);
+  setToolbar();
 };
 
 function initializeQuillEditor(editor){
@@ -43,9 +43,11 @@ function initializeQuillEditor(editor){
   }
 }
 
-function defineDividerIcon(){
-  divider = $('.ql-divider')[0]
-  divider.innerHTML = "_"
+function setToolbar(){
+  editorDiv = document.querySelectorAll('#activity_content');
+  content = editorDiv[0].querySelector(".quill-editor-content");
+  toolbar = document.querySelectorAll('#toolbar');
+  editorDiv[0].insertBefore(toolbar[0], content)
 }
 
 function addHrDividerOnEditor(quill) {

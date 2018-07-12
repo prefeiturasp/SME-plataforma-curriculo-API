@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_26_170737) do
+ActiveRecord::Schema.define(version: 2018_07_12_201336) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -71,6 +71,20 @@ ActiveRecord::Schema.define(version: 2018_06_26_170737) do
     t.index ["activity_type_id", "activity_id"], name: "idx_act_act_types_on_activity_type_id_and_activity_id"
   end
 
+  create_table "activities_curricular_components", id: false, force: :cascade do |t|
+    t.bigint "activity_id", null: false
+    t.bigint "curricular_component_id", null: false
+    t.index ["activity_id", "curricular_component_id"], name: "index_activity_component_on_activity_id_and_component_id"
+    t.index ["curricular_component_id", "activity_id"], name: "index_activity_component_on_component_id_and_activity_id"
+  end
+
+  create_table "activities_learning_objectives", id: false, force: :cascade do |t|
+    t.bigint "activity_id", null: false
+    t.bigint "learning_objective_id", null: false
+    t.index ["activity_id", "learning_objective_id"], name: "idx_activity_learning_on_activity_id_and_lo_id"
+    t.index ["learning_objective_id", "activity_id"], name: "idx_activity_learning_on_lo_id_and_activity_id"
+  end
+
   create_table "activity_sequences", force: :cascade do |t|
     t.string "title"
     t.integer "year"
@@ -86,11 +100,9 @@ ActiveRecord::Schema.define(version: 2018_06_26_170737) do
     t.index ["slug"], name: "index_activity_sequences_on_slug", unique: true
   end
 
-  create_table "activity_sequences_curricular_components", id: false, force: :cascade do |t|
+  create_table "activity_sequences_axes", id: false, force: :cascade do |t|
     t.bigint "activity_sequence_id", null: false
-    t.bigint "curricular_component_id", null: false
-    t.index ["activity_sequence_id", "curricular_component_id"], name: "index_activity_component_on_activity_seq_id_and_component_id"
-    t.index ["curricular_component_id", "activity_sequence_id"], name: "index_activity_component_on_component_id_and_activity_seq_id"
+    t.bigint "axis_id", null: false
   end
 
   create_table "activity_sequences_knowledge_matrices", id: false, force: :cascade do |t|

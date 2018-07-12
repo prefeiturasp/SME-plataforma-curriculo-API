@@ -3,10 +3,10 @@ class ActivitySequence < ApplicationRecord
   include ImageConcern
   include YearsEnum
   belongs_to :main_curricular_component, class_name: 'CurricularComponent'
-  has_and_belongs_to_many :curricular_components
   has_and_belongs_to_many :sustainable_development_goals
   has_and_belongs_to_many :knowledge_matrices
   has_and_belongs_to_many :learning_objectives
+  has_and_belongs_to_many :axes
   has_many :activities, -> { order 'sequence' }
 
   enum status: { draft: 0, published: 1 }
@@ -23,6 +23,10 @@ class ActivitySequence < ApplicationRecord
 
   accepts_nested_attributes_for :activities, allow_destroy: true
 
+  def title=(value)
+    super(value.to_s.upcase)
+  end
+
   def should_generate_new_friendly_id?
     title_changed? || super
   end
@@ -37,8 +41,14 @@ class ActivitySequence < ApplicationRecord
        .all_or_with_activity_types(params)
   end
 
-  # TODO
-  def self.initialize_query(params); end
+  def curricular_components
+    CurricularComponent.joins(activities: :activity_sequence)
+      .where(
+        activities: {
+          activity_sequence_id:  id
+        }
+      )
+  end
 
   def self.all_or_with_year(years = nil)
     return all unless years
@@ -56,12 +66,9 @@ class ActivitySequence < ApplicationRecord
 
   def self.all_or_with_axes(params = {})
     return all unless params[:axis_ids]
-    joins(curricular_components: :axes).where(
-      curricular_components: {
-        axes: {
-          id: params[:axis_ids],
-          year: params[:years]
-        }
+    joins(:axes).where(
+      axes: {
+        id: params[:axis_ids]
       }
     )
   end

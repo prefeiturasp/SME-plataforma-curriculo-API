@@ -16,9 +16,11 @@
     end
   end
 
-  panel I18n.t('activerecord.attributes.activity_sequence.curricular_components') do
-    table_for activity_sequence.curricular_components do
-      column :name
+  if activity_sequence.curricular_components.exists?
+    panel I18n.t('activerecord.attributes.activity_sequence.curricular_components') do
+      table_for activity_sequence.curricular_components do
+        column :name
+      end
     end
   end
 
@@ -51,7 +53,11 @@
       column :sequence
       column :estimated_time
       column do |activity|
-        span link_to t('helpers.links.show'), admin_activity_sequence_activity_path(activity_sequence, activity)
+        if Rails.env.development?
+          span link_to t('helpers.links.show'), admin_activity_sequence_activity_path(activity_sequence, activity)
+        else
+          span link_to t('helpers.links.show'), preview_path(activity_sequence.slug, activity.slug), target: :_blank
+        end
         span link_to t('helpers.links.edit'),edit_admin_activity_sequence_activity_path(activity_sequence, activity)
         span link_to t('helpers.links.destroy'),
           admin_activity_sequence_activity_path(activity_sequence, activity),

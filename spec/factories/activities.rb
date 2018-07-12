@@ -6,6 +6,9 @@ FactoryBot.define do
 
     association :activity_sequence, factory: :activity_sequence
 
+    curricular_component_ids { [create(:curricular_component).id] }
+    learning_objective_ids { [create(:learning_objective).id] }
+
     sequence :sequence do |n|
       n
     end

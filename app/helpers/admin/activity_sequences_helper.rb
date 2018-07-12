@@ -13,12 +13,6 @@ module Admin
       end
     end
 
-    def sustainable_development_goals_collection
-      SustainableDevelopmentGoal.all.order('sequence ASC').collect do |sds|
-        [sds.sequence_and_name, sds.id]
-      end
-    end
-
     def remote_request(type, path, target_tag_id, params = {})
       "$.#{type}('#{path}',
                  {#{params.collect { |p| "#{p[0]}: #{p[1]}" }.join(', ')}},

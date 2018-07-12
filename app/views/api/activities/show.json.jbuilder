@@ -22,3 +22,13 @@ end
 json.activity_types @activity.activity_types do |activity_type|
   json.name activity_type.name
 end
+
+json.curricular_components @activity.curricular_components do |curricular_component|
+  json.name curricular_component.name
+end
+
+json.learning_objectives @activity.learning_objectives do |learning_objective|
+  json.code learning_objective.code
+  json.description learning_objective.description
+  json.color learning_objective.curricular_component.color
+end

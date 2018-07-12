@@ -3,12 +3,14 @@ class LearningObjective < ApplicationRecord
   belongs_to :curricular_component
   has_and_belongs_to_many :sustainable_development_goals
   has_and_belongs_to_many :activity_sequences
+  has_and_belongs_to_many :activities
 
   validates :year, presence: true
   validates :description, presence: true
   validates :curricular_component, presence: true
-  validates :sustainable_development_goals, presence: true
   validates :code, presence: true
+
+  default_scope { order(code: :asc) }
 
   def code_and_description
     "#{code} - #{description}"
@@ -26,5 +28,9 @@ class LearningObjective < ApplicationRecord
         slug: curricular_component_slug
       }
     )
+  end
+
+  def code=(value)
+    super(value.to_s.upcase)
   end
 end

@@ -54,7 +54,8 @@ module Api
           :content,
           :image,
           :activity_sequence_id,
-          activity_type_ids: []
+          activity_type_ids: [],
+          curricular_component_ids: []
         )
       end
     end

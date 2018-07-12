@@ -25,4 +25,21 @@
     row :created_at
     row :updated_at
   end
+
+  panel I18n.t('activerecord.attributes.activity.curricular_components') do
+    if activity.curricular_components.exists?
+      table_for activity.curricular_components do
+        column :name
+      end
+    end
+  end
+
+  panel I18n.t('activerecord.attributes.activity.learning_objectives') do
+    if activity.learning_objectives.exists?
+      table_for activity.learning_objectives do
+        column :code
+        column :description
+      end
+    end
+  end
 end %>

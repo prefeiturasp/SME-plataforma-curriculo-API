@@ -23,6 +23,12 @@ RSpec.describe LearningObjective, type: :model do
       it 'with valid attributes' do
         expect(subject).to be_valid
       end
+
+      it 'without a sustainable development goal' do
+        subject.sustainable_development_goal_ids = []
+
+        expect(subject).to be_valid
+      end
     end
 
     context 'not is valid' do
@@ -49,12 +55,40 @@ RSpec.describe LearningObjective, type: :model do
 
         expect(subject).to_not be_valid
       end
+    end
+  end
 
-      it 'without a sustainable development goal' do
-        subject.sustainable_development_goal_ids = []
+  describe 'default scope' do
+    let!(:learning_objective_one) { create :learning_objective, code: "EF02" }
+    let!(:learning_objective_two) { create :learning_objective, code: "EF01" }
 
-        expect(subject).to_not be_valid
+    it 'orders by ascending code' do
+      expect(LearningObjective.all).to eq([learning_objective_two, learning_objective_one])
+    end
+  end
+
+  describe 'Methods' do
+    context 'code must be in capital letter' do
+      it 'on create' do
+        subject.code = "asdf2"
+
+        expect(subject.code).to eq("ASDF2")
       end
+
+      it 'on edit' do
+        subject.save
+        subject.code = "newcode"
+
+        expect(subject.code).to eq("NEWCODE")
+      end
+    end
+
+    it 'return code and description' do
+      subject.code = "COD1"
+      subject.description = "Description"
+      subject.save
+
+      expect(subject.code_and_description).to eq("COD1 - Description")
     end
   end
 

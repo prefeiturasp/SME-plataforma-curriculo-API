@@ -91,6 +91,28 @@ RSpec.describe Api::ActivitiesController, type: :controller do
         expect(response_body['activity_types']).to be_present
         expect(response_body['activity_types'][0]['name']).to be_present
       end
+
+      it 'return valid curricular components JSON' do
+        get :show, params: {
+            activity_sequence_slug: activity_sequence.slug,
+            activity_slug: activity.slug
+        }
+
+        expect(response_body['curricular_components']).to be_present
+        expect(response_body['curricular_components'][0]['name']).to be_present
+      end
+
+      it 'return valid learning objectives JSON' do
+        get :show, params: {
+            activity_sequence_slug: activity_sequence.slug,
+            activity_slug: activity.slug
+        }
+
+        expect(response_body['learning_objectives']).to be_present
+        expect(response_body['learning_objectives'][0]['code']).to be_present
+        expect(response_body['learning_objectives'][0]['description']).to be_present
+        expect(response_body['learning_objectives'][0]['color']).to be_present
+      end
     end
   end
 end

@@ -58,7 +58,7 @@ RSpec.describe Api::V1::ActivitiesController, type: :controller do
     context 'with valid params' do
       let(:new_attributes) do
         attributes_for :activity,
-                       title: 'New Title',
+                       title: 'NEW TITLE',
                        estimated_time: 1001,
                        activity_sequence_id: create(:activity_sequence).id
       end
@@ -68,7 +68,7 @@ RSpec.describe Api::V1::ActivitiesController, type: :controller do
         put :update, params: { id: activity.to_param, activity: new_attributes }, session: valid_session
         activity.reload
 
-        expect(activity.title).to eq('New Title')
+        expect(activity.title).to eq('NEW TITLE')
       end
 
       it 'renders a JSON response with the activity' do

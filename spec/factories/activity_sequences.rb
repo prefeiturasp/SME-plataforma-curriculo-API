@@ -18,7 +18,6 @@ FactoryBot.define do
     association :main_curricular_component, factory: :curricular_component
 
     sustainable_development_goal_ids { [create(:sustainable_development_goal).id] }
-    curricular_component_ids { [create(:curricular_component).id] }
     knowledge_matrix_ids { [create(:knowledge_matrix).id] }
     learning_objective_ids { [create(:learning_objective).id] }
 

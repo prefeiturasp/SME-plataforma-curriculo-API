@@ -13,6 +13,14 @@ RSpec.describe Activity, type: :model do
     it 'has and belongs to many activity types' do
       should have_and_belong_to_many(:activity_types)
     end
+
+    it 'has and belongs to many curricular components' do
+      should have_and_belong_to_many(:curricular_components)
+    end
+
+    it 'has and belongs to many learning objectives' do
+      should have_and_belong_to_many(:learning_objectives)
+    end
   end
 
   describe 'Validations' do
@@ -112,6 +120,21 @@ RSpec.describe Activity, type: :model do
         activities = Activity.all
 
         expect(activities.last.last_activity).to eq(activities.first)
+      end
+    end
+
+    context 'title must be in capital letter' do
+      it 'on create' do
+        subject.title = "title a"
+
+        expect(subject.title).to eq("TITLE A")
+      end
+
+      it 'on edit' do
+        subject.save
+        subject.title = "new title"
+
+        expect(subject.title).to eq("NEW TITLE")
       end
     end
   end
