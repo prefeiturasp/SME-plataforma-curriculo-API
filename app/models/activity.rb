@@ -21,10 +21,6 @@ class Activity < ApplicationRecord
 
   before_save :change_format_content_images
 
-  def title=(value)
-    super(value.to_s.upcase)
-  end
-
   def next_activity
     Activity.find_by(sequence: next_sequence)
   end
