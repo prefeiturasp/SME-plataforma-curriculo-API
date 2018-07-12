@@ -52,4 +52,16 @@ RSpec.describe Admin::BaseHelper, :type => :helper do
     end
   end
 
+  describe 'learning_objectives_activity_collection' do
+    it 'return only learning objectives of activity sequence' do
+      learning_objective = create :learning_objective
+      activity_sequence = create :activity_sequence, learning_objective_ids: [learning_objective.id]
+      activity = create :activity, activity_sequence: activity_sequence
+
+      array_expected = [[learning_objective.code_and_description, learning_objective.id]]
+
+      expect(helper.learning_objectives_activity_collection(activity)).to match_array(array_expected)
+    end
+  end
+
 end

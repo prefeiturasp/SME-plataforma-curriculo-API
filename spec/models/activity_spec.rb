@@ -17,6 +17,10 @@ RSpec.describe Activity, type: :model do
     it 'has and belongs to many curricular components' do
       should have_and_belong_to_many(:curricular_components)
     end
+
+    it 'has and belongs to many learning objectives' do
+      should have_and_belong_to_many(:learning_objectives)
+    end
   end
 
   describe 'Validations' do

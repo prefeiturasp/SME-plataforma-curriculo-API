@@ -13,6 +13,13 @@
     f.input :environment, as: :select, collection: human_attribute_environments
     f.input :activity_types, as: :select
     f.input :curricular_components, as: :select, input_html: { multiple: true }
+    f.input :learning_objectives,
+            as: :select,
+            collection:
+            learning_objectives_activity_collection(activity).present? ? learning_objectives_activity_collection(activity) : [ t('helpers.select.prompt_none_learning_objectives'), nil ],
+            input_html: {
+              multiple: true
+            }
     f.input :content, as: :quill_editor, input_html: {
       data: {
         options: {

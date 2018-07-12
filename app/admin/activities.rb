@@ -20,7 +20,8 @@ ActiveAdmin.register Activity do
                 :image,
                 :environment,
                 activity_type_ids: [],
-                curricular_component_ids: []
+                curricular_component_ids: [],
+                learning_objective_ids: []
 
   index do
     render 'index', context: self

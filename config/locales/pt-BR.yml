@@ -47,6 +47,7 @@ pt-BR:
         estimated_time: "Tempo estimado"
         id: "Identificador"
         image: "Imagem"
+        learning_objectives: "Objetivos de Aprendizagem"
         main_curricular_component: "Componente Curricular Principal"
         sequence: "Número de Atividade"
         title: "Título"
@@ -460,6 +461,7 @@ pt-BR:
     select:
       prompt: Por favor selecione
       prompt_main_curricular: Selecione um componente curricular principal
+      prompt_none_learning_objectives: "A sequência não possui objetivos de aprendizagem"
     submit:
       create: Confirmar %{model}
       submit: Salvar %{model}

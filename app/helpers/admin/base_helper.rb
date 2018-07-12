@@ -29,19 +29,13 @@ module Admin
       options << (options[-1].nil? ? 1 : (options[-1] + 1))
     end
 
-    def toolbar_options # rubocop:disable Metrics/MethodLength
-      [%w[bold italic underline strike],
-       ['blockquote'],
-       [{ 'header': 1 }, { 'header': 2 }],
-       [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-       [{ 'script': 'sub' }, { 'script': 'super' }],
-       [{ 'indent': '-1' }, { 'indent': '+1' }],
-       [{ 'direction': 'rtl' }],
-       [{ 'size': ['small', false, 'large', 'huge'] }],
-       [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-       ['image'],
-       ['divider'],
-       ['clean']]
+
+    def learning_objectives_activity_collection(activity)
+      activity_sequence = activity.activity_sequence
+      learning_objectives = activity_sequence.learning_objectives
+      learning_objectives.collect do |lo|
+        [lo.code_and_description, lo.id]
+      end
     end
   end
 end

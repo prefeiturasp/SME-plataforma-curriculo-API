@@ -6,6 +6,7 @@ class Activity < ApplicationRecord
   belongs_to :activity_sequence
   has_and_belongs_to_many :activity_types
   has_and_belongs_to_many :curricular_components
+  has_and_belongs_to_many :learning_objectives
 
   validates :title, presence: true, uniqueness: true
   validates :estimated_time, presence: true
