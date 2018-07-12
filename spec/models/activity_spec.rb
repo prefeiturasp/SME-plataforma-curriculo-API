@@ -118,6 +118,21 @@ RSpec.describe Activity, type: :model do
         expect(activities.last.last_activity).to eq(activities.first)
       end
     end
+
+    context 'title must be in capital letter' do
+      it 'on create' do
+        subject.title = "title a"
+
+        expect(subject.title).to eq("TITLE A")
+      end
+
+      it 'on edit' do
+        subject.save
+        subject.title = "new title"
+
+        expect(subject.title).to eq("NEW TITLE")
+      end
+    end
   end
   it_behaves_like 'image_concern', 'sequence_concern_spec'
 end

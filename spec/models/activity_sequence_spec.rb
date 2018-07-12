@@ -106,6 +106,23 @@ RSpec.describe ActivitySequence, type: :model do
     end
   end
 
+  describe 'setters' do
+    context 'title must be in capital letter' do
+      it 'on create' do
+        subject.title = "title a"
+
+        expect(subject.title).to eq("TITLE A")
+      end
+
+      it 'on edit' do
+        subject.save
+        subject.title = "new title"
+
+        expect(subject.title).to eq("NEW TITLE")
+      end
+    end
+  end
+
   describe 'Queries' do
     before do
       create_list(:activity_sequence, 4)
