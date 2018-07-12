@@ -6,6 +6,7 @@ class ActivitySequence < ApplicationRecord
   has_and_belongs_to_many :sustainable_development_goals
   has_and_belongs_to_many :knowledge_matrices
   has_and_belongs_to_many :learning_objectives
+  has_and_belongs_to_many :axes
   has_many :activities, -> { order 'sequence' }
 
   enum status: { draft: 0, published: 1 }
@@ -65,12 +66,9 @@ class ActivitySequence < ApplicationRecord
 
   def self.all_or_with_axes(params = {})
     return all unless params[:axis_ids]
-    joins(curricular_components: :axes).where(
-      curricular_components: {
-        axes: {
-          id: params[:axis_ids],
-          year: params[:years]
-        }
+    joins(:axes).where(
+      axes: {
+        id: params[:axis_ids]
       }
     )
   end

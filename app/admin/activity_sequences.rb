@@ -14,7 +14,8 @@ ActiveAdmin.register ActivitySequence do
                 :main_curricular_component_id,
                 sustainable_development_goal_ids: [],
                 knowledge_matrix_ids: [],
-                learning_objective_ids: []
+                learning_objective_ids: [],
+                axis_ids: []
 
   controller do
     def find_resource

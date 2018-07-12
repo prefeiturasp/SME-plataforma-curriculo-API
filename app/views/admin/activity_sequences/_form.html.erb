@@ -22,6 +22,12 @@
             input_html: {
               multiple: true
             }
+    f.input :axes,
+            as: :select,
+            collection: axes_collection,
+            input_html: {
+              multiple: true
+            }
     f.input :books
     f.input :estimated_time
     f.input :sustainable_development_goals,
