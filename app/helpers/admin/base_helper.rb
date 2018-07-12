@@ -6,6 +6,12 @@ module Admin
       end
     end
 
+    def axes_collection
+      Axis.joins(:curricular_component).all.order('curricular_components.name ASC').order('year ASC').collect do |axis|
+        [axis.year_and_description, axis.id]
+      end
+    end
+
     def human_attribute_years
       LearningObjective.years.map { |k, _v| [I18n.t("activerecord.attributes.enums.years.#{k}"), k] }
     end
@@ -29,7 +35,6 @@ module Admin
       options << (options[-1].nil? ? 1 : (options[-1] + 1))
     end
 
-
     def learning_objectives_activity_collection(activity)
       activity_sequence = activity.activity_sequence
       learning_objectives = activity_sequence.learning_objectives
@@ -37,5 +42,10 @@ module Admin
         [lo.code_and_description, lo.id]
       end
     end
+
+    def preview_path(activity_sequence_slug, activity_slug)
+      "#{ENV['HTTP_STAGING_URL']}/sequencia/#{activity_sequence_slug}/atividade/#{activity_slug}"
+    end
+
   end
 end

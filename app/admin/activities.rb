@@ -9,6 +9,7 @@ ActiveAdmin.register Activity do
   action_item :new, only: :show do
     link_to t('active_admin.new_model', model: activity.model_name.human),
             new_admin_activity_sequence_activity_path(activity.activity_sequence)
+    link_to t('helpers.links.preview'), preview_path(activity_sequence.slug, activity.slug), target: :_blank
   end
 
   permit_params :sequence,
