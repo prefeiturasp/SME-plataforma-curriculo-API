@@ -19,6 +19,7 @@ window.onload = function() {
   }
   defineDividerIcon();
   convertContentToDelta(editors);
+  setToolbar();
 };
 
 function initializeQuillEditor(editor){
@@ -41,6 +42,13 @@ function initializeQuillEditor(editor){
       addHrDividerOnEditor(quill_editor);
     });
   }
+}
+
+function setToolbar(){
+  editorDiv = document.querySelectorAll('#activity_content');
+  content = editorDiv[0].querySelector(".quill-editor-content");
+  toolbar = document.querySelectorAll('#toolbar');
+  editorDiv[0].insertBefore(toolbar[0], content)
 }
 
 function defineDividerIcon(){

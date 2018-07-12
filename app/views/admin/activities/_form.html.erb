@@ -1,3 +1,4 @@
+<%= render 'content_toolbar' %>
 <% 
   f.inputs do
     f.input :id, as: :hidden
@@ -16,7 +17,7 @@
       data: {
         options: {
           modules: {
-            toolbar: toolbar_options
+            toolbar: "#toolbar"
           },
           theme: 'snow'
         }
