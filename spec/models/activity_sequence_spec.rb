@@ -17,9 +17,9 @@ RSpec.describe ActivitySequence, type: :model do
     end
   end
 
-  context "slug" do
-    it "should generate a slug" do
-      subject.title = "Hello World"
+  context 'slug' do
+    it 'should generate a slug' do
+      subject.title = 'Hello World'
       subject.save
 
       expect(subject.slug).to eq('hello-world')
@@ -83,12 +83,12 @@ RSpec.describe ActivitySequence, type: :model do
 
   describe 'Curricular components' do
     let(:curricular_component) { create :curricular_component }
-    let(:activity) { create :activity, curricular_component_ids: [curricular_component.id]}
+    let(:activity) { create :activity, curricular_component_ids: [curricular_component.id] }
     context 'list' do
       it 'with has many of my activities' do
         activity_sequence = create :activity_sequence, activity_ids: [activity.id]
 
-        expect(activity.curricular_components).to include(curricular_component)
+        expect(activity_sequence.curricular_components).to include(curricular_component)
       end
     end
 
@@ -97,7 +97,7 @@ RSpec.describe ActivitySequence, type: :model do
         new_curricular_com = create :curricular_component
         activity_sequence = create :activity_sequence, activity_ids: [activity.id]
 
-        expect(activity.curricular_components).to_not include(new_curricular_com)
+        expect(activity_sequence.curricular_components).to_not include(new_curricular_com)
       end
     end
   end

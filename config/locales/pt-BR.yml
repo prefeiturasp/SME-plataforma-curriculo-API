@@ -57,7 +57,7 @@ pt-BR:
       activity_sequence:
         activities: "Atividades"
         id: "Identificador"
-        books: "Livros"
+        books: "Referências"
         curricular_components: "Componentes Curriculares relacionados"
         estimated_time: "Tempo estimado(aulas)"
         image: "Imagem"
@@ -450,14 +450,9 @@ pt-BR:
         one: 'Não foi possível gravar %{model}: 1 erro'
         other: 'Não foi possível gravar %{model}: %{count} erros'
   helpers:
-    submit:
-      inscription:
-        create: "Nova inscrição"
-        cancel: "Cancelar"
     placeholder:
-      availability:
-        jury_duration: "Duração da banca"
-        attendance_capacity: "Capacidade de atendimento"
+      activity_sequence:
+        books: "Indique livros, filmes, links, etc"
     select:
       prompt: Por favor selecione
       prompt_main_curricular: Selecione um componente curricular principal

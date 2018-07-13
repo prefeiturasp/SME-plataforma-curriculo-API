@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Activity, type: :model do
-  # include_examples 'image_concern'
+  include_examples 'image_concern'
 
   let(:subject) { build :activity }
 
@@ -128,5 +128,5 @@ RSpec.describe Activity, type: :model do
       end
     end
   end
-  # it_behaves_like 'image_concern'
+  it_behaves_like 'image_concern'
 end
