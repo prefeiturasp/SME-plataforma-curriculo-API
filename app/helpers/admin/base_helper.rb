@@ -39,7 +39,7 @@ module Admin
       activity_sequence = activity.activity_sequence
       learning_objectives = activity_sequence.learning_objectives
       learning_objectives.collect do |lo|
-        [lo.code_and_description, lo.id]
+        [lo.code, lo.id, {title: lo.description}]
       end
     end
 
