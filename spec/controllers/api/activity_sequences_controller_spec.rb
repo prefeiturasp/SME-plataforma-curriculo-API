@@ -100,13 +100,14 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
   describe 'GET #show' do
     let(:activity) { create :activity }
     let(:sustainable_development_goal) { create :sustainable_development_goal }
-    let(:activity_sequence) { create :activity_sequence,
-      activity_ids: [ activity.id ]
-    }
+    let(:activity_sequence) do
+      create :activity_sequence,
+             activity_ids: [activity.id]
+    end
 
     context 'returns http no content' do
       it 'returns no content' do
-        get :show, params: { slug: 'invalid-slug'}
+        get :show, params: { slug: 'invalid-slug' }
 
         expect(response).to be_successful
         expect(response).to have_http_status(:no_content)

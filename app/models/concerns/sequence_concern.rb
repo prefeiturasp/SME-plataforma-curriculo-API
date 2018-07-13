@@ -4,7 +4,7 @@ module SequenceConcern
   included do
     validates :sequence, presence: true
 
-    after_save    :update_sequences, on: [:create, :update]
+    after_save    :update_sequences, on: %i[create update]
     after_destroy :update_sequences
   end
 

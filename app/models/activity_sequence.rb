@@ -38,20 +38,20 @@ class ActivitySequence < ApplicationRecord
 
   def curricular_components
     CurricularComponent.joins(activities: :activity_sequence)
-      .where(
-        activities: {
-          activity_sequence_id:  id
-        }
-      )
+                       .where(
+                         activities: {
+                           activity_sequence_id: id
+                         }
+                       )
   end
 
   def sustainable_development_goals
     SustainableDevelopmentGoal.joins(:learning_objectives)
-      .where(
-        learning_objectives: {
-          id: learning_objective_ids
-        }
-      )
+                              .where(
+                                learning_objectives: {
+                                  id: learning_objective_ids
+                                }
+                              )
   end
 
   def self.all_or_with_year(years = nil)

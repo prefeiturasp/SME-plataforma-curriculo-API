@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe Api::ActivitiesController, type: :controller do
-
   let(:response_body) { JSON.parse(response.body) }
 
   before :each do
@@ -11,17 +10,17 @@ RSpec.describe Api::ActivitiesController, type: :controller do
   describe 'GET #show' do
     let(:activity_sequence) { create :activity_sequence }
     let(:activity_type) { create :activity_type }
-    let(:activity) {
-        create :activity,
-        activity_sequence_id: activity_sequence.id,
-        activity_type_ids: [activity_type.id]
-    }
+    let(:activity) do
+      create :activity,
+             activity_sequence_id: activity_sequence.id,
+             activity_type_ids: [activity_type.id]
+    end
 
     context 'returns http no content' do
       it 'returns no content' do
         get :show, params: {
-            activity_sequence_slug: activity_sequence.slug,
-            activity_slug: 'invalid-slug'
+          activity_sequence_slug: activity_sequence.slug,
+          activity_slug: 'invalid-slug'
         }
 
         expect(response).to be_successful
@@ -32,8 +31,8 @@ RSpec.describe Api::ActivitiesController, type: :controller do
     context 'returns http success' do
       it 'returns http success' do
         get :show, params: {
-            activity_sequence_slug: activity_sequence.slug,
-            activity_slug: activity.slug
+          activity_sequence_slug: activity_sequence.slug,
+          activity_slug: activity.slug
         }
 
         expect(response.content_type).to eq('application/json')
@@ -45,8 +44,8 @@ RSpec.describe Api::ActivitiesController, type: :controller do
         list = create_list :activity, 3, activity_sequence: activity_sequence, activity_type_ids: [activity_type.id]
         middle_activity = Activity.all.last(3)[1]
         get :show, params: {
-            activity_sequence_slug: activity_sequence.slug,
-            activity_slug: middle_activity.slug
+          activity_sequence_slug: activity_sequence.slug,
+          activity_slug: middle_activity.slug
         }
 
         expect(response_body['sequence']).to be_present
@@ -62,8 +61,8 @@ RSpec.describe Api::ActivitiesController, type: :controller do
 
       it 'return valid activity sequence JSON' do
         get :show, params: {
-            activity_sequence_slug: activity_sequence.slug,
-            activity_slug: activity.slug
+          activity_sequence_slug: activity_sequence.slug,
+          activity_slug: activity.slug
         }
 
         expect(response_body['activity_sequence']).to be_present
@@ -74,8 +73,8 @@ RSpec.describe Api::ActivitiesController, type: :controller do
 
       it 'return valid main_curricular_component on activity sequence JSON' do
         get :show, params: {
-            activity_sequence_slug: activity_sequence.slug,
-            activity_slug: activity.slug
+          activity_sequence_slug: activity_sequence.slug,
+          activity_slug: activity.slug
         }
 
         expect(response_body['activity_sequence']['main_curricular_component']).to be_present
@@ -85,8 +84,8 @@ RSpec.describe Api::ActivitiesController, type: :controller do
 
       it 'return valid activity types JSON' do
         get :show, params: {
-            activity_sequence_slug: activity_sequence.slug,
-            activity_slug: activity.slug
+          activity_sequence_slug: activity_sequence.slug,
+          activity_slug: activity.slug
         }
 
         expect(response_body['activity_types']).to be_present
@@ -95,8 +94,8 @@ RSpec.describe Api::ActivitiesController, type: :controller do
 
       it 'return valid curricular components JSON' do
         get :show, params: {
-            activity_sequence_slug: activity_sequence.slug,
-            activity_slug: activity.slug
+          activity_sequence_slug: activity_sequence.slug,
+          activity_slug: activity.slug
         }
 
         expect(response_body['curricular_components']).to be_present
@@ -105,8 +104,8 @@ RSpec.describe Api::ActivitiesController, type: :controller do
 
       it 'return valid learning objectives JSON' do
         get :show, params: {
-            activity_sequence_slug: activity_sequence.slug,
-            activity_slug: activity.slug
+          activity_sequence_slug: activity_sequence.slug,
+          activity_slug: activity.slug
         }
 
         expect(response_body['learning_objectives']).to be_present

@@ -17,9 +17,9 @@ ActiveAdmin.register KnowledgeMatrix do
   form do |f|
     f.inputs do
       f.input :sequence,
-        as: :select,
-        collection: sequence_options(KnowledgeMatrix),
-        selected: knowledge_matrix.sequence.present? ? knowledge_matrix.sequence : sequence_options(KnowledgeMatrix).last
+              as: :select,
+              collection: sequence_options(KnowledgeMatrix),
+              selected: knowledge_matrix.sequence.present? ? knowledge_matrix.sequence : sequence_options(KnowledgeMatrix).last
       f.input :title
       f.input :know_description
       f.input :for_description

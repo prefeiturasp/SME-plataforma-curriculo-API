@@ -1,7 +1,7 @@
 ActiveAdmin.register CurricularComponent do
   permit_params :name,
-    :color,
-  axes_attributes: %i[id year description _destroy _create _update]
+                :color,
+                axes_attributes: %i[id year description _destroy _create _update]
 
   config.filters = false
 

@@ -43,9 +43,10 @@ RSpec.describe Api::SustainableDevelopmentGoalsController, type: :controller do
 
   describe 'GET #show' do
     let(:goal) { create :goal }
-    let(:sustainable_development_goal) { create :sustainable_development_goal,
-      goal_ids: [goal.id]
-    }
+    let(:sustainable_development_goal) do
+      create :sustainable_development_goal,
+             goal_ids: [goal.id]
+    end
 
     context 'returns http no content' do
       it 'returns no content' do
