@@ -56,6 +56,7 @@ pt-BR:
         updated_at: "Atualizado em"
       activity_sequence:
         activities: "Atividades"
+        axes: "Eixos"
         id: "Identificador"
         books: "Referências"
         curricular_components: "Componentes Curriculares relacionados"

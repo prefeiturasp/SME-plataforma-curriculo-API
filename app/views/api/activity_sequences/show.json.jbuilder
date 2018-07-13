@@ -41,3 +41,10 @@ json.activities @activity_sequence.activities do |activity|
   json.estimated_time activity.estimated_time
   json.partial! 'api/images/image', image_param: activity.image, sizes: %i[small extra_small]
 end
+
+json.axes @activity_sequence.axes do |axis|
+  json.id axis.id
+  json.description axis.description
+  json.curricular_component axis.curricular_component
+  json.year t("activerecord.attributes.enums.years.#{axis.year}")
+end

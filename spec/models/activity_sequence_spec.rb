@@ -183,25 +183,22 @@ RSpec.describe ActivitySequence, type: :model do
         expect(all_response).to eq(response)
       end
 
-      it 'include axis and year' do
-        new_curricular_com = create :curricular_component, axis_ids: [axis.id]
-        a = create :activity_sequence, curricular_component_ids: [new_curricular_com.id]
+      it 'include if contains axis and year' do
+        a = create :activity_sequence, axis_ids: [axis.id]
 
         expect(response).to include(a)
       end
 
-      it 'not include axis id' do
-        axis_2 = create :axis
-        new_curricular_com = create :curricular_component, axis_ids: [axis_2.id]
-        a = create :activity_sequence, curricular_component_ids: [new_curricular_com.id]
+      it 'not include different axis id' do
+        axis_2 = create :axis, year: :second
+        a = create :activity_sequence, axis_ids: [axis_2.id]
 
         expect(response).to_not include(a)
       end
 
-      it 'not include year' do
-        axis_2 = create :axis, year: :third
-        new_curricular_com = create :curricular_component, axis_ids: [axis_2.id]
-        a = create :activity_sequence, curricular_component_ids: [new_curricular_com.id]
+      it 'not include different year' do
+        axis_2 = create :axis, year: :first
+        a = create :activity_sequence, axis_ids: [axis_2.id]
 
         expect(response).to_not include(a)
       end

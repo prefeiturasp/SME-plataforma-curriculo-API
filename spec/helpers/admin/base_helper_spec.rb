@@ -58,7 +58,7 @@ RSpec.describe Admin::BaseHelper, type: :helper do
       activity_sequence = create :activity_sequence, learning_objective_ids: [learning_objective.id]
       activity = create :activity, activity_sequence: activity_sequence
 
-      array_expected = [[learning_objective.code_and_description, learning_objective.id]]
+      array_expected = [[learning_objective.code, learning_objective.id, { title: learning_objective.description }]]
 
       expect(helper.learning_objectives_activity_collection(activity)).to match_array(array_expected)
     end

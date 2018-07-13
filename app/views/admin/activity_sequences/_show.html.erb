@@ -24,6 +24,12 @@
     end
   end
 
+  panel I18n.t('activerecord.attributes.activity_sequence.axes') do
+    table_for activity_sequence.axes do
+      column :description
+    end
+  end
+
   panel I18n.t('activerecord.attributes.activity_sequence.sustainable_development_goals') do
     table_for activity_sequence.sustainable_development_goals do
       column :icon do |i|
