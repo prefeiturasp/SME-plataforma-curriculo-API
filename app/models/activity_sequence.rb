@@ -3,7 +3,6 @@ class ActivitySequence < ApplicationRecord
   include ImageConcern
   include YearsEnum
   belongs_to :main_curricular_component, class_name: 'CurricularComponent'
-  has_and_belongs_to_many :sustainable_development_goals
   has_and_belongs_to_many :knowledge_matrices
   has_and_belongs_to_many :learning_objectives
   has_and_belongs_to_many :axes
@@ -46,6 +45,15 @@ class ActivitySequence < ApplicationRecord
       )
   end
 
+  def sustainable_development_goals
+    SustainableDevelopmentGoal.joins(:learning_objectives)
+      .where(
+        learning_objectives: {
+          id: learning_objective_ids
+        }
+      )
+  end
+
   def self.all_or_with_year(years = nil)
     return all unless years
     where(year: years)
@@ -71,9 +79,11 @@ class ActivitySequence < ApplicationRecord
 
   def self.all_or_with_sustainable_development_goal(params = {})
     return all unless params[:sustainable_development_goal_ids]
-    joins(:sustainable_development_goals).where(
-      sustainable_development_goals: {
-        id: params[:sustainable_development_goal_ids]
+    joins(learning_objectives: :sustainable_development_goals).where(
+      learning_objectives: {
+        sustainable_development_goals: {
+          id: params[:sustainable_development_goal_ids]
+        }
       }
     )
   end

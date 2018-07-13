@@ -101,8 +101,7 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
     let(:activity) { create :activity }
     let(:sustainable_development_goal) { create :sustainable_development_goal }
     let(:activity_sequence) { create :activity_sequence,
-      activity_ids: [ activity.id ], 
-      sustainable_development_goal_ids: [sustainable_development_goal.id]
+      activity_ids: [ activity.id ]
     }
 
     context 'returns http no content' do

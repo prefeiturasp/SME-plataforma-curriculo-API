@@ -8,10 +8,6 @@ RSpec.describe ActivitySequence, type: :model do
       should belong_to(:main_curricular_component)
     end
 
-    it 'has and belongs to many sustainable development goals' do
-      should have_and_belong_to_many(:sustainable_development_goals)
-    end
-
     it 'has and belongs to many knowledge matrices' do
       should have_and_belong_to_many(:knowledge_matrices)
     end
@@ -106,6 +102,27 @@ RSpec.describe ActivitySequence, type: :model do
     end
   end
 
+  describe 'Sustainable Development Goals' do
+    let(:sustainable_development_goal) { create :sustainable_development_goal }
+    let(:learning_objective) { create :learning_objective, sustainable_development_goal_ids: [sustainable_development_goal.id] }
+    context 'list' do
+      it 'with learning_objective has this sustainable_development_goal' do
+        activity_sequence = create :activity_sequence, learning_objective_ids: [learning_objective.id]
+
+        expect(activity_sequence.sustainable_development_goals).to include(sustainable_development_goal)
+      end
+    end
+
+    context 'not list' do
+      it 'with not exists of learning_objective' do
+        new_sdg = create :sustainable_development_goal
+        activity_sequence = create :activity_sequence, learning_objective_ids: [learning_objective.id]
+
+        expect(activity_sequence.learning_objectives).to_not include(new_sdg)
+      end
+    end
+  end
+
   describe 'Queries' do
     before do
       create_list(:activity_sequence, 4)
@@ -192,6 +209,8 @@ RSpec.describe ActivitySequence, type: :model do
 
     context 'with sustainable development goal' do
       let(:sdg) { create :sustainable_development_goal }
+      let(:learning_objective) { create :learning_objective, sustainable_development_goal_ids: [sdg.id] }
+
       let(:params) { { sustainable_development_goal_ids: sdg.id } }
       let(:response) { ActivitySequence.all_or_with_sustainable_development_goal(params) }
       it 'return all with none params' do
@@ -201,14 +220,15 @@ RSpec.describe ActivitySequence, type: :model do
       end
 
       it 'include sustainable development goals' do
-        a = create :activity_sequence, sustainable_development_goal_ids: [sdg.id]
+        a = create :activity_sequence, learning_objective_ids: [learning_objective.id]
 
         expect(response).to include(a)
       end
 
       it 'not include sustainable development goals' do
         other_sdg = create :sustainable_development_goal
-        a = create :activity_sequence, sustainable_development_goal_ids: [other_sdg.id]
+        other_learning_objective = create :learning_objective
+        a = create :activity_sequence, learning_objective_ids: [other_learning_objective.id]
 
         expect(response).to_not include(a)
       end

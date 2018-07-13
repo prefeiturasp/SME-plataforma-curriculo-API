@@ -68,8 +68,7 @@ RSpec.describe Api::V1::ActivitySequencesController, type: :controller do
           main_curricular_component_id: create(:curricular_component).id,
           curricular_components: [create(:curricular_component)],
           knowledge_matrices: [create(:knowledge_matrix)],
-          learning_objectives: [create(:learning_objective)],
-          sustainable_development_goals: [create(:sustainable_development_goal)]
+          learning_objectives: [create(:learning_objective)]
         ).merge(image: file)
       end
 
