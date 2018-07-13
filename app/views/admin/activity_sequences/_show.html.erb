@@ -62,7 +62,7 @@
         if Rails.env.development?
           span link_to t('helpers.links.show'), admin_activity_sequence_activity_path(activity_sequence, activity)
         else
-          span link_to t('helpers.links.show'), preview_path(activity_sequence.slug, activity.slug), target: :_blank
+          span link_to t('helpers.links.show'), activity_preview_path(activity_sequence.slug, activity.slug), target: :_blank
         end
         span link_to t('helpers.links.edit'),edit_admin_activity_sequence_activity_path(activity_sequence, activity)
         span link_to t('helpers.links.destroy'),

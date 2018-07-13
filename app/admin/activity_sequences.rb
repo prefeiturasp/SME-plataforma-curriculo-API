@@ -2,6 +2,10 @@ ActiveAdmin.register ActivitySequence do
   config.sort_order = 'title_asc'
 
   action_item :new, only: :show do
+    link_to t('helpers.links.preview'), activity_sequence_preview_path(activity_sequence.slug), target: :_blank
+  end
+
+  action_item :new, only: :show do
     link_to t('active_admin.new_model', model: Activity.model_name.human),
             new_admin_activity_sequence_activity_path(activity_sequence)
   end
@@ -54,7 +58,17 @@ ActiveAdmin.register ActivitySequence do
     column :status do |activity_sequence|
       ActivitySequence.human_enum_name(:status, activity_sequence.status)
     end
-    actions
+    column do |activity_sequence|
+      if Rails.env.development?
+        span link_to t('helpers.links.show'), admin_activity_sequence_path(activity_sequence)
+      else
+        span link_to t('helpers.links.show'), activity_sequence_preview_path(activity_sequence.slug), target: :_blank
+      end
+      span link_to t('helpers.links.edit'),edit_admin_activity_sequence_path(activity_sequence)
+      span link_to t('helpers.links.destroy'),
+        admin_activity_sequence_path(activity_sequence),
+        method: :delete
+    end
   end
 
   show do

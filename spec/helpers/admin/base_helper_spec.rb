@@ -63,4 +63,19 @@ RSpec.describe Admin::BaseHelper, type: :helper do
       expect(helper.learning_objectives_activity_collection(activity)).to match_array(array_expected)
     end
   end
+
+  describe 'show preview paths' do
+    let(:activity) { create :activity }
+    let(:activity_sequence) { create :activity_sequence, activity_ids: [activity.id] }
+
+    it 'for the activity_sequence' do
+      link_expected = "#{ENV['HTTP_STAGING_URL']}/sequencia/#{activity_sequence.slug}"
+      expect(helper.activity_sequence_preview_path(activity_sequence.slug)).to eq(link_expected)
+    end
+
+    it 'for the activity' do
+      link_expected = "#{ENV['HTTP_STAGING_URL']}/sequencia/#{activity_sequence.slug}/atividade/#{activity.slug}"
+      expect(helper.activity_preview_path(activity_sequence.slug, activity.slug)).to eq(link_expected)
+    end
+  end
 end

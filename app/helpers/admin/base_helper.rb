@@ -43,8 +43,12 @@ module Admin
       end
     end
 
-    def preview_path(activity_sequence_slug, activity_slug)
-      "#{ENV['HTTP_STAGING_URL']}/sequencia/#{activity_sequence_slug}/atividade/#{activity_slug}"
+    def activity_sequence_preview_path(activity_sequence_slug)
+      "#{ENV['HTTP_STAGING_URL']}/sequencia/#{activity_sequence_slug}"
+    end
+
+    def activity_preview_path(activity_sequence_slug, activity_slug)
+      activity_sequence_preview_path(activity_sequence_slug) << "/atividade/#{activity_slug}"
     end
   end
 end
