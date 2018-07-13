@@ -69,7 +69,8 @@
         span link_to t('helpers.links.edit'),edit_admin_activity_sequence_activity_path(activity_sequence, activity)
         span link_to t('helpers.links.destroy'),
           admin_activity_sequence_activity_path(activity_sequence, activity),
-          method: :delete
+          method: :delete,
+          data: { confirm: t('active_admin.delete_confirmation') }
       end
     end
   end

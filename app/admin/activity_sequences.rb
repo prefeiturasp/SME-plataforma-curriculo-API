@@ -67,7 +67,8 @@ ActiveAdmin.register ActivitySequence do
       span link_to t('helpers.links.edit'),edit_admin_activity_sequence_path(activity_sequence)
       span link_to t('helpers.links.destroy'),
         admin_activity_sequence_path(activity_sequence),
-        method: :delete
+        method: :delete,
+        data: { confirm: t('active_admin.delete_confirmation') }
     end
   end
 
