@@ -33,6 +33,12 @@ RSpec.describe ActivitySequence, type: :model do
       it 'with valid attributes' do
         expect(subject).to be_valid
       end
+
+      it 'without a estimated time' do
+        subject.estimated_time = nil
+
+        expect(subject).to be_valid
+      end
     end
 
     context 'is not valid' do
@@ -57,12 +63,6 @@ RSpec.describe ActivitySequence, type: :model do
 
       it 'without a presentation text' do
         subject.presentation_text = nil
-
-        expect(subject).to_not be_valid
-      end
-
-      it 'without a estimated time' do
-        subject.estimated_time = nil
 
         expect(subject).to_not be_valid
       end
