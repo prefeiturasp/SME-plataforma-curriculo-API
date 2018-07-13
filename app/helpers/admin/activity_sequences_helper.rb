@@ -3,7 +3,7 @@ module Admin
     def learning_objectives_collection(main_curricular_component_id)
       learning_objectives = LearningObjective.where(curricular_component_id: main_curricular_component_id)
       learning_objectives.collect do |lo|
-        [lo.code, lo.id, {title: lo.description}]
+        [lo.code, lo.id, { title: lo.description }]
       end
     end
 

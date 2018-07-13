@@ -22,20 +22,20 @@ class Activity < ApplicationRecord
 
   validates :sequence, presence: true
 
-  after_save    :update_sequences, on: [:create, :update]
+  after_save    :update_sequences, on: %i[create update]
   after_destroy :update_sequences
 
   def next_activity
     activity_sequence.activities
-      .where('sequence >= ?', next_sequence)
-      .order('sequence ASC').first
+                     .where('sequence >= ?', next_sequence)
+                     .order('sequence ASC').first
   end
 
   def last_activity
     return unless last_sequence
     activity_sequence.activities
-      .where('sequence <= ?', last_sequence)
-      .order('sequence ASC').last
+                     .where('sequence <= ?', last_sequence)
+                     .order('sequence ASC').last
   end
 
   def next_sequence
