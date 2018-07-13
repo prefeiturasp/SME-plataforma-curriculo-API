@@ -123,6 +123,16 @@ RSpec.describe ActivitySequence, type: :model do
     end
   end
 
+  describe 'default scope' do
+    let!(:activity_sequence_one) { create :activity_sequence, title: "ZZZZZ" }
+    let!(:activity_sequence_two) { create :activity_sequence, title: "AAAA" }
+
+    it 'orders by ascending code' do
+      expect(ActivitySequence.all).to eq([activity_sequence_two, activity_sequence_one])
+    end
+  end
+
+
   describe 'Queries' do
     before do
       create_list(:activity_sequence, 4)
