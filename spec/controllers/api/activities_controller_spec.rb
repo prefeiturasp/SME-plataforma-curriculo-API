@@ -41,7 +41,8 @@ RSpec.describe Api::ActivitiesController, type: :controller do
       end
 
       it 'return valid JSON all filters' do
-        create_list :activity, 3, activity_type_ids: [activity_type.id]
+        activity_sequence = create :activity_sequence
+        list = create_list :activity, 3, activity_sequence: activity_sequence, activity_type_ids: [activity_type.id]
         middle_activity = Activity.all.last(3)[1]
         get :show, params: {
             activity_sequence_slug: activity_sequence.slug,

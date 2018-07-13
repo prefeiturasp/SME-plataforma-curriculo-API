@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Activity, type: :model do
-  include_examples 'image_concern', 'sequence_concern_spec'
+  # include_examples 'image_concern'
 
   let(:subject) { build :activity }
 
@@ -79,7 +79,8 @@ RSpec.describe Activity, type: :model do
       end
 
       it 'last return valid' do
-        create_list(:activity, 3)
+        activity_sequence = create :activity_sequence
+        create_list(:activity, 3, activity_sequence: activity_sequence)
         second_activity = Activity.where(sequence: 2).last
 
         expect(second_activity.last_sequence).to eq(second_activity.sequence - 1)
@@ -101,7 +102,8 @@ RSpec.describe Activity, type: :model do
       end
 
       it 'return valid next activity' do
-        create_list(:activity, 2)
+        activity_sequence = create :activity_sequence
+        create_list(:activity, 2, activity_sequence: activity_sequence)
         activities = Activity.all
 
         expect(activities.first.next_activity).to eq(activities.last)
@@ -110,33 +112,21 @@ RSpec.describe Activity, type: :model do
 
     context 'last activity' do
       it 'return nil if not exists' do
-        subject.save
+        activity_sequence = create :activity_sequence
+        activity_test = create :activity, activity_sequence: activity_sequence
+        activity_test.reload
 
-        expect(subject.last_activity).to be_nil
+        expect(activity_test.last_activity).to be_nil
       end
 
       it 'return valid last activity' do
-        create_list(:activity, 2)
+        activity_sequence = create :activity_sequence
+        create_list(:activity, 2, activity_sequence: activity_sequence)
         activities = Activity.all
 
         expect(activities.last.last_activity).to eq(activities.first)
       end
     end
-
-    context 'title must be in capital letter' do
-      it 'on create' do
-        subject.title = "title a"
-
-        expect(subject.title).to eq("TITLE A")
-      end
-
-      it 'on edit' do
-        subject.save
-        subject.title = "new title"
-
-        expect(subject.title).to eq("NEW TITLE")
-      end
-    end
   end
-  it_behaves_like 'image_concern', 'sequence_concern_spec'
+  # it_behaves_like 'image_concern'
 end

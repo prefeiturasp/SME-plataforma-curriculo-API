@@ -1,7 +1,6 @@
 class Activity < ApplicationRecord
   include FriendlyId
   include ImageConcern
-  include SequenceConcern
 
   belongs_to :activity_sequence
   has_and_belongs_to_many :activity_types
@@ -21,16 +20,22 @@ class Activity < ApplicationRecord
 
   before_save :change_format_content_images
 
-  def title=(value)
-    super(value.to_s.upcase)
-  end
+  validates :sequence, presence: true
+
+  after_save    :update_sequences, on: [:create, :update]
+  after_destroy :update_sequences
 
   def next_activity
-    Activity.find_by(sequence: next_sequence)
+    activity_sequence.activities
+      .where('sequence >= ?', next_sequence)
+      .order('sequence ASC').first
   end
 
   def last_activity
-    Activity.find_by(sequence: last_sequence) if last_sequence
+    return unless last_sequence
+    activity_sequence.activities
+      .where('sequence <= ?', last_sequence)
+      .order('sequence ASC').last
   end
 
   def next_sequence
@@ -108,5 +113,21 @@ class Activity < ApplicationRecord
   def get_image_url(attached_file)
     return nil if attached_file.blank?
     Rails.application.routes.url_helpers.rails_blob_path(attached_file, only_path: true)
+  end
+
+  private
+
+  def update_sequences
+    return if valid_sequence?
+    activity_sequence.activities.order(:sequence, updated_at: :desc).each.with_index(1) do |k, i|
+      k.update_column(:sequence, i) if k.sequence != i
+    end
+  end
+
+  def valid_sequence?
+    sequences = activity_sequence.activities.order(:sequence).pluck(:sequence)
+    valid_sequence = (1..sequences.count).to_a
+
+    sequences == valid_sequence
   end
 end
