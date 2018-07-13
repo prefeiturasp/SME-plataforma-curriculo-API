@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_13_124801) do
+ActiveRecord::Schema.define(version: 2018_07_13_200920) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 2018_07_13_124801) do
     t.string "title"
     t.integer "year"
     t.text "presentation_text"
-    t.text "books"
+    t.jsonb "books"
     t.integer "estimated_time"
     t.integer "status"
     t.bigint "main_curricular_component_id"

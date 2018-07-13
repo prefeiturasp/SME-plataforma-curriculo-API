@@ -9,7 +9,9 @@
       ActivitySequence.human_enum_name(:year, activity_sequence.year, true)
     end
     row :main_curricular_component
-    row :books
+    row :books do |activity_sequence|
+      raw(activity_sequence.books)
+    end
     row :estimated_time
     row :status do |activity_sequence|
       ActivitySequence.human_enum_name(:status, activity_sequence.status)

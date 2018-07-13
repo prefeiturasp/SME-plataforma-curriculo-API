@@ -3,6 +3,7 @@
 //= require activeadmin/quill_editor_input
 //= require divider_blot
 //= require activities
+//= require activity_sequences
 
 function quillGetHTML(inputDelta) {
   var tempCont = document.createElement("div");
@@ -89,22 +90,6 @@ function getDefaultOptions(){
 
   return default_options
 }
-
-// function set_colors(){
-//   var color_divs = document.querySelectorAll('td.col-color');
-
-//   for( var i = 0; i < color_divs.length; i++ ) {
-//     var div = document.createElement("div");
-//     color_value = color_divs[i].innerHTML;
-//     color_divs[i].innerHTML = null;
-//     div.style.width = "45px";
-//     div.style.height = "45px";
-//     div.style.borderRadius = '50%';
-//     div.style.background = color_value;
-//     color_divs[i].appendChild(div);
-//   }
-// }
-
 
 function set_colors(){
   var color_divs = document.querySelectorAll('div.pick_color');

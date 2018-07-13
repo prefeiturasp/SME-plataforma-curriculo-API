@@ -78,4 +78,14 @@ RSpec.describe Admin::BaseHelper, type: :helper do
       expect(helper.activity_preview_path(activity_sequence.slug, activity.slug)).to eq(link_expected)
     end
   end
+
+  describe 'Activity Sequence' do
+    context 'books' do
+      it 'toolbar options use only link' do
+        options = [['link']]
+
+        expect(books_toolbar_options).to match_array(options)
+      end
+    end
+  end
 end

@@ -50,5 +50,10 @@ module Admin
     def activity_preview_path(activity_sequence_slug, activity_slug)
       activity_sequence_preview_path(activity_sequence_slug) << "/atividade/#{activity_slug}"
     end
+
+    def books_toolbar_options
+      [['link']]
+    end
+
   end
 end

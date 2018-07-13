@@ -28,7 +28,17 @@
             input_html: {
               multiple: true
             }
-    f.input :books, placeholder: t("helpers.placeholder.activity_sequence.books")
+    f.input :books,
+      as: :quill_editor, input_html: {
+      data: {
+        options: {
+          modules: {
+            toolbar: books_toolbar_options
+          },
+          theme: 'snow'
+        }
+      }
+    }
     f.input :estimated_time
     f.input :knowledge_matrices,
             as: :select,
