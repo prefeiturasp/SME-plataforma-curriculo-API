@@ -1,4 +1,5 @@
 $(document).ready(function(){
+  showCheckBoxesTooltip();
   var body = document.getElementsByClassName('show admin_activity_sequences');
   if (body[0]) {
     var row_content = body[0].getElementsByClassName('row-books');
@@ -20,7 +21,6 @@ $(document).ready(function(){
     fillLearningObjectives();
   });
 });
-
 
 function fill_axes(){
   main_curricular_component_id = $('#activity_sequence_main_curricular_component_id').val();
@@ -128,4 +128,13 @@ function fillTextOnChecKBoxes(parent, fill_text){
 
 function clean_check_boxes(parent){
    parent.empty();
+}
+
+function showCheckBoxesTooltip(){
+  label = $('.choices-group label');
+  label.each(function(){
+    self = $(this)
+    new_title = self.find('input[type="checkbox"]')[0].title
+    self.attr('title', new_title);
+  });
 }

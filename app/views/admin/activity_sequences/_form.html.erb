@@ -9,8 +9,7 @@
     f.input :learning_objectives,
             as: :check_boxes,
             collection: activity_sequence.learning_objectives.present? ? learning_objectives_collection(activity_sequence.main_curricular_component.id, activity_sequence.year ) : [
-              t('helpers.select.prompt_year_and_main_curricular'), nil
-            ],
+              [t('helpers.select.prompt_year_and_main_curricular'), nil, {style: "display: none;"}] ],
             input_html: {
               multiple: true
             }

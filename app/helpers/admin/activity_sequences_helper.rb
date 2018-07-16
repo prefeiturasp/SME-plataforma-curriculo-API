@@ -20,13 +20,13 @@ module Admin
           [a.description, a.id, { title: a.description }]
         end
       else
-        [ t('helpers.select.prompt_year_and_main_curricular'), nil ]
+        [ [t('helpers.select.prompt_year_and_main_curricular'), nil, {style: "display: none;"} ] ]
       end
     end
 
     def knowledge_matrices_collection
       KnowledgeMatrix.all.order('sequence ASC').collect do |km|
-        [km.sequence_and_title, km.id]
+        [km.sequence_and_title, km.id, { title: km.sequence_and_title }]
       end
     end
 

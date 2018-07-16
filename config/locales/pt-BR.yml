@@ -457,6 +457,7 @@ pt-BR:
     select:
       prompt: Por favor selecione
       prompt_main_curricular: Selecione um componente curricular principal
+      prompt_year_and_main_curricular: Selecione um ano e componente curricular principal
       prompt_none_learning_objectives: "A sequência não possui objetivos de aprendizagem"
     submit:
       create: Confirmar %{model}
