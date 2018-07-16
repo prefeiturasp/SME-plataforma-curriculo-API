@@ -28,6 +28,16 @@ ActiveAdmin.register ActivitySequence do
     end
   end
 
+  collection_action :change_axes, method: :get do
+    axes = Axis.where(
+      year: params[:year],
+      curricular_component_id: params[:main_curricular_component_id]
+    )
+
+    data = axes.pluck(:description, :id)
+    render json: data
+  end
+
   collection_action :change_learning_objectives, method: :get do
     @learning_objectives = LearningObjective.where(curricular_component_id: params[:main_curricular_component_id])
     if @learning_objectives.present?

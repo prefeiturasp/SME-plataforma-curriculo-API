@@ -15,7 +15,7 @@
               )
             }
     f.input :learning_objectives,
-            as: :select,
+            as: :check_boxes,
             collection: activity_sequence.learning_objectives.present? ? learning_objectives_collection(activity_sequence.main_curricular_component.id) : [ 
               t('helpers.select.prompt_main_curricular'), nil
             ],
@@ -23,10 +23,11 @@
               multiple: true
             }
     f.input :axes,
-            as: :select,
-            collection: axes_collection,
+            as: :check_boxes,
+            collection: [["Selecione um ano e componente", nil]],
             input_html: {
-              multiple: true
+              multiple: true,
+              disabled: true
             }
     f.input :books,
       as: :quill_editor, input_html: {
@@ -41,7 +42,7 @@
     }
     f.input :estimated_time
     f.input :knowledge_matrices,
-            as: :select,
+            as: :check_boxes,
             collection: knowledge_matrices_collection,
             input_html: { multiple: true }
   end
