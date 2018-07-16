@@ -5,26 +5,18 @@
     f.input :image, as: :file
     f.input :presentation_text
     f.input :year, as: :select, collection: human_attribute_years
-    f.input :main_curricular_component,
-            input_html: {
-              onchange: remote_request(
-                :get,
-                polymorphic_path([:change_learning_objectives, :admin, :activity_sequences]),
-                :activity_sequence_learning_objective_ids,
-                main_curricular_component_id: "$('#activity_sequence_main_curricular_component_id').val()"
-              )
-            }
+    f.input :main_curricular_component
     f.input :learning_objectives,
             as: :check_boxes,
-            collection: activity_sequence.learning_objectives.present? ? learning_objectives_collection(activity_sequence.main_curricular_component.id) : [ 
-              t('helpers.select.prompt_main_curricular'), nil
+            collection: activity_sequence.learning_objectives.present? ? learning_objectives_collection(activity_sequence.main_curricular_component.id, activity_sequence.year ) : [
+              t('helpers.select.prompt_year_and_main_curricular'), nil
             ],
             input_html: {
               multiple: true
             }
     f.input :axes,
             as: :check_boxes,
-            collection: [["Selecione um ano e componente", nil]],
+            collection: axes_collection(activity_sequence),
             input_html: {
               multiple: true,
               disabled: true

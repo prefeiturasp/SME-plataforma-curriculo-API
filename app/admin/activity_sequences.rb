@@ -34,21 +34,18 @@ ActiveAdmin.register ActivitySequence do
       curricular_component_id: params[:main_curricular_component_id]
     )
 
-    data = axes.pluck(:description, :id)
+    data = axes.pluck(:id, :description, :description)
     render json: data
   end
 
   collection_action :change_learning_objectives, method: :get do
-    @learning_objectives = LearningObjective.where(curricular_component_id: params[:main_curricular_component_id])
-    if @learning_objectives.present?
-      render plain: view_context.options_from_collection_for_select(@learning_objectives, :id, :code_and_description)
-    else
-      render plain: view_context.options_for_select(
-        [
-          [t('activerecord.errors.messages.none_learning_objectives'), nil]
-        ]
-      )
-    end
+    @learning_objectives = LearningObjective.where(
+      year: params[:year],
+      curricular_component_id: params[:main_curricular_component_id]
+    )
+    data = @learning_objectives.pluck(:id, :code, :description)
+
+    render json: data
   end
 
   form do |f|
