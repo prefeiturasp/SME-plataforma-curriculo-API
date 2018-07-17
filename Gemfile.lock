@@ -81,8 +81,6 @@ GEM
     arel (9.0.0)
     ast (2.4.0)
     bcrypt (3.1.12)
-    bootsnap (1.3.0)
-      msgpack (~> 1.0)
     builder (3.2.3)
     byebug (10.0.2)
     capistrano (3.11.0)
@@ -156,7 +154,6 @@ GEM
       activerecord
       kaminari-core (= 1.1.1)
     kaminari-core (1.1.1)
-    libv8 (3.16.14.19)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
@@ -174,7 +171,6 @@ GEM
     mini_mime (1.0.0)
     mini_portile2 (2.3.0)
     minitest (5.11.3)
-    msgpack (1.2.4)
     multi_json (1.13.1)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -230,7 +226,6 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
-    ref (2.0.0)
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
       railties (>= 4.2.0, < 5.3)
@@ -295,9 +290,6 @@ GEM
     sshkit (1.16.1)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    therubyracer (0.12.3)
-      libv8 (~> 3.16.14.15)
-      ref
     thor (0.20.0)
     thread_safe (0.3.6)
     tilt (2.0.8)
@@ -319,7 +311,6 @@ DEPENDENCIES
   activeadmin (~> 1.3.0)
   activeadmin_quill_editor
   api-pagination
-  bootsnap (>= 1.1.0)
   byebug
   capistrano (~> 3.11.0)
   capistrano-rails
@@ -346,7 +337,6 @@ DEPENDENCIES
   shoulda-matchers (~> 3.1)
   spring
   spring-watcher-listen (~> 2.0.0)
-  therubyracer
   tzinfo-data
   uglifier (>= 1.3.0)
 
@@ -354,4 +344,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.2
+   1.16.3
