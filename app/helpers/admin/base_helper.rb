@@ -6,12 +6,6 @@ module Admin
       end
     end
 
-    def axes_collection
-      Axis.joins(:curricular_component).all.order('curricular_components.name ASC').order('year ASC').collect do |axis|
-        [axis.year_and_description, axis.id]
-      end
-    end
-
     def human_attribute_years
       LearningObjective.years.map { |k, _v| [I18n.t("activerecord.attributes.enums.years.#{k}"), k] }
     end
