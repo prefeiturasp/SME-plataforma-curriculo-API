@@ -50,12 +50,6 @@ RSpec.describe Activity, type: :model do
         expect(new_object).to_not be_valid
       end
 
-      it 'without a estimated_time' do
-        subject.estimated_time = nil
-
-        expect(subject).to_not be_valid
-      end
-
       it 'without a content' do
         subject.content = nil
 
