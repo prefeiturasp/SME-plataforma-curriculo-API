@@ -8,10 +8,6 @@ RSpec.describe ActivitySequence, type: :model do
       should belong_to(:main_curricular_component)
     end
 
-    it 'has and belongs to many sustainable development goals' do
-      should have_and_belong_to_many(:sustainable_development_goals)
-    end
-
     it 'has and belongs to many knowledge matrices' do
       should have_and_belong_to_many(:knowledge_matrices)
     end
@@ -21,9 +17,9 @@ RSpec.describe ActivitySequence, type: :model do
     end
   end
 
-  context "slug" do
-    it "should generate a slug" do
-      subject.title = "Hello World"
+  context 'slug' do
+    it 'should generate a slug' do
+      subject.title = 'Hello World'
       subject.save
 
       expect(subject.slug).to eq('hello-world')
@@ -35,6 +31,12 @@ RSpec.describe ActivitySequence, type: :model do
 
     context 'is valid' do
       it 'with valid attributes' do
+        expect(subject).to be_valid
+      end
+
+      it 'without a estimated time' do
+        subject.estimated_time = nil
+
         expect(subject).to be_valid
       end
     end
@@ -65,12 +67,6 @@ RSpec.describe ActivitySequence, type: :model do
         expect(subject).to_not be_valid
       end
 
-      it 'without a estimated time' do
-        subject.estimated_time = nil
-
-        expect(subject).to_not be_valid
-      end
-
       it 'without a status' do
         subject.status = nil
 
@@ -87,12 +83,12 @@ RSpec.describe ActivitySequence, type: :model do
 
   describe 'Curricular components' do
     let(:curricular_component) { create :curricular_component }
-    let(:activity) { create :activity, curricular_component_ids: [curricular_component.id]}
+    let(:activity) { create :activity, curricular_component_ids: [curricular_component.id] }
     context 'list' do
       it 'with has many of my activities' do
         activity_sequence = create :activity_sequence, activity_ids: [activity.id]
 
-        expect(activity.curricular_components).to include(curricular_component)
+        expect(activity_sequence.curricular_components).to include(curricular_component)
       end
     end
 
@@ -101,10 +97,41 @@ RSpec.describe ActivitySequence, type: :model do
         new_curricular_com = create :curricular_component
         activity_sequence = create :activity_sequence, activity_ids: [activity.id]
 
-        expect(activity.curricular_components).to_not include(new_curricular_com)
+        expect(activity_sequence.curricular_components).to_not include(new_curricular_com)
       end
     end
   end
+
+  describe 'Sustainable Development Goals' do
+    let(:sustainable_development_goal) { create :sustainable_development_goal }
+    let(:learning_objective) { create :learning_objective, sustainable_development_goal_ids: [sustainable_development_goal.id] }
+    context 'list' do
+      it 'with learning_objective has this sustainable_development_goal' do
+        activity_sequence = create :activity_sequence, learning_objective_ids: [learning_objective.id]
+
+        expect(activity_sequence.sustainable_development_goals).to include(sustainable_development_goal)
+      end
+    end
+
+    context 'not list' do
+      it 'with not exists of learning_objective' do
+        new_sdg = create :sustainable_development_goal
+        activity_sequence = create :activity_sequence, learning_objective_ids: [learning_objective.id]
+
+        expect(activity_sequence.learning_objectives).to_not include(new_sdg)
+      end
+    end
+  end
+
+  describe 'default scope' do
+    let!(:activity_sequence_one) { create :activity_sequence, title: "ZZZZZ" }
+    let!(:activity_sequence_two) { create :activity_sequence, title: "AAAA" }
+
+    it 'orders by ascending code' do
+      expect(ActivitySequence.all).to eq([activity_sequence_two, activity_sequence_one])
+    end
+  end
+
 
   describe 'Queries' do
     before do
@@ -166,25 +193,22 @@ RSpec.describe ActivitySequence, type: :model do
         expect(all_response).to eq(response)
       end
 
-      it 'include axis and year' do
-        new_curricular_com = create :curricular_component, axis_ids: [axis.id]
-        a = create :activity_sequence, curricular_component_ids: [new_curricular_com.id]
+      it 'include if contains axis and year' do
+        a = create :activity_sequence, axis_ids: [axis.id]
 
         expect(response).to include(a)
       end
 
-      it 'not include axis id' do
-        axis_2 = create :axis
-        new_curricular_com = create :curricular_component, axis_ids: [axis_2.id]
-        a = create :activity_sequence, curricular_component_ids: [new_curricular_com.id]
+      it 'not include different axis id' do
+        axis_2 = create :axis, year: :second
+        a = create :activity_sequence, axis_ids: [axis_2.id]
 
         expect(response).to_not include(a)
       end
 
-      it 'not include year' do
-        axis_2 = create :axis, year: :third
-        new_curricular_com = create :curricular_component, axis_ids: [axis_2.id]
-        a = create :activity_sequence, curricular_component_ids: [new_curricular_com.id]
+      it 'not include different year' do
+        axis_2 = create :axis, year: :first
+        a = create :activity_sequence, axis_ids: [axis_2.id]
 
         expect(response).to_not include(a)
       end
@@ -192,6 +216,8 @@ RSpec.describe ActivitySequence, type: :model do
 
     context 'with sustainable development goal' do
       let(:sdg) { create :sustainable_development_goal }
+      let(:learning_objective) { create :learning_objective, sustainable_development_goal_ids: [sdg.id] }
+
       let(:params) { { sustainable_development_goal_ids: sdg.id } }
       let(:response) { ActivitySequence.all_or_with_sustainable_development_goal(params) }
       it 'return all with none params' do
@@ -201,14 +227,15 @@ RSpec.describe ActivitySequence, type: :model do
       end
 
       it 'include sustainable development goals' do
-        a = create :activity_sequence, sustainable_development_goal_ids: [sdg.id]
+        a = create :activity_sequence, learning_objective_ids: [learning_objective.id]
 
         expect(response).to include(a)
       end
 
       it 'not include sustainable development goals' do
         other_sdg = create :sustainable_development_goal
-        a = create :activity_sequence, sustainable_development_goal_ids: [other_sdg.id]
+        other_learning_objective = create :learning_objective
+        a = create :activity_sequence, learning_objective_ids: [other_learning_objective.id]
 
         expect(response).to_not include(a)
       end

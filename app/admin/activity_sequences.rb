@@ -1,4 +1,10 @@
 ActiveAdmin.register ActivitySequence do
+  config.sort_order = 'title_asc'
+
+  action_item :new, only: :show do
+    link_to t('helpers.links.preview'), activity_sequence_preview_path(activity_sequence.slug), target: :_blank
+  end
+
   action_item :new, only: :show do
     link_to t('active_admin.new_model', model: Activity.model_name.human),
             new_admin_activity_sequence_activity_path(activity_sequence)
@@ -12,7 +18,6 @@ ActiveAdmin.register ActivitySequence do
                 :status,
                 :image,
                 :main_curricular_component_id,
-                sustainable_development_goal_ids: [],
                 knowledge_matrix_ids: [],
                 learning_objective_ids: [],
                 axis_ids: []
@@ -23,17 +28,24 @@ ActiveAdmin.register ActivitySequence do
     end
   end
 
+  collection_action :change_axes, method: :get do
+    axes = Axis.where(
+      year: params[:year],
+      curricular_component_id: params[:main_curricular_component_id]
+    )
+
+    data = axes.pluck(:id, :description, :description)
+    render json: data
+  end
+
   collection_action :change_learning_objectives, method: :get do
-    @learning_objectives = LearningObjective.where(curricular_component_id: params[:main_curricular_component_id])
-    if @learning_objectives.present?
-      render plain: view_context.options_from_collection_for_select(@learning_objectives, :id, :code_and_description)
-    else
-      render plain: view_context.options_for_select(
-        [
-          [t('activerecord.errors.messages.none_learning_objectives'), nil]
-        ]
-      )
-    end
+    @learning_objectives = LearningObjective.where(
+      year: params[:year],
+      curricular_component_id: params[:main_curricular_component_id]
+    )
+    data = @learning_objectives.pluck(:id, :code, :description)
+
+    render json: data
   end
 
   form do |f|
@@ -53,7 +65,18 @@ ActiveAdmin.register ActivitySequence do
     column :status do |activity_sequence|
       ActivitySequence.human_enum_name(:status, activity_sequence.status)
     end
-    actions
+    column do |activity_sequence|
+      if Rails.env.development?
+        span link_to t('helpers.links.show'), admin_activity_sequence_path(activity_sequence)
+      else
+        span link_to t('helpers.links.show'), activity_sequence_preview_path(activity_sequence.slug), target: :_blank
+      end
+      span link_to t('helpers.links.edit'),edit_admin_activity_sequence_path(activity_sequence)
+      span link_to t('helpers.links.destroy'),
+        admin_activity_sequence_path(activity_sequence),
+        method: :delete,
+        data: { confirm: t('active_admin.delete_confirmation') }
+    end
   end
 
   show do

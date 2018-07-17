@@ -15,7 +15,6 @@ RSpec.shared_examples_for 'image_concern' do
     end
 
     context 'is not valid' do
-
       it 'if it is not the image format' do
         subject.image.purge
         subject.image.attach(

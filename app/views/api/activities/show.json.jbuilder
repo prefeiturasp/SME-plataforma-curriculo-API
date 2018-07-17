@@ -2,7 +2,7 @@ json.sequence @activity.sequence
 json.title @activity.title
 json.estimated_time @activity.estimated_time
 json.environment @activity.environment
-json.partial! "api/images/image", image_param: @activity.image, sizes: [:large, :extra_large]
+json.partial! 'api/images/image', image_param: @activity.image, sizes: %i[large extra_large]
 
 json.next_activity @activity.next_activity.try(:slug)
 json.last_activity @activity.last_activity.try(:slug)

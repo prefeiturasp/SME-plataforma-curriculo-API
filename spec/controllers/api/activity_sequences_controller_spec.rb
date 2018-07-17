@@ -100,14 +100,16 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
   describe 'GET #show' do
     let(:activity) { create :activity }
     let(:sustainable_development_goal) { create :sustainable_development_goal }
-    let(:activity_sequence) { create :activity_sequence,
-      activity_ids: [ activity.id ], 
-      sustainable_development_goal_ids: [sustainable_development_goal.id]
-    }
+    let(:axis) { create :axis }
+    let(:activity_sequence) do
+      create :activity_sequence,
+             activity_ids: [activity.id],
+             axis_ids: [axis.id]
+    end
 
     context 'returns http no content' do
       it 'returns no content' do
-        get :show, params: { slug: 'invalid-slug'}
+        get :show, params: { slug: 'invalid-slug' }
 
         expect(response).to be_successful
         expect(response).to have_http_status(:no_content)
@@ -190,6 +192,16 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
         expect(response_body['activities'][0]['image_attributes']).to be_present
         expect(response_body['activities'][0]['title']).to be_present
         expect(response_body['activities'][0]['estimated_time']).to be_present
+      end
+
+      it 'return valid axes JSON' do
+        get :show, params: { slug: activity_sequence.slug }
+
+        expect(response_body['axes']).to be_present
+        expect(response_body['axes'][0]['id']).to be_present
+        expect(response_body['axes'][0]['description']).to be_present
+        expect(response_body['axes'][0]['curricular_component']).to be_present
+        expect(response_body['axes'][0]['year']).to be_present
       end
     end
   end

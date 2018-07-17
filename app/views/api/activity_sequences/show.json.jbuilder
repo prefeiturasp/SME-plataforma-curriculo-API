@@ -28,16 +28,23 @@ json.sustainable_development_goals @activity_sequence.sustainable_development_go
   json.id sds.id
   json.name sds.name
   json.icon_url variant_url(sds.icon, :icon)
-  json.sub_icon_url variant_url(sds.sub_icon, :icon) #TODO verify size
+  json.sub_icon_url variant_url(sds.sub_icon, :icon) # TODO: verify size
 end
 
 json.books @activity_sequence.books
-json.partial! "api/images/image", image_param: @activity_sequence.image, sizes: [:large, :extra_large]
+json.partial! 'api/images/image', image_param: @activity_sequence.image, sizes: %i[large extra_large]
 json.presentation_text @activity_sequence.presentation_text
 
 json.activities @activity_sequence.activities do |activity|
   json.slug activity.slug
   json.title activity.title
   json.estimated_time activity.estimated_time
-  json.partial! "api/images/image", image_param: activity.image, sizes: [:small, :extra_small]
+  json.partial! 'api/images/image', image_param: activity.image, sizes: %i[small extra_small]
+end
+
+json.axes @activity_sequence.axes do |axis|
+  json.id axis.id
+  json.description axis.description
+  json.curricular_component axis.curricular_component
+  json.year t("activerecord.attributes.enums.years.#{axis.year}")
 end

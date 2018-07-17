@@ -56,8 +56,9 @@ pt-BR:
         updated_at: "Atualizado em"
       activity_sequence:
         activities: "Atividades"
+        axes: "Eixos"
         id: "Identificador"
-        books: "Livros"
+        books: "Referências"
         curricular_components: "Componentes Curriculares relacionados"
         estimated_time: "Tempo estimado(aulas)"
         image: "Imagem"
@@ -450,17 +451,13 @@ pt-BR:
         one: 'Não foi possível gravar %{model}: 1 erro'
         other: 'Não foi possível gravar %{model}: %{count} erros'
   helpers:
-    submit:
-      inscription:
-        create: "Nova inscrição"
-        cancel: "Cancelar"
     placeholder:
-      availability:
-        jury_duration: "Duração da banca"
-        attendance_capacity: "Capacidade de atendimento"
+      activity_sequence:
+        books: "Indique livros, filmes, links, etc"
     select:
       prompt: Por favor selecione
       prompt_main_curricular: Selecione um componente curricular principal
+      prompt_year_and_main_curricular: Selecione um ano e componente curricular principal
       prompt_none_learning_objectives: "A sequência não possui objetivos de aprendizagem"
     submit:
       create: Confirmar %{model}

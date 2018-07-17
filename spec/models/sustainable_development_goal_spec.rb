@@ -8,10 +8,6 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
     it 'has and belongs to many learning objectives' do
       should have_and_belong_to_many(:learning_objectives)
     end
-
-    it 'has and belongs to many activity sequences' do
-      should have_and_belong_to_many(:activity_sequences)
-    end
   end
 
   describe 'Validations' do
@@ -54,7 +50,6 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
         expect(subject).to_not be_valid
       end
 
-
       it 'without a sub icon' do
         subject.sub_icon.purge
 
@@ -73,7 +68,6 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
 
         expect(new_subject).to_not be_valid
       end
-
 
       it 'if the sequence already exists' do
         subject.save

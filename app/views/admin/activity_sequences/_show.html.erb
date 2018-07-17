@@ -9,7 +9,9 @@
       ActivitySequence.human_enum_name(:year, activity_sequence.year, true)
     end
     row :main_curricular_component
-    row :books
+    row :books do |activity_sequence|
+      raw(activity_sequence.books)
+    end
     row :estimated_time
     row :status do |activity_sequence|
       ActivitySequence.human_enum_name(:status, activity_sequence.status)
@@ -21,6 +23,12 @@
       table_for activity_sequence.curricular_components do
         column :name
       end
+    end
+  end
+
+  panel I18n.t('activerecord.attributes.activity_sequence.axes') do
+    table_for activity_sequence.axes do
+      column :description
     end
   end
 
@@ -56,12 +64,13 @@
         if Rails.env.development?
           span link_to t('helpers.links.show'), admin_activity_sequence_activity_path(activity_sequence, activity)
         else
-          span link_to t('helpers.links.show'), preview_path(activity_sequence.slug, activity.slug), target: :_blank
+          span link_to t('helpers.links.show'), activity_preview_path(activity_sequence.slug, activity.slug), target: :_blank
         end
         span link_to t('helpers.links.edit'),edit_admin_activity_sequence_activity_path(activity_sequence, activity)
         span link_to t('helpers.links.destroy'),
           admin_activity_sequence_activity_path(activity_sequence, activity),
-          method: :delete
+          method: :delete,
+          data: { confirm: t('active_admin.delete_confirmation') }
       end
     end
   end

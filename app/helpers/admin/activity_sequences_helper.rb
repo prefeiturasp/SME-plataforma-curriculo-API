@@ -1,15 +1,32 @@
 module Admin
   module ActivitySequencesHelper
-    def learning_objectives_collection(main_curricular_component_id)
-      learning_objectives = LearningObjective.where(curricular_component_id: main_curricular_component_id)
+    def learning_objectives_collection(main_curricular_component_id, year)
+      learning_objectives = LearningObjective.where(
+        curricular_component_id: main_curricular_component_id,
+        year: year
+      )
       learning_objectives.collect do |lo|
-        [lo.code, lo.id, {title: lo.description}]
+        [lo.code, lo.id, { title: lo.description }]
+      end
+    end
+
+    def axes_collection(activity_sequence)
+      if activity_sequence.learning_objectives.present?
+        axes = Axis.where(
+          curricular_component_id: activity_sequence.main_curricular_component.id,
+          year: activity_sequence.year)
+
+        axes.collect do |a|
+          [a.description, a.id, { title: a.description }]
+        end
+      else
+        [ [t('helpers.select.prompt_year_and_main_curricular'), nil, {style: "display: none;"} ] ]
       end
     end
 
     def knowledge_matrices_collection
       KnowledgeMatrix.all.order('sequence ASC').collect do |km|
-        [km.sequence_and_title, km.id]
+        [km.sequence_and_title, km.id, { title: km.sequence_and_title }]
       end
     end
 

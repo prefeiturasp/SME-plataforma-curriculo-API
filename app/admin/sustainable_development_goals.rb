@@ -54,9 +54,9 @@ ActiveAdmin.register SustainableDevelopmentGoal do
       f.input :icon, required: true, as: :file
       f.input :sub_icon, required: true, as: :file
       f.input :sequence,
-        as: :select,
-        collection: sequence_options(SustainableDevelopmentGoal),
-        selected: sustainable_development_goal.sequence.present? ? sustainable_development_goal.sequence : sequence_options(SustainableDevelopmentGoal).last
+              as: :select,
+              collection: sequence_options(SustainableDevelopmentGoal),
+              selected: sustainable_development_goal.sequence.present? ? sustainable_development_goal.sequence : sequence_options(SustainableDevelopmentGoal).last
       f.input :name
       f.input :description
       f.input :color, as: :color

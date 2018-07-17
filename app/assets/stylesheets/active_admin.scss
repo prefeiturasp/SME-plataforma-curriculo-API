@@ -31,3 +31,10 @@
   color: #06c !important;
   text-shadown: none;
 }
+
+.choices-group {
+  max-height: 250px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}

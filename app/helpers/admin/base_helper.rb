@@ -17,7 +17,7 @@ module Admin
     end
 
     def human_attribute_environments
-      Activity.environments.map { |k,_v| [I18n.t("activerecord.attributes.enums.environments.#{k}"), k] }
+      Activity.environments.map { |k, _v| [I18n.t("activerecord.attributes.enums.environments.#{k}"), k] }
     end
 
     def human_attribute_roadmap_statuses
@@ -39,12 +39,20 @@ module Admin
       activity_sequence = activity.activity_sequence
       learning_objectives = activity_sequence.learning_objectives
       learning_objectives.collect do |lo|
-        [lo.code, lo.id, {title: lo.description}]
+        [lo.code, lo.id, { title: lo.description }]
       end
     end
 
-    def preview_path(activity_sequence_slug, activity_slug)
-      "#{ENV['HTTP_STAGING_URL']}/sequencia/#{activity_sequence_slug}/atividade/#{activity_slug}"
+    def activity_sequence_preview_path(activity_sequence_slug)
+      "#{ENV['HTTP_STAGING_URL']}/sequencia/#{activity_sequence_slug}"
+    end
+
+    def activity_preview_path(activity_sequence_slug, activity_slug)
+      activity_sequence_preview_path(activity_sequence_slug) << "/atividade/#{activity_slug}"
+    end
+
+    def books_toolbar_options
+      [['link']]
     end
 
   end

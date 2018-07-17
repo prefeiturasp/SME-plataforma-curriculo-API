@@ -12,11 +12,11 @@
     f.input :activity_sequence, as: :hidden
     f.input :environment, as: :select, collection: human_attribute_environments
     f.input :activity_types, as: :select
-    f.input :curricular_components, as: :select, input_html: { multiple: true }
+    f.input :curricular_components, as: :check_boxes, input_html: { multiple: true }
     f.input :learning_objectives,
             as: :check_boxes,
             collection:
-            learning_objectives_activity_collection(activity).present? ? learning_objectives_activity_collection(activity) : [ t('helpers.select.prompt_none_learning_objectives'), nil ],
+            learning_objectives_activity_collection(activity).present? ? learning_objectives_activity_collection(activity) : [ [t('helpers.select.prompt_none_learning_objectives'), nil, {style: "display: none;"}] ],
             input_html: {
               multiple: true
             }

@@ -3,17 +3,15 @@ class ActivitySequence < ApplicationRecord
   include ImageConcern
   include YearsEnum
   belongs_to :main_curricular_component, class_name: 'CurricularComponent'
-  has_and_belongs_to_many :sustainable_development_goals
   has_and_belongs_to_many :knowledge_matrices
   has_and_belongs_to_many :learning_objectives
   has_and_belongs_to_many :axes
-  has_many :activities, -> { order 'sequence' }
+  has_many :activities, -> { order 'sequence' }, dependent: :destroy
 
   enum status: { draft: 0, published: 1 }
 
   validates :title, presence: true, uniqueness: true
   validates :presentation_text, presence: true
-  validates :estimated_time, presence: true
   validates :year, presence: true
   validates :status, presence: true
   validates :learning_objectives, presence: true
@@ -22,6 +20,8 @@ class ActivitySequence < ApplicationRecord
   friendly_id :title, use: %i[slugged finders]
 
   accepts_nested_attributes_for :activities, allow_destroy: true
+
+  default_scope { order(title: :asc) }
 
   def should_generate_new_friendly_id?
     title_changed? || super
@@ -39,11 +39,20 @@ class ActivitySequence < ApplicationRecord
 
   def curricular_components
     CurricularComponent.joins(activities: :activity_sequence)
-      .where(
-        activities: {
-          activity_sequence_id:  id
-        }
-      )
+                       .where(
+                         activities: {
+                           activity_sequence_id: id
+                         }
+                       )
+  end
+
+  def sustainable_development_goals
+    SustainableDevelopmentGoal.joins(:learning_objectives)
+                              .where(
+                                learning_objectives: {
+                                  id: learning_objective_ids
+                                }
+                              )
   end
 
   def self.all_or_with_year(years = nil)
@@ -64,16 +73,19 @@ class ActivitySequence < ApplicationRecord
     return all unless params[:axis_ids]
     joins(:axes).where(
       axes: {
-        id: params[:axis_ids]
+        id: params[:axis_ids],
+        year: params[:years]
       }
     )
   end
 
   def self.all_or_with_sustainable_development_goal(params = {})
     return all unless params[:sustainable_development_goal_ids]
-    joins(:sustainable_development_goals).where(
-      sustainable_development_goals: {
-        id: params[:sustainable_development_goal_ids]
+    joins(learning_objectives: :sustainable_development_goals).where(
+      learning_objectives: {
+        sustainable_development_goals: {
+          id: params[:sustainable_development_goal_ids]
+        }
       }
     )
   end
