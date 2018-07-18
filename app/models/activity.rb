@@ -8,7 +8,6 @@ class Activity < ApplicationRecord
   has_and_belongs_to_many :learning_objectives
 
   validates :title, presence: true, uniqueness: true
-  validates :estimated_time, presence: true
   validates :content, presence: true
   validates :slug, presence: true
 
