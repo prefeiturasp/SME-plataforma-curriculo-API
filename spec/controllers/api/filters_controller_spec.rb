@@ -108,15 +108,15 @@ RSpec.describe Api::FiltersController, type: :controller do
 
       context 'with optional params' do
         before do
-          create :learning_objective, year: axis.year, curricular_component_id: curricular_component.id
         end
 
         let(:curricular_component) { create :curricular_component }
-        let(:axis) { create :axis, year: :second, curricular_component_id: curricular_component.id }
+        let(:learning_objective) { create :learning_objective, curricular_component_id: curricular_component.id }
+        let(:axis) { create :axis, curricular_component_id: curricular_component.id }
 
         let(:params) do
           {
-            years: [axis.year],
+            years: [learning_objective.year],
             curricular_component_slugs: [curricular_component.slug]
           }
         end

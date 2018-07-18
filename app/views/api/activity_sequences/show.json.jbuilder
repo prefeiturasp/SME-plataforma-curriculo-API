@@ -46,5 +46,4 @@ json.axes @activity_sequence.axes do |axis|
   json.id axis.id
   json.description axis.description
   json.curricular_component axis.curricular_component
-  json.year t("activerecord.attributes.enums.years.#{axis.year}")
 end
