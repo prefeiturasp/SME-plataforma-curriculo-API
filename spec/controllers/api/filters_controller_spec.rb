@@ -107,12 +107,9 @@ RSpec.describe Api::FiltersController, type: :controller do
       end
 
       context 'with optional params' do
-        before do
-        end
-
         let(:curricular_component) { create :curricular_component }
         let(:learning_objective) { create :learning_objective, curricular_component_id: curricular_component.id }
-        let(:axis) { create :axis, curricular_component_id: curricular_component.id }
+        let!(:axis) { create :axis, curricular_component_id: curricular_component.id }
 
         let(:params) do
           {
