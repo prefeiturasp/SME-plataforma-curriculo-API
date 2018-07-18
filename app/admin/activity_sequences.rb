@@ -30,11 +30,10 @@ ActiveAdmin.register ActivitySequence do
 
   collection_action :change_axes, method: :get do
     axes = Axis.where(
-      year: params[:year],
       curricular_component_id: params[:main_curricular_component_id]
     )
 
-    data = axes.pluck(:id, :description, :description)
+    data = axes.pluck(:id, :description)
     render json: data
   end
 

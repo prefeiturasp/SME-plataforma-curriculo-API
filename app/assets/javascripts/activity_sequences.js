@@ -5,7 +5,7 @@ $(document).ready(function(){
     var row_content = body[0].getElementsByClassName('row-books');
     var td = row_content[0].getElementsByTagName("td")[0]
     var content = td.innerHTML;
-    
+
     var obj = JSON.parse(content);
     var html_content = quillGetHTML(obj)
     td.innerHTML = html_content
@@ -24,29 +24,23 @@ $(document).ready(function(){
 
 function fill_axes(){
   main_curricular_component_id = $('#activity_sequence_main_curricular_component_id').val();
-  year = $('#activity_sequence_year').val();
-
   url = '/admin/activity_sequences/change_axes'
 
   params = {
-    main_curricular_component_id: main_curricular_component_id,
-    year: year
+    main_curricular_component_id: main_curricular_component_id
   }
 
   parent = $('#activity_sequence_axes_input ol');
-  if (main_curricular_component_id && year) {
+  if (main_curricular_component_id) {
     $.get(url, params, function getAxes(res){
       if (res.length === 0){
         parent = $('#activity_sequence_axes_input ol');
-        fillTextOnChecKBoxes(parent, 'Nenhum eixo foi encontrado para o ano e componente selecionados.');
+        fillTextOnChecKBoxes(parent, 'Nenhum eixo foi encontrado para o componente selecionados.');
       } else {
         parent = $('#activity_sequence_axes_input ol');
         create_check_box_list('activity_sequence', 'axis_ids', res, parent);
       }
     });
-  } else if (year) {
-    parent = $('#activity_sequence_axes_input ol');
-    fillTextOnChecKBoxes(parent, 'Selecione um componente curricular');
   } else{
     parent = $('#activity_sequence_axes_input ol');
     fillTextOnChecKBoxes(parent, 'Selecione um ano e um componente curricular');
