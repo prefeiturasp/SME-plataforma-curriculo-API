@@ -14,6 +14,8 @@ class SustainableDevelopmentGoal < ApplicationRecord
   validate :sub_icon?
   validate :sub_icon_valid?
 
+  default_scope -> { order('sequence') }
+
   accepts_nested_attributes_for :goals, allow_destroy: true
 
   def sequence_and_name
