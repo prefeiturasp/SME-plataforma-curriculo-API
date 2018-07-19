@@ -41,7 +41,7 @@ $(document).ready(function(){
 function fillCheckBoxes(path, parent, ids, model) {
   url = '/admin/activity_sequences/' + path
   $.get(url, {}, function(res) {
-        onGetResponse(res, parent, ids, model);
+    onGetResponse(res, parent, ids, model);
   })
 }
 
