@@ -50,6 +50,12 @@ RSpec.describe LearningObjective, type: :model do
         expect(subject).to_not be_valid
       end
 
+      it "with duplicated code" do
+        create :learning_objective, code: "123"
+        subject.code = '123'
+        expect(subject).to_not be_valid
+      end
+
       it 'without a curricular component' do
         subject.curricular_component_id = nil
 
