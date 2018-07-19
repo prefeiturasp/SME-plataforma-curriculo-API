@@ -183,8 +183,8 @@ RSpec.describe ActivitySequence, type: :model do
     end
 
     context 'with axes' do
-      let(:axis) { create :axis, year: :second }
-      let(:params) { { axis_ids: axis.id, years: :second } }
+      let(:axis) { create :axis }
+      let(:params) { { axis_ids: axis.id } }
       let(:response) { ActivitySequence.all_or_with_axes(params) }
 
       it 'return all with none params' do
@@ -193,25 +193,13 @@ RSpec.describe ActivitySequence, type: :model do
         expect(all_response).to eq(response)
       end
 
-      it 'include if contains axis and year' do
-        a = create :activity_sequence, axis_ids: [axis.id]
-
-        expect(response).to include(a)
-      end
-
       it 'not include different axis id' do
-        axis_2 = create :axis, year: :second
+        axis_2 = create :axis
         a = create :activity_sequence, axis_ids: [axis_2.id]
 
         expect(response).to_not include(a)
       end
 
-      it 'not include different year' do
-        axis_2 = create :axis, year: :first
-        a = create :activity_sequence, axis_ids: [axis_2.id]
-
-        expect(response).to_not include(a)
-      end
     end
 
     context 'with sustainable development goal' do

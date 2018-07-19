@@ -24,9 +24,8 @@ module Api
     end
 
     def fetch_axes
-      return if params[:years].blank? && params[:curricular_component_slugs].blank?
-      @axes = Axis.all_or_with_year(params[:years])
-                  .all_or_with_curricular_component(params[:curricular_component_slugs])
+      return if params[:curricular_component_slugs].blank?
+      @axes = Axis.all_or_with_curricular_component(params[:curricular_component_slugs])
     end
 
     def fetch_learning_objectives

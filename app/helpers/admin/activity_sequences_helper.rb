@@ -12,9 +12,7 @@ module Admin
 
     def axes_collection(activity_sequence)
       if activity_sequence.learning_objectives.present?
-        axes = Axis.where(
-          curricular_component_id: activity_sequence.main_curricular_component.id,
-          year: activity_sequence.year)
+        axes = Axis.where(curricular_component_id: activity_sequence.main_curricular_component.id)
 
         axes.collect do |a|
           [a.description, a.id, { title: a.description }]

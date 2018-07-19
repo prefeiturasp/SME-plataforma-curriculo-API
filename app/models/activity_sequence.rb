@@ -73,8 +73,7 @@ class ActivitySequence < ApplicationRecord
     return all unless params[:axis_ids]
     joins(:axes).where(
       axes: {
-        id: params[:axis_ids],
-        year: params[:years]
+        id: params[:axis_ids]
       }
     )
   end

@@ -25,12 +25,6 @@ RSpec.describe Axis, type: :model do
         expect(subject).to_not be_valid
       end
 
-      it 'without a year' do
-        subject.year = nil
-
-        expect(subject).to_not be_valid
-      end
-
       it 'if the description already exists' do
         subject.save
         subject.reload
@@ -78,30 +72,6 @@ RSpec.describe Axis, type: :model do
         create :axis, curricular_component_id: new_curricular.id
 
         expect(response).to_not include(new_curricular.axes.first)
-      end
-    end
-
-    context 'with year' do
-      let(:params)   { { year: :second } }
-      let(:response) { Axis.all_or_with_year(params[:year]) }
-
-      it 'return all with none params' do
-        params = nil
-        response = Axis.all_or_with_year(params)
-
-        expect(all_response).to eq(response)
-      end
-
-      it 'include' do
-        a = create :axis,
-                   year: :second
-        expect(response).to include(a)
-      end
-
-      it 'not include' do
-        a = create :axis,
-                   year: :third
-        expect(response).to_not include(a)
       end
     end
   end

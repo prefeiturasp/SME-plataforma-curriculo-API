@@ -201,7 +201,6 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
         expect(response_body['axes'][0]['id']).to be_present
         expect(response_body['axes'][0]['description']).to be_present
         expect(response_body['axes'][0]['curricular_component']).to be_present
-        expect(response_body['axes'][0]['year']).to be_present
       end
     end
   end
