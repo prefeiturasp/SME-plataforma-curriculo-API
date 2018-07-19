@@ -50,7 +50,7 @@ function fill_axes(){
     $.get(url, params, function getAxes(res){
       if (res.length === 0){
         parent = $('#activity_sequence_axes_input ol');
-        fillTextOnChecKBoxes(parent, 'Nenhum eixo foi encontrado para o componente selecionados.');
+        fillTextOnChecKBoxes(parent, 'Nenhum eixo foi encontrado para o componente selecionado.');
       } else {
         parent = $('#activity_sequence_axes_input ol');
         create_check_box_list('activity_sequence', 'axis_ids', res, parent);
@@ -58,7 +58,7 @@ function fill_axes(){
     });
   } else{
     parent = $('#activity_sequence_axes_input ol');
-    fillTextOnChecKBoxes(parent, 'Selecione um ano e um componente curricular');
+    fillTextOnChecKBoxes(parent, 'Selecione um componente curricular');
   }
 }
 
