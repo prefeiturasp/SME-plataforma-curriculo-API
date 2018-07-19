@@ -51,8 +51,8 @@ RSpec.describe LearningObjective, type: :model do
       end
 
       it "with duplicated code" do
-        create :learning_objective, code: "123"
-        subject.code = '123'
+        create :learning_objective, code: subject.code
+
         expect(subject).to_not be_valid
       end
 
