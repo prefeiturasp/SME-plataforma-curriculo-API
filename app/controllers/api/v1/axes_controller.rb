@@ -51,7 +51,6 @@ module Api
       def axis_params
         params.require(:axis).permit(
           :description,
-          :year,
           :curricular_component_id
         )
       end
