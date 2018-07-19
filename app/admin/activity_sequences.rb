@@ -65,11 +65,8 @@ ActiveAdmin.register ActivitySequence do
       ActivitySequence.human_enum_name(:status, activity_sequence.status)
     end
     column do |activity_sequence|
-      if Rails.env.development?
-        span link_to t('helpers.links.show'), admin_activity_sequence_path(activity_sequence)
-      else
-        span link_to t('helpers.links.show'), activity_sequence_preview_path(activity_sequence.slug), target: :_blank
-      end
+      span link_to t('helpers.links.show'), admin_activity_sequence_path(activity_sequence)
+      span link_to t('helpers.links.preview'), activity_sequence_preview_path(activity_sequence.slug), target: :_blank
       span link_to t('helpers.links.edit'),edit_admin_activity_sequence_path(activity_sequence)
       span link_to t('helpers.links.destroy'),
         admin_activity_sequence_path(activity_sequence),
