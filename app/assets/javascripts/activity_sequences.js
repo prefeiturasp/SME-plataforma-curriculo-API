@@ -38,59 +38,55 @@ $(document).ready(function(){
   })
 });
 
-function fill_axes(){
-  main_curricular_component_id = $('#activity_sequence_main_curricular_component_id').val();
-  url = '/admin/activity_sequences/change_axes'
-
-  params = {
-    main_curricular_component_id: main_curricular_component_id
-  }
-
-  parent = $('#activity_sequence_axes_input ol');
-  if (main_curricular_component_id) {
-    $.get(url, params, function getAxes(res){
-      if (res.length === 0){
-        parent = $('#activity_sequence_axes_input ol');
-        fillTextOnChecKBoxes(parent, 'Nenhum eixo foi encontrado para o componente selecionado.');
-      } else {
-        parent = $('#activity_sequence_axes_input ol');
-        create_check_box_list('activity_sequence', 'axis_ids', res, parent);
-      }
-    });
-  } else{
-    parent = $('#activity_sequence_axes_input ol');
-    fillTextOnChecKBoxes(parent, 'Selecione um componente curricular');
-  }
+function fillCheckBoxes(path, params, parent, ids, model) {
+  url = '/admin/activity_sequences/' + path
+  $.get(url, params, function getAxes(res){
+    if (res.length === 0){
+      fillTextOnChecKBoxes(parent, 'Nenhum ' + model + ' foi encontrado para o componente selecionado.');
+    } else {
+      create_check_box_list('activity_sequence', ids, res, parent);
+    }
+  });
 }
 
-function fillLearningObjectives(){
+function fill_axes(){
+  parent = $('#activity_sequence_axes_input ol');
+  main_curricular_component_id = $('#activity_sequence_main_curricular_component_id').val();
+  if (!main_curricular_component_id) {
+    fillTextOnChecKBoxes(parent, 'Selecione um componente curricular');
+    return
+  }
+  params = { main_curricular_component_id: main_curricular_component_id }
+  fillCheckBoxes('change_axes',
+                 params,
+                 parent,
+                 'axis_ids',
+                 'eixo')
+}
+
+function fillLearningObjectives() {
+  parent = $('#activity_sequence_learning_objectives_input ol');
   main_curricular_component_id = $('#activity_sequence_main_curricular_component_id').val();
   year = $('#activity_sequence_year').val();
 
-  url = '/admin/activity_sequences/change_learning_objectives'
+  if (!main_curricular_component_id) {
+    fillTextOnChecKBoxes(parent, 'Selecione um componente curricular');
+    return
+  }
+  if (!year) {
+    fillTextOnChecKBoxes(parent, 'Selecione um ano');
+    return
+  }
+
   params = {
     main_curricular_component_id: main_curricular_component_id,
     year: year
   }
-
-  parent = $('#activity_sequence_learning_objectives_input ol');
-  if (main_curricular_component_id && year) {
-    $.get(url, params, function getLearningObjectives(res){
-      if (res.length === 0){
-        parent = $('#activity_sequence_learning_objectives_input ol');
-        fillTextOnChecKBoxes(parent, 'Nenhum objetivo de aprendizagem foi encontrado para o ano e componente selecionados.');
-      } else{
-        parent = $('#activity_sequence_learning_objectives_input ol');
-        create_check_box_list('activity_sequence', 'learning_objective_ids', res, parent);
-      }
-    });
-  } else if (year) {
-    parent = $('#activity_sequence_learning_objectives_input ol');
-    fillTextOnChecKBoxes(parent, 'Selecione um componente curricular');
-  } else{
-    parent = $('#activity_sequence_learning_objectives_input ol');
-    fillTextOnChecKBoxes(parent, 'Selecione um ano e um componente curricular');
-  }
+  fillCheckBoxes('change_learning_objectives',
+                 params,
+                 parent,
+                 'learning_objective_ids',
+                 'objetivo de aprendizagem')
 }
 
 function create_check_box_list(object, method, collection, parent){
