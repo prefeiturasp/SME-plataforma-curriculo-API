@@ -11,6 +11,7 @@ $(document).ready(function(){
     td.innerHTML = html_content
   }
 
+  fill_axes();
   $('#activity_sequence_main_curricular_component_id').change(function(e) {
     fill_axes();
     fillLearningObjectives();
