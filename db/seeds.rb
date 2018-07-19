@@ -9,7 +9,8 @@ end
 
 [
   { name: 'Grupo' },
-  { name: 'Individual' }
+  { name: 'Individual' },
+  { name: 'Dupla' }
 ].each do |attributes|
   ActivityType.find_or_create_by(attributes)
 end
