@@ -52,7 +52,7 @@ class ActivitySequence < ApplicationRecord
                                 learning_objectives: {
                                   id: learning_objective_ids
                                 }
-                              ).group("sustainable_development_goals.id")
+                              ).group('sustainable_development_goals.id')
   end
 
   def self.all_or_with_year(years = nil)
