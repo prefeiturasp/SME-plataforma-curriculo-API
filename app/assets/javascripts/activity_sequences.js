@@ -38,9 +38,11 @@ $(document).ready(function(){
   })
 });
 
-function fillCheckBoxes(path, params, parent, callback) {
+function fillCheckBoxes(path, parent, ids, model) {
   url = '/admin/activity_sequences/' + path
-  $.get(url, params, callback);
+  $.get(url, {}, function(res) {
+        onGetResponse(res, parent, ids, model);
+  })
 }
 
 function fill_axes(){
@@ -50,18 +52,11 @@ function fill_axes(){
     fillTextOnChecKBoxes(parent, 'Selecione um componente curricular');
     return
   }
-  var params = { main_curricular_component_id: main_curricular_component_id }
-  var cb = function getAxes(res){
-    if (res.length === 0){
-      fillTextOnChecKBoxes(parent, 'Nenhum eixo foi encontrado para o componente selecionado.');
-    } else {
-      create_check_box_list('activity_sequence', 'axis_ids', res, parent);
-    }
-  }
-  fillCheckBoxes('change_axes',
-                 params,
+  var path = 'change_axes?main_curricular_component_id=' + main_curricular_component_id
+  fillCheckBoxes(path,
                  parent,
-                 cb)
+                 'axis_ids',
+                 'eixos')
 }
 
 function fillLearningObjectives() {
@@ -78,23 +73,19 @@ function fillLearningObjectives() {
     return
   }
 
-  var params = {
-    main_curricular_component_id: main_curricular_component_id,
-    year: year
-  }
-
-  var cb = function getLearningObjectives(res){
-    if (res.length === 0){
-      fillTextOnChecKBoxes(parent, 'Nenhum objetivo de aprendizagem foi encontrado para o componente selecionado.');
-    } else {
-      create_check_box_list('activity_sequence', 'learning_objective_ids', res, parent);
-    }
-  }
-
-  fillCheckBoxes('change_learning_objectives',
-                 params,
+  var path = 'change_learning_objectives?main_curricular_component_id=' + main_curricular_component_id + '&year=' + year
+  fillCheckBoxes(path,
                  parent,
-                 cb)
+                 'learning_objective_ids',
+                'objetivo de aprendizagem')
+}
+
+function onGetResponse(res, parent, ids, model) {
+    if (res.length === 0){
+      fillTextOnChecKBoxes(parent, 'Nenhum ' + model + ' foi encontrado para o componente selecionado.');
+    } else {
+      create_check_box_list('activity_sequence', ids, res, parent);
+    }
 }
 
 function create_check_box_list(object, method, collection, parent){
