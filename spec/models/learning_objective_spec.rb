@@ -145,12 +145,14 @@ RSpec.describe LearningObjective, type: :model do
 
       it 'include' do
         a = create :learning_objective,
+                   code: 'EF05',
                    year: :second
         expect(response).to include(a)
       end
 
       it 'not include' do
         a = create :learning_objective,
+                   code: 'EF06',
                    year: :third
         expect(response).to_not include(a)
       end
