@@ -7,7 +7,7 @@ class ActivityType < ApplicationRecord
 
   private
 
-    def check_associations(associations=%i[activities])
-      super(associations)
-    end
+  def check_associations(associations=%i[activities])
+    super(associations)
+  end
 end

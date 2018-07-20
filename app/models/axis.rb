@@ -17,7 +17,7 @@ class Axis < ApplicationRecord
 
   private
 
-    def check_associations(associations=%i[activity_sequences curricular_component])
-      super(associations)
-    end
+  def check_associations(associations=%i[activity_sequences curricular_component])
+    super(associations)
+  end
 end
