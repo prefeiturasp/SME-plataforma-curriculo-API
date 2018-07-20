@@ -71,7 +71,6 @@ function convertContentToDelta(editors){
           for(var data of delta.ops) {
             var insert = data.insert
             if (insert && insert.image) {
-              console.log('contents ', insert.image.length)
               size += insert.image.length
             }
           }
