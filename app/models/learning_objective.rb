@@ -5,6 +5,8 @@ class LearningObjective < ApplicationRecord
   has_and_belongs_to_many :activity_sequences
   has_and_belongs_to_many :activities
 
+  include DestroyValidator # has_and_belongs_to_many doesn't support dependent restrict_with_error
+
   validates :year, presence: true
   validates :description, presence: true
   validates :curricular_component, presence: true
@@ -33,4 +35,9 @@ class LearningObjective < ApplicationRecord
   def code=(value)
     super(value.to_s.upcase)
   end
+
+  private
+    def check_associations associations=%i[activity_sequences curricular_component sustainable_development_goals activities]
+      super(associations)
+    end
 end

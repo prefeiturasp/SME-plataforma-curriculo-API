@@ -1,7 +1,7 @@
 class SustainableDevelopmentGoal < ApplicationRecord
   include SequenceConcern
   has_and_belongs_to_many :learning_objectives
-  has_many :goals, dependent: :destroy
+  has_many :goals, dependent: :restrict_with_error
   has_one_attached :icon
   has_one_attached :sub_icon
 
