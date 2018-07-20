@@ -8,7 +8,7 @@ class LearningObjective < ApplicationRecord
   validates :year, presence: true
   validates :description, presence: true
   validates :curricular_component, presence: true
-  validates :code, presence: true
+  validates :code, presence: true, uniqueness: true
 
   default_scope { order(code: :asc) }
 
