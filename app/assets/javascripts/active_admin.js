@@ -64,9 +64,22 @@ function convertContentToDelta(editors){
     formtastic.onsubmit = function() {
       for( var i = 0; i < editors.length; i++ ) {
         var input = editors[i].querySelector( 'input[type="hidden"]' );
-
         delta = editors[i]['_quill-editor'].getContents();
         input.value = JSON.stringify(delta);
+        var size = 0
+        if (delta.ops) {
+          for(var data of delta.ops) {
+            var insert = data.insert
+            if (insert && insert.image) {
+              console.log('contents ', insert.image.length)
+              size += insert.image.length
+            }
+          }
+        }
+        if ((size/1024/1024) >= 5) {
+          alert("A soma do tamanho das imagens cadastradas supera o limite de 5mb. \nPor favor substitua as imagens por outras de menor tamanho")
+          return false;
+        }
       }
     };
   }
