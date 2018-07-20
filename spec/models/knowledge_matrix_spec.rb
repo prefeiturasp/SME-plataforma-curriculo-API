@@ -50,5 +50,28 @@ RSpec.describe KnowledgeMatrix, type: :model do
       end
     end
   end
+
+  describe '#destroy' do
+    let(:subject) { create :knowledge_matrix }
+
+    context 'if has no activity_sequences' do
+      before do
+        subject.destroy
+      end
+
+      it { expect(subject.errors[:activity_sequences]).to_not include(I18n.t('activerecord.errors.messages.restrict_dependent_destroy.has_many', record: ActivitySequence.model_name.human)) }
+    end
+
+    context 'if has activity_sequences' do
+      before do
+        create :activity_sequence, knowledge_matrix_ids: [subject.id]
+      end
+
+      it 'not valid' do
+        subject.destroy
+        expect(subject.errors[:activity_sequences]).to include(I18n.t('activerecord.errors.messages.restrict_dependent_destroy.has_many', record: ActivitySequence.model_name.human))
+      end
+    end
+  end
   it_behaves_like 'sequence_concern_spec'
 end

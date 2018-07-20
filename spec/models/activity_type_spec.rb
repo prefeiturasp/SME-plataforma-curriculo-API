@@ -31,4 +31,29 @@ RSpec.describe ActivityType, type: :model do
       end
     end
   end
+
+  describe '#destroy' do
+    let(:subject) { create :activity_type }
+
+    context "without activities" do
+      before do
+        subject.destroy
+      end
+
+      it 'returns no errors' do
+        expect(subject.errors[:activities]).to_not include(I18n.t('activerecord.errors.messages.restrict_dependent_destroy.has_many', record: Activity.model_name.human))
+      end
+    end
+
+    context "with activities" do
+      before do
+        create :activity, activity_type_ids: [subject.id]
+      end
+
+      it 'returns errors' do
+        subject.destroy
+        expect(subject.errors[:activities]).to include(I18n.t('activerecord.errors.messages.restrict_dependent_destroy.has_many', record: Activity.model_name.human))
+      end
+    end
+  end
 end

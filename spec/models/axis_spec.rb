@@ -61,7 +61,6 @@ RSpec.describe Axis, type: :model do
         it 'not valid' do
           subject.destroy
           expect(subject.errors[:activity_sequences]).to include(I18n.t('activerecord.errors.messages.restrict_dependent_destroy.has_many', record: ActivitySequence.model_name.human))
-          expect(subject.reload.id).to eq(subject.id)
         end
       end
     end
