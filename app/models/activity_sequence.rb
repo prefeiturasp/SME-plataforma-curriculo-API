@@ -34,7 +34,7 @@ class ActivitySequence < ApplicationRecord
        .all_or_with_sustainable_development_goal(params)
        .all_or_with_knowledge_matrices(params)
        .all_or_with_learning_objectives(params)
-       .all_or_with_activity_types(params)
+       .all_or_with_activity_types(params).group('activity_sequences.id')
   end
 
   def curricular_components
