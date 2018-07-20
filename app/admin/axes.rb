@@ -8,7 +8,7 @@ ActiveAdmin.register Axis do
     def destroy
       @axis = Axis.find(params[:id])
       flash[:error] = @axis.errors.full_messages.join(',') unless @axis.destroy
-      redirect_to :action => :index
+      redirect_to action: :index
     end
   end
 
