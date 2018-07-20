@@ -10,6 +10,8 @@
 // Active Admin's got SASS!
 @import "active_admin/mixins";
 @import "active_admin/base";
+@import "quill.sme.css";
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i");
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
