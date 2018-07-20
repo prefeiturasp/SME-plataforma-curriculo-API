@@ -1,3 +1,5 @@
+* { color: black; }
+
 .ql-editor {
   font-family: 'Open Sans';
   font-size: 1.125rem;
@@ -48,8 +50,8 @@
   border: 0;
   border-radius: 0.25rem;
   font-style: italic;
-  margin-top: 2.1875rem; 
-  margin-bottom: 2.1875rem; 
+  margin-top: 2.1875rem;
+  margin-bottom: 2.1875rem;
   padding: 1.25rem;
 }
 
@@ -68,4 +70,14 @@
   content: '\2013';
   display: inline-block;
   margin-right: 0.25rem;
+}
+
+#activity_content {
+  display: inline-block;
+  width: calc(80% - 22px);
+}
+
+.ql-editor {
+  background: #FFF;
+  height: 150px;
 }
