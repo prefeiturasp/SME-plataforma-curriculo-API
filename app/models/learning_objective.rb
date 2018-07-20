@@ -37,6 +37,7 @@ class LearningObjective < ApplicationRecord
   end
 
   private
+
     def check_associations associations=%i[activity_sequences curricular_component sustainable_development_goals activities]
       super(associations)
     end

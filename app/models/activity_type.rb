@@ -6,6 +6,7 @@ class ActivityType < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   private
+
     def check_associations associations=%i[activities]
       super(associations)
     end

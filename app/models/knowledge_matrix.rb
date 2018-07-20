@@ -12,7 +12,9 @@ class KnowledgeMatrix < ApplicationRecord
   def sequence_and_title
     "#{sequence} - #{title}"
   end
+
   private
+
     def check_associations associations=%i[activity_sequences]
       super(associations)
     end
