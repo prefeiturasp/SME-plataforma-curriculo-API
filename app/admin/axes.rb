@@ -4,6 +4,14 @@ ActiveAdmin.register Axis do
 
   config.filters = false
 
+  controller do
+    def destroy
+      @axis = Axis.find(params[:id])
+      flash[:error] = @axis.errors.full_messages.join(',') unless @axis.destroy
+      redirect_to :action => :index
+    end
+  end
+
   form do |f|
     f.inputs do
       f.input :description
