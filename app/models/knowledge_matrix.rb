@@ -15,7 +15,7 @@ class KnowledgeMatrix < ApplicationRecord
 
   private
 
-    def check_associations associations=%i[activity_sequences]
+    def check_associations(associations=%i[activity_sequences])
       super(associations)
     end
 end
