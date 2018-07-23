@@ -63,22 +63,21 @@ function convertContentToDelta(editors){
   if( formtastic ) {
     formtastic.onsubmit = function() {
       for( var i = 0; i < editors.length; i++ ) {
-        var input = editors[i].querySelector( 'input[type="hidden"]' );
-        delta = editors[i]['_quill-editor'].getContents();
-        input.value = JSON.stringify(delta);
-        if (delta.ops) {
-          var size = checkFileSize(delta.ops)
-          if ((size/1024/1024) >= 5) {
-            alert("A soma do tamanho das imagens cadastradas supera o limite de 5mb. \nPor favor substitua as imagens por outras de menor tamanho")
-            return false;
-          }
-        };
+        var editor = editors[i];
+        var delta = editor['_quill-editor'].getContents();
+        if (validFileSize(delta.ops)) {
+          var input = editors[i].querySelector( 'input[type="hidden"]' );
+          input.value = JSON.stringify(delta);
+        } else {
+          alert("A soma do tamanho das imagens cadastradas supera o limite de 5mb. \nPor favor substitua as imagens por outras de menor tamanho")
+          return false;
+        }
       }
     };
   }
 }
 
-function checkFileSize(inserts) {
+function validFileSize(inserts) {
   var size = 0
   for(var data of inserts) {
     var insert = data.insert
@@ -86,7 +85,7 @@ function checkFileSize(inserts) {
       size += insert.image.length;
     }
   }
-  return size;
+  return ((size/1024/1024) < 5)
 }
 
 function getDefaultOptions(){
