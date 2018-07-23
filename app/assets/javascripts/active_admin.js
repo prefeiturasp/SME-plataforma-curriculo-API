@@ -66,22 +66,27 @@ function convertContentToDelta(editors){
         var input = editors[i].querySelector( 'input[type="hidden"]' );
         delta = editors[i]['_quill-editor'].getContents();
         input.value = JSON.stringify(delta);
-        var size = 0
         if (delta.ops) {
-          for(var data of delta.ops) {
-            var insert = data.insert
-            if (insert && insert.image) {
-              size += insert.image.length
-            }
+          var size = checkFileSize(delta.ops)
+          if ((size/1024/1024) >= 5) {
+            alert("A soma do tamanho das imagens cadastradas supera o limite de 5mb. \nPor favor substitua as imagens por outras de menor tamanho")
+            return false;
           }
-        }
-        if ((size/1024/1024) >= 5) {
-          alert("A soma do tamanho das imagens cadastradas supera o limite de 5mb. \nPor favor substitua as imagens por outras de menor tamanho")
-          return false;
-        }
+        };
       }
     };
   }
+}
+
+function checkFileSize(inserts) {
+  var size = 0
+  for(var data of inserts) {
+    var insert = data.insert
+    if (insert && insert.image) {
+      size += insert.image.length;
+    }
+  }
+  return size;
 }
 
 function getDefaultOptions(){
