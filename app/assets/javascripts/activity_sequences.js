@@ -21,21 +21,6 @@ $(document).ready(function(){
     fill_axes();
     fillLearningObjectives();
   });
-
-  $('.formtastic').on('submit', function(){
-    var fd = new FormData(this);
-    var size = 0;
-    for(var pair of fd.entries()) {
-      if (pair[1] instanceof Blob)
-        size += pair[1].size;
-      else
-        size += pair[1].length;
-    }
-    if ((size/1024/1024) >= 5) {
-      alert("A soma do tamanho das imagens cadastradas supera o limite de 5mb. \nPor favor substitua as imagens por outras de menor tamanho")
-      return false;
-    }
-  })
 });
 
 function fillCheckBoxes(path, parent, ids, model) {

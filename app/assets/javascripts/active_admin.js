@@ -18,7 +18,12 @@ window.onload = function() {
   for( var i = 0; i < editors.length; i++ ) {
     initializeQuillEditor(editors[i]);
   }
-  convertContentToDelta(editors);
+  var formtastic = document.querySelector( 'form.formtastic' );
+  if( formtastic ) {
+    formtastic.onsubmit = function() {
+      return convertContentToDelta(editors);
+    };
+  }
   setToolbar();
 };
 
@@ -59,17 +64,27 @@ function addHrDividerOnEditor(quill) {
 }
 
 function convertContentToDelta(editors){
-  var formtastic = document.querySelector( 'form.formtastic' );
-  if( formtastic ) {
-    formtastic.onsubmit = function() {
-      for( var i = 0; i < editors.length; i++ ) {
-        var input = editors[i].querySelector( 'input[type="hidden"]' );
-
-        delta = editors[i]['_quill-editor'].getContents();
-        input.value = JSON.stringify(delta);
-      }
-    };
+  for( var i = 0; i < editors.length; i++ ) {
+    var delta = editors[i]['_quill-editor'].getContents();
+    if (!delta.ops || validFileSize(delta.ops)) {
+      var input = editors[i].querySelector( 'input[type="hidden"]' );
+      input.value = JSON.stringify(delta);
+    } else {
+      alert("A soma do tamanho das imagens cadastradas supera o limite de 5mb. \nPor favor substitua as imagens por outras de menor tamanho");
+      return false;
+    }
   }
+};
+
+function validFileSize(inserts) {
+  var size = 0;
+  for(var data of inserts) {
+    var insert = data.insert;
+    if (insert && insert.image) {
+      size += insert.image.length;
+    }
+  }
+  return ((size/1024/1024) < 5);
 }
 
 function getDefaultOptions(){
