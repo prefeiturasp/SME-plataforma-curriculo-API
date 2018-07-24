@@ -22,7 +22,7 @@ window.onload = function() {
   if( formtastic ) {
     formtastic.onsubmit = function() {
       return convertContentToDelta(editors);
-    }
+    };
   }
   setToolbar();
 };
@@ -77,14 +77,14 @@ function convertContentToDelta(editors){
 };
 
 function validFileSize(inserts) {
-  var size = 0
+  var size = 0;
   for(var data of inserts) {
-    var insert = data.insert
+    var insert = data.insert;
     if (insert && insert.image) {
       size += insert.image.length;
     }
   }
-  return ((size/1024/1024) < 5)
+  return ((size/1024/1024) < 5);
 }
 
 function getDefaultOptions(){
