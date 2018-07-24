@@ -10,13 +10,15 @@
 // Active Admin's got SASS!
 @import "active_admin/mixins";
 @import "active_admin/base";
+@import "quill.snow";
+@import "quill.sme";
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i");
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
 
-@import 'activeadmin/quill_editor_input';
 
 .ql-divider {
   width: 55px !important;

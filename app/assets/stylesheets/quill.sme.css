@@ -1,0 +1,83 @@
+* { color: black; }
+
+.ql-editor {
+  font-family: 'Open Sans';
+  font-size: 1.125rem;
+  line-height: 1.35rem;
+}
+
+.ql-editor img {
+  width: 100%;
+}
+
+.ql-editor a,
+.ql-editor a:hover {
+  color: black;
+}
+
+.ql-editor p {
+  margin-bottom: 1rem;
+}
+
+.ql-editor h1,
+.ql-editor h2,
+.ql-editor h3,
+.ql-editor h4 {
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+.ql-editor h1:first-child,
+.ql-editor h2:first-child,
+.ql-editor h3:first-child,
+.ql-editor h4:first-child {
+  margin-top: 0;
+}
+
+.ql-editor h1 { font-size: 1.875rem; margin-bottom: 2rem; }
+.ql-editor h2 { font-size: 1.3125rem; }
+.ql-editor h3 { font-size: 1.125rem; }
+.ql-editor h4 { font-size: 1rem; }
+
+.ql-editor hr {
+  border: 0;
+  border-bottom: 1px solid #e0e0e0;
+  margin: 2rem 0;
+}
+
+.ql-editor blockquote {
+  background-color: #e0e0e0;
+  border: 0;
+  border-radius: 0.25rem;
+  font-style: italic;
+  margin-top: 2.1875rem;
+  margin-bottom: 2.1875rem;
+  padding: 1.25rem;
+}
+
+.ql-editor ol,
+.ql-editor ul {
+  list-style-position: inside;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.ql-editor li {
+  margin-bottom: 0.5rem;
+}
+
+.ql-editor ul li:before {
+  content: '\2013';
+  display: inline-block;
+  margin-right: 0.25rem;
+}
+
+#activity_content {
+  display: inline-block;
+  width: calc(80% - 22px);
+}
+
+.ql-editor {
+  background: #FFF;
+  height: 150px;
+}
