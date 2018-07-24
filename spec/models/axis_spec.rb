@@ -39,6 +39,31 @@ RSpec.describe Axis, type: :model do
         expect(invalid_subject).to_not be_valid
       end
     end
+
+    describe '#destroy' do
+      let(:subject) { create :axis }
+
+      context 'if has curricular component' do
+        before do
+          subject.destroy
+        end
+
+        it 'not valid' do
+          expect(subject.errors[:curricular_component]).to include(I18n.t('activerecord.errors.messages.restrict_dependent_destroy.has_one', record: CurricularComponent.model_name.human))
+        end
+      end
+
+      context 'if has activity_sequences' do
+        before do
+          create :activity_sequence, axis_ids: [subject.id]
+        end
+
+        it 'not valid' do
+          subject.destroy
+          expect(subject.errors[:activity_sequences]).to include(I18n.t('activerecord.errors.messages.restrict_dependent_destroy.has_many', record: ActivitySequence.model_name.human))
+        end
+      end
+    end
   end
 
   describe 'Queries' do
