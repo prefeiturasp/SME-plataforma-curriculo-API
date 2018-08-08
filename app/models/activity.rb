@@ -55,7 +55,7 @@ class Activity < ApplicationRecord
     content_json = JSON.parse(content)
     content_json['ops'].each do |c|
       base_64 = c['insert']['image']
-      next if base_64.blank? || base_64&.include?('/rails/active_storage/blobs/')
+      next if base_64.blank? || !base_64.is_a?(Hash) || base_64&.include?('/rails/active_storage/blobs/')
       c['insert']['image'] = base64_to_url(base_64)
     end
 
