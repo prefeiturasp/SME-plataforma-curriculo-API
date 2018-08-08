@@ -116,7 +116,7 @@ class Activity < ApplicationRecord
     self.content = content_json.to_json
   end
 
-  def invalid_image? base_64
+  def invalid_image?(base_64)
     base_64.blank? || !base_64.is_a?(Hash) || base_64&.include?('/rails/active_storage/blobs/')
   end
 
