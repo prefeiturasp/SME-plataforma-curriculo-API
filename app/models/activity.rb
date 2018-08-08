@@ -50,18 +50,6 @@ class Activity < ApplicationRecord
     title_changed? || super
   end
 
-  def change_format_content_images
-    return nil if content.blank?
-    content_json = JSON.parse(content)
-    content_json['ops'].each do |c|
-      base_64 = c['insert']['image']
-      next if base_64.blank? || !base_64.is_a?(Hash) || base_64&.include?('/rails/active_storage/blobs/')
-      c['insert']['image'] = base64_to_url(base_64)
-    end
-
-    self.content = content_json.to_json
-  end
-
   def base64_to_url(base_64)
     file_properties = base64_to_file(base_64)
     attached_image = attach_content_image(
@@ -115,6 +103,22 @@ class Activity < ApplicationRecord
   end
 
   private
+
+  def change_format_content_images
+    return nil if content.blank?
+    content_json = JSON.parse(content)
+    content_json['ops'].each do |c|
+      base_64 = c['insert']['image']
+      next if invalid_image?(base_64)
+      c['insert']['image'] = base64_to_url(base_64)
+    end
+
+    self.content = content_json.to_json
+  end
+
+  def invalid_image? base_64
+    base_64.blank? || !base_64.is_a?(Hash) || base_64&.include?('/rails/active_storage/blobs/')
+  end
 
   def update_sequences
     return if valid_sequence?
