@@ -50,8 +50,8 @@ class Activity < ApplicationRecord
     title_changed? || super
   end
 
-  def base64_to_url(base_64)
-    file_properties = base64_to_file(base_64)
+  def base64_to_url(uri_parts)
+    file_properties = base64_to_file(uri_parts)
     attached_image = attach_content_image(
       file_properties[:filename],
       file_properties[:content_type],
@@ -61,10 +61,7 @@ class Activity < ApplicationRecord
     get_image_url(attached_image)
   end
 
-  def base64_to_file(base_64)
-    regex = %r{\Adata:([-\w]+\/[-\w\+\.]+)?;base64,(.*)}m
-
-    data_uri_parts = base_64.match(regex) || []
+  def base64_to_file(data_uri_parts)
     content_type = data_uri_parts[1]
     base_64_image = data_uri_parts[2]
     extension = Rack::Mime::MIME_TYPES.invert[content_type]
@@ -108,16 +105,18 @@ class Activity < ApplicationRecord
     return nil if content.blank?
     content_json = JSON.parse(content)
     content_json['ops'].each do |c|
-      base_64 = c['insert']['image']
-      next if invalid_image?(base_64)
-      c['insert']['image'] = base64_to_url(base_64)
+      uri_parts = extract_image(c['insert']['image'])
+      next if uri_parts.blank?
+      c['insert']['image'] = base64_to_url(uri_parts)
     end
 
     self.content = content_json.to_json
   end
 
-  def invalid_image?(base_64)
-    base_64.blank? || !base_64.is_a?(Hash) || base_64&.include?('/rails/active_storage/blobs/')
+  def extract_image(base_64)
+    return if base_64.blank? || base_64&.include?('/rails/active_storage/blobs/')
+    regex = %r{\Adata:([-\w]+\/[-\w\+\.]+)?;base64,(.*)}m
+    base_64.match(regex) || []
   end
 
   def update_sequences
