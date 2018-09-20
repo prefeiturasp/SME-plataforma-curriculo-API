@@ -45,7 +45,7 @@ nosso [código de conduta](./CODEOFCONDUCT.md).
 
 ## Instalação
 
-System Dependencies
+Dependências do sistema
 -------------------
 
 - CentOS 7
@@ -55,37 +55,40 @@ System Dependencies
 - Bundler (`gem install bundler`)
 - PostgreSQL
 
-Running with Docker
+Funcionamento do Docker
 ---------------------------
 
-This project comes equipped to be run within Docker, but this requires a few more local dependencies. For instructions on installing and getting started with Docker go [here](https://www.docker.com/products/docker) and you need [`docker-compose`](https://docs.docker.com/compose/overview/).
+Este projeto vem equipado para ser executado dentro do Docker, mas isso requer algumas dependêcias locais. Para instruções de instalação e outras duvidas sobre o Docker acesse [here](https://www.docker.com/products/docker) e [`docker-compose`](https://docs.docker.com/compose/overview/).
 
-### Development
+### Desenvolvimento
 
+É necessário definir paramêtros de banco de dados no ambiente de desenvolvimento
 Is necessary define database and secrets parameters on development environment.
-- First copy `config/database.yml.example` to `config/database.yml`
-- Copy `config/secrets.yml.example` to `config/secrets.yml`
-- Copy `.docker-env-dev.example` to `.docker-env-dev` and set environment variables, make sure that all environment variables have been defined.
+- Copie `config/database.yml.example` para `config/database.yml`
+- Copie`config/secrets.yml.example` para `config/secrets.yml`
+- Copie `.docker-env-dev.example` para `.docker-env-dev` e defina as variáveis de ambiente, certificando que todas estão definidas corretamente.
 
-Run the docker build for create database and build your application
+Execute o build do docker para criar o banco de dados e criar o seu aplicativo
 
 `$ docker-compose build app_development`
 
-After all the dependencies are installed and the project is built, run the application
+Depois que todas as dependências estiverem instaladas e o projeto foi criado, execute o aplicativo
 
 `$ docker-compose up app_development`
 
-After setting up, you can run the application and dependencies using [docker-compose]:
+Após a configuração, você pode executar o aplicativo e as dependências usando [docker-compose]:
 
 `$ docker-compose up app_development`
 
-Your Docker host is running on `localhost:3000` then you should be able to use
+Seu host do docker está sendo executado em `localhost:3000` 
 
-### Production
+### Producão
+
+Primeiro, você precisará configurar as variáveis de ambiente no seu docker-compose, 
 
 On first you'll need set environment variables on your docker-compose, make sure that all environment variables have been defined below:
 
-- Rails application environment variables (production environment):
+- Variáveis de ambiente do aplicativo rails (production environment):
 ```
     APPLICATION_ROOT_PATH
     PLATAFORMA_USERNAME
@@ -93,7 +96,7 @@ On first you'll need set environment variables on your docker-compose, make sure
     PLATAFORMA_PASSWORD
     PLATAFORMA_HOST
 ```
-- Database:
+- Banco de dados:
 ```
     POSTGRES_USER
     POSTGRES_PASSWORD
