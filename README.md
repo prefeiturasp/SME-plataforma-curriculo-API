@@ -62,17 +62,16 @@ Este projeto vem equipado para ser executado dentro do Docker, mas isso requer a
 
 ### Desenvolvimento
 
-É necessário definir paramêtros de banco de dados no ambiente de desenvolvimento
-Is necessary define database and secrets parameters on development environment.
+É necessário definir paramêtros de banco de dados no ambiente de desenvolvimento.
 - Copie `config/database.yml.example` para `config/database.yml`
 - Copie`config/secrets.yml.example` para `config/secrets.yml`
 - Copie `.docker-env-dev.example` para `.docker-env-dev` e defina as variáveis de ambiente, certificando que todas estão definidas corretamente.
 
-Execute o build do docker para criar o banco de dados e criar o seu aplicativo
+Execute o docker build para criar o banco de dados e criar o seu aplicativo:
 
 `$ docker-compose build app_development`
 
-Depois que todas as dependências estiverem instaladas e o projeto foi criado, execute o aplicativo
+Depois que todas as dependências estiverem instaladas e o projeto foi criado, execute o aplicativo:
 
 `$ docker-compose up app_development`
 
@@ -84,11 +83,10 @@ Seu host do docker está sendo executado em `localhost:3000`
 
 ### Producão
 
-Primeiro, você precisará configurar as variáveis de ambiente no seu docker-compose, 
+Primeiro, você precisará configurar as variáveis de ambiente no seu docker-compose.
+Certifique-se que todas as variáveis abaixo foram definidas.
 
-On first you'll need set environment variables on your docker-compose, make sure that all environment variables have been defined below:
-
-- Variáveis de ambiente do aplicativo rails (production environment):
+- Variáveis de ambiente do aplicativo rails (ambiente de produção):
 ```
     APPLICATION_ROOT_PATH
     PLATAFORMA_USERNAME
@@ -103,61 +101,59 @@ On first you'll need set environment variables on your docker-compose, make sure
     POSTGRES_DB
 ```
 
-Deploy with capistrano
+Deploy com capistrano
 ---------------------------
 
-Use Capistrano for deploy, there are some configuration files that are required. See the list below:
+Use o Capistrano para deploy, mas configure alguns arquivos necessários antes:
 
-* Create a nginx.conf on `<shared_path>/docker/web/nginx.conf`. In the same folder there is a sample file.
+* Crie uma nginx.conf em `<shared_path>/docker/web/nginx.conf`. Na mesma pasta há um arquivo de amostra.
 
-* Create a docker-compose file on `<shared_path>/docker-compose.yml`. Get the docker-compose.yml file on root application and make your environment variables.
-  - Rails application environment variables (production environment):
+* Crie um arquivo docker-compose em `<shared_path>/docker-compose.yml`. Pegue o arquivo docker-compose.yml no aplicativo raiz e crie suas variáveis de ambiente.
+  - Variaveis de ambiente do Rails (ambiente de produção):
 ```
       PLATAFORMA_USERNAME
       PLATAFORMA_DATABASE
       PLATAFORMA_PASSWORD
       PLATAFORMA_HOST
 ```
-  - Database:
+  - banco de dados:
 ```
       POSTGRES_USER
       POSTGRES_PASSWORD
       POSTGRES_DB
 ```
 
-* In the shared folder `<shared_path>/config`, create the configuration files needed to run rails (master.key, database.yml, storage.yml, secrets.yml ).
+* Na pasta compartilhada `<shared_path>/config`, crie os arquivos de configuração necessários para executar o rails (master.key, database.yml, storage.yml, secrets.yml ).
 
-* Install the [Docker](https://www.docker.com/products/docker) and [`docker-compose`](https://docs.docker.com/compose/overview/) on the server that deploy will be performed.
+* Instale o [Docker](https://www.docker.com/products/docker) e [`docker-compose`](https://docs.docker.com/compose/overview/) no servidor que irá executar o deploy.
 
-Run the `cap <environment> deploy:check` command to verify that all dependencies have been created.
+Execute o `cap <environment> deploy:check` para verificar se todas as dependências foram criadas.
 
-If all the configuration files were created, run the command above to deploy the application, create the docker build, and upload the container.
+Se todos os arquivos de configuração foram criados, execute o comando acima para deploy da aplicação, crie o docker build, e carregue o container.
 
 `$ cap <environment> deploy `
 
-If it is the first run run the commands below to create and run the database migrations.
+Se for a primeira execução, execute os comandos abaixo para criar e executar as migrações do banco de dados.
 
-  `$ cap <environment> docker:setup_db`
+`$ cap <environment> docker:setup_db`
   `$ cap <environment> docker:migrate`
 
-Tools
+Ferramentas
 ---------------------------
 
-* Run the test suite
+* Execute o seguinte teste 
 
 ```ruby
     $ rspec
 ```
 
-*  Run the ruby static code analyzer
+* Execute o analisador de código estático do ruby
 
-This project uses rubocop gem to ruby static code analyzer, to run the analysis
+Este projeto usa o rubocop gem para o analisador de código estático do ruby executar a análise
 
 ```console
     $ rubocop
 ```
-
-
 ---
 
 Baseado no Readme do [i-educar](https://github.com/portabilis/i-educar)
