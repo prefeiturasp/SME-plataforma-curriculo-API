@@ -1,5 +1,10 @@
 ActiveAdmin.register ActivitySequence do
   config.sort_order = 'title_asc'
+  config.filters = true
+
+  filter :title
+  filter :presentation_text
+  filter :main_curricular_component
 
   action_item :new, only: :show do
     link_to t('helpers.links.preview'), activity_sequence_preview_path(activity_sequence.slug), target: :_blank
