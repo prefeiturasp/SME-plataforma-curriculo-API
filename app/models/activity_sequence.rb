@@ -43,7 +43,7 @@ class ActivitySequence < ApplicationRecord
                          activities: {
                            activity_sequence_id: id
                          }
-                       )
+                       ).group('curricular_components.id')
   end
 
   def sustainable_development_goals
