@@ -1,51 +1,10 @@
+SME-plataforma-curriculo-API
+=====
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/ba5de8ada9b8fffe5bc2/maintainability)](https://codeclimate.com/github/prefeiturasp/SME-plataforma-curriculo-API/maintainability)
 
-# Pátio Digital
 
-_“Recurso público retorna ao público”._
-
-Nós somos o **pátio digital**, uma iniciativa da Secretaria Municipal de Educação de São Paulo que, por meio do fortalecimento da transparência, da participação social e do desenvolvimento de novas tecnologias, aproxima diferentes grupos da sociedade civil por um objetivo maior: a melhoria da educação na cidade de São Paulo. 
-
-# Plataforma Currículo Digital
-
-## Conteúdo
-
-1. [Sobre o curriculo digital](#sobre-o-curriculo-digital)
-2. [Comunicação](#comunicação)
-3. [Como contribuir](#como-contribuir)
-4. [Instalação](#instalação)
-
-## Sobre o Curriculo Digital
-
-Para que docentes e comunidade tenham acesso as orientações didáticas e materiais de apoio propostos nas escolas Municipais da Cidade de São Paulo atraves de uma platafoma informatizada, a Secretária Municipal de educação, por meio da iniciativa de governo aberto [Pátio Digital](http://patiodigital.prefeitura.sp.gov.br/), está em processo de implantação digital do curriculo da cidade.
-
-
-### Nossos outros repositórios
-
-1. [Plataforma curriculo](https://github.com/prefeiturasp/SME-plataforma-curriculo-interface)
-2. [Plataforma curriculo API](https://github.com/prefeiturasp/SME-plataforma-curriculo)
-
-## Comunicação
-
-| Canal de comunicação | Objetivos |
-|----------------------|-----------|
-| [Issues do Github](https://github.com/prefeiturasp/SME-plataforma-curriculo-API/issues) | - Sugestão de novas funcionalidades<br> - Reportar bugs<br> - Discussões técnicas |
-| [Telegram](https://t.me/patiodigital ) | - Comunicar novidades sobre os projetos<br> - Movimentar a comunidade<br>  - Falar tópicos que **não** demandem discussões profundas |
-
-Qualquer outro grupo de discussão não é reconhecido oficialmente.
-
-## Como contribuir
-
-Contribuições são **super bem vindas**! Se você tem vontade de construir o
-curriculo digital conosco, veja o nosso [guia de contribuição](./CONTRIBUTING.md)
-onde explicamos detalhadamente como trabalhamos e de que formas você pode nos
-ajudar a alcançar nossos objetivos. Lembrando que todos devem seguir 
-nosso [código de conduta](./CODEOFCONDUCT.md).
-
-## Instalação
-
-Dependências do sistema
+System Dependencies
 -------------------
 
 - CentOS 7
@@ -55,38 +14,37 @@ Dependências do sistema
 - Bundler (`gem install bundler`)
 - PostgreSQL
 
-Funcionamento do Docker
+Running with Docker
 ---------------------------
 
-Este projeto vem equipado para ser executado dentro do Docker, mas isso requer algumas dependêcias locais. Para instruções de instalação e outras duvidas sobre o Docker acesse [here](https://www.docker.com/products/docker) e [`docker-compose`](https://docs.docker.com/compose/overview/).
+This project comes equipped to be run within Docker, but this requires a few more local dependencies. For instructions on installing and getting started with Docker go [here](https://www.docker.com/products/docker) and you need [`docker-compose`](https://docs.docker.com/compose/overview/).
 
-### Desenvolvimento
+### Development
 
-É necessário definir paramêtros de banco de dados no ambiente de desenvolvimento.
-- Copie `config/database.yml.example` para `config/database.yml`
-- Copie`config/secrets.yml.example` para `config/secrets.yml`
-- Copie `.docker-env-dev.example` para `.docker-env-dev` e defina as variáveis de ambiente, certificando que todas estão definidas corretamente.
+Is necessary define database and secrets parameters on development environment.
+- First copy `config/database.yml.example` to `config/database.yml`
+- Copy `config/secrets.yml.example` to `config/secrets.yml`
+- Copy `.docker-env-dev.example` to `.docker-env-dev` and set environment variables, make sure that all environment variables have been defined.
 
-Execute o docker build para criar o banco de dados e criar o seu aplicativo:
+Run the docker build for create database and build your application
 
 `$ docker-compose build app_development`
 
-Depois que todas as dependências estiverem instaladas e o projeto foi criado, execute o aplicativo:
+After all the dependencies are installed and the project is built, run the application
 
 `$ docker-compose up app_development`
 
-Após a configuração, você pode executar o aplicativo e as dependências usando [docker-compose]:
+After setting up, you can run the application and dependencies using [docker-compose]:
 
 `$ docker-compose up app_development`
 
-Seu host do docker está sendo executado em `localhost:3000` 
+Your Docker host is running on `localhost:3000` then you should be able to use
 
-### Producão
+### Production
 
-Primeiro, você precisará configurar as variáveis de ambiente no seu docker-compose.
-Certifique-se que todas as variáveis abaixo foram definidas.
+On first you'll need set environment variables on your docker-compose, make sure that all environment variables have been defined below:
 
-- Variáveis de ambiente do aplicativo rails (ambiente de produção):
+- Rails application environment variables (production environment):
 ```
     APPLICATION_ROOT_PATH
     PLATAFORMA_USERNAME
@@ -94,66 +52,63 @@ Certifique-se que todas as variáveis abaixo foram definidas.
     PLATAFORMA_PASSWORD
     PLATAFORMA_HOST
 ```
-- Banco de dados:
+- Database:
 ```
     POSTGRES_USER
     POSTGRES_PASSWORD
     POSTGRES_DB
 ```
 
-Deploy com capistrano
+Deploy with capistrano
 ---------------------------
 
-Use o Capistrano para deploy, mas configure alguns arquivos necessários antes:
+Use Capistrano for deploy, there are some configuration files that are required. See the list below:
 
-* Crie uma nginx.conf em `<shared_path>/docker/web/nginx.conf`. Na mesma pasta há um arquivo de amostra.
+* Create a nginx.conf on `<shared_path>/docker/web/nginx.conf`. In the same folder there is a sample file.
 
-* Crie um arquivo docker-compose em `<shared_path>/docker-compose.yml`. Pegue o arquivo docker-compose.yml no aplicativo raiz e crie suas variáveis de ambiente.
-  - Variaveis de ambiente do Rails (ambiente de produção):
+* Create a docker-compose file on `<shared_path>/docker-compose.yml`. Get the docker-compose.yml file on root application and make your environment variables.
+  - Rails application environment variables (production environment):
 ```
       PLATAFORMA_USERNAME
       PLATAFORMA_DATABASE
       PLATAFORMA_PASSWORD
       PLATAFORMA_HOST
 ```
-  - banco de dados:
+  - Database:
 ```
       POSTGRES_USER
       POSTGRES_PASSWORD
       POSTGRES_DB
 ```
 
-* Na pasta compartilhada `<shared_path>/config`, crie os arquivos de configuração necessários para executar o rails (master.key, database.yml, storage.yml, secrets.yml ).
+* In the shared folder `<shared_path>/config`, create the configuration files needed to run rails (master.key, database.yml, storage.yml, secrets.yml ).
 
-* Instale o [Docker](https://www.docker.com/products/docker) e [`docker-compose`](https://docs.docker.com/compose/overview/) no servidor que irá executar o deploy.
+* Install the [Docker](https://www.docker.com/products/docker) and [`docker-compose`](https://docs.docker.com/compose/overview/) on the server that deploy will be performed.
 
-Execute o `cap <environment> deploy:check` para verificar se todas as dependências foram criadas.
+Run the `cap <environment> deploy:check` command to verify that all dependencies have been created.
 
-Se todos os arquivos de configuração foram criados, execute o comando acima para deploy da aplicação, crie o docker build, e carregue o container.
+If all the configuration files were created, run the command above to deploy the application, create the docker build, and upload the container.
 
 `$ cap <environment> deploy `
 
-Se for a primeira execução, execute os comandos abaixo para criar e executar as migrações do banco de dados.
+If it is the first run run the commands below to create and run the database migrations.
 
-`$ cap <environment> docker:setup_db`
+  `$ cap <environment> docker:setup_db`
   `$ cap <environment> docker:migrate`
 
-Ferramentas
+Tools
 ---------------------------
 
-* Execute o seguinte teste 
+* Run the test suite
 
 ```ruby
     $ rspec
 ```
 
-* Execute o analisador de código estático do ruby
+*  Run the ruby static code analyzer
 
-Este projeto usa o rubocop gem para o analisador de código estático do ruby executar a análise
+This project uses rubocop gem to ruby static code analyzer, to run the analysis
 
 ```console
     $ rubocop
 ```
----
-
-Baseado no Readme do [i-educar](https://github.com/portabilis/i-educar)
