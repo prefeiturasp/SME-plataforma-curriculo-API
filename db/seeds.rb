@@ -1,9 +1,9 @@
 # encoding: utf-8
 # rubocop:disable Style/AsciiComments
 if Rails.env.development?
-  admin = User.find_or_create_by(email: 'admin@jurema.la')
+  admin = User.find_or_create_by(email: '')
   admin.password = 'senhasegura'
-  admin.password_confirmation = 'senhasegura'
+  admin.password_confirmation = ''
   admin.save
 end
 
