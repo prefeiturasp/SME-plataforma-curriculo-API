@@ -24,7 +24,6 @@ module Api
     end
 
     def fetch_axes
-      return if params[:curricular_component_slugs].blank?
       @axes = Axis.all_or_with_curricular_component(params[:curricular_component_slugs])
     end
 
