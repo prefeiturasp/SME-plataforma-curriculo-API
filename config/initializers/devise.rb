@@ -280,4 +280,28 @@ Devise.setup do |config|
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
+
+  # SAML configurations
+  config.saml_create_user = true
+  config.saml_update_user = true
+  config.saml_default_user_key = :email
+  config.saml_session_index_key = :session_index
+  config.saml_use_subject = true
+  config.idp_settings_adapter = nil
+
+  config.saml_configure do |settings|
+
+    settings.assertion_consumer_service_url = "#{ENV['SAML_CALLBACK_ADDRESS']}/users/saml/auth"
+    settings.issuer = "#{ENV['SAML_CALLBACK_ADDRESS']}/users/saml/metadata"
+    # settings.assertion_consumer_service_binding = "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+    # settings.name_identifier_format             = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient"
+    # settings.authn_context                      = ""
+
+    settings.idp_entity_id = ENV['SAML_ISSUER_URL']
+    settings.idp_sso_target_url = ENV['SAML_SSO_AUTH_URL']
+    settings.idp_slo_target_url = ENV['SAML_SLO_AUTH_URL']
+    settings.idp_cert_fingerprint = ENV['SAML_CERT_FINGERPRINT']
+    settings.idp_cert_fingerprint_algorithm = ENV['SAML_SAML_CERT_FINGERPRINT_ALGORITHM']
+  end
+
 end
