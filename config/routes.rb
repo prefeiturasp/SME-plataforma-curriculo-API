@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   ActiveAdmin.routes(self)
 
-  root :to => 'welcome#index'
+  root :to => 'rails/welcome#index'
 
   namespace :api, defaults: { format: 'json' } do
     get 'filtros', to: 'filters#index'
