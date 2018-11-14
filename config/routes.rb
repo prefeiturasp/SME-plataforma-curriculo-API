@@ -24,6 +24,9 @@ Rails.application.routes.draw do
       resources :roadmaps
       resources :sustainable_development_goals
       resources :knowledge_matrices
+      resources :teachers do
+        post :avatar, action: :avatar
+      end
     end
 
     match "*path", to: "errors#catch_404", via: :all
