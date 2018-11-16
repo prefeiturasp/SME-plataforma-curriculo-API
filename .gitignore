@@ -27,7 +27,7 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 /config/credentials.yml.enc
-config/initializers/secret_token.rb
+/config/initializers/secret_token.rb
 
 /tmp
 /vendor
@@ -36,4 +36,5 @@ config/initializers/secret_token.rb
 .ruby-gemset
 .docker-env-dev
 /config/secrets.yml
+/config/database.yml
 ._*
