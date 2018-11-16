@@ -5,7 +5,7 @@
 
 _“Recurso público retorna ao público”._
 
-Nós somos o **pátio digital**, uma iniciativa da Secretaria Municipal de Educação de São Paulo que, por meio do fortalecimento da transparência, da participação social e do desenvolvimento de novas tecnologias, aproxima diferentes grupos da sociedade civil por um objetivo maior: a melhoria da educação na cidade de São Paulo. 
+Nós somos o **pátio digital**, uma iniciativa da Secretaria Municipal de Educação de São Paulo que, por meio do fortalecimento da transparência, da participação social e do desenvolvimento de novas tecnologias, aproxima diferentes grupos da sociedade civil por um objetivo maior: a melhoria da educação na cidade de São Paulo.
 
 # Plataforma Currículo Digital
 
@@ -28,10 +28,10 @@ Para que docentes e comunidade tenham acesso as orientações didáticas e mater
 
 ## Comunicação
 
-| Canal de comunicação | Objetivos |
-|----------------------|-----------|
-| [Issues do Github](https://github.com/prefeiturasp/SME-plataforma-curriculo-API/issues) | - Sugestão de novas funcionalidades<br> - Reportar bugs<br> - Discussões técnicas |
-| [Telegram](https://t.me/patiodigital ) | - Comunicar novidades sobre os projetos<br> - Movimentar a comunidade<br>  - Falar tópicos que **não** demandem discussões profundas |
+| Canal de comunicação                                                                    | Objetivos                                                                                                                            |
+| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| [Issues do Github](https://github.com/prefeiturasp/SME-plataforma-curriculo-API/issues) | - Sugestão de novas funcionalidades<br> - Reportar bugs<br> - Discussões técnicas                                                    |
+| [Telegram](https://t.me/patiodigital )                                                  | - Comunicar novidades sobre os projetos<br> - Movimentar a comunidade<br>  - Falar tópicos que **não** demandem discussões profundas |
 
 Qualquer outro grupo de discussão não é reconhecido oficialmente.
 
@@ -40,7 +40,7 @@ Qualquer outro grupo de discussão não é reconhecido oficialmente.
 Contribuições são **super bem vindas**! Se você tem vontade de construir o
 curriculo digital conosco, veja o nosso [guia de contribuição](./CONTRIBUTING.md)
 onde explicamos detalhadamente como trabalhamos e de que formas você pode nos
-ajudar a alcançar nossos objetivos. Lembrando que todos devem seguir 
+ajudar a alcançar nossos objetivos. Lembrando que todos devem seguir
 nosso [código de conduta](./CODEOFCONDUCT.md).
 
 ## Instalação
@@ -63,23 +63,40 @@ Este projeto vem equipado para ser executado dentro do Docker, mas isso requer a
 ### Desenvolvimento
 
 É necessário definir paramêtros de banco de dados no ambiente de desenvolvimento.
-- Copie `config/database.yml.example` para `config/database.yml`
-- Copie`config/secrets.yml.example` para `config/secrets.yml`
+- Copie `config/database.example.yml` para `config/database.yml`
+```bash
+$ cp config/database.example.yml config/database.yml
+```
+
+- Copie `config/secrets.example.yml` para `config/secrets.yml`
+```bash
+$ cp config/secrets.example.yml config/secrets.yml
+```
+
 - Copie `.docker-env-dev.example` para `.docker-env-dev` e defina as variáveis de ambiente, certificando que todas estão definidas corretamente.
+```bash
+$ cp .docker-env-dev.example .docker-env-dev
+```
 
 Execute o docker build para criar o banco de dados e criar o seu aplicativo:
 
-`$ docker-compose build app_development`
+```bash
+$ docker-compose build app_development
+```
 
 Depois que todas as dependências estiverem instaladas e o projeto foi criado, execute o aplicativo:
 
-`$ docker-compose up app_development`
+```bash
+$ docker-compose up app_development
+```
 
 Após a configuração, você pode executar o aplicativo e as dependências usando [docker-compose]:
 
-`$ docker-compose up app_development`
+```bash
+$ docker-compose up app_development
+```
 
-Seu host do docker está sendo executado em `localhost:3000` 
+Seu host do docker está sendo executado em `localhost:3000`
 
 ### Producão
 
@@ -141,7 +158,7 @@ Se for a primeira execução, execute os comandos abaixo para criar e executar a
 Ferramentas
 ---------------------------
 
-* Execute o seguinte teste 
+* Execute o seguinte teste
 
 ```ruby
     $ rspec
