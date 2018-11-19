@@ -1,5 +1,21 @@
 class User < ApplicationRecord
-  devise :saml_authenticatable, :database_authenticatable, :recoverable,
+  devise :database_authenticatable, :recoverable,
          :rememberable, :trackable
+
+  include DeviseTokenAuth::Concerns::User
+
+  devise :omniauthable, omniauth_providers: [:saml]
+
+  def self.from_omniauth(auth)
+    Rails.logger.debug("*"*80)
+    Rails.logger.debug(auth)
+    Rails.logger.debug("*"*80)
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.provider = auth.provider
+      user.uid = auth.uid
+      user.email = auth.uid
+      user.password = Devise.friendly_token[0,20]
+    end
+  end
 
 end
