@@ -36,7 +36,7 @@ module SMEPlataformaCurriculoApi
     config.middleware.use Rack::MethodOverride
     config.middleware.use ActionDispatch::Flash
 
-    config.session_store :cookie_store, key: '_interslice_session'
+    config.session_store :cookie_store
     config.middleware.use ActionDispatch::Cookies
     config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
 

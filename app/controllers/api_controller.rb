@@ -2,6 +2,8 @@ class ApiController < ActionController::API
   helper ApplicationHelper
   rescue_from ActionController::RoutingError, with: :render_not_found
   rescue_from ActiveRecord::RecordNotFound, with: :render_no_content
+  include DeviseTokenAuth::Concerns::SetUserByToken
+  before_action :skip_set_cookies_header
 
   protected
 
@@ -18,5 +20,9 @@ class ApiController < ActionController::API
     @message = exception
 
     render '/api/errors/errors', status: :no_content
+  end
+
+  def skip_set_cookies_header
+    request.session_options[:skip] = true
   end
 end

@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   # devise_for :users
-  
-  devise_for :users, :controllers => { :omniauth_callbacks => "api/v1/omniauth_callbacks" }
+
+  # devise_for :users, :controllers => { :omniauth_callbacks => "api/v1/novo_omniauth_callbacks" }
   # devise_for :users, {skip: :devise_token_auth}.merge(ActiveAdmin::Devise.config)
   
   # devise_scope :user do
@@ -29,8 +29,7 @@ Rails.application.routes.draw do
     get 'roteiros', to: 'roadmaps#index'
 
     namespace :v1 do
-      mount_devise_token_auth_for 'User', at: 'auth'
-      # mount_devise_token_auth_for 'User', at: 'auth', skip: [:omniauth_callbacks]
+      mount_devise_token_auth_for 'User', at: 'auth', :controllers => { :omniauth_callbacks => "api/v1/omniauth_callbacks" }
       resources :activities
       resources :activity_sequences
       resources :activity_types
