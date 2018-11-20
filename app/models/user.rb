@@ -1,10 +1,8 @@
 class User < ApplicationRecord
-  devise :database_authenticatable, :recoverable,
-         :rememberable, :trackable
+  devise :database_authenticatable, :recoverable, :rememberable, :trackable,
+         :omniauthable, omniauth_providers: [:saml]
 
   include DeviseTokenAuth::Concerns::User
-
-  devise :omniauthable, omniauth_providers: [:saml]
 
   def self.from_omniauth(auth)
     return unless auth
@@ -14,6 +12,11 @@ class User < ApplicationRecord
       user.email = auth.uid
       user.password = Devise.friendly_token[0,20]
     end
+  end
+
+  def send_reset_password_instructions
+    return false if provider.present? & !admin?
+    super
   end
 
 end

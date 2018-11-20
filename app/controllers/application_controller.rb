@@ -1,7 +1,5 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception, if: :verify_api
-
-  skip_before_action :verify_authenticity_token
+  protect_from_forgery with: :exception, if: :verify_not_api
 
   def authenticate_active_admin_user!
     authenticate_user!
@@ -13,7 +11,7 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def verify_api
-    params[:controller].split('/')[0] != 'devise_token_auth'
+  def verify_not_api
+    !params[:controller].split('/').include?('api')
   end
 end
