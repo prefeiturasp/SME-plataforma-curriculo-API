@@ -15,10 +15,14 @@ Rails.application.routes.draw do
     get 'ods/:id', to: 'sustainable_development_goals#show'
     get 'roteiros', to: 'roadmaps#index'
 
+    mount_devise_token_auth_for 'User',
+    at: 'auth',
+    controllers: {
+      sessions: 'api/sessions',
+      omniauth_callbacks: 'api/omniauth_callbacks'
+    }
+
     namespace :v1 do
-      mount_devise_token_auth_for 'User',
-        at: 'auth',
-        controllers: { omniauth_callbacks: 'api/v1/omniauth_callbacks' }
       resources :activities
       resources :activity_sequences
       resources :activity_types
