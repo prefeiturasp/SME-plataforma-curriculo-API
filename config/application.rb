@@ -35,8 +35,10 @@ module SMEPlataformaCurriculoApi
 
     config.middleware.use Rack::MethodOverride
     config.middleware.use ActionDispatch::Flash
+
+    config.session_store :cookie_store
     config.middleware.use ActionDispatch::Cookies
-    config.middleware.use ActionDispatch::Session::CookieStore
+    config.middleware.use ActionDispatch::Session::CookieStore, config.session_options
 
     # Config locales
     config.i18n.available_locales = [:en, :"pt-BR"]

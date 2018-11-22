@@ -1,4 +1,4 @@
-FROM ruby:2.5-alpine
+FROM ruby:2.5.1-alpine
 
 ENV LANG en_US.UTF-8 
 ENV LANGUAGE en_US:en 
