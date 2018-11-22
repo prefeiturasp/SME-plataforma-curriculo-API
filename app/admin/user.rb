@@ -18,7 +18,10 @@ ActiveAdmin.register User do
       f.input :email
       f.input :password
       f.input :password_confirmation
-      f.input :admin, as: :select, collection: [["Sim", true], ["Não", false]], selected: user.admin, include_blank: false
+      f.input :admin, as: :select,
+                      collection: [['Sim', true], ['Não', false]],
+                      selected: user.admin,
+                      include_blank: false
     end
     f.actions
   end
