@@ -1,13 +1,9 @@
 module Api
   class OmniauthCallbacksController < DeviseTokenAuth::OmniauthCallbacksController
-
     def redirect_callbacks
-      @resource = User.from_omniauth(request.env["omniauth.auth"])
+      @resource = User.from_omniauth(request.env['omniauth.auth'])
       if @resource&.persisted?
-        # preserve omniauth info for success route. ignore 'extra' in twitter
-        # auth response to avoid CookieOverflow.
-        session['dta.omniauth.auth'] = request.env['omniauth.auth'].except('extra')
-        session['dta.omniauth.params'] = request.env['omniauth.params']
+        preserve_omniauth_info
 
         omniauth_success
       else
@@ -24,5 +20,13 @@ module Api
       @resource.email = @resource.uid
     end
 
+    protected
+
+    def preserve_omniauth_info
+      # preserve omniauth info for success route. ignore 'extra' in SAMLResponse
+      # auth response to avoid CookieOverflow.
+      session['dta.omniauth.auth'] = request.env['omniauth.auth'].except('extra')
+      session['dta.omniauth.params'] = request.env['omniauth.params']
+    end
   end
 end

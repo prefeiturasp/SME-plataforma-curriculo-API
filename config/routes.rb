@@ -16,11 +16,10 @@ Rails.application.routes.draw do
     get 'roteiros', to: 'roadmaps#index'
 
     mount_devise_token_auth_for 'User',
-    at: 'auth',
-    controllers: {
-      sessions: 'api/sessions',
-      omniauth_callbacks: 'api/omniauth_callbacks'
-    }
+                                at: 'auth',
+                                controllers: {
+                                  omniauth_callbacks: 'api/omniauth_callbacks'
+                                }
 
     namespace :v1 do
       resources :activities
