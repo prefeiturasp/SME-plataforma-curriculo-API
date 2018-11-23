@@ -23,7 +23,9 @@ Rails.application.routes.draw do
 
     resources :teachers, path: 'professores', only: [:show, :create, :update] do
       post :avatar, action: :avatar
+      resources :collections, path: 'colecoes'
     end
+
     namespace :v1 do
       resources :activities
       resources :activity_sequences

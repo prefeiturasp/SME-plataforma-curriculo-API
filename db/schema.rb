@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_19_130531) do
+ActiveRecord::Schema.define(version: 2018_11_23_131908) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,6 +133,14 @@ ActiveRecord::Schema.define(version: 2018_11_19_130531) do
     t.index ["curricular_component_id"], name: "index_axes_on_curricular_component_id"
   end
 
+  create_table "collections", force: :cascade do |t|
+    t.string "name"
+    t.bigint "teacher_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["teacher_id"], name: "index_collections_on_teacher_id"
+  end
+
   create_table "curricular_components", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -242,6 +250,7 @@ ActiveRecord::Schema.define(version: 2018_11_19_130531) do
   add_foreign_key "activities", "activity_sequences"
   add_foreign_key "activity_sequences", "curricular_components", column: "main_curricular_component_id"
   add_foreign_key "axes", "curricular_components"
+  add_foreign_key "collections", "teachers"
   add_foreign_key "goals", "sustainable_development_goals"
   add_foreign_key "learning_objectives", "curricular_components"
 end

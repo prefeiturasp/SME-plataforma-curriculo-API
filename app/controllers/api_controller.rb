@@ -22,6 +22,14 @@ class ApiController < ActionController::API
     render '/api/errors/errors', status: :no_content
   end
 
+  def render_no_content
+    render json: [], status: :no_content
+  end
+
+  def render_unauthorized_resource
+    render json: { error: 'Acesso negado' }, status: :unauthorized
+  end
+
   def skip_set_cookies_header
     request.session_options[:skip] = true
   end
