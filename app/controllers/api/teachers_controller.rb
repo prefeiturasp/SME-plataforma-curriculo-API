@@ -1,6 +1,6 @@
 module Api
   class TeachersController < ApiController
-    before_action :authenticate_user!
+    before_action :authenticate_api_user!
     before_action :set_teacher, only: %i[show update]
     before_action :check_user_permission, only: %i[show update]
 
@@ -28,23 +28,17 @@ module Api
     end
 
     def avatar
-      if current_user.teacher
-        current_user.teacher.avatar.attach(avatar_params)
-      else
-        teacher = current_user.create_teacher
-        teacher.avatar.attach(avatar_params)
-      end
+      teacher = current_user.teacher || current_user.create_teacher
+      teacher.avatar.attach(teacher_params[:avatar])
       head :ok
+    rescue StandardError
+      head :unprocessable_entity
     end
 
     private
 
     def teacher_params
-      params.permit(:id, :nickname, :avatar)
-    end
-
-    def avatar_params
-      params.require(:avatar)
+      params.require(:teacher).permit(:id, :nickname, :avatar)
     end
 
     def set_teacher

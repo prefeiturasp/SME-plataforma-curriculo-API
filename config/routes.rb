@@ -6,6 +6,12 @@ Rails.application.routes.draw do
   root :to => 'rails/welcome#index'
 
   namespace :api, defaults: { format: 'json' } do
+    mount_devise_token_auth_for 'User',
+                                at: 'auth',
+                                controllers: {
+                                  omniauth_callbacks: 'api/omniauth_callbacks'
+                                }
+
     get 'filtros', to: 'filters#index'
     get 'sequencias', to: 'activity_sequences#index'
     get 'sequencias/:slug', to: 'activity_sequences#show'
@@ -15,12 +21,9 @@ Rails.application.routes.draw do
     get 'ods/:id', to: 'sustainable_development_goals#show'
     get 'roteiros', to: 'roadmaps#index'
 
-    mount_devise_token_auth_for 'User',
-                                at: 'auth',
-                                controllers: {
-                                  omniauth_callbacks: 'api/omniauth_callbacks'
-                                }
-
+    resources :teachers, path: 'professores', only: [:show, :create, :update] do
+      post :avatar, action: :avatar
+    end
     namespace :v1 do
       resources :activities
       resources :activity_sequences
@@ -31,9 +34,6 @@ Rails.application.routes.draw do
       resources :roadmaps
       resources :sustainable_development_goals
       resources :knowledge_matrices
-      resources :teachers do
-        post :avatar, action: :avatar
-      end
     end
 
     match "*path", to: "errors#catch_404", via: :all
