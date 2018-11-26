@@ -13,7 +13,7 @@ module Api
       @teacher.user_id = current_user.id
 
       if @teacher.save
-        render json: @teacher, status: :created
+        render :show, status: :created
       else
         render json: @teacher.errors, status: :unprocessable_entity
       end
