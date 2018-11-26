@@ -48,6 +48,7 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
         expect(first_body['main_curricular_component']).to be_present
         expect(first_body['estimated_time']).to be_present
         expect(first_body['status']).to be_present
+        expect(first_body['keywords']).to be_present
         expect(first_body['number_of_activities']).to be_present
         expect(first_body['image_attributes']).to be_present
         expect(first_body['year']).to be_present
@@ -133,6 +134,7 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
         expect(response_body['main_curricular_component']).to be_present
         expect(response_body['estimated_time']).to be_present
         expect(response_body['status']).to be_present
+        expect(response_body['keywords']).to be_present
         expect(response_body['books']).to be_present
         expect(response_body['image_attributes']).to be_present
         expect(response_body['presentation_text']).to be_present

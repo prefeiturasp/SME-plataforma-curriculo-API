@@ -3,6 +3,7 @@ json.title @activity_sequence.title
 json.year t("activerecord.attributes.enums.years.#{@activity_sequence.year}")
 json.estimated_time @activity_sequence.estimated_time
 json.status @activity_sequence.status
+json.keywords @activity_sequence.keywords
 
 json.main_curricular_component do
   json.name @activity_sequence.main_curricular_component.name

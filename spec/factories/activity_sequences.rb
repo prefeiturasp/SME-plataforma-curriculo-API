@@ -6,6 +6,7 @@ FactoryBot.define do
     estimated_time { Faker::Number.between(1, 500) }
     year :first
     status :draft
+    keywords 'keyword 1, keyword 2'
 
     after(:build) do |activity_sequence|
       activity_sequence.image.attach(

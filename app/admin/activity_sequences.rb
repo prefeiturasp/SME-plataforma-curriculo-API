@@ -22,6 +22,7 @@ ActiveAdmin.register ActivitySequence do
                 :estimated_time,
                 :status,
                 :image,
+                :keywords,
                 :main_curricular_component_id,
                 knowledge_matrix_ids: [],
                 learning_objective_ids: [],

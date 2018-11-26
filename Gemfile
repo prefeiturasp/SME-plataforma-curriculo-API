@@ -55,6 +55,7 @@ group :development do
 end
 
 gem 'activeadmin', '~> 1.3.0'
+gem 'activeadmin_addons', '~> 1.6.0'
 gem "devise", '~> 4.4.3'
 
 gem 'devise_token_auth'
