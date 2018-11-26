@@ -1,3 +1,4 @@
+json.id @activity_sequence.id
 json.slug @activity_sequence.slug
 json.title @activity_sequence.title
 json.year t("activerecord.attributes.enums.years.#{@activity_sequence.year}")
