@@ -8,9 +8,13 @@ module Api
 
     def index
       render_unauthorized_resource && return if @collection && !user_signed_in?
-      @activity_sequences = @collection ? @collection.activity_sequences.published.includes(:collection_activity_sequences) : \
-        ActivitySequence.where(status: :published)
-                        .where_optional_params(params)
+      @activity_sequences =
+        if @collection
+          @collection.activity_sequences.published.includes(:collection_activity_sequences)
+        else
+          ActivitySequence.where(status: :published)
+                          .where_optional_params(params)
+        end
 
       @activity_sequences = paginate(@activity_sequences)
 
@@ -24,7 +28,8 @@ module Api
     def create
       return unless @collection
       render_unauthorized_resource && return if @collection.teacher.user.id != current_user.id
-      @collection_activity_sequence = @collection.collection_activity_sequences.build(collection_activity_sequences_params)
+      @collection_activity_sequence = @collection.collection_activity_sequences
+                                                 .build(collection_activity_sequences_params)
       if @collection_activity_sequence.save
         render json: @collection_activity_sequence, status: :created
       else
@@ -67,7 +72,7 @@ module Api
 
     def set_activity_sequence
       if @collection
-        render_unauthorized_resource && return if !user_signed_in?
+        render_unauthorized_resource && return unless user_signed_in?
         @activity_sequence = @collection.activity_sequences.find_by(id: params[:id])
         raise ActiveRecord::RecordNotFound unless @activity_sequence
       else
@@ -89,7 +94,7 @@ module Api
     def set_collection_activity_sequence
       return unless @collection
       @collection_activity_sequence = @collection.collection_activity_sequences
-                                                  .find_by(activity_sequence_id: params[:id])
+                                                 .find_by(activity_sequence_id: params[:id])
 
       render_no_content && return unless @collection_activity_sequence
     end
@@ -99,6 +104,5 @@ module Api
       render_unauthorized_resource && return \
         if current_user&.id != @teacher&.user_id
     end
-
   end
 end
