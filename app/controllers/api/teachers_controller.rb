@@ -1,8 +1,12 @@
 module Api
   class TeachersController < ApiController
     before_action :authenticate_api_user!
-    before_action :set_teacher, only: %i[show update]
+    before_action :set_teacher, only: %i[show update me]
     before_action :check_user_permission, only: %i[show update]
+
+    def me
+      render :me
+    end
 
     def show
       render :show

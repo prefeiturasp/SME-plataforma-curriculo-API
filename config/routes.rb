@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     get 'ods', to: 'sustainable_development_goals#index'
     get 'ods/:id', to: 'sustainable_development_goals#show'
     get 'roteiros', to: 'roadmaps#index'
+    get 'perfil', to: 'profiles#me'
 
     resources :teachers, path: 'professores', only: [:show, :create, :update] do
       post :avatar, action: :avatar
