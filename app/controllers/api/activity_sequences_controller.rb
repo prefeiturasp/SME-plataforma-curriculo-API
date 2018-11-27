@@ -14,6 +14,7 @@ module Api
         else
           ActivitySequence.where(status: :published)
                           .where_optional_params(params)
+                          .order(title: :asc)
         end
 
       @activity_sequences = paginate(@activity_sequences)

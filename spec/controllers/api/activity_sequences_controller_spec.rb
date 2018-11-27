@@ -39,7 +39,7 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
 
       context 'returns http success' do
         before do
-          create :activity_sequence, status: :published
+          @activity_sequence = create :activity_sequence, title: "ZZZZZ", status: :published
         end
 
         it 'returns http success' do
@@ -47,6 +47,17 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
 
           expect(response.content_type).to eq('application/json')
           expect(response).to be_successful
+        end
+
+        it 'orders by ascending title' do
+          activity_sequence_one = create :activity_sequence, title: 'BBBB', status: :published
+          activity_sequence_two = create :activity_sequence, title: "AAAA", status: :published
+
+          get :index
+
+          response_titles = response_body.map {|a_sequence| a_sequence["title"]}
+
+          expect(response_titles).to eq([activity_sequence_two.title, activity_sequence_one.title, @activity_sequence.title])
         end
 
         it 'return valid JSON all filters' do

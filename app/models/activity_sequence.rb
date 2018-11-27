@@ -26,8 +26,6 @@ class ActivitySequence < ApplicationRecord
 
   accepts_nested_attributes_for :activities, allow_destroy: true
 
-  default_scope { order(title: :asc) }
-
   def should_generate_new_friendly_id?
     title_changed? || super
   end
