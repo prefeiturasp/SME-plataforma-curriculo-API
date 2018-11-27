@@ -1,17 +1,24 @@
 require 'rails_helper'
 
 RSpec.describe Collection, type: :model do
-
   let(:subject) { create :collection }
 
   describe 'Associations' do
     it 'belongs to teacher' do
       should belong_to(:teacher)
     end
+
+    it 'has_many to collection_activity_sequences' do
+      have_many(:collection_activity_sequences)
+    end
+
+    it 'has_many to activity_sequences' do
+      have_many(:activity_sequences)
+    end
   end
 
   describe 'Validations' do
-    context "is valid" do
+    context 'is valid' do
       it 'with valid params' do
         expect(subject).to be_valid
       end
@@ -41,6 +48,19 @@ RSpec.describe Collection, type: :model do
 
         expect(subject).to_not be_valid
       end
+    end
+  end
+
+  describe 'activity sequences default scope' do
+    it 'orders by ascending sequence' do
+      activity_sequence_one = create :activity_sequence, title: 'ZZZZZ'
+      activity_sequence_two = create :activity_sequence, title: 'AAAA'
+
+      collection = create :collection
+      create :collection_activity_sequence, collection: collection, activity_sequence: activity_sequence_one, sequence: 2
+      create :collection_activity_sequence, collection: collection, activity_sequence: activity_sequence_two, sequence: 5
+
+      expect(collection.activity_sequences).to eq([activity_sequence_one, activity_sequence_two])
     end
   end
 end

@@ -15,12 +15,19 @@ RSpec.describe ActivitySequence, type: :model do
     it 'has and belongs to many learning objectives' do
       should have_and_belong_to_many(:learning_objectives)
     end
+
+    it 'has many collection activity sequences' do
+      should have_many(:collection_activity_sequences)
+    end
+
+    it 'has many collections' do
+      should have_many(:collections)
+    end
   end
 
   context 'slug' do
     it 'should generate a slug' do
-      subject.title = 'Hello World'
-      subject.save
+      subject = create :activity_sequence, title: 'Hello World'
 
       expect(subject.slug).to eq('hello-world')
     end
@@ -122,16 +129,6 @@ RSpec.describe ActivitySequence, type: :model do
       end
     end
   end
-
-  describe 'default scope' do
-    let!(:activity_sequence_one) { create :activity_sequence, title: "ZZZZZ" }
-    let!(:activity_sequence_two) { create :activity_sequence, title: "AAAA" }
-
-    it 'orders by ascending code' do
-      expect(ActivitySequence.all).to eq([activity_sequence_two, activity_sequence_one])
-    end
-  end
-
 
   describe 'Queries' do
     before do
