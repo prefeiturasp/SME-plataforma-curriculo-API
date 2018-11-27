@@ -6,7 +6,12 @@ class ActivitySequence < ApplicationRecord
   has_and_belongs_to_many :knowledge_matrices
   has_and_belongs_to_many :learning_objectives
   has_and_belongs_to_many :axes
-  has_many :activities, -> { order 'sequence' }, dependent: :destroy
+  has_many :activities,
+           -> { order 'sequence' },
+           dependent: :destroy
+  has_many :collection_activity_sequences
+  has_many :collections,
+           through: :collection_activity_sequences
 
   enum status: { draft: 0, published: 1 }
 

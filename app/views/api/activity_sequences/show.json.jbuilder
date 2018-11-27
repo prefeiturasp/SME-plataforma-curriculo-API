@@ -5,6 +5,7 @@ json.year t("activerecord.attributes.enums.years.#{@activity_sequence.year}")
 json.estimated_time @activity_sequence.estimated_time
 json.status @activity_sequence.status
 json.keywords @activity_sequence.keywords
+json.sequence @activity_sequence.collection_activity_sequences.find_by(collection_id: @collection.id).sequence if @collection
 
 json.main_curricular_component do
   json.name @activity_sequence.main_curricular_component.name

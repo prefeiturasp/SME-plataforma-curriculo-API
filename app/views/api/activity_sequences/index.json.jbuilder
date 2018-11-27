@@ -8,6 +8,7 @@ json.array! @activity_sequences do |activity_sequence|
   json.partial! 'api/images/image', image_param: activity_sequence.image, sizes: %i[thumb extra_thumb]
   json.year ActivitySequence.human_enum_name(:year, activity_sequence.year, true)
   json.keywords activity_sequence.keywords
+  json.sequence activity_sequence.collection_activity_sequences.find_by(collection_id: @collection.id).sequence if @collection
 
   json.main_curricular_component do
     json.name activity_sequence.main_curricular_component.name

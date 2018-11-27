@@ -1,11 +1,14 @@
 module Api
   class ActivitySequencesController < ApiController
-    before_action :set_activity_sequence, only: %i[show]
-    before_action :set_collection, only: %i[index create update destroy]
+    before_action :authenticate_api_user!, except: %i[index show]
+    before_action :set_teacher, only: %i[show index create destroy update]
+    before_action :set_collection, only: %i[index show create update destroy]
     before_action :set_collection_activity_sequence, only: %i[destroy update]
+    before_action :set_activity_sequence, only: %i[show update]
 
     def index
-      @activity_sequences = @collection ? @collection.activity_sequences.published : \
+      render_unauthorized_resource && return if @collection && !user_signed_in?
+      @activity_sequences = @collection ? @collection.activity_sequences.published.includes(:collection_activity_sequences) : \
         ActivitySequence.where(status: :published)
                         .where_optional_params(params)
 
@@ -20,6 +23,7 @@ module Api
 
     def create
       return unless @collection
+      render_unauthorized_resource && return if @collection.teacher.user.id != current_user.id
       @collection_activity_sequence = @collection.collection_activity_sequences.build(collection_activity_sequences_params)
       if @collection_activity_sequence.save
         render json: @collection_activity_sequence, status: :created
@@ -33,6 +37,8 @@ module Api
     end
 
     def update
+      return unless @collection
+      render_unauthorized_resource && return if @collection.teacher.user.id != current_user.id
       if @collection_activity_sequence.update(collection_activity_sequences_params)
         render :show
       else
@@ -60,13 +66,13 @@ module Api
     end
 
     def set_activity_sequence
-      identifier = params[:slug] || params[:id]
-      # if params[:teacher_id] && params[:collection_id] && params[:id]
-      #   identifier = params[:id]
-      # else
-      #   identifier = params[:slug]
-      # end
-      @activity_sequence = ActivitySequence.friendly.find(identifier)
+      if @collection
+        render_unauthorized_resource && return if !user_signed_in?
+        @activity_sequence = @collection.activity_sequences.find_by(id: params[:id])
+        raise ActiveRecord::RecordNotFound unless @activity_sequence
+      else
+        @activity_sequence = ActivitySequence.friendly.find(params[:slug])
+      end
     end
 
     def set_teacher
@@ -84,6 +90,8 @@ module Api
       return unless @collection
       @collection_activity_sequence = @collection.collection_activity_sequences
                                                   .find_by(activity_sequence_id: params[:id])
+
+      render_no_content && return unless @collection_activity_sequence
     end
 
     def check_user_permission
@@ -91,5 +99,6 @@ module Api
       render_unauthorized_resource && return \
         if current_user&.id != @teacher&.user_id
     end
+
   end
 end
