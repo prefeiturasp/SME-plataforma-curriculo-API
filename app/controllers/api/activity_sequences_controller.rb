@@ -32,7 +32,8 @@ module Api
       @collection_activity_sequence = @collection.collection_activity_sequences
                                                  .build(collection_activity_sequences_params)
       if @collection_activity_sequence.save
-        render json: @collection_activity_sequence, status: :created
+        @activity_sequence = @collection_activity_sequence.activity_sequence # find because show json
+        render :show, status: :created
       else
         render json: @collection_activity_sequence.errors, status: :unprocessable_entity
       end
