@@ -5,6 +5,7 @@ module Api
     before_action :set_collection, only: %i[index show create update destroy]
     before_action :set_collection_activity_sequence, only: %i[destroy update]
     before_action :set_activity_sequence, only: %i[show update]
+    before_action :check_collection_owner, only: %i[create update]
 
     def index
       render_unauthorized_resource && return if @collection && !user_signed_in?
@@ -12,9 +13,7 @@ module Api
         if @collection
           @collection.activity_sequences.published.includes(:collection_activity_sequences)
         else
-          ActivitySequence.where(status: :published)
-                          .where_optional_params(params)
-                          .order(title: :asc)
+          ActivitySequence.where(status: :published).where_optional_params(params).order(title: :asc)
         end
 
       @activity_sequences = paginate(@activity_sequences)
@@ -27,8 +26,6 @@ module Api
     end
 
     def create
-      return unless @collection
-      render_unauthorized_resource && return if @collection.teacher.user.id != current_user.id
       @collection_activity_sequence = @collection.collection_activity_sequences
                                                  .build(collection_activity_sequences_params)
       if @collection_activity_sequence.save
@@ -44,8 +41,6 @@ module Api
     end
 
     def update
-      return unless @collection
-      render_unauthorized_resource && return if @collection.teacher.user.id != current_user.id
       if @collection_activity_sequence.update(collection_activity_sequences_params)
         render :show
       else
@@ -105,6 +100,11 @@ module Api
       render_no_content && return unless @teacher
       render_unauthorized_resource && return \
         if current_user&.id != @teacher&.user_id
+    end
+
+    def check_collection_owner
+      return unless @collection
+      render_unauthorized_resource && return if @collection.teacher.user.id != current_user.id
     end
   end
 end

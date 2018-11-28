@@ -14,16 +14,12 @@ class ApiController < ActionController::API
     render '/api/errors/errors', status: :not_found
   end
 
-  def render_no_content(exception)
+  def render_no_content(exception = nil)
     @response = response
     @request_path = request.path
     @message = exception
 
     render '/api/errors/errors', status: :no_content
-  end
-
-  def render_no_content
-    render json: [], status: :no_content
   end
 
   def render_unauthorized_resource
