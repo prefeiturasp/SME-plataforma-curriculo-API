@@ -507,7 +507,9 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
                                    collection_activity_sequence: new_attributes_in_collection }
             collection_activity_sequence.reload
 
-            expect(collection_activity_sequence.sequence).to eq(new_sequence_number)
+            expected_sequence = 1 # because reorder
+
+            expect(collection_activity_sequence.sequence).to eq(expected_sequence)
           end
 
           it 'renders a JSON response with the collection' do

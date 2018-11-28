@@ -44,7 +44,7 @@ RSpec.describe Api::FiltersController, type: :controller do
           expect(json['knowledge_matrices']).to be_present
           expect(json['activity_types']).to be_present
           expect(json['learning_objectives']).to_not be_present
-          expect(json['axes']).to_not be_present
+          expect(json['axes']).to be_present
         end
 
         it 'return valid years JSON' do
@@ -94,14 +94,13 @@ RSpec.describe Api::FiltersController, type: :controller do
         it 'invalid number year' do
           get :index, params: { year: 9999 }
 
-          expect(json['axes']).to_not be_present
           expect(json['learning_objectives']).to_not be_present
         end
 
         it 'invalid curricular component' do
           get :index, params: { curricular_component_slug: 'invalid-slug' }
 
-          expect(json['axes']).to_not be_present
+          expect(json['axes']).to be_present #show all
           expect(json['learning_objectives']).to_not be_present
         end
       end
