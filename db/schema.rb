@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_26_142142) do
+ActiveRecord::Schema.define(version: 2018_11_29_115310) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,6 +132,11 @@ ActiveRecord::Schema.define(version: 2018_11_26_142142) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["curricular_component_id"], name: "index_axes_on_curricular_component_id"
+  end
+
+  create_table "axes_learning_objectives", id: false, force: :cascade do |t|
+    t.bigint "learning_objective_id", null: false
+    t.bigint "axis_id", null: false
   end
 
   create_table "collection_activity_sequences", force: :cascade do |t|

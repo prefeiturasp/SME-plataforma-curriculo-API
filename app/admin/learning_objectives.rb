@@ -4,7 +4,19 @@ ActiveAdmin.register LearningObjective do
                 :description,
                 :code,
                 :curricular_component_id,
-                sustainable_development_goal_ids: []
+                sustainable_development_goal_ids: [],
+                axis_ids: []
+
+  collection_action :change_axes, method: :get do
+    render json: {}, status: :unauthorized && return unless current_user.admin?
+
+    axes = Axis.where(
+      curricular_component_id: params[:curricular_component_id]
+    )
+
+    data = axes.pluck(:id, :description)
+    render json: data
+  end
 
   form do |f|
     f.inputs do
@@ -16,6 +28,13 @@ ActiveAdmin.register LearningObjective do
               as: :check_boxes,
               collection: sustainable_development_goals_collection,
               input_html: { multiple: true }
+      f.input :axes,
+              as: :check_boxes,
+              collection: axes_collection_from_learning_objectives(learning_objective),
+              input_html: {
+                multiple: true,
+                disabled: true
+              }
     end
     f.actions
   end
@@ -52,6 +71,12 @@ ActiveAdmin.register LearningObjective do
           image_tag variant_url(i.icon, :icon) if i.icon.attached?
         end
         column :name
+      end
+    end
+
+    panel I18n.t('activerecord.models.axis', count: 2) do
+      table_for learning_objective.axes do
+        column :description
       end
     end
   end

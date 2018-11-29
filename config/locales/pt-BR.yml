@@ -105,6 +105,7 @@ pt-BR:
         created_at: "Criado em"
         updated_at: "Atualizado em"
       learning_objective:
+        axes: Eixos
         year: "Ano"
         code: "Código"
         description: "Descrição"
@@ -461,6 +462,7 @@ pt-BR:
       prompt_main_curricular: Selecione um componente curricular principal
       prompt_year_and_main_curricular: Selecione um componente curricular principal
       prompt_none_learning_objectives: "A sequência não possui objetivos de aprendizagem"
+      prompt_curricular_component: "Selecione um componente curricular"
     submit:
       create: Confirmar %{model}
       submit: Salvar %{model}
