@@ -5,7 +5,6 @@ class ActivitySequence < ApplicationRecord
   belongs_to :main_curricular_component, class_name: 'CurricularComponent'
   has_and_belongs_to_many :knowledge_matrices
   has_and_belongs_to_many :learning_objectives
-  has_and_belongs_to_many :axes
   has_many :activities,
            -> { order 'sequence' },
            dependent: :destroy

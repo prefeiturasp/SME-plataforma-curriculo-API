@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_29_115310) do
+ActiveRecord::Schema.define(version: 2018_11_29_181916) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -99,11 +99,6 @@ ActiveRecord::Schema.define(version: 2018_11_29_115310) do
     t.string "keywords"
     t.index ["main_curricular_component_id"], name: "index_activity_sequences_on_main_curricular_component_id"
     t.index ["slug"], name: "index_activity_sequences_on_slug", unique: true
-  end
-
-  create_table "activity_sequences_axes", id: false, force: :cascade do |t|
-    t.bigint "activity_sequence_id", null: false
-    t.bigint "axis_id", null: false
   end
 
   create_table "activity_sequences_knowledge_matrices", id: false, force: :cascade do |t|

@@ -11,14 +11,11 @@ $(document).ready(function(){
     td.innerHTML = html_content
   }
 
-  fill_axes();
   $('#activity_sequence_main_curricular_component_id').change(function(e) {
-    fill_axes();
     fillLearningObjectives();
   });
 
   $('#activity_sequence_year').change(function(){
-    fill_axes();
     fillLearningObjectives();
   });
 });
@@ -28,20 +25,6 @@ function fillCheckBoxes(path, parent, ids, model) {
   $.get(url, {}, function(res) {
     onGetResponse(res, parent, ids, model);
   })
-}
-
-function fill_axes(){
-  var parent = $('#activity_sequence_axes_input ol');
-  var main_curricular_component_id = $('#activity_sequence_main_curricular_component_id').val();
-  if (!main_curricular_component_id) {
-    fillTextOnChecKBoxes(parent, 'Selecione um componente curricular');
-    return
-  }
-  var path = 'change_axes?main_curricular_component_id=' + main_curricular_component_id
-  fillCheckBoxes(path,
-                 parent,
-                 'axis_ids',
-                 'eixos')
 }
 
 function fillLearningObjectives() {

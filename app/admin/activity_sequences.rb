@@ -25,22 +25,12 @@ ActiveAdmin.register ActivitySequence do
                 :keywords,
                 :main_curricular_component_id,
                 knowledge_matrix_ids: [],
-                learning_objective_ids: [],
-                axis_ids: []
+                learning_objective_ids: []
 
   controller do
     def find_resource
       scoped_collection.friendly.find(params[:id])
     end
-  end
-
-  collection_action :change_axes, method: :get do
-    axes = Axis.where(
-      curricular_component_id: params[:main_curricular_component_id]
-    )
-
-    data = axes.pluck(:id, :description)
-    render json: data
   end
 
   collection_action :change_learning_objectives, method: :get do
