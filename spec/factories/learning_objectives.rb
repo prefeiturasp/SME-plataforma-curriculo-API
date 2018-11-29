@@ -7,5 +7,6 @@ FactoryBot.define do
 
     association :curricular_component, factory: :curricular_component
     sustainable_development_goals { [create(:sustainable_development_goal)] }
+    axes { [create(:axis)] }
   end
 end

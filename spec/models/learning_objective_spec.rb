@@ -16,6 +16,10 @@ RSpec.describe LearningObjective, type: :model do
     it 'has and belongs to many activity sequences' do
       should have_and_belong_to_many(:activity_sequences)
     end
+
+    it 'has and belongs to many axes' do
+      should have_and_belong_to_many(:axes)
+    end
   end
 
   describe 'Validations' do

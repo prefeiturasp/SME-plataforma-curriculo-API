@@ -5,6 +5,10 @@ RSpec.describe Axis, type: :model do
 
   describe 'Associations' do
     it { should belong_to(:curricular_component) }
+
+    it 'has and belongs to many learning objectives' do
+      should have_and_belong_to_many(:learning_objectives)
+    end
   end
 
   describe 'Validations' do
