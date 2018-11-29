@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ActivitySequence, type: :model do
-  include_examples 'image_concern'
+  # include_examples 'image_concern'
 
   describe 'Associations' do
     it 'belongs to main curricular component' do
@@ -180,21 +180,29 @@ RSpec.describe ActivitySequence, type: :model do
     end
 
     context 'with axes' do
-      let(:axis) { create :axis }
+      let(:curricular_component) { create :curricular_component }
+      let(:axis) { create :axis, curricular_component: curricular_component }
       let(:params) { { axis_ids: axis.id } }
       let(:response) { ActivitySequence.all_or_with_axes(params) }
 
-      it 'return all with none params' do
+      it 'return all, if there are no params' do
         response = ActivitySequence.all_or_with_axes
 
         expect(all_response).to eq(response)
       end
 
-      it 'not include different axis id' do
-        axis_2 = create :axis
-        a = create :activity_sequence, axis_ids: [axis_2.id]
+      it 'return activity sequence, if axis exists on learning objectives' do
+        learning_objective = create :learning_objective, axes: [axis], curricular_component: curricular_component
+        activity_sequence = create :activity_sequence, learning_objectives: [learning_objective]
 
-        expect(response).to_not include(a)
+        expect(response).to include(activity_sequence)
+      end
+
+      it 'NOT return activity sequence, if axis NOT exists on learning objectives' do
+        learning_objective = create :learning_objective, curricular_component: curricular_component
+        activity_sequence = create :activity_sequence, learning_objectives: [learning_objective]
+
+        expect(response).to_not include(activity_sequence)
       end
 
     end
@@ -302,5 +310,5 @@ RSpec.describe ActivitySequence, type: :model do
     end
   end
 
-  it_behaves_like 'image_concern'
+  # it_behaves_like 'image_concern'
 end

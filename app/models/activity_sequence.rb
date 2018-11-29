@@ -73,9 +73,11 @@ class ActivitySequence < ApplicationRecord
 
   def self.all_or_with_axes(params = {})
     return all unless params[:axis_ids]
-    joins(:axes).where(
-      axes: {
-        id: params[:axis_ids]
+    joins(learning_objectives: :axes).where(
+      learning_objectives: {
+        axes: {
+          id: params[:axis_ids]
+        }
       }
     )
   end
