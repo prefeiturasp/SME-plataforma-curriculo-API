@@ -54,6 +54,7 @@ RSpec.describe Api::TeachersController, type: :controller do
         get :show, params: { id: teacher.id }  
 
         expect(response_body['id']).to be_present
+        expect(response_body['name']).to be_present
         expect(response_body['nickname']).to be_present
         expect(response_body['avatar_attributes']).to be_present
       end
