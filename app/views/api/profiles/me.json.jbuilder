@@ -1,4 +1,5 @@
 json.email current_user.email
+json.name current_user.name
 
 teacher = current_user&.teacher
 if teacher
