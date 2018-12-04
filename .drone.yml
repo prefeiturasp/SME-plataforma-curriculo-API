@@ -19,7 +19,7 @@ steps:
   commands:
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_REGISTRY
   - docker build --build-arg API_URL=$API_URL -t api:latest . 
-  - docker tag interface:latest $DOCKER_REGISTRY/api:latest
+  - docker tag api:latest $DOCKER_REGISTRY/api:latest
   - docker push $DOCKER_REGISTRY/api:latest    
   branches:
   - devops 
