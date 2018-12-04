@@ -33,4 +33,7 @@ RUN bundle install --jobs 20 --retry 5
 COPY . ./
 EXPOSE 8666
 
+COPY ./docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]
+
 CMD bundle exec puma -v -C config/puma.rb
