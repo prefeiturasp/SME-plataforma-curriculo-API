@@ -34,6 +34,6 @@ COPY . ./
 EXPOSE 8666
 
 RUN ["chmod", "+x", "docker-entrypoint.sh"]
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
 
 CMD bundle exec puma -v -C config/puma.rb
