@@ -162,6 +162,14 @@ pt-BR:
           first: "1º"
           second: "2º"
           third: "3º"
+        content_types:
+          to_teacher: "Para o Professor"
+          to_student: "Para o estudante"
+          question:   "Questão"
+          predefined_exercise: "Execício prédefinido"
+          text: "Texto"
+          gallery: "Galeria"
+
     errors:
       messages:
         none_learning_objectives: "Nenhum Objetivo de aprendizagem disponível para o componente curricular principal selecionado"
