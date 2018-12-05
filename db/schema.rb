@@ -85,6 +85,17 @@ ActiveRecord::Schema.define(version: 2018_11_29_181916) do
     t.index ["learning_objective_id", "activity_id"], name: "idx_activity_learning_on_lo_id_and_activity_id"
   end
 
+  create_table "activity_content_blocks", force: :cascade do |t|
+    t.bigint "activity_id"
+    t.bigint "content_block_id"
+    t.integer "sequence"
+    t.jsonb "content", default: "{}", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_id"], name: "index_activity_content_blocks_on_activity_id"
+    t.index ["content_block_id"], name: "index_activity_content_blocks_on_content_block_id"
+  end
+
   create_table "activity_sequences", force: :cascade do |t|
     t.string "title"
     t.integer "year"
@@ -150,6 +161,13 @@ ActiveRecord::Schema.define(version: 2018_11_29_181916) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["teacher_id"], name: "index_collections_on_teacher_id"
+  end
+
+  create_table "content_blocks", force: :cascade do |t|
+    t.integer "content_type"
+    t.jsonb "json_schema", default: "{}", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "curricular_components", force: :cascade do |t|
@@ -259,6 +277,8 @@ ActiveRecord::Schema.define(version: 2018_11_29_181916) do
   end
 
   add_foreign_key "activities", "activity_sequences"
+  add_foreign_key "activity_content_blocks", "activities"
+  add_foreign_key "activity_content_blocks", "content_blocks"
   add_foreign_key "activity_sequences", "curricular_components", column: "main_curricular_component_id"
   add_foreign_key "axes", "curricular_components"
   add_foreign_key "collection_activity_sequences", "activity_sequences"

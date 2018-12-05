@@ -6,10 +6,14 @@ class Activity < ApplicationRecord
   has_and_belongs_to_many :activity_types
   has_and_belongs_to_many :curricular_components
   has_and_belongs_to_many :learning_objectives
+  has_many :activity_content_blocks
+
+  accepts_nested_attributes_for :activity_content_blocks, allow_destroy: true
 
   validates :title, presence: true, uniqueness: true
   validates :content, presence: true
   validates :slug, presence: true
+  validates :sequence, presence: true
 
   enum environment: { interior: 0, exterior: 1 }
 
@@ -18,8 +22,6 @@ class Activity < ApplicationRecord
   friendly_id :title, use: %i[slugged finders]
 
   before_save :change_format_content_images
-
-  validates :sequence, presence: true
 
   after_save    :update_sequences, on: %i[create update]
   after_destroy :update_sequences
