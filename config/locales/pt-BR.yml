@@ -10,6 +10,9 @@ pt-BR:
       activity_type:
         one: "Tipo de atividade"
         other: "Tipos de atividades"
+      activity_content_block:
+        one: "Bloco de conteúdo"
+        other: "Blocos de conteúdo"
       axis:
         one: "Eixo"
         other: "Eixos"

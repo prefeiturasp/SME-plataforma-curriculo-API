@@ -11,7 +11,6 @@ class Activity < ApplicationRecord
   accepts_nested_attributes_for :activity_content_blocks, allow_destroy: true
 
   validates :title, presence: true, uniqueness: true
-  validates :content, presence: true
   validates :slug, presence: true
   validates :sequence, presence: true
 

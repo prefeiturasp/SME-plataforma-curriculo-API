@@ -1,4 +1,5 @@
-<div id="toolbar">
+<% toolbar_id = f.object.new_record? ? "toolbar_NEW_RECORD_ID" : "toolbar_#{f.object.id}" %>
+<div id="<%= toolbar_id %>">
   <span class="ql-formats">
     <button class="ql-bold"></button>
   </span>

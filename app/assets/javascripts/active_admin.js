@@ -24,8 +24,17 @@ window.onload = function() {
       return convertContentToDelta(editors);
     };
   }
-  setToolbar();
 };
+
+function convertAllEditorsToDelta() {
+  var editors = document.querySelectorAll( '.quill-editor' );
+  var formtastic = document.querySelector( 'form.formtastic' );
+  if( formtastic ) {
+    formtastic.onsubmit = function() {
+      return convertContentToDelta(editors);
+    };
+  }
+}
 
 function initializeQuillEditor(editor){
   var content = editor.querySelector( '.quill-editor-content' );
@@ -47,13 +56,6 @@ function initializeQuillEditor(editor){
       addHrDividerOnEditor(quill_editor);
     });
   }
-}
-
-function setToolbar(){
-  editorDiv = document.querySelectorAll('#activity_content');
-  content = editorDiv[0].querySelector(".quill-editor-content");
-  toolbar = document.querySelectorAll('#toolbar');
-  editorDiv[0].insertBefore(toolbar[0], content)
 }
 
 function addHrDividerOnEditor(quill) {
