@@ -1,5 +1,22 @@
 module Admin
   module BaseHelper
+
+
+    def link_to_add_fields(name, f, association, content_type)
+      new_object = f.object.class.reflect_on_association(association).klass.new
+      fields = f.fields_for(association, new_object, :child_index => "new_#{association}") do |builder|
+        render(content_type.to_s.singularize + "_fields", :f => builder)
+      end
+      fields = "<fieldset class='inputs has_many_fields'><ol>#{fields.to_s}</ol></fieldset>"
+
+      # Rails.logger.debug(">"*80)
+      # Rails.logger.debug(fields.inspect)
+      # Rails.logger.debug("<"*80)
+      
+      father = 'asdf asdf'
+      link_to "#{ name }", '#', onclick: h("add_fields(this, \"#{association}\", \"#{escape_javascript(fields.to_s)}\", \"#{father}\"); return false;"), data: { id: 'id' }, class: "button"
+    end
+
     def sustainable_development_goals_collection
       SustainableDevelopmentGoal.all.order('sequence ASC').collect do |sds|
         [sds.sequence_and_name, sds.id]

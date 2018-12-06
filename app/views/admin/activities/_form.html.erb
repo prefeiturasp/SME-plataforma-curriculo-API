@@ -1,4 +1,3 @@
-<%= render 'content_toolbar' %>
 <% 
   f.inputs do
     f.input :id, as: :hidden
@@ -9,7 +8,7 @@
     f.input :image, as: :file
     f.input :title
     f.input :estimated_time
-    f.input :activity_sequence, as: :hidden
+    f.input :activity_sequence_id, as: :hidden
     f.input :environment, as: :select, collection: human_attribute_environments
     f.input :activity_types, as: :select
     f.input :curricular_components, as: :check_boxes, input_html: { multiple: true }
@@ -20,33 +19,16 @@
             input_html: {
               multiple: true
             }
-    f.input :content, as: :quill_editor, input_html: {
-      data: {
-        options: {
-          modules: {
-            toolbar: "#toolbar"
-          },
-          formats: [
-            'bold',
-            'italic',
-            'underline',
-            'strike',
-            'link',
-            'blockquote',
-            'header',
-            'image',
-            'list',
-            'sub',
-            'super',
-            'image',
-            'video',
-            'divider'
-          ],
-          theme: 'snow'
-        }
-      }
-    }
 
+    f.panel 'Conteúdos', class: 'content' do
+      f.inputs class: 'activity-content-buttons' do
+        render partial: 'activity_content_buttons', locals: { activity: activity, f: f }
+      end
+
+      f.has_many :activity_content_blocks, new_record: false do |a|
+        render partial: 'activity_content_list', locals: { a: a }
+      end
+    end
   end
   f.actions
 %>

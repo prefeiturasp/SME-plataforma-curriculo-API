@@ -1,9 +1,9 @@
 # encoding: utf-8
 # rubocop:disable Style/AsciiComments
 if Rails.env.development?
-  admin = User.find_or_create_by(email: '')
-  admin.password = 'senhasegura'
-  admin.password_confirmation = ''
+  admin = User.find_or_create_by(email: 'admin@jurema.la')
+  admin.password = 'qwe123'
+  admin.password_confirmation = 'qwe123'
   admin.save
 end
 
@@ -244,5 +244,75 @@ CurricularComponent.all.each do |curricular_component|
   (1..3).each do |i|
     Axis.create(description: "Eixo #{i} - #{curricular_component.name}", curricular_component_id: curricular_component.id)
   end
+end
+
+[
+  {
+    "content_type": "to_teacher",
+    "schema": [
+      {
+        "name": "body",
+        "options": {
+          "as": "string",
+          "input_html": "{required: true}"
+        }
+      }
+    ]
+  },
+  {
+    "content_type": "to_student",
+    "schema": [
+      {
+        "name": "body",
+        "options": {
+          "as": "string",
+          "input_html": "{required: true}"
+        }
+      }
+    ]
+  },
+  {
+    "content_type": "question",
+    "schema": [
+      {
+        "name": "title",
+        "options": {
+          "as": "string",
+          "input_html": "{required: true}"
+        }
+      },
+      {
+        "name": "number",
+        "options": {
+          "as": "string",
+          "input_html": "{required: true}"
+        }
+      },
+      {
+        "name": "body",
+        "options": {
+          "as": "string",
+          "input_html": "{required: true}"
+        }
+      }
+    ]
+  },
+  {
+    "content_type": "predefined_exercise",
+    "schema": [
+      {
+        "name": "type",
+        "options": {
+          "as": "select",
+          "input_html": "{required: true}"
+        }
+      }
+    ]
+  }
+].each do |attributes|
+  cb = ContentBlock.find_or_create_by(content_type: attributes[:content_type])
+  schema = attributes[:schema]
+  cb.json_schema = schema.to_json
+  cb.save
 end
 # rubocop:enable Style/AsciiComments
