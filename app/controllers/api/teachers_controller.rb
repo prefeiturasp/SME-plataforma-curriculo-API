@@ -39,6 +39,14 @@ module Api
       head :unprocessable_entity
     end
 
+    def avatar_purge
+      teacher = current_user.teacher
+      render(json: {}, status: :unprocessable_entity) && return unless teacher
+
+      teacher.avatar.purge
+      head :no_content
+    end
+
     private
 
     def teacher_params

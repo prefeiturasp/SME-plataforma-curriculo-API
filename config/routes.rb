@@ -24,6 +24,7 @@ Rails.application.routes.draw do
 
     resources :teachers, path: 'professores', only: [:show, :create, :update] do
       post :avatar, action: :avatar
+      delete :avatar, action: :avatar_purge
       resources :collections, path: 'colecoes' do
         resources :activity_sequences, path: 'sequencias'
       end
