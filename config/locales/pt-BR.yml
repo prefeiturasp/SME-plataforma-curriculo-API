@@ -57,6 +57,10 @@ pt-BR:
         year: "Ano"
         created_at: "Criado em"
         updated_at: "Atualizado em"
+      activity_content_block:
+        body: "Conteúdo"
+        title: "Título"
+        number: "Número"
       activity_sequence:
         activities: "Atividades"
         axes: "Eixos"
