@@ -43,8 +43,8 @@ ActiveAdmin.register Activity do
 
         hash = {
           content_block_id: v.delete('content_block_id').to_i,
-          content: v.to_json,
-          _destroy: v.delete('_destroy').to_i
+          _destroy: v.delete('_destroy').to_i,
+          content: v.to_json
         }
 
         hash.merge!(id: activity_content_block_id) unless activity_content_block_id.zero?
