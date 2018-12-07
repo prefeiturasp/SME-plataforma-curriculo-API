@@ -168,7 +168,7 @@ RSpec.describe Api::TeachersController, type: :controller do
     end
   end
 
-  describe 'POST avatar' do
+  describe 'POST #avatar' do
 
     let(:valid_avatar_attribute) do
       file = fixture_file_upload(Rails.root.join('spec', 'factories', 'images', 'ruby.png'), 'image/png')
@@ -203,6 +203,49 @@ RSpec.describe Api::TeachersController, type: :controller do
         post :avatar, params: { teacher_id: teacher.to_param, teacher: { avatar: 'invalid avatar' } }
         expect(response).to have_http_status(:unprocessable_entity)
         expect(response.content_type).to eq('application/json')
+      end
+    end
+  end
+
+  describe 'DELETE #avatar_purge' do
+    context 'render http status no content' do
+      it 'if avatar exists' do
+        new_user = create :user
+        new_teacher = create :teacher, user: new_user
+        authenticate_user new_user
+
+        delete :avatar_purge, params: { teacher_id: new_teacher.to_param }
+
+        expect(response).to have_http_status(:no_content)
+      end
+
+      it 'if avatar NOT exists' do
+        new_user = create :user
+        new_teacher = create :teacher, user: new_user, avatar: nil
+        authenticate_user new_user
+
+        delete :avatar_purge, params: { teacher_id: new_teacher.to_param }
+
+        expect(response).to have_http_status(:no_content)
+      end
+    end
+
+    context 'return unauthorized status' do
+      it "user not signed in" do
+        delete :avatar_purge, params: { teacher_id: 9999999999 }
+
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context 'renders unprocessable_entity' do
+      it 'if teacher not exists' do
+        new_user = create :user
+        authenticate_user new_user
+
+        delete :avatar_purge, params: { teacher_id: 9999999999 }
+
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
