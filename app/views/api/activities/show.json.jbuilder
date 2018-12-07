@@ -32,3 +32,8 @@ json.learning_objectives @activity.learning_objectives do |learning_objective|
   json.description learning_objective.description
   json.color learning_objective.curricular_component.color
 end
+
+json.activity_content_blocks @activity.activity_content_blocks do |activity_content_block|
+  json.type activity_content_block.content_block.content_type
+  json.content activity_content_block.content_json
+end
