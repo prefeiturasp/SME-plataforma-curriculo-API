@@ -249,65 +249,19 @@ end
 [
   {
     "content_type": "to_teacher",
-    "schema": [
-      {
-        "name": "body",
-        "options": {
-          "as": "string",
-          "input_html": "{required: true}"
-        }
-      }
-    ]
+    "schema": [ "body" ]
   },
   {
     "content_type": "to_student",
-    "schema": [
-      {
-        "name": "body",
-        "options": {
-          "as": "string",
-          "input_html": "{required: true}"
-        }
-      }
-    ]
+    "schema": [ "body" ]
   },
   {
     "content_type": "question",
-    "schema": [
-      {
-        "name": "title",
-        "options": {
-          "as": "string",
-          "input_html": "{required: true}"
-        }
-      },
-      {
-        "name": "number",
-        "options": {
-          "as": "string",
-          "input_html": "{required: true}"
-        }
-      },
-      {
-        "name": "body",
-        "options": {
-          "as": "string",
-          "input_html": "{required: true}"
-        }
-      }
-    ]
+    "schema": ["title", "number", "body"]
   },
   {
     "content_type": "predefined_exercise",
-    "schema": [
-      {
-        "name": "type",
-        "options": {
-          "as": "select",
-          "input_html": "{required: true}"
-        }
-      }
-    ]
+    "schema": [ "exercise_type", "body" ]
   }
 ].each do |attributes|
   cb = ContentBlock.find_or_create_by(content_type: attributes[:content_type])

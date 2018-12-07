@@ -8,4 +8,16 @@ class ContentBlock < ApplicationRecord
     text: 4,
     gallery: 5
   }
+
+  def self.partials_path
+    'admin/activity_content_blocks/'
+  end
+
+  def fields
+    JSON.parse(json_schema)
+  end
+
+  def self.all_fields
+    all.map(&:fields).flatten.uniq
+  end
 end

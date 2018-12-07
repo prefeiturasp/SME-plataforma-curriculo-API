@@ -35,5 +35,5 @@ end
 
 json.activity_content_blocks @activity.activity_content_blocks do |activity_content_block|
   json.type activity_content_block.content_block.content_type
-  json.content activity_content_block.content_json
+  json.content activity_content_block.content_hash
 end

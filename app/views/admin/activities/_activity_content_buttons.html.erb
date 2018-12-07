@@ -1,3 +1,5 @@
 <%= semantic_form_for activity, :url => admin_activity_sequence_activities_path(activity.activity_sequence) do |new_form| %>
-  <%= link_to_add_fields('Novo Para o Professor(a)', new_form, :activity_content_blocks, :to_teacher) %>
+  <% human_attribute_content_blocks.each do |name, key| %>
+    <%= link_to_add_fields("Novo conteúdo: #{name}", new_form, :activity_content_blocks, key) %>
+  <% end %>
 <% end %>
