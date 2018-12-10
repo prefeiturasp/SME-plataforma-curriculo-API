@@ -22,6 +22,9 @@ pt-BR:
       goal:
         one: "Meta"
         other: "Metas"
+      image:
+        one: "Imagem"
+        other: "Imagens"
       knowledge_matrix:
         one: "Matriz do Saber"
         other: "Matriz dos Saberes"
@@ -103,6 +106,9 @@ pt-BR:
         description: Descrição
         created_at: "Criado em"
         updated_at: "Atualizado em"
+      image:
+        subtitle: "Legenda"
+        file: "Arquivo"
       knowledge_matrix:
         for_description: "Para"
         know_description: "Saber"

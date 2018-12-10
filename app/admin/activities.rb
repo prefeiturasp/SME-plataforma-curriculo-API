@@ -26,7 +26,19 @@ ActiveAdmin.register Activity do
                 activity_type_ids: [],
                 curricular_component_ids: [],
                 learning_objective_ids: [],
-                activity_content_blocks_attributes: %i[id content_type content_block_id content _destroy]
+                activity_content_blocks_attributes: [
+                  :id,
+                  :content_type,
+                  :content_block_id,
+                  :content,
+                  :_destroy,
+                  images_attributes: [
+                    :id,
+                    :subtitle,
+                    :file,
+                    :_destroy
+                  ]
+                ]
 
   controller do
     def set_activity_content_block
@@ -37,9 +49,9 @@ ActiveAdmin.register Activity do
 
       new_hash = {}
       params[:activity][:activity_content_blocks_attributes].each do |k, v|
-        # {"0"=>{"content_type"=>"to_teacher", "content_block_id"=>"2", "body"=>"asdf"},
         hash = {}
         activity_content_block_id = v.delete('id').to_i #always delete id
+        images_attributes = v.delete('images_attributes')
         icon_url = assign_icon_url(v)
         v['icon_url'] = icon_url if icon_url.present?
 
@@ -50,6 +62,7 @@ ActiveAdmin.register Activity do
         }
 
         hash.merge!(id: activity_content_block_id) unless activity_content_block_id.zero?
+        hash.merge!(images_attributes: images_attributes) if images_attributes.present?
         new_hash.merge!("#{k}" => hash)
       end
       params[:activity][:activity_content_blocks_attributes] = new_hash

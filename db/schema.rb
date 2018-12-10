@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_04_114849) do
+ActiveRecord::Schema.define(version: 2018_12_10_191910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -107,13 +107,9 @@ ActiveRecord::Schema.define(version: 2018_12_04_114849) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug", null: false
+    t.string "keywords"
     t.index ["main_curricular_component_id"], name: "index_activity_sequences_on_main_curricular_component_id"
     t.index ["slug"], name: "index_activity_sequences_on_slug", unique: true
-  end
-
-  create_table "activity_sequences_axes", id: false, force: :cascade do |t|
-    t.bigint "activity_sequence_id", null: false
-    t.bigint "axis_id", null: false
   end
 
   create_table "activity_sequences_knowledge_matrices", id: false, force: :cascade do |t|
@@ -142,6 +138,29 @@ ActiveRecord::Schema.define(version: 2018_12_04_114849) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["curricular_component_id"], name: "index_axes_on_curricular_component_id"
+  end
+
+  create_table "axes_learning_objectives", id: false, force: :cascade do |t|
+    t.bigint "learning_objective_id", null: false
+    t.bigint "axis_id", null: false
+  end
+
+  create_table "collection_activity_sequences", force: :cascade do |t|
+    t.bigint "collection_id"
+    t.bigint "activity_sequence_id"
+    t.integer "sequence"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_sequence_id"], name: "index_collection_activity_sequences_on_activity_sequence_id"
+    t.index ["collection_id"], name: "index_collection_activity_sequences_on_collection_id"
+  end
+
+  create_table "collections", force: :cascade do |t|
+    t.string "name"
+    t.bigint "teacher_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["teacher_id"], name: "index_collections_on_teacher_id"
   end
 
   create_table "content_blocks", force: :cascade do |t|
@@ -178,6 +197,14 @@ ActiveRecord::Schema.define(version: 2018_12_04_114849) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["sustainable_development_goal_id"], name: "index_goals_on_sustainable_development_goal_id"
+  end
+
+  create_table "images", force: :cascade do |t|
+    t.string "subtitle"
+    t.bigint "activity_content_block_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_content_block_id"], name: "index_images_on_activity_content_block_id"
   end
 
   create_table "knowledge_matrices", force: :cascade do |t|
@@ -223,6 +250,14 @@ ActiveRecord::Schema.define(version: 2018_12_04_114849) do
     t.string "color"
   end
 
+  create_table "teachers", force: :cascade do |t|
+    t.string "nickname"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_teachers_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -236,8 +271,17 @@ ActiveRecord::Schema.define(version: 2018_12_04_114849) do
     t.inet "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "admin", default: false
+    t.string "uid"
+    t.string "name"
+    t.string "last_name"
+    t.string "session_index"
+    t.string "provider", default: "email", null: false
+    t.string "nickname"
+    t.json "tokens"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
   add_foreign_key "activities", "activity_sequences"
@@ -245,6 +289,11 @@ ActiveRecord::Schema.define(version: 2018_12_04_114849) do
   add_foreign_key "activity_content_blocks", "content_blocks"
   add_foreign_key "activity_sequences", "curricular_components", column: "main_curricular_component_id"
   add_foreign_key "axes", "curricular_components"
+  add_foreign_key "collection_activity_sequences", "activity_sequences"
+  add_foreign_key "collection_activity_sequences", "collections"
+  add_foreign_key "collections", "teachers"
   add_foreign_key "goals", "sustainable_development_goals"
+  add_foreign_key "images", "activity_content_blocks"
   add_foreign_key "learning_objectives", "curricular_components"
+  add_foreign_key "teachers", "users"
 end
