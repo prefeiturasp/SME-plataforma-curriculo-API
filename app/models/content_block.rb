@@ -5,7 +5,7 @@ class ContentBlock < ApplicationRecord
     to_student: 1,
     question:   2,
     predefined_exercise: 3,
-    text: 4,
+    long_text: 4,
     gallery: 5
   }
 
@@ -27,5 +27,9 @@ class ContentBlock < ApplicationRecord
 
   def self.all_fields
     all.map(&:fields).flatten.uniq
+  end
+
+  def required_fields
+    JSON.parse(json_schema)["required"]
   end
 end
