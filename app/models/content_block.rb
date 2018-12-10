@@ -9,12 +9,20 @@ class ContentBlock < ApplicationRecord
     gallery: 5
   }
 
+  validates :content_type, presence: true, uniqueness: true
+
   def self.partials_path
     'admin/activity_content_blocks/'
   end
 
   def fields
-    JSON.parse(json_schema)
+    JSON.parse(json_schema)["properties"].keys
+  end
+
+  def field_collection(field_name)
+    options = JSON.parse(json_schema)['properties'][field_name.to_s]
+    arr_values = options.slice('enum').values.first
+    arr_values.present? ? arr_values.map{ |k| [k ,k]} : []
   end
 
   def self.all_fields

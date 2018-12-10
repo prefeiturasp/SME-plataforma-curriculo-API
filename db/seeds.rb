@@ -249,19 +249,73 @@ end
 [
   {
     "content_type": "to_teacher",
-    "schema": [ "body" ]
+    "schema": {
+      "required": ["body"],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      }
+    }
   },
   {
     "content_type": "to_student",
-    "schema": [ "body" ]
+    "schema": {
+      "required": ["body"],
+      "properties": {
+        "body": {
+          "type": "string"
+        }
+      }
+    }
   },
   {
     "content_type": "question",
-    "schema": ["title", "number", "body"]
+    "schema": {
+      "required": ["title", "number", "body"],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "number": {
+          "type": "number"
+        },
+        "body": {
+          "type": "json"
+        }
+      }
+    }
   },
   {
     "content_type": "predefined_exercise",
-    "schema": [ "exercise_type", "body" ]
+    "schema": {
+      "required": ["exercise_type", "body"],
+      "properties": {
+        "exercise_type": {
+          "type": "string",
+          "enum": [
+            "Atividade prática",
+            "Calcule",
+            "Ouça o professor",
+            "Fique atento",
+            "Laboratório de informática",
+            "Vamos pesquisar",
+            "Música",
+            "Para saber mais",
+            "Recitação numérica",
+            "Roda de conversa",
+            "Sala de leitura",
+            "Tome nota"
+          ]
+        },
+        "body": {
+          "type": "string"
+        },
+        "icon_url": {
+          "type": "string"
+        }
+      }
+    }
   }
 ].each do |attributes|
   cb = ContentBlock.find_or_create_by(content_type: attributes[:content_type])
