@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_29_181916) do
+ActiveRecord::Schema.define(version: 2018_12_10_191910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -199,6 +199,14 @@ ActiveRecord::Schema.define(version: 2018_11_29_181916) do
     t.index ["sustainable_development_goal_id"], name: "index_goals_on_sustainable_development_goal_id"
   end
 
+  create_table "images", force: :cascade do |t|
+    t.string "subtitle"
+    t.bigint "activity_content_block_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_content_block_id"], name: "index_images_on_activity_content_block_id"
+  end
+
   create_table "knowledge_matrices", force: :cascade do |t|
     t.string "title"
     t.text "know_description"
@@ -285,5 +293,7 @@ ActiveRecord::Schema.define(version: 2018_11_29_181916) do
   add_foreign_key "collection_activity_sequences", "collections"
   add_foreign_key "collections", "teachers"
   add_foreign_key "goals", "sustainable_development_goals"
+  add_foreign_key "images", "activity_content_blocks"
   add_foreign_key "learning_objectives", "curricular_components"
+  add_foreign_key "teachers", "users"
 end

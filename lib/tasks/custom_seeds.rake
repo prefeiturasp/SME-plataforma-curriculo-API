@@ -86,6 +86,18 @@ namespace :db do
               }
             }
           }
+        },
+        "content_type": "gallery",
+        "schema": {
+          "required": ["file", "subtitle"],
+          "properties": {
+            "subtitle": {
+              "type": "string"
+            },
+            "file": {
+              "type": "file"
+            }
+          }
         }
       ].each do |attributes|
         cb = ContentBlock.find_or_create_by(content_type: attributes[:content_type])
