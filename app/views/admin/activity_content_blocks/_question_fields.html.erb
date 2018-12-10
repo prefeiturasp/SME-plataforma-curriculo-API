@@ -2,9 +2,9 @@
 <%= render 'content_toolbar', f: f %>
 <% f.input :id, as: :hidden %>
 <% f.input :content_block_id, as: :hidden, input_html: { value: ContentBlock.find_by(content_type: :question).id }%>
-<% f.input :title %>
-<% f.input :number, input_html: { required: true } %>
-<% f.input :body, as: :quill_editor, input_html: {
+<% f.input :title, required: true %>
+<% f.input :number, required: true, input_html: { required: true } %>
+<% f.input :body, as: :quill_editor, required: true, input_html: {
   data: {
     options: {
       modules: {

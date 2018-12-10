@@ -3,8 +3,8 @@
 <% content_block = ContentBlock.find_by(content_type: :predefined_exercise)%>
 <% f.input :id, as: :hidden %>
 <% f.input :content_block_id, as: :hidden, input_html: { value: content_block.id } %>
-<% f.input :title, as: :select, collection: content_block.field_collection(:exercise_type) %>
-<% f.input :body, as: :quill_editor, input_html: {
+<% f.input :title, as: :select, required: true, collection: content_block.field_collection(:exercise_type) %>
+<% f.input :body, as: :quill_editor, required: true, input_html: {
   data: {
     options: {
       modules: {

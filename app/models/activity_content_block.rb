@@ -3,6 +3,7 @@ class ActivityContentBlock < ApplicationRecord
   belongs_to :content_block
 
   after_initialize :initialize_dynamic_contents
+  before_validation :check_required_fields
 
   def initialize_dynamic_contents
     ContentBlock.all_fields.each do |field|
@@ -29,5 +30,14 @@ class ActivityContentBlock < ApplicationRecord
   def content_hash
     return {} unless content
     JSON.parse(content)
+  end
+
+  private
+
+  def check_required_fields
+    return if content_block.required_fields.blank?
+    content_block.required_fields.each do |field|
+      errors.add(field, "é obrigatório") if send(field).blank?
+    end
   end
 end

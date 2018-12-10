@@ -1,9 +1,8 @@
-
 <legend><span>Para o Professor(a)</span></legend>
 <%= render 'content_toolbar', f: f %>
 <% f.input :id, as: :hidden %>
 <% f.input :content_block_id, as: :hidden, input_html: { value: ContentBlock.find_by(content_type: :to_teacher).id }%>
-<% f.input :body, as: :quill_editor, input_html: {
+<% f.input :body, as: :quill_editor, required: true, input_html: {
   data: {
     options: {
       modules: {
