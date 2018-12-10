@@ -174,7 +174,7 @@ pt-BR:
           to_student: "Para o estudante"
           question:   "Questão"
           predefined_exercise: "Execício prédefinido"
-          text: "Texto"
+          long_text: "Texto longo"
           gallery: "Galeria"
 
     errors:
