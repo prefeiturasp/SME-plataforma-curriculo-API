@@ -89,7 +89,6 @@ namespace :db do
         },
         "content_type": "gallery",
         "schema": {
-          "required": ["file", "subtitle"],
           "properties": {
             "subtitle": {
               "type": "string"

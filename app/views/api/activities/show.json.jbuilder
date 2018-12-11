@@ -39,7 +39,7 @@ json.content_blocks @activity.activity_content_blocks do |activity_content_block
   if activity_content_block.images.present?
     json.images activity_content_block.images do |image|
       json.subtitle image.subtitle
-      json.partial!('api/images/image', image_param: image.file, sizes: %i[large extra_large] )
+      json.partial!('api/images/image', image_param: image.file, sizes: %i[medium] )
     end
   end
 end
