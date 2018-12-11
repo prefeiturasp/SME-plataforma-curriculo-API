@@ -176,10 +176,10 @@ pt-BR:
           second: "2º"
           third: "3º"
         content_types:
-          to_teacher: "Para o Professor"
-          to_student: "Para o estudante"
+          to_teacher: "Para o Professor(a)"
+          to_student: "Para o Estudante"
           question:   "Questão"
-          predefined_exercise: "Execício prédefinido"
+          predefined_exercise: "Execício pré-definido"
           long_text: "Texto longo"
           gallery: "Galeria"
 

@@ -4,9 +4,9 @@ class ActivityContentBlock < ApplicationRecord
   has_many :images, dependent: :destroy
 
   after_initialize :initialize_dynamic_contents
-  # before_validation :check_required_fields
+  before_validation :check_required_fields
 
-  accepts_nested_attributes_for :images
+  accepts_nested_attributes_for :images, allow_destroy: true
 
   def initialize_dynamic_contents
     ContentBlock.all_fields.each do |field|
