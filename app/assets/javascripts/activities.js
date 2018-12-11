@@ -19,6 +19,12 @@ $(document).ready(function(){
     action_buttons = $('fieldset.actions')
     form.append(action_buttons);
 
+    $('.gallery-image-add-button').change( function(){
+      parent = $(this).parent();
+      hint = parent.find("p.inline-hints")
+      hint.empty();
+    });
+
     setToolbarToActivityContents();
   }
 
