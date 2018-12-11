@@ -1,7 +1,6 @@
-<legend><span>Texto Longo</span></legend>
+<%= render "#{ContentBlock.partials_path}header_fields", f: f, content_block: content_block %>
 <%= render 'content_toolbar', f: f %>
-<% f.input :id, as: :hidden %>
-<% f.input :content_block_id, as: :hidden, input_html: { value: ContentBlock.find_by(content_type: :long_text).id }%>
+
 <% f.input :title %>
 <% f.input :body, as: :quill_editor, input_html: {
   data: {
@@ -29,4 +28,4 @@
     }
   }
 } %>
-<% f.input :_destroy, as: :boolean unless f.object.new_record? %>
+<li><a class="button remove-activity-content-block" href="#">Remover</a></li>
