@@ -25,8 +25,12 @@
         render partial: 'activity_content_buttons', locals: { activity: activity, f: f }
       end
 
-      f.has_many :activity_content_blocks, new_record: false do |a|
+      f.has_many :activity_content_blocks, new_record: false, allow_destroy: false do |a|
         render partial: 'activity_content_list', locals: { a: a }
+      end
+
+      f.inputs class: 'activity-content-structure' do
+        render partial: 'activity_content_structure'
       end
     end
   end

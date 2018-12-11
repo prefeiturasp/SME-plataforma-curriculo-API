@@ -1,8 +1,6 @@
-<legend><span>Exercícios pré-definidos</span></legend>
+<%= render "#{ContentBlock.partials_path}header_fields", f: f, content_block: content_block %>
 <%= render 'content_toolbar', f: f %>
-<% content_block = ContentBlock.find_by(content_type: :predefined_exercise)%>
-<% f.input :id, as: :hidden %>
-<% f.input :content_block_id, as: :hidden, input_html: { value: content_block.id } %>
+
 <% f.input :title, as: :select, required: true, collection: content_block.field_collection(:exercise_type) %>
 <% f.input :body, as: :quill_editor, required: true, input_html: {
   data: {
@@ -31,4 +29,4 @@
   }
 } %>
 <% f.input :icon_url, as: :hidden %>
-<% f.input :_destroy, as: :boolean unless f.object.new_record? %>
+<li><a class="button remove-activity-content-block" href="#">Remover</a></li>
