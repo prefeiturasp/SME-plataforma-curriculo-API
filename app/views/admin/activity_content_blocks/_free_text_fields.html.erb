@@ -1,0 +1,30 @@
+<%= render "#{ContentBlock.partials_path}header_fields", f: f, content_block: content_block %>
+<%= render 'content_toolbar', f: f %>
+
+<% f.input :body, as: :quill_editor, input_html: {
+  data: {
+    options: {
+      modules: {
+        toolbar: f.object.new_record? ? "#toolbar_NEW_RECORD_ID" : "#toolbar_#{f.object.id}"
+      },
+      formats: [
+        'bold',
+        'italic',
+        'underline',
+        'strike',
+        'link',
+        'blockquote',
+        'header',
+        'image',
+        'list',
+        'sub',
+        'super',
+        'image',
+        'video',
+        'divider'
+      ],
+      theme: 'snow'
+    }
+  }
+} %>
+<li><a class="button remove-activity-content-block" href="#">Remover</a></li>
