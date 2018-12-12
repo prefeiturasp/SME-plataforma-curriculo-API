@@ -1,9 +1,9 @@
 # encoding: utf-8
 # rubocop:disable Style/AsciiComments
 if Rails.env.development?
-  admin = User.find_or_create_by(email: '')
-  admin.password = 'senhasegura'
-  admin.password_confirmation = ''
+  admin = User.find_or_create_by(email: 'admin@jurema.la')
+  admin.password = 'qwe123'
+  admin.password_confirmation = 'qwe123'
   admin.save
 end
 
@@ -245,4 +245,6 @@ CurricularComponent.all.each do |curricular_component|
     Axis.create(description: "Eixo #{i} - #{curricular_component.name}", curricular_component_id: curricular_component.id)
   end
 end
+
+Rake::Task['db:seed:create_or_update_content_blocks'].invoke
 # rubocop:enable Style/AsciiComments

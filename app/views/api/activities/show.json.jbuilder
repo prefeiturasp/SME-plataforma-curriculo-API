@@ -32,3 +32,14 @@ json.learning_objectives @activity.learning_objectives do |learning_objective|
   json.description learning_objective.description
   json.color learning_objective.curricular_component.color
 end
+
+json.content_blocks @activity.activity_content_blocks do |activity_content_block|
+  json.type activity_content_block.content_block.content_type
+  json.content activity_content_block.content_hash if activity_content_block.content_hash.present?
+  if activity_content_block.images.present?
+    json.images activity_content_block.images do |image|
+      json.subtitle image.subtitle
+      json.partial!('api/images/image', image_param: image.file, sizes: %i[medium] )
+    end
+  end
+end

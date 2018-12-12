@@ -11,6 +11,7 @@ module ApplicationHelper
       extra_small: '512x256',
       thumb: '256x160',
       extra_thumb: '512x320',
+      medium: '730x518',
       large: '1110x568',
       extra_large: '2220x1136'
     }

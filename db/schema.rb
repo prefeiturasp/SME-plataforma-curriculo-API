@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_29_181916) do
+ActiveRecord::Schema.define(version: 2018_12_12_145246) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,17 @@ ActiveRecord::Schema.define(version: 2018_11_29_181916) do
     t.index ["learning_objective_id", "activity_id"], name: "idx_activity_learning_on_lo_id_and_activity_id"
   end
 
+  create_table "activity_content_blocks", force: :cascade do |t|
+    t.bigint "activity_id"
+    t.bigint "content_block_id"
+    t.integer "sequence"
+    t.jsonb "content", default: "{}", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_id"], name: "index_activity_content_blocks_on_activity_id"
+    t.index ["content_block_id"], name: "index_activity_content_blocks_on_content_block_id"
+  end
+
   create_table "activity_sequences", force: :cascade do |t|
     t.string "title"
     t.integer "year"
@@ -152,6 +163,13 @@ ActiveRecord::Schema.define(version: 2018_11_29_181916) do
     t.index ["teacher_id"], name: "index_collections_on_teacher_id"
   end
 
+  create_table "content_blocks", force: :cascade do |t|
+    t.integer "content_type"
+    t.jsonb "json_schema", default: "{}", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "curricular_components", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -179,6 +197,14 @@ ActiveRecord::Schema.define(version: 2018_11_29_181916) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["sustainable_development_goal_id"], name: "index_goals_on_sustainable_development_goal_id"
+  end
+
+  create_table "images", force: :cascade do |t|
+    t.string "subtitle"
+    t.bigint "activity_content_block_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_content_block_id"], name: "index_images_on_activity_content_block_id"
   end
 
   create_table "knowledge_matrices", force: :cascade do |t|
@@ -259,11 +285,15 @@ ActiveRecord::Schema.define(version: 2018_11_29_181916) do
   end
 
   add_foreign_key "activities", "activity_sequences"
+  add_foreign_key "activity_content_blocks", "activities"
+  add_foreign_key "activity_content_blocks", "content_blocks"
   add_foreign_key "activity_sequences", "curricular_components", column: "main_curricular_component_id"
   add_foreign_key "axes", "curricular_components"
   add_foreign_key "collection_activity_sequences", "activity_sequences"
   add_foreign_key "collection_activity_sequences", "collections"
   add_foreign_key "collections", "teachers"
   add_foreign_key "goals", "sustainable_development_goals"
+  add_foreign_key "images", "activity_content_blocks"
   add_foreign_key "learning_objectives", "curricular_components"
+  add_foreign_key "teachers", "users"
 end
