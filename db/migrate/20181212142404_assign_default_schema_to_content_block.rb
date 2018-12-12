@@ -43,7 +43,7 @@ class AssignDefaultSchemaToContentBlock < ActiveRecord::Migration[5.2]
       {
         "content_type": "predefined_exercise",
         "schema": {
-          "required": ["exercise_type", "body"],
+          "required": ["body"],
           "properties": {
             "exercise_type": {
               "type": "string",

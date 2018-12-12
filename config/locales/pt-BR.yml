@@ -185,6 +185,7 @@ pt-BR:
           predefined_exercise: "Execício pré-definido"
           long_text: "Texto longo"
           gallery: "Galeria"
+          free_text: "Texto Livre"
 
     errors:
       messages:
