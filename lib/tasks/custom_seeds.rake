@@ -87,14 +87,27 @@ namespace :db do
             }
           }
         },
-        "content_type": "gallery",
-        "schema": {
-          "properties": {
-            "subtitle": {
-              "type": "string"
-            },
-            "file": {
-              "type": "file"
+        {
+          "content_type": "gallery",
+          "schema": {
+            "properties": {
+              "subtitle": {
+                "type": "string"
+              },
+              "file": {
+                "type": "file"
+              }
+            }
+          }
+        },
+        {
+          "content_type": "free_text",
+          "schema": {
+            "required": ["body"],
+            "properties": {
+              "body": {
+                "type": "json"
+              }
             }
           }
         }

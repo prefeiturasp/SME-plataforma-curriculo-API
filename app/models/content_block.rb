@@ -6,7 +6,8 @@ class ContentBlock < ApplicationRecord
     question:   2,
     predefined_exercise: 3,
     long_text: 4,
-    gallery: 5
+    gallery: 5,
+    free_text: 6
   }
 
   validates :content_type, presence: true, uniqueness: true
