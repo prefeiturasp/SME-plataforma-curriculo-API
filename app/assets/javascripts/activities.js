@@ -25,10 +25,10 @@ $(document).ready(function(){
       hint.empty();
     });
 
+    setToolbarToActivityContents();
     setTitleLegendClassNames();
     bindUpdateStructureOnRemove();
     setContentStructure();
-    setToolbarToActivityContents();
     hideUnusedRemoveButton();
   }
 
@@ -37,7 +37,7 @@ $(document).ready(function(){
 function setActivityContentBlockToolbarId(){
   $fieldsets = $('fieldset.has_many_fields')
   for( var i = 0; i < $fieldsets.length; i++ ) {
-    var new_id = new Date().getTime();
+    var new_id = new Date().valueOf() + i;
     $toolbar = $($fieldsets[i]).find(".replace-id")
     if($toolbar.length) {
       $toolbar.attr("id",`toolbar_${new_id}`);
@@ -143,9 +143,7 @@ function add_fields(link, association, content, father) {
   convertAllEditorsToDelta();
   setContentStructure();
   bindUpdateStructureOnRemove();
-
   last_fieldset = $('li.activity_content_blocks fieldset').last()
-  console.log(last_fieldset)
 
   goToTop(last_fieldset.offset().top)
 

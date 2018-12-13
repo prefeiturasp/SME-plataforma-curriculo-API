@@ -14,7 +14,6 @@ function quillGetHTML(inputDelta) {
 
 window.onload = function() {
   set_colors();
-
   $.when( setActivityContentBlockToolbarId() ).done(function() {
     var editors = document.querySelectorAll( '.quill-editor' );
     for( var i = 0; i < editors.length; i++ ) {
