@@ -5,6 +5,14 @@
   data: {
     options: {
       modules: {
+        imageResize: {
+          modules: [ 'Resize', 'DisplaySize', 'Toolbar' ],
+          handleStyles: {
+              backgroundColor: 'black',
+              border: 'none',
+              color: '#FFFFFF'
+          }
+        },
         toolbar: f.object.new_record? ? "#toolbar_NEW_RECORD_ID" : "#toolbar_#{f.object.id}"
       },
       formats: [

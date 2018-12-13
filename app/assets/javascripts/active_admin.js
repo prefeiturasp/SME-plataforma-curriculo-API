@@ -1,6 +1,7 @@
 //= require active_admin/base
 //= require activeadmin/quill_editor/quill
 //= require activeadmin/quill_editor_input
+//= require image-resize.min
 //= require divider_blot
 //= require activities
 //= require activity_sequences
