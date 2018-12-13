@@ -14,16 +14,19 @@ function quillGetHTML(inputDelta) {
 
 window.onload = function() {
   set_colors();
-  var editors = document.querySelectorAll( '.quill-editor' );
-  for( var i = 0; i < editors.length; i++ ) {
-    initializeQuillEditor(editors[i]);
-  }
-  var formtastic = document.querySelector( 'form.formtastic' );
-  if( formtastic ) {
-    formtastic.onsubmit = function() {
-      return convertContentToDelta(editors);
-    };
-  }
+
+  $.when( setActivityContentBlockToolbarId() ).done(function() {
+    var editors = document.querySelectorAll( '.quill-editor' );
+    for( var i = 0; i < editors.length; i++ ) {
+      initializeQuillEditor(editors[i]);
+    }
+    var formtastic = document.querySelector( 'form.formtastic' );
+    if( formtastic ) {
+      formtastic.onsubmit = function() {
+        return convertContentToDelta(editors);
+      };
+    }
+  });
 };
 
 function convertAllEditorsToDelta() {

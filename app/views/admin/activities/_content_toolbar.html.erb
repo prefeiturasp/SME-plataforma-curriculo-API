@@ -1,5 +1,5 @@
-<% toolbar_id = f.object.new_record? ? "toolbar_NEW_RECORD_ID" : "toolbar_#{f.object.id}" %>
-<div id="<%= toolbar_id %>">
+<% toolbar_id = f.object.new_record? ? "toolbar_NEW_RECORD_ID#{Time.now.to_i}" : "toolbar_#{f.object.id}" %>
+<div id="<%= toolbar_id %>" class="<%= "replace-id" if f.object.new_record? %>">
   <span class="ql-formats">
     <button class="ql-bold"></button>
   </span>

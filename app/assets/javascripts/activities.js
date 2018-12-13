@@ -34,6 +34,26 @@ $(document).ready(function(){
 
 });
 
+function setActivityContentBlockToolbarId(){
+  $fieldsets = $('fieldset.has_many_fields')
+  for( var i = 0; i < $fieldsets.length; i++ ) {
+    var new_id = new Date().getTime();
+    $toolbar = $($fieldsets[i]).find(".replace-id")
+    if($toolbar.length) {
+      $toolbar.attr("id",`toolbar_${new_id}`);
+
+      quill = $($fieldsets[i]).find('.quill-editor');
+      data_options = quill.data("options");
+      data_options.modules.toolbar = `#toolbar_${new_id}`;
+
+      $($fieldsets[i]).find('.quill-editor')
+
+      $(quill).attr('data-options', JSON.stringify(data_options));
+    }
+  }
+  return true;
+}
+
 function hideUnusedRemoveButton(){
   $('li.activity_content_blocks .has_many_fields .has_many_remove').hide();
   $('li.has_many_containes.images .has_many_remove').show();
@@ -102,6 +122,8 @@ function add_fields(link, association, content, father) {
   var new_id = new Date().getTime();
   var regexp = new RegExp("new_" + association, "g");
 
+  content = content.replace(regexp, new_id)
+  regexp = new RegExp("NEW_RECORD_ID[0-9]+", "g");
   content = content.replace(regexp, new_id)
   regexp = new RegExp("NEW_RECORD_ID", "g");
   content = content.replace(regexp, new_id)
