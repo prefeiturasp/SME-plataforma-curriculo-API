@@ -35,7 +35,7 @@ class ActivityContentBlock < ApplicationRecord
       c['insert']['image'] = base64_to_url(uri_parts)
     end
 
-    self.content = content.to_json
+    self.body = content.to_json
   end
 
   def assign_default_content(field)
