@@ -162,6 +162,12 @@ pt-BR:
           first: "1º"
           second: "2º"
           third: "3º"
+          fourth: "4º"
+          fifth: "5º"
+          sixth: "6º"
+          seventh: "7º"
+          eighth: "8º"
+          nineth: "9º"
     errors:
       messages:
         none_learning_objectives: "Nenhum Objetivo de aprendizagem disponível para o componente curricular principal selecionado"
