@@ -67,6 +67,5 @@ module Admin
     def books_toolbar_options
       [['link']]
     end
-
   end
 end

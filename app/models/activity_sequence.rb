@@ -5,8 +5,12 @@ class ActivitySequence < ApplicationRecord
   belongs_to :main_curricular_component, class_name: 'CurricularComponent'
   has_and_belongs_to_many :knowledge_matrices
   has_and_belongs_to_many :learning_objectives
-  has_and_belongs_to_many :axes
-  has_many :activities, -> { order 'sequence' }, dependent: :destroy
+  has_many :activities,
+           -> { order 'sequence' },
+           dependent: :destroy
+  has_many :collection_activity_sequences
+  has_many :collections,
+           through: :collection_activity_sequences
 
   enum status: { draft: 0, published: 1 }
 
@@ -20,8 +24,6 @@ class ActivitySequence < ApplicationRecord
   friendly_id :title, use: %i[slugged finders]
 
   accepts_nested_attributes_for :activities, allow_destroy: true
-
-  default_scope { order(title: :asc) }
 
   def should_generate_new_friendly_id?
     title_changed? || super
@@ -71,9 +73,11 @@ class ActivitySequence < ApplicationRecord
 
   def self.all_or_with_axes(params = {})
     return all unless params[:axis_ids]
-    joins(:axes).where(
-      axes: {
-        id: params[:axis_ids]
+    joins(learning_objectives: :axes).where(
+      learning_objectives: {
+        axes: {
+          id: params[:axis_ids]
+        }
       }
     )
   end

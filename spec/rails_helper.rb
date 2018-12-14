@@ -57,9 +57,9 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
-  # Need because of the Devise
+  # Need because of the Devise and Devise Token Auth
   config.include Devise::Test::ControllerHelpers, type: :controller
-  config.extend ControllerMacros, type: :controller
+  config.include AuthenticationHelper, type: :controller
 
   config.render_views = true
 end

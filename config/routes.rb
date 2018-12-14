@@ -1,10 +1,17 @@
 Rails.application.routes.draw do
-  devise_for :users, ActiveAdmin::Devise.config
+  devise_for :users, { skip: :omniauth_callbacks }.merge(ActiveAdmin::Devise.config)
+  
   ActiveAdmin.routes(self)
 
-  root to: 'admin/dashboard#index'
+  root :to => 'rails/welcome#index'
 
   namespace :api, defaults: { format: 'json' } do
+    mount_devise_token_auth_for 'User',
+                                at: 'auth',
+                                controllers: {
+                                  omniauth_callbacks: 'api/omniauth_callbacks'
+                                }
+
     get 'filtros', to: 'filters#index'
     get 'sequencias', to: 'activity_sequences#index'
     get 'sequencias/:slug', to: 'activity_sequences#show'
@@ -13,6 +20,15 @@ Rails.application.routes.draw do
     get 'ods', to: 'sustainable_development_goals#index'
     get 'ods/:id', to: 'sustainable_development_goals#show'
     get 'roteiros', to: 'roadmaps#index'
+    get 'perfil', to: 'profiles#me'
+
+    resources :teachers, path: 'professores', only: [:show, :create, :update] do
+      post :avatar, action: :avatar
+      delete :avatar, action: :avatar_purge
+      resources :collections, path: 'colecoes' do
+        resources :activity_sequences, path: 'sequencias'
+      end
+    end
 
     namespace :v1 do
       resources :activities

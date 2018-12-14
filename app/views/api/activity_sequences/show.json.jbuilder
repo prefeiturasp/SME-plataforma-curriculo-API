@@ -1,8 +1,11 @@
+json.id @activity_sequence.id
 json.slug @activity_sequence.slug
 json.title @activity_sequence.title
 json.year t("activerecord.attributes.enums.years.#{@activity_sequence.year}")
 json.estimated_time @activity_sequence.estimated_time
 json.status @activity_sequence.status
+json.keywords @activity_sequence.keywords
+json.sequence @activity_sequence.collection_activity_sequences.find_by(collection_id: @collection.id).sequence if @collection
 
 json.main_curricular_component do
   json.name @activity_sequence.main_curricular_component.name
@@ -40,10 +43,4 @@ json.activities @activity_sequence.activities do |activity|
   json.title activity.title
   json.estimated_time activity.estimated_time
   json.partial! 'api/images/image', image_param: activity.image, sizes: %i[small extra_small]
-end
-
-json.axes @activity_sequence.axes do |axis|
-  json.id axis.id
-  json.description axis.description
-  json.curricular_component axis.curricular_component
 end

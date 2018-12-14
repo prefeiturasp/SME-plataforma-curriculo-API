@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ActivitySequence, type: :model do
-  include_examples 'image_concern'
+  # include_examples 'image_concern'
 
   describe 'Associations' do
     it 'belongs to main curricular component' do
@@ -15,12 +15,19 @@ RSpec.describe ActivitySequence, type: :model do
     it 'has and belongs to many learning objectives' do
       should have_and_belong_to_many(:learning_objectives)
     end
+
+    it 'has many collection activity sequences' do
+      should have_many(:collection_activity_sequences)
+    end
+
+    it 'has many collections' do
+      should have_many(:collections)
+    end
   end
 
   context 'slug' do
     it 'should generate a slug' do
-      subject.title = 'Hello World'
-      subject.save
+      subject = create :activity_sequence, title: 'Hello World'
 
       expect(subject.slug).to eq('hello-world')
     end
@@ -123,16 +130,6 @@ RSpec.describe ActivitySequence, type: :model do
     end
   end
 
-  describe 'default scope' do
-    let!(:activity_sequence_one) { create :activity_sequence, title: "ZZZZZ" }
-    let!(:activity_sequence_two) { create :activity_sequence, title: "AAAA" }
-
-    it 'orders by ascending code' do
-      expect(ActivitySequence.all).to eq([activity_sequence_two, activity_sequence_one])
-    end
-  end
-
-
   describe 'Queries' do
     before do
       create_list(:activity_sequence, 4)
@@ -183,21 +180,29 @@ RSpec.describe ActivitySequence, type: :model do
     end
 
     context 'with axes' do
-      let(:axis) { create :axis }
+      let(:curricular_component) { create :curricular_component }
+      let(:axis) { create :axis, curricular_component: curricular_component }
       let(:params) { { axis_ids: axis.id } }
       let(:response) { ActivitySequence.all_or_with_axes(params) }
 
-      it 'return all with none params' do
+      it 'return all, if there are no params' do
         response = ActivitySequence.all_or_with_axes
 
         expect(all_response).to eq(response)
       end
 
-      it 'not include different axis id' do
-        axis_2 = create :axis
-        a = create :activity_sequence, axis_ids: [axis_2.id]
+      it 'return activity sequence, if axis exists on learning objectives' do
+        learning_objective = create :learning_objective, axes: [axis], curricular_component: curricular_component
+        activity_sequence = create :activity_sequence, learning_objectives: [learning_objective]
 
-        expect(response).to_not include(a)
+        expect(response).to include(activity_sequence)
+      end
+
+      it 'NOT return activity sequence, if axis NOT exists on learning objectives' do
+        learning_objective = create :learning_objective, curricular_component: curricular_component
+        activity_sequence = create :activity_sequence, learning_objectives: [learning_objective]
+
+        expect(response).to_not include(activity_sequence)
       end
 
     end
@@ -305,5 +310,5 @@ RSpec.describe ActivitySequence, type: :model do
     end
   end
 
-  it_behaves_like 'image_concern'
+  # it_behaves_like 'image_concern'
 end
