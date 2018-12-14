@@ -96,15 +96,22 @@ function bindUpdateStructureOnRemove(){
 }
 
 function setContentStructure(){
-  contents = $('li .has_many_fields');
-  structure_list = $('.activity-content-structure ol');
+  var contents = $('li .has_many_fields');
+  var structure_list = $('.activity-content-structure ol');
   $('.activity-content-structure ol li').remove();
   for( var i = 0; i < contents.length; i++ ) {
-    span = $(contents[i]).find('ol legend span')
+    var inputs = $(contents[i]).find('input.activity-content-id');
+    var $ol_parent = $(inputs[0]).parent().parent();
+    var id_legend = $ol_parent.find('legend.title_content_block')[0].id;
+
+    var span = $(contents[i]).find('ol legend span')
     var content_name = span.text();
     if(content_name) {
       if(!span.hasClass('removed')){
-        new_li =  $("<li></li>").text(content_name);
+        var link = $("<a></a>").text(content_name);
+        link.attr('href', `#${id_legend}`);
+        var new_li =  $("<li></li>");
+        new_li.append(link);
         structure_list.append(new_li);
       }
     }
