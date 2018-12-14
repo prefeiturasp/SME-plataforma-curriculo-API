@@ -5,6 +5,7 @@
 //= require divider_blot
 //= require activities
 //= require activity_sequences
+//= require lib/jquery.sticky
 
 function quillGetHTML(inputDelta) {
   var tempCont = document.createElement("div");

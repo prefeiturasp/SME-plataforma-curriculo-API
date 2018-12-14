@@ -30,6 +30,7 @@ $(document).ready(function(){
     bindUpdateStructureOnRemove();
     setContentStructure();
     hideUnusedRemoveButton();
+    stickyContentsSidebar();
   }
 
 });
@@ -166,4 +167,9 @@ function goToTop(offset) {
   setTimeout(function() {
     $("html, body").animate({ scrollTop: offset }, 1000);
   }, 400);
+}
+
+function stickyContentsSidebar(){
+  $('.activity-content-structure').sticky({topSpacing:0});
+  $('.activity-content-buttons').sticky({topSpacing:0});
 }
