@@ -30,7 +30,7 @@
       end
 
       f.inputs class: 'activity-content-structure' do
-        render partial: 'activity_content_structure'
+        render partial: 'activity_content_structure', locals: { activity: activity }
       end
     end
   end

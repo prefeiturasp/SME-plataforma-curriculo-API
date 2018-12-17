@@ -2,11 +2,13 @@
 //= require activeadmin_addons/all
 //= require activeadmin/quill_editor/quill
 //= require activeadmin/quill_editor_input
+//= require image-resize.min
 //= require divider_blot
 //= require helpers
 //= require activities
 //= require activity_sequences
 //= require learning_objectives
+//= require lib/jquery.sticky
 
 function quillGetHTML(inputDelta) {
   var tempCont = document.createElement("div");

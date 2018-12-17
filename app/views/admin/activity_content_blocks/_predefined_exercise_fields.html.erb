@@ -2,7 +2,7 @@
 <%= render 'content_toolbar', f: f %>
 
 <% f.input :title, as: :select, required: true, collection: content_block.field_collection(:exercise_type) %>
-<% f.input :body, as: :quill_editor, required: true, input_html: {
+<% f.input :body, as: :quill_editor, required: true, label: false, input_html: {
   data: {
     options: {
       modules: {
