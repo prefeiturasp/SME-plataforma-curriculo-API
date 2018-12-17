@@ -94,7 +94,7 @@ function bindUpdateStructureOnRemove(){
 }
 
 function setContentStructure(){
-  var contents = $('li .has_many_fields');
+  var contents = $('li .has_many_fields').not('.gallery-has-many-images');
   var structure_list = $('.activity-content-structure ol');
   $('.activity-content-structure ol li').not(".preview-item").remove();
   for( var i = 0; i < contents.length; i++ ) {

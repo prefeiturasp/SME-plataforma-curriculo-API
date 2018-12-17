@@ -6,7 +6,7 @@ class Activity < ApplicationRecord
   has_and_belongs_to_many :activity_types
   has_and_belongs_to_many :curricular_components
   has_and_belongs_to_many :learning_objectives
-  has_many :activity_content_blocks
+  has_many :activity_content_blocks, dependent: :destroy
 
   accepts_nested_attributes_for :activity_content_blocks, allow_destroy: true
 
