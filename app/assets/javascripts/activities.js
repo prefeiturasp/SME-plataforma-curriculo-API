@@ -31,9 +31,33 @@ $(document).ready(function(){
     setContentStructure();
     hideUnusedRemoveButton();
     stickyContentsSidebar();
+    saveContentOnPreviewClick();
   }
 
 });
+
+function saveContentOnPreviewClick(){
+  $('a.preview-link').on('click', function(evt){
+    evt.preventDefault();
+
+    var $activity_form = $('form.activity');
+    if ($activity_form.length > 0){
+      var post_url = $activity_form.attr('action');
+      $('input#activity_status').val('draft');
+
+      var editors = document.querySelectorAll( '.quill-editor' );
+      convertContentToDelta(editors);
+
+      $.post(post_url, $activity_form.serialize())
+        .fail(function() {
+          alert("Houve um erro na pré-visualização.");
+        })
+        .always(function() {
+          $('input#activity_status').val('published');
+        });
+    }
+  });
+}
 
 function setActivityContentBlockToolbarId(){
   $fieldsets = $('fieldset.has_many_fields')

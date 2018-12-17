@@ -15,6 +15,7 @@ class Activity < ApplicationRecord
   validates :sequence, presence: true
 
   enum environment: { interior: 0, exterior: 1 }
+  enum status: { draft: 0, published: 1 }
 
   has_many_attached :content_images
 
