@@ -107,6 +107,13 @@
     h3 {
       display: none;
     }
+
+    .ql-editor{
+      h3 {
+        display: block;
+      }
+    }
+
     .hidden {
       display: none;
     }
@@ -158,5 +165,11 @@
         padding: 12px 17px 10px;
       }
     }
+  }
+}
+
+.quill-editor {
+  .select2-container {
+    display: none;
   }
 }
