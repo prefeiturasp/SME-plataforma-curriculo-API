@@ -1,4 +1,4 @@
-<legend class="title_content_block <%= content_block.content_type %>_title_content_block">
+<legend class="title_content_block <%= content_block.content_type %>_title_content_block" id="anchor_<%= f.object.new_record? ? 'NEW_RECORD_ID' : f.object.id %>">
   <span><%= I18n.t("activerecord.attributes.enums.content_types.#{content_block.content_type}") %></span>
 </legend>
 <% f.input :id, as: :hidden, input_html: { class: 'activity-content-id'} %>

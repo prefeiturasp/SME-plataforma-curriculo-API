@@ -2,11 +2,13 @@
 //= require activeadmin_addons/all
 //= require activeadmin/quill_editor/quill
 //= require activeadmin/quill_editor_input
+//= require image-resize.min
 //= require divider_blot
 //= require helpers
 //= require activities
 //= require activity_sequences
 //= require learning_objectives
+//= require lib/jquery.sticky
 
 function quillGetHTML(inputDelta) {
   var tempCont = document.createElement("div");
@@ -17,16 +19,18 @@ function quillGetHTML(inputDelta) {
 
 window.onload = function() {
   set_colors();
-  var editors = document.querySelectorAll( '.quill-editor' );
-  for( var i = 0; i < editors.length; i++ ) {
-    initializeQuillEditor(editors[i]);
-  }
-  var formtastic = document.querySelector( 'form.formtastic' );
-  if( formtastic ) {
-    formtastic.onsubmit = function() {
-      return convertContentToDelta(editors);
-    };
-  }
+  $.when( setActivityContentBlockToolbarId() ).done(function() {
+    var editors = document.querySelectorAll( '.quill-editor' );
+    for( var i = 0; i < editors.length; i++ ) {
+      initializeQuillEditor(editors[i]);
+    }
+    var formtastic = document.querySelector( 'form.formtastic' );
+    if( formtastic ) {
+      formtastic.onsubmit = function() {
+        return convertContentToDelta(editors);
+      };
+    }
+  });
 };
 
 function convertAllEditorsToDelta() {

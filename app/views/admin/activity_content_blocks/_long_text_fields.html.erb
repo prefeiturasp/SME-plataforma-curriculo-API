@@ -2,7 +2,7 @@
 <%= render 'content_toolbar', f: f %>
 
 <% f.input :title %>
-<% f.input :body, as: :quill_editor, input_html: {
+<% f.input :body, as: :quill_editor, label: false, input_html: {
   data: {
     options: {
       modules: {

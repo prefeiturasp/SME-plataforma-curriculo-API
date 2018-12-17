@@ -17,6 +17,7 @@ json.activity_sequence do
     json.name @activity.activity_sequence.main_curricular_component.name
     json.color @activity.activity_sequence.main_curricular_component.color
   end
+  json.partial! 'api/images/image', image_param: @activity.activity_sequence.image, sizes: %i[thumb extra_thumb]
 end
 
 json.activity_types @activity.activity_types do |activity_type|

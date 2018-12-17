@@ -25,14 +25,35 @@ $(document).ready(function(){
       hint.empty();
     });
 
+    setToolbarToActivityContents();
     setTitleLegendClassNames();
     bindUpdateStructureOnRemove();
     setContentStructure();
-    setToolbarToActivityContents();
     hideUnusedRemoveButton();
+    stickyContentsSidebar();
   }
 
 });
+
+function setActivityContentBlockToolbarId(){
+  $fieldsets = $('fieldset.has_many_fields')
+  for( var i = 0; i < $fieldsets.length; i++ ) {
+    var new_id = new Date().valueOf() + i;
+    $toolbar = $($fieldsets[i]).find(".replace-id")
+    if($toolbar.length) {
+      $toolbar.attr("id",`toolbar_${new_id}`);
+
+      quill = $($fieldsets[i]).find('.quill-editor');
+      data_options = quill.data("options");
+      data_options.modules.toolbar = `#toolbar_${new_id}`;
+
+      $($fieldsets[i]).find('.quill-editor')
+
+      $(quill).attr('data-options', JSON.stringify(data_options));
+    }
+  }
+  return true;
+}
 
 function hideUnusedRemoveButton(){
   $('li.activity_content_blocks .has_many_fields .has_many_remove').hide();
@@ -69,25 +90,31 @@ function bindUpdateStructureOnRemove(){
       }
       setContentStructure();
     }
-
-    goToTop($('.panel_contents').offset().top)
   });
 }
 
 function setContentStructure(){
-  contents = $('li .has_many_fields');
-  structure_list = $('.activity-content-structure ol');
-  $('.activity-content-structure ol li').remove();
+  var contents = $('li .has_many_fields');
+  var structure_list = $('.activity-content-structure ol');
+  $('.activity-content-structure ol li').not(".preview-item").remove();
   for( var i = 0; i < contents.length; i++ ) {
-    span = $(contents[i]).find('ol legend span')
+    var inputs = $(contents[i]).find('input.activity-content-id');
+    var $ol_parent = $(inputs[0]).parent().parent();
+    var id_legend = $ol_parent.find('legend.title_content_block')[0].id;
+
+    var span = $(contents[i]).find('ol legend span')
     var content_name = span.text();
     if(content_name) {
       if(!span.hasClass('removed')){
-        new_li =  $("<li></li>").text(content_name);
+        var link = $("<a></a>").text(content_name);
+        link.attr('href', `#${id_legend}`);
+        var new_li =  $("<li></li>");
+        new_li.append(link);
         structure_list.append(new_li);
       }
     }
   }
+  structure_list.append(structure_list.find('.preview-item'));
 }
 
 function validateSize(file) {
@@ -102,6 +129,8 @@ function add_fields(link, association, content, father) {
   var new_id = new Date().getTime();
   var regexp = new RegExp("new_" + association, "g");
 
+  content = content.replace(regexp, new_id)
+  regexp = new RegExp("NEW_RECORD_ID[0-9]+", "g");
   content = content.replace(regexp, new_id)
   regexp = new RegExp("NEW_RECORD_ID", "g");
   content = content.replace(regexp, new_id)
@@ -121,9 +150,7 @@ function add_fields(link, association, content, father) {
   convertAllEditorsToDelta();
   setContentStructure();
   bindUpdateStructureOnRemove();
-
   last_fieldset = $('li.activity_content_blocks fieldset').last()
-  console.log(last_fieldset)
 
   goToTop(last_fieldset.offset().top)
 
@@ -146,4 +173,9 @@ function goToTop(offset) {
   setTimeout(function() {
     $("html, body").animate({ scrollTop: offset }, 1000);
   }, 400);
+}
+
+function stickyContentsSidebar(){
+  $('.activity-content-structure').sticky({topSpacing:0});
+  $('.activity-content-buttons').sticky({topSpacing:0});
 }

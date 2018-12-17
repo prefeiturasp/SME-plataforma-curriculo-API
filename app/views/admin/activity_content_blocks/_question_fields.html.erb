@@ -3,7 +3,7 @@
 
 <% f.input :title, required: true %>
 <% f.input :number, required: true, input_html: { required: true } %>
-<% f.input :body, as: :quill_editor, required: true, input_html: {
+<% f.input :body, as: :quill_editor, required: true, label: false, input_html: {
   data: {
     options: {
       modules: {

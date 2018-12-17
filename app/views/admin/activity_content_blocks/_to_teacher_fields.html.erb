@@ -1,10 +1,18 @@
 <%= render "#{ContentBlock.partials_path}header_fields", f: f, content_block: content_block %>
 <%= render 'content_toolbar', f: f %>
 
-<% f.input :body, as: :quill_editor, required: true, input_html: {
+<% f.input :body, as: :quill_editor, required: true, label: false, input_html: {
   data: {
     options: {
       modules: {
+        imageResize: {
+          modules: [ 'Resize', 'DisplaySize', 'Toolbar' ],
+          handleStyles: {
+              backgroundColor: 'black',
+              border: 'none',
+              color: '#FFFFFF'
+          }
+        },
         toolbar: f.object.new_record? ? "#toolbar_NEW_RECORD_ID" : "#toolbar_#{f.object.id}"
       },
       formats: [
