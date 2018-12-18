@@ -3,6 +3,7 @@ FactoryBot.define do
     title { Faker::Lorem.sentence(4) }
     estimated_time { Faker::Number.between(1, 500) }
     content '{"ops":[{"insert":"Text\\n"}]}'
+    status :published
 
     association :activity_sequence, factory: :activity_sequence
 

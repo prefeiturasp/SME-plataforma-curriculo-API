@@ -17,6 +17,7 @@ ActiveAdmin.register Activity do
 
   permit_params :sequence,
                 :title,
+                :status,
                 :slug,
                 :estimated_time,
                 :content,

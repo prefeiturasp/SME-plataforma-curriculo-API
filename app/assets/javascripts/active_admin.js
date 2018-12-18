@@ -2,7 +2,7 @@
 //= require activeadmin_addons/all
 //= require activeadmin/quill_editor/quill
 //= require activeadmin/quill_editor_input
-//= require image-resize.min
+//= require lib/image-resize.min
 //= require divider_blot
 //= require helpers
 //= require activities
