@@ -33,6 +33,7 @@ $(document).ready(function(){
     hideUnusedRemoveButton();
     stickyContentsSidebar();
     saveContentWhenClickInPreview();
+    bindPredefinedExercisesSelect();
   }
 
 });
@@ -162,11 +163,19 @@ function setContentStructure(){
     var inputs = $(contents[i]).find('input.activity-content-id');
     var $ol_parent = $(inputs[0]).parent().parent();
     var id_legend = $ol_parent.find('legend.title_content_block')[0].id;
+    var $fieldset_parent = $ol_parent.parent();
+
+    var optional_text = null;
+    if ($fieldset_parent.hasClass('predefined_exercise')) {
+      select = $fieldset_parent.find('select');
+      optional_text = select.val();
+    }
 
     var span = $(contents[i]).find('ol legend span')
     var content_name = span.text();
     if(content_name) {
       if(!span.hasClass('removed')){
+        content_name = optional_text ? `${content_name} (${optional_text})` : content_name
         var link = $("<a></a>").text(content_name);
         link.attr('href', `#${id_legend}`);
         var new_li =  $("<li></li>");
@@ -209,6 +218,7 @@ function add_fields(link, association, content, father) {
   }
 
   convertAllEditorsToDelta();
+  bindPredefinedExercisesSelect();
   setContentStructure();
   bindUpdateStructureOnRemove();
   last_fieldset = $('li.activity_content_blocks fieldset').last()
@@ -227,6 +237,16 @@ function setToolbarToActivityContents(){
     toolbar_id = toolbar_options.modules.toolbar;
     toolbar = $(toolbar_id);
     editors[i].insertBefore(toolbar[0], content);
+  }
+}
+
+function bindPredefinedExercisesSelect(){
+  var $selects = $('fieldset.predefined_exercise select').not('.ql-header')
+  for( var i = 0; i < $selects.length; i++ ) {
+    var select = $($selects[i])
+    select.on('change', function(){
+      setContentStructure();
+    });
   }
 }
 
