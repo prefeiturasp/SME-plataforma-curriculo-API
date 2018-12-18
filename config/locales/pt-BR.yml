@@ -493,7 +493,8 @@ pt-BR:
       back: Voltar
       cancel: Cancelar
       show: Visualizar
-      preview: "Salvar e visualizar"
+      preview: "Pré-visualização"
+      save_and_preview: "Salvar e Visualizar"
       destroy: Excluir
       edit: Editar
     titles:
