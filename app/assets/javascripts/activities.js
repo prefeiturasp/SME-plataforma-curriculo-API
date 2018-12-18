@@ -31,29 +31,65 @@ $(document).ready(function(){
     setContentStructure();
     hideUnusedRemoveButton();
     stickyContentsSidebar();
-    saveContentOnPreviewClick();
+    saveContentWhenClickInPreview();
   }
 
 });
 
-function saveContentOnPreviewClick(){
+function saveContentWhenClickInPreview(){
   $('a.preview-link').on('click', function(evt){
+    var link_to_redirect = $(this).attr('href');
     evt.preventDefault();
-
     var $activity_form = $('form.activity');
-    if ($activity_form.length > 0){
-      var post_url = $activity_form.attr('action');
-      $('input#activity_status').val('draft');
 
+    if ($activity_form.length > 0){
       var editors = document.querySelectorAll( '.quill-editor' );
       convertContentToDelta(editors);
+      var post_url = $activity_form.attr('action');
 
-      $.post(post_url, $activity_form.serialize())
-        .fail(function() {
-          alert("Houve um erro na pré-visualização.");
+      $.post(post_url, $activity_form.serialize(), function(){},'json')
+        .done(function(data){
+          link_to_redirect = ($activity_form.is("#new_activity")) ? (link_to_redirect + data.slug) : link_to_redirect
+          var win = window.open(link_to_redirect, '_blank');
+          if (win) {
+            if ($activity_form.is("#new_activity")) {
+              window.location.href = post_url + "/" + data.slug + "/edit"
+            } else {
+              win.focus();
+            }
+          } else {
+            alert('Por favor, permita pop-ups para este site');
+          }          
         })
-        .always(function() {
-          $('input#activity_status').val('published');
+        .fail(function(xhr, status, error) {
+          var errors = xhr.responseJSON.errors;
+          var input_offset = 0;
+          $.each(errors, function (key, data) {
+            var input_name = "activity";
+            var keySplited = key.split(".");
+            for(var k of keySplited){
+              if (k == 'activity_content_blocks') {
+                input_name = input_name + '[activity_content_blocks_attributes]'
+                break;
+              } else {
+                input_name = input_name + "["+ k +"]";
+              }
+            }
+
+            var input = $(`[name^="${input_name}"]`)
+            input_offset = input.offset().top;
+            if (input.length > 0) {
+              var p = $('<p />').addClass('inline-errors')
+              p.text(data)
+              var li = input.parent();
+              if (!li.hasClass('error')) {
+                li.addClass('error');
+                li.append(p);
+              }
+            }
+          })
+          alert("Houve um erro ao salvar.");
+          goToTop(input_offset);
         });
     }
   });
@@ -202,4 +238,26 @@ function goToTop(offset) {
 function stickyContentsSidebar(){
   $('.activity-content-structure').sticky({topSpacing:0});
   $('.activity-content-buttons').sticky({topSpacing:0});
+}
+
+function verifyDraftContent(){
+  activity_status = $('input#activity_status').val()
+  if (activity_status == 'draft') {
+    setDraftMessage();
+    $('input#activity_status').val('published');
+  }
+}
+
+function setDraftMessage(){
+  var div = $('<div />').addClass('draft');
+  var p = $('<p />').text('Rascunho salvo. Para visualização na plataforma é necessário salvar/atualizar esta atividade.');
+  $('div#main_content_wrapper').append(div.append(p));
+}
+
+function responseContainsErrors(response_data){
+  if(response_data.indexOf('field_with_errors') != -1){
+    return true;
+  } else {
+    return false;
+  }
 }

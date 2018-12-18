@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(version: 2018_12_17_201742) do
     t.datetime "updated_at", null: false
     t.string "slug", null: false
     t.integer "environment"
-    t.integer "status", default: 1
+    t.integer "status", default: 0
     t.index ["activity_sequence_id"], name: "index_activities_on_activity_sequence_id"
     t.index ["slug"], name: "index_activities_on_slug", unique: true
   end

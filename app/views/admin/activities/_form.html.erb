@@ -1,7 +1,7 @@
 <% 
   f.inputs do
     f.input :id, as: :hidden
-    f.input :status, as: :hidden
+    f.input :status
     f.input :sequence,
         as: :select,
         collection: activity_sequence_options(activity),
