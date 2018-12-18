@@ -1,4 +1,5 @@
 $(document).ready(function(){
+  // $('.quill-editor select.ql-header').select2("enable",false);
   var body = document.getElementsByClassName('show admin_activities');
   if (body[0]) {
     var row_content = body[0].getElementsByClassName('row-content');
@@ -26,10 +27,13 @@ $(document).ready(function(){
       hint.empty();
     });
 
-    setToolbarToActivityContents();
-    setTitleLegendClassNames();
-    bindUpdateStructureOnRemove();
-    setContentStructure();
+    $.when( setToolbarToActivityContents() ).done(function() {
+      removeSelect2FromQuillEditor();
+      setTitleLegendClassNames();
+      bindUpdateStructureOnRemove();
+      setContentStructure();
+    });
+
     hideUnusedRemoveButton();
     stickyContentsSidebar();
     saveContentWhenClickInPreview();
@@ -37,6 +41,21 @@ $(document).ready(function(){
   }
 
 });
+
+function removeSelect2FromQuillEditor(){
+  var editors = document.querySelectorAll( '.quill-editor' );
+  for( var i = 0; i < editors.length; i++ ) {
+    var $editor = $(editors[i]);
+    var selects = $editor.find('select.ql-header');
+    for (var j =0; j < selects.length; j++) {
+      $(selects[j]).select2("destroy");
+    }
+    var spans = $editor.find('span.select2-hidden-accessible')
+    for (var j =0; j < spans.length; j++) {
+      $(spans[j]).removeClass('select2-hidden-accessible');
+    }
+  }
+}
 
 function saveContentWhenClickInPreview(){
   $('a.preview-link').on('click', function(evt){
