@@ -97,15 +97,20 @@ function saveContentWhenClickInPreview(){
               }
             }
 
-            var input = $(`[name^="${input_name}"]`)
-            input_offset = input.offset().top;
-            if (input.length > 0) {
-              var p = $('<p />').addClass('inline-errors')
-              p.text(data)
-              var li = input.parent();
-              if (!li.hasClass('error')) {
-                li.addClass('error');
-                li.append(p);
+            var inputs = $(`[name^="${input_name}"]`).not('.gallery-image-add-button')
+            for(var i =0; i < inputs.length; i++){
+              input = $(inputs[i]);
+              if (input.length > 0) {
+                if (!input.val()) {
+                  input_offset = input.offset().top;
+                  var p = $('<p />').addClass('inline-errors')
+                  p.text(data)
+                  var li = input.parent();
+                  if (!li.hasClass('error')) {
+                    li.addClass('error');
+                    li.append(p);
+                  }
+                }
               }
             }
           })
