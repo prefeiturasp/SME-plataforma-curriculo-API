@@ -1,6 +1,6 @@
 <%= content_tag :legend, (content_tag :span, t('helpers.titles.structure')) %>
 <%= content_tag :li ,
-                link_to(t('helpers.links.preview'),
+                link_to(t('helpers.links.save_and_preview'),
                         activity_preview_path(activity.activity_sequence.slug, activity.slug),
                         target: :_blank,
                         class: 'button grey-button preview-link'),
