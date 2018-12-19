@@ -2,7 +2,7 @@
 # rubocop:disable Style/AsciiComments
 if Rails.env.development?
   admin = User.find_or_create_by(email: '')
-  admin.password = 'senhasegura'
+  admin.password = ''
   admin.password_confirmation = ''
   admin.save
 end
@@ -238,4 +238,13 @@ end
   know = KnowledgeMatrix.find_or_create_by(sequence: attributes[:sequence])
   know.update_attributes(attributes)
 end
+
+
+CurricularComponent.all.each do |curricular_component|
+  (1..3).each do |i|
+    Axis.create(description: "Eixo #{i} - #{curricular_component.name}", curricular_component_id: curricular_component.id)
+  end
+end
+
+Rake::Task['db:seed:create_or_update_content_blocks'].invoke
 # rubocop:enable Style/AsciiComments

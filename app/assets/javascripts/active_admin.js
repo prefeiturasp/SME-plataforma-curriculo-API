@@ -1,9 +1,11 @@
 //= require active_admin/base
 //= require activeadmin/quill_editor/quill
 //= require activeadmin/quill_editor_input
+//= require image-resize.min
 //= require divider_blot
 //= require activities
 //= require activity_sequences
+//= require lib/jquery.sticky
 
 function quillGetHTML(inputDelta) {
   var tempCont = document.createElement("div");
@@ -14,18 +16,29 @@ function quillGetHTML(inputDelta) {
 
 window.onload = function() {
   set_colors();
+  $.when( setActivityContentBlockToolbarId() ).done(function() {
+    var editors = document.querySelectorAll( '.quill-editor' );
+    for( var i = 0; i < editors.length; i++ ) {
+      initializeQuillEditor(editors[i]);
+    }
+    var formtastic = document.querySelector( 'form.formtastic' );
+    if( formtastic ) {
+      formtastic.onsubmit = function() {
+        return convertContentToDelta(editors);
+      };
+    }
+  });
+};
+
+function convertAllEditorsToDelta() {
   var editors = document.querySelectorAll( '.quill-editor' );
-  for( var i = 0; i < editors.length; i++ ) {
-    initializeQuillEditor(editors[i]);
-  }
   var formtastic = document.querySelector( 'form.formtastic' );
   if( formtastic ) {
     formtastic.onsubmit = function() {
       return convertContentToDelta(editors);
     };
   }
-  setToolbar();
-};
+}
 
 function initializeQuillEditor(editor){
   var content = editor.querySelector( '.quill-editor-content' );
@@ -47,13 +60,6 @@ function initializeQuillEditor(editor){
       addHrDividerOnEditor(quill_editor);
     });
   }
-}
-
-function setToolbar(){
-  editorDiv = document.querySelectorAll('#activity_content');
-  content = editorDiv[0].querySelector(".quill-editor-content");
-  toolbar = document.querySelectorAll('#toolbar');
-  editorDiv[0].insertBefore(toolbar[0], content)
 }
 
 function addHrDividerOnEditor(quill) {
