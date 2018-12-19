@@ -43,60 +43,18 @@ function saveContentWhenClickInPreview(){
     var link_to_redirect = $(this).attr('href');
     evt.preventDefault();
     var $activity_form = $('form.activity');
-
     if ($activity_form.length > 0){
       var editors = document.querySelectorAll( '.quill-editor' );
       convertContentToDelta(editors);
       var post_url = $activity_form.attr('action');
-
       $.post(post_url, $activity_form.serialize(), function(){},'json')
         .done(function(data){
-          link_to_redirect = ($activity_form.is("#new_activity")) ? (link_to_redirect + data.slug) : link_to_redirect
-          var win = window.open(link_to_redirect, '_blank');
-          if (win) {
-            if ($activity_form.is("#new_activity")) {
-              window.location.href = post_url + "/" + data.slug + "/edit"
-            } else {
-              win.focus();
-            }
-          } else {
-            alert('Por favor, permita pop-ups para este site');
-          }          
+          openLinkInNewTab($activity_form, data, link_to_redirect);
         })
         .fail(function(xhr, status, error) {
           var errors = xhr.responseJSON.errors;
-          var input_offset = 0;
-          $.each(errors, function (key, data) {
-            var input_name = "activity";
-            var keySplited = key.split(".");
-            for(var k of keySplited){
-              if (k == 'activity_content_blocks') {
-                input_name = input_name + '[activity_content_blocks_attributes]'
-                break;
-              } else {
-                input_name = input_name + "["+ k +"]";
-              }
-            }
-
-            var inputs = $(`[name^="${input_name}"]`).not('.gallery-image-add-button')
-            for(var i =0; i < inputs.length; i++){
-              input = $(inputs[i]);
-              if (input.length > 0) {
-                if (!input.val()) {
-                  input_offset = input.offset().top;
-                  var p = $('<p />').addClass('inline-errors')
-                  p.text(data)
-                  var li = input.parent();
-                  if (!li.hasClass('error')) {
-                    li.addClass('error');
-                    li.append(p);
-                  }
-                }
-              }
-            }
-          })
           alert("Houve um erro ao salvar.");
-          goToTop(input_offset);
+          renderErrorsResponse(errors);
         });
     }
   });
@@ -266,6 +224,57 @@ function stickyContentsSidebar(){
   $('.activity-content-buttons').sticky({topSpacing:0});
 }
 
+function openLinkInNewTab($activity_form, data, link_to_redirect){
+  link_to_redirect = ($activity_form.is("#new_activity")) ? (link_to_redirect + data.slug) : link_to_redirect
+  var win = window.open(link_to_redirect, '_blank');
+  if (win) {
+    if ($activity_form.is("#new_activity")) {
+      window.location.href = post_url + "/" + data.slug + "/edit"
+    } else {
+      win.focus();
+    }
+  } else {
+    alert('Por favor, permita pop-ups para este site');
+  }
+}
+
+function renderErrorsResponse(errors){
+  var input_offset = null;
+  $.each(errors, function (key, data) {
+    var input_name = generateInputNameFromKey(key);
+    var inputs = $(`[name^="${input_name}"]`).not('.gallery-image-add-button')
+    for(var i =0; i < inputs.length; i++){
+      input = $(inputs[i]);
+      if (input.length > 0) {
+        if (!input.val()) {
+          input_offset = input_offset ? input_offset : input.offset().top;
+          var p = $('<p />').addClass('inline-errors').text(data);
+          var li = input.parent();
+          if (!li.hasClass('error')) {
+            li.addClass('error');
+            li.append(p);
+          }
+        }
+      }
+    }
+  });
+  goToTop(input_offset);
+}
+
+function generateInputNameFromKey(key){
+  var input_name = "activity";
+  var keySplited = key.split(".");
+  for(var k of keySplited){
+    if (k == 'activity_content_blocks') {
+      input_name = input_name + '[activity_content_blocks_attributes]';
+      break;
+    } else {
+      input_name = input_name + "["+ k +"]";
+    }
+  }
+  return input_name;
+}
+
 function verifyDraftContent(){
   activity_status = $('input#activity_status').val()
   if (activity_status == 'draft') {
@@ -278,12 +287,4 @@ function setDraftMessage(){
   var div = $('<div />').addClass('draft');
   var p = $('<p />').text('Rascunho salvo. Para visualização na plataforma é necessário salvar/atualizar esta atividade.');
   $('div#main_content_wrapper').append(div.append(p));
-}
-
-function responseContainsErrors(response_data){
-  if(response_data.indexOf('field_with_errors') != -1){
-    return true;
-  } else {
-    return false;
-  }
 }
