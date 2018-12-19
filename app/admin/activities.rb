@@ -43,10 +43,6 @@ ActiveAdmin.register Activity do
   controller do
     def set_activity_content_block
       return unless params[:activity][:activity_content_blocks_attributes]
-      Rails.logger.debug("*"*80)
-      Rails.logger.debug(params[:activity][:activity_content_blocks_attributes])
-      Rails.logger.debug("*"*80)
-
       new_hash = {}
       params[:activity][:activity_content_blocks_attributes].each do |k, v|
         hash = {}
@@ -66,10 +62,6 @@ ActiveAdmin.register Activity do
         new_hash.merge!("#{k}" => hash)
       end
       params[:activity][:activity_content_blocks_attributes] = new_hash
-
-      Rails.logger.debug("n"*80)
-      Rails.logger.debug(params[:activity][:activity_content_blocks_attributes])
-      Rails.logger.debug("n"*80)
     end
 
 
