@@ -32,6 +32,7 @@ ActiveAdmin.register Activity do
                   :content_type,
                   :content_block_id,
                   :content,
+                  :sequence,
                   :_destroy,
                   images_attributes: [
                     :id,

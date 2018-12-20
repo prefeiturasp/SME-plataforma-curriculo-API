@@ -27,6 +27,7 @@ $(document).ready(function(){
     });
 
     setToolbarToActivityContents();
+    setAnchorIdIfFormError();
     setTitleLegendClassNames();
     bindUpdateStructureOnRemove();
     setContentStructure();
@@ -49,7 +50,7 @@ function saveContentWhenClickInPreview(){
       var post_url = $activity_form.attr('action');
       $.post(post_url, $activity_form.serialize(), function(){},'json')
         .done(function(data){
-          openLinkInNewTab($activity_form, data, link_to_redirect);
+          openLinkInNewTab($activity_form, data, link_to_redirect, post_url);
         })
         .fail(function(xhr, status, error) {
           var errors = xhr.responseJSON.errors;
@@ -114,6 +115,7 @@ function bindUpdateStructureOnRemove(){
 
       }
       setContentStructure();
+      setSequenceInContentBlocks();
     }
   });
 }
@@ -121,10 +123,13 @@ function bindUpdateStructureOnRemove(){
 function setContentStructure(){
   var contents = $('li .has_many_fields').not('.gallery-has-many-images');
   var structure_list = $('.activity-content-structure ol');
+  var sortable_list = $('.activity-content-structure ul#sortable-list');
   $('.activity-content-structure ol li').not(".preview-item").remove();
   for( var i = 0; i < contents.length; i++ ) {
-    var inputs = $(contents[i]).find('input.activity-content-id');
-    var $ol_parent = $(inputs[0]).parent().parent();
+    var input = $(contents[i]).find('input.activity-content-id');
+    var activity_content_id = input.val();
+    var anchor_id = $(contents[i]).find('legend').attr('id')
+    var $ol_parent = $(input[0]).parent().parent();
     var id_legend = $ol_parent.find('legend.title_content_block')[0].id;
     var $fieldset_parent = $ol_parent.parent();
 
@@ -139,15 +144,65 @@ function setContentStructure(){
     if(content_name) {
       if(!span.hasClass('removed')){
         content_name = optional_text ? `${content_name} (${optional_text})` : content_name
+        var icon = "<span class='icon-sortable'>&#9650;<br>&#9660;</span>"
         var link = $("<a></a>").text(content_name);
         link.attr('href', `#${id_legend}`);
-        var new_li =  $("<li></li>");
-        new_li.append(link);
-        structure_list.append(new_li);
+        var new_li = $("<li></li>").attr('id', activity_content_id).attr('data-anchor_id', anchor_id).append(link).append(icon);
+        sortable_list.append(new_li);
       }
     }
   }
   structure_list.append(structure_list.find('.preview-item'));
+  setSortableList();
+}
+
+function setSortableList(){
+  var activity_id = $('#activity_id').val();
+  post_url = `/admin/activities/${activity_id}/activity_content_blocks/set_order`
+  $('#sortable-list').sortable({
+    update: function() {
+      $('form#edit_activity').length > 0 ? updateContentBlockSequenceOnDatabase() : null;
+      setSequenceInContentBlocks();
+      moveContentBlocksAfterSortable();
+    }
+  });
+  $('#sortable-list').disableSelection();
+}
+
+function moveContentBlocksAfterSortable(){
+  var fieldset_list = getFieldsetListInOrder();
+  for ( var i = 0; i < fieldset_list.length; i++) {
+    if (fieldset_list[i+1]){
+      fieldset_list[i].after(fieldset_list[i+1])
+    }
+  }
+}
+
+function setSequenceInContentBlocks(){
+  var fieldset_list = getFieldsetListInOrder();
+  for ( var i = 0; i < fieldset_list.length; i++) {
+    sequence = i + 1;
+    var sequence_input = fieldset_list[i].find('.sequence-input')
+    sequence_input.val(sequence);
+  }
+}
+
+function getFieldsetListInOrder(){
+  var $content_block_list = $('#sortable-list li');
+  var fieldset_list = [];
+  for ( var i = 0; i < $content_block_list.length; i++) {
+    var anchor_id = $($content_block_list[i]).data('anchor_id')
+    var $fieldset = $(`legend#${anchor_id}`).parent().parent();
+    fieldset_list.push($fieldset);
+  }
+
+  return fieldset_list;
+}
+
+function updateContentBlockSequenceOnDatabase() {
+  var order = $('#sortable-list').sortable('toArray');
+  var post_data = { activity_content_block_ids: order }
+  $.post(post_url, post_data, function(){}, 'json')
 }
 
 function validateSize(file) {
@@ -184,8 +239,8 @@ function add_fields(link, association, content, father) {
   bindPredefinedExercisesSelect();
   setContentStructure();
   bindUpdateStructureOnRemove();
+  setSequenceInContentBlocks();
   last_fieldset = $('li.activity_content_blocks fieldset').last()
-
   goToTop(last_fieldset.offset().top)
 
   return false;
@@ -224,17 +279,30 @@ function stickyContentsSidebar(){
   $('.activity-content-buttons').sticky({topSpacing:0});
 }
 
-function openLinkInNewTab($activity_form, data, link_to_redirect){
+function setAnchorIdIfFormError(){
+  regexp = new RegExp("NEW_RECORD_ID", "g");
+  var fieldsets = $('fieldset.has_many_fields');
+  for(var i=0; i < fieldsets.length; i++){
+    var element = $(fieldsets[i]).find('#anchor_NEW_RECORD_ID');
+    element.attr('id', `anchor_${i}`);
+  }
+}
+
+function openLinkInNewTab($activity_form, data, link_to_redirect, post_url){
   link_to_redirect = ($activity_form.is("#new_activity")) ? (link_to_redirect + data.slug) : link_to_redirect
   var win = window.open(link_to_redirect, '_blank');
   if (win) {
-    if ($activity_form.is("#new_activity")) {
-      window.location.href = post_url + "/" + data.slug + "/edit"
-    } else {
-      win.focus();
-    }
+    focusOrRedirect(win, $activity_form, post_url, data);
   } else {
     alert('Por favor, permita pop-ups para este site');
+  }
+}
+
+function focusOrRedirect(win, $activity_form, post_url, data){
+  if ($activity_form.is("#new_activity")) {
+    window.location.href = post_url + "/" + data.slug + "/edit"
+  } else {
+    win.focus();
   }
 }
 
@@ -273,18 +341,4 @@ function generateInputNameFromKey(key){
     }
   }
   return input_name;
-}
-
-function verifyDraftContent(){
-  activity_status = $('input#activity_status').val()
-  if (activity_status == 'draft') {
-    setDraftMessage();
-    $('input#activity_status').val('published');
-  }
-}
-
-function setDraftMessage(){
-  var div = $('<div />').addClass('draft');
-  var p = $('<p />').text('Rascunho salvo. Para visualização na plataforma é necessário salvar/atualizar esta atividade.');
-  $('div#main_content_wrapper').append(div.append(p));
 }
