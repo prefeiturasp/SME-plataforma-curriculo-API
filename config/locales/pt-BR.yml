@@ -10,6 +10,9 @@ pt-BR:
       activity_type:
         one: "Tipo de atividade"
         other: "Tipos de atividades"
+      activity_content_block:
+        one: "Bloco de conteúdo"
+        other: "Blocos de conteúdo"
       axis:
         one: "Eixo"
         other: "Eixos"
@@ -19,6 +22,9 @@ pt-BR:
       goal:
         one: "Meta"
         other: "Metas"
+      image:
+        one: "Imagem"
+        other: "Imagens"
       knowledge_matrix:
         one: "Matriz do Saber"
         other: "Matriz dos Saberes"
@@ -54,6 +60,10 @@ pt-BR:
         year: "Ano"
         created_at: "Criado em"
         updated_at: "Atualizado em"
+      activity_content_block:
+        body: "Conteúdo"
+        title: "Título"
+        number: "Número"
       activity_sequence:
         activities: "Atividades"
         axes: "Eixos"
@@ -96,6 +106,9 @@ pt-BR:
         description: Descrição
         created_at: "Criado em"
         updated_at: "Atualizado em"
+      image:
+        subtitle: "Legenda"
+        file: "Arquivo"
       knowledge_matrix:
         for_description: "Para"
         know_description: "Saber"
@@ -168,6 +181,14 @@ pt-BR:
           seventh: "7º"
           eighth: "8º"
           nineth: "9º"
+        content_types:
+          to_teacher: "Para o Professor(a)"
+          to_student: "Para o Estudante"
+          question:   "Questão"
+          predefined_exercise: "Execício pré-definido"
+          long_text: "Texto longo"
+          gallery: "Galeria"
+          free_text: "Texto Livre"
     errors:
       messages:
         none_learning_objectives: "Nenhum Objetivo de aprendizagem disponível para o componente curricular principal selecionado"
@@ -476,6 +497,8 @@ pt-BR:
       preview: "Pré-visualização"
       destroy: Excluir
       edit: Editar
+    titles:
+      structure: Estrutura
   number:
     currency:
       format:

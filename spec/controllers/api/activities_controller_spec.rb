@@ -69,6 +69,8 @@ RSpec.describe Api::ActivitiesController, type: :controller do
         expect(response_body['activity_sequence']['title']).to be_present
         expect(response_body['activity_sequence']['slug']).to be_present
         expect(response_body['activity_sequence']['year']).to be_present
+        expect(response_body['activity_sequence']['main_curricular_component']).to be_present
+        expect(response_body['activity_sequence']['image_attributes']).to be_present
       end
 
       it 'return valid main_curricular_component on activity sequence JSON' do
