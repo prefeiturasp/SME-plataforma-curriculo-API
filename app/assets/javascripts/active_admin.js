@@ -31,7 +31,7 @@ window.onload = function() {
   });
 };
 
-function convertAllEditorsToDelta() {
+function convertAllEditorsToDeltaOnSubmit() {
   var editors = document.querySelectorAll( '.quill-editor' );
   var formtastic = document.querySelector( 'form.formtastic' );
   if( formtastic ) {
@@ -91,11 +91,11 @@ function validFileSize(inserts) {
       size += insert.image.length;
     }
   }
-  return ((size/1024/1024) < 5);
+  return ((size / 1024 / 1024) < 5);
 }
 
 function getDefaultOptions(){
-  default_options = {
+  return {
     modules: {
       toolbar: [
         ['bold', 'italic', 'underline'],
@@ -109,19 +109,22 @@ function getDefaultOptions(){
     placeholder: '',
     theme: 'snow'
   };
-
-  return default_options
 }
 
 function set_colors(){
   var color_divs = document.querySelectorAll('div.pick_color');
 
   for( var i = 0; i < color_divs.length; i++ ) {
-    color_value = color_divs[i].innerHTML;
+    var color_value = color_divs[i].innerHTML;
     color_divs[i].innerHTML = null;
     color_divs[i].style.width = "45px";
     color_divs[i].style.height = "45px";
     color_divs[i].style.borderRadius = '50%';
     color_divs[i].style.background = color_value;
   }
+}
+
+function convertAllEditorsToDelta(){
+  var editors = document.querySelectorAll( '.quill-editor' );
+  convertContentToDelta(editors);
 }
