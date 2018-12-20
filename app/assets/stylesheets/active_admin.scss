@@ -136,7 +136,17 @@
   }
 
   .activity-content-structure {
+    #sortable-list{
+      li{
+        padding: 10px;
+      }
+      .icon-sortable {
+        display: none;
+      }
+    }
+
     a {
+      text-decoration: none;
       font-size: 1.3em;
     }
 
@@ -192,5 +202,24 @@ div.draft {
     display:table-cell;
     vertical-align:middle;
     text-align: center;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .activity-content-structure {
+    #sortable-list{
+      li:hover {
+        background-color: #d8d8d8;
+      }
+
+      .icon-sortable {
+        display: block !important;
+        outline: 1px dotted gray;
+        display: inline-block;
+        font-size: 0.8em;
+        vertical-align: middle;
+        float:right
+      }
+    }
   }
 }
