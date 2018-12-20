@@ -108,6 +108,13 @@
     h3 {
       display: none;
     }
+
+    .ql-editor{
+      h3 {
+        display: block;
+      }
+    }
+
     .hidden {
       display: none;
     }
@@ -159,5 +166,31 @@
         padding: 12px 17px 10px;
       }
     }
+  }
+}
+
+.quill-editor {
+  .select2-container {
+    display: none;
+  }
+}
+
+div.draft {
+  position: fixed;
+  display: table;
+  overflow: hidden;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #d23a1d;
+  padding: 10px;
+
+  p {
+    color: white;
+    font-size: 1.0em;
+    font-weight: 600;
+    display:table-cell;
+    vertical-align:middle;
+    text-align: center;
   }
 }

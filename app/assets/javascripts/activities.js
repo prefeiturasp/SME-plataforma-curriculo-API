@@ -2,12 +2,13 @@ $(document).ready(function(){
   var body = document.getElementsByClassName('show admin_activities');
   if (body[0]) {
     var row_content = body[0].getElementsByClassName('row-content');
-    var td = row_content[0].getElementsByTagName("td")[0]
-    var content = td.innerHTML;
-    
-    var obj = JSON.parse(content);
-    var html_content = quillGetHTML(obj)
-    td.innerHTML = html_content
+    if (row_content.length > 0){
+      var td = row_content[0].getElementsByTagName("td")[0]
+      var content = td.innerHTML;
+      var obj = JSON.parse(content);
+      var html_content = quillGetHTML(obj)
+      td.innerHTML = html_content
+    }
   }
 
   form = $('form.activity')
@@ -31,9 +32,33 @@ $(document).ready(function(){
     setContentStructure();
     hideUnusedRemoveButton();
     stickyContentsSidebar();
+    saveContentWhenClickInPreview();
+    bindPredefinedExercisesSelect();
   }
 
 });
+
+function saveContentWhenClickInPreview(){
+  $('a.preview-link').on('click', function(evt){
+    var link_to_redirect = $(this).attr('href');
+    evt.preventDefault();
+    var $activity_form = $('form.activity');
+    if ($activity_form.length > 0){
+      var editors = document.querySelectorAll( '.quill-editor' );
+      convertContentToDelta(editors);
+      var post_url = $activity_form.attr('action');
+      $.post(post_url, $activity_form.serialize(), function(){},'json')
+        .done(function(data){
+          openLinkInNewTab($activity_form, data, link_to_redirect);
+        })
+        .fail(function(xhr, status, error) {
+          var errors = xhr.responseJSON.errors;
+          alert("Houve um erro ao salvar.");
+          renderErrorsResponse(errors);
+        });
+    }
+  });
+}
 
 function setActivityContentBlockToolbarId(){
   $fieldsets = $('fieldset.has_many_fields')
@@ -94,18 +119,26 @@ function bindUpdateStructureOnRemove(){
 }
 
 function setContentStructure(){
-  var contents = $('li .has_many_fields');
+  var contents = $('li .has_many_fields').not('.gallery-has-many-images');
   var structure_list = $('.activity-content-structure ol');
   $('.activity-content-structure ol li').not(".preview-item").remove();
   for( var i = 0; i < contents.length; i++ ) {
     var inputs = $(contents[i]).find('input.activity-content-id');
     var $ol_parent = $(inputs[0]).parent().parent();
     var id_legend = $ol_parent.find('legend.title_content_block')[0].id;
+    var $fieldset_parent = $ol_parent.parent();
+
+    var optional_text = null;
+    if ($fieldset_parent.hasClass('predefined_exercise')) {
+      select = $fieldset_parent.find('select');
+      optional_text = select.val();
+    }
 
     var span = $(contents[i]).find('ol legend span')
     var content_name = span.text();
     if(content_name) {
       if(!span.hasClass('removed')){
+        content_name = optional_text ? `${content_name} (${optional_text})` : content_name
         var link = $("<a></a>").text(content_name);
         link.attr('href', `#${id_legend}`);
         var new_li =  $("<li></li>");
@@ -148,6 +181,7 @@ function add_fields(link, association, content, father) {
   }
 
   convertAllEditorsToDelta();
+  bindPredefinedExercisesSelect();
   setContentStructure();
   bindUpdateStructureOnRemove();
   last_fieldset = $('li.activity_content_blocks fieldset').last()
@@ -169,6 +203,16 @@ function setToolbarToActivityContents(){
   }
 }
 
+function bindPredefinedExercisesSelect(){
+  var $selects = $('fieldset.predefined_exercise select').not('.ql-header')
+  for( var i = 0; i < $selects.length; i++ ) {
+    var select = $($selects[i])
+    select.on('change', function(){
+      setContentStructure();
+    });
+  }
+}
+
 function goToTop(offset) {
   setTimeout(function() {
     $("html, body").animate({ scrollTop: offset }, 1000);
@@ -178,4 +222,69 @@ function goToTop(offset) {
 function stickyContentsSidebar(){
   $('.activity-content-structure').sticky({topSpacing:0});
   $('.activity-content-buttons').sticky({topSpacing:0});
+}
+
+function openLinkInNewTab($activity_form, data, link_to_redirect){
+  link_to_redirect = ($activity_form.is("#new_activity")) ? (link_to_redirect + data.slug) : link_to_redirect
+  var win = window.open(link_to_redirect, '_blank');
+  if (win) {
+    if ($activity_form.is("#new_activity")) {
+      window.location.href = post_url + "/" + data.slug + "/edit"
+    } else {
+      win.focus();
+    }
+  } else {
+    alert('Por favor, permita pop-ups para este site');
+  }
+}
+
+function renderErrorsResponse(errors){
+  var input_offset = null;
+  $.each(errors, function (key, data) {
+    var input_name = generateInputNameFromKey(key);
+    var inputs = $(`[name^="${input_name}"]`).not('.gallery-image-add-button')
+    for(var i =0; i < inputs.length; i++){
+      input = $(inputs[i]);
+      if (input.length > 0) {
+        if (!input.val()) {
+          input_offset = input_offset ? input_offset : input.offset().top;
+          var p = $('<p />').addClass('inline-errors').text(data);
+          var li = input.parent();
+          if (!li.hasClass('error')) {
+            li.addClass('error');
+            li.append(p);
+          }
+        }
+      }
+    }
+  });
+  goToTop(input_offset);
+}
+
+function generateInputNameFromKey(key){
+  var input_name = "activity";
+  var keySplited = key.split(".");
+  for(var k of keySplited){
+    if (k == 'activity_content_blocks') {
+      input_name = input_name + '[activity_content_blocks_attributes]';
+      break;
+    } else {
+      input_name = input_name + "["+ k +"]";
+    }
+  }
+  return input_name;
+}
+
+function verifyDraftContent(){
+  activity_status = $('input#activity_status').val()
+  if (activity_status == 'draft') {
+    setDraftMessage();
+    $('input#activity_status').val('published');
+  }
+}
+
+function setDraftMessage(){
+  var div = $('<div />').addClass('draft');
+  var p = $('<p />').text('Rascunho salvo. Para visualização na plataforma é necessário salvar/atualizar esta atividade.');
+  $('div#main_content_wrapper').append(div.append(p));
 }

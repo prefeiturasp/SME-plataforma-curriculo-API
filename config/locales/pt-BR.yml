@@ -58,6 +58,10 @@ pt-BR:
         sequence: "Número de Atividade"
         title: "Título"
         year: "Ano"
+        status: "Status"
+        statuses:
+          draft: "Rascunho"
+          published: "Publicada"
         created_at: "Criado em"
         updated_at: "Atualizado em"
       activity_content_block:
@@ -494,6 +498,7 @@ pt-BR:
       cancel: Cancelar
       show: Visualizar
       preview: "Pré-visualização"
+      save_and_preview: "Salvar e Visualizar"
       destroy: Excluir
       edit: Editar
     titles:

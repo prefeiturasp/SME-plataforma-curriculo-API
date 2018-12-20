@@ -2,9 +2,10 @@
 //= require activeadmin_addons/all
 //= require activeadmin/quill_editor/quill
 //= require activeadmin/quill_editor_input
-//= require image-resize.min
-//= require divider_blot
 //= require helpers
+//= require lib/image-resize.min
+//= require lib/quill-divider-blot
+//= require lib/quill-image-format
 //= require activities
 //= require activity_sequences
 //= require learning_objectives
