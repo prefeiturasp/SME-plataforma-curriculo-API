@@ -30,7 +30,6 @@ ActiveAdmin.register Activity do
                   :id,
                   :content_type,
                   :content_block_id,
-                  :sequence,
                   :content,
                   :_destroy,
                   images_attributes: [
@@ -48,7 +47,6 @@ ActiveAdmin.register Activity do
       params[:activity][:activity_content_blocks_attributes].each do |k, v|
         hash = {}
         activity_content_block_id = v.delete('id').to_i #always delete id
-        sequence = v.delete('sequence').to_i
         images_attributes = v.delete('images_attributes')
         icon_url = assign_icon_url(v)
         v['icon_url'] = icon_url if icon_url.present?
@@ -61,7 +59,6 @@ ActiveAdmin.register Activity do
 
         hash.merge!(id: activity_content_block_id) unless activity_content_block_id.zero?
         hash.merge!(images_attributes: images_attributes) if images_attributes.present?
-        hash.merge!(sequence: sequence)
         new_hash.merge!("#{k}" => hash)
       end
       params[:activity][:activity_content_blocks_attributes] = new_hash
