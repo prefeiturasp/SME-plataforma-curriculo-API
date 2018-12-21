@@ -31,8 +31,8 @@ ActiveAdmin.register Activity do
                   :id,
                   :content_type,
                   :content_block_id,
-                  :content,
                   :sequence,
+                  :content,
                   :_destroy,
                   images_attributes: [
                     :id,
@@ -49,6 +49,7 @@ ActiveAdmin.register Activity do
       params[:activity][:activity_content_blocks_attributes].each do |k, v|
         hash = {}
         activity_content_block_id = v.delete('id').to_i #always delete id
+        sequence = v.delete('sequence').to_i
         images_attributes = v.delete('images_attributes')
         icon_url = assign_icon_url(v)
         v['icon_url'] = icon_url if icon_url.present?

@@ -23,6 +23,7 @@ $(document).ready(function(){
       setSortableList();
       hideUnusedRemoveButton();
       stickyContentsSidebar();
+      setSequenceOnActivityContentBlocks();
       saveContentWhenClickInPreview();
       bindPredefinedExercisesSelect();
     });
@@ -91,6 +92,7 @@ function bindUpdateStructureOnRemove(){
       setContentStructure();
       setSortableList();
       setSequenceInContentBlocks();
+      setSequenceOnActivityContentBlocks();
     }
   });
 }
@@ -121,6 +123,8 @@ function add_fields(link, association, content, father) {
   setSequenceInContentBlocks();
   var last_fieldset = $('li.activity_content_blocks fieldset').last();
   goToTop(last_fieldset.offset().top);
+
+  setSequenceOnActivityContentBlocks();
 
   return false;
 };
@@ -176,6 +180,15 @@ function setAnchorIdIfFormError(){
   for(var i = 0; i < fieldsets.length; i++){
     var element = $(fieldsets[i]).find('#anchor_NEW_RECORD_ID');
     element.attr('id', `anchor_${i}`);
+  }
+}
+
+function setSequenceOnActivityContentBlocks() {
+  var fieldset_list = $('fieldset.has_many_fields');
+  for ( var i = 0; i < fieldset_list.length; i++) {
+    var sequence = i + 1;
+    var sequence_input = $(fieldset_list[i]).find('.sequence-input');
+    sequence_input.val(sequence);
   }
 }
 
