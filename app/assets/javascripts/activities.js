@@ -1,21 +1,16 @@
 $(document).ready(function(){
   setShowContentBlocks();
-
   var form = $('form.activity');
   if(form.length) {
     $("input[name='activity[image]']").change(function() {
       validateSize(this);
     });
-
-    var action_buttons = $('fieldset.actions');
-    form.append(action_buttons);
-
     $('.gallery-image-add-button').change( function(){
       var parent = $(this).parent();
       var hint = parent.find("p.inline-hints");
       hint.empty();
     });
-
+    fixActivityActionPosition();
     setToolbarToActivityContents();
     setAnchorIdIfFormError();
     setTitleLegendClassNames();
@@ -25,10 +20,14 @@ $(document).ready(function(){
     stickyContentsSidebar();
     saveContentWhenClickInPreview();
     bindPredefinedExercisesSelect();
-    setSequenceOnActivityContentBlocks();
   }
-
 });
+
+function fixActivityActionPosition(){
+  var form = $('form.activity');
+  var action_buttons = $('fieldset.actions');
+  form.append(action_buttons);
+}
 
 function saveContentWhenClickInPreview(){
   $('a.preview-link').on('click', function(evt){
@@ -110,7 +109,6 @@ function bindUpdateStructureOnRemove(){
       }
       setContentStructure();
       setSequenceInContentBlocks();
-      setSequenceOnActivityContentBlocks();
     }
   });
 }
@@ -129,19 +127,25 @@ function setContentStructure(){
     var optional_text = getOptionalText($ol_parent.parent());
     var span = $(contents[i]).find('ol legend span');
     var content_name = span.text();
-    if(content_name) {
-      if(!span.hasClass('removed')){
-        content_name = optional_text ? `${content_name} (${optional_text})` : content_name;
-        var icon = "<span class='icon-sortable'>&#9650;<br>&#9660;</span>";
-        var link = $("<a></a>").text(content_name);
-        link.attr('href', `#${id_legend}`);
-        var new_li = $("<li></li>").attr('id', activity_content_id).attr('data-anchor_id', anchor_id).append(link).append(icon);
-        sortable_list.append(new_li);
-      }
-    }
+    sortable_list.append(
+      createContentStructureItem(content_name, span, id_legend, activity_content_id, anchor_id, optional_text)
+    );
   }
   structure_list.append(structure_list.find('.preview-item'));
   setSortableList();
+}
+
+function createContentStructureItem(content_name, span, id_legend, activity_content_id, anchor_id, optional_text){
+  if(content_name) {
+    if(!span.hasClass('removed')){
+      content_name = optional_text ? `${content_name} (${optional_text})` : content_name;
+      var icon = "<span class='icon-sortable'>&#9650;<br>&#9660;</span>";
+      var link = $("<a></a>").text(content_name);
+      link.attr('href', `#${id_legend}`);
+      var new_li = $("<li></li>").attr('id', activity_content_id).attr('data-anchor_id', anchor_id).append(link).append(icon);
+    }
+  }
+  return new_li;
 }
 
 function getOptionalText($fieldset_parent){
@@ -214,25 +218,13 @@ function validateSize(file) {
 function add_fields(link, association, content, father) {
   var new_id = new Date().getTime();
   var regexp = new RegExp("new_" + association, "g");
-
   content = content.replace(regexp, new_id);
   regexp = new RegExp("NEW_RECORD_ID[0-9]+", "g");
   content = content.replace(regexp, new_id);
   regexp = new RegExp("NEW_RECORD_ID", "g");
   content = content.replace(regexp, new_id);
   $('li.activity_content_blocks').append(content);
-
-  // INITIALIZE QUILL EDITOR 
-  var editor = $(`#activity_activity_content_blocks_attributes_${new_id}_body.quill-editor`);
-  if (editor.length) {
-    initializeQuillEditor(editor[0]);
-    var quill_content = editor[0].querySelector(".quill-editor-content");
-    var toolbar = $(`#toolbar_${new_id}`);
-    if (toolbar.length) {
-      editor[0].insertBefore(toolbar[0], quill_content);
-    }
-  }
-
+  initializeQuillEditorAndToolbar(new_id);
   convertAllEditorsToDeltaOnSubmit();
   bindPredefinedExercisesSelect();
   setContentStructure();
@@ -241,10 +233,20 @@ function add_fields(link, association, content, father) {
   var last_fieldset = $('li.activity_content_blocks fieldset').last();
   goToTop(last_fieldset.offset().top);
 
-  setSequenceOnActivityContentBlocks();
-
   return false;
 };
+
+function initializeQuillEditorAndToolbar(id){
+  var editor = $(`#activity_activity_content_blocks_attributes_${id}_body.quill-editor`);
+  if (editor.length) {
+    initializeQuillEditor(editor[0]);
+    var quill_content = editor[0].querySelector(".quill-editor-content");
+    var toolbar = $(`#toolbar_${id}`);
+    if (toolbar.length) {
+      editor[0].insertBefore(toolbar[0], quill_content);
+    }
+  }
+}
 
 function setToolbarToActivityContents(){
   var editors = document.querySelectorAll( '.quill-editor' );
@@ -341,15 +343,6 @@ function generateInputNameFromKey(key){
     }
   }
   return input_name;
-}
-
-function setSequenceOnActivityContentBlocks() {
-  var fieldset_list = $('fieldset.has_many_fields');
-  for ( var i = 0; i < fieldset_list.length; i++) {
-    var sequence = i + 1;
-    var sequence_input = $(fieldset_list[i]).find('.sequence-input');
-    sequence_input.val(sequence);
-  }
 }
 
 function setShowContentBlocks(){
