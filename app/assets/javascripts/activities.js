@@ -1,15 +1,5 @@
 $(document).ready(function(){
-  var body = document.getElementsByClassName('show admin_activities');
-  if (body[0]) {
-    var row_content = body[0].getElementsByClassName('row-content');
-    if (row_content.length > 0){
-      var td = row_content[0].getElementsByTagName("td")[0];
-      var content = td.innerHTML;
-      var obj = JSON.parse(content);
-      var html_content = quillGetHTML(obj);
-      td.innerHTML = html_content;
-    }
-  }
+  setShowContentBlocks();
 
   var form = $('form.activity');
   if(form.length) {
@@ -35,6 +25,7 @@ $(document).ready(function(){
     stickyContentsSidebar();
     saveContentWhenClickInPreview();
     bindPredefinedExercisesSelect();
+    setSequenceOnActivityContentBlocks();
   }
 
 });
@@ -119,6 +110,7 @@ function bindUpdateStructureOnRemove(){
       }
       setContentStructure();
       setSequenceInContentBlocks();
+      setSequenceOnActivityContentBlocks();
     }
   });
 }
@@ -249,6 +241,8 @@ function add_fields(link, association, content, father) {
   var last_fieldset = $('li.activity_content_blocks fieldset').last();
   goToTop(last_fieldset.offset().top);
 
+  setSequenceOnActivityContentBlocks();
+
   return false;
 };
 
@@ -347,4 +341,24 @@ function generateInputNameFromKey(key){
     }
   }
   return input_name;
+}
+
+function setSequenceOnActivityContentBlocks() {
+  var fieldset_list = $('fieldset.has_many_fields');
+  for ( var i = 0; i < fieldset_list.length; i++) {
+    var sequence = i + 1;
+    var sequence_input = $(fieldset_list[i]).find('.sequence-input');
+    sequence_input.val(sequence);
+  }
+}
+
+function setShowContentBlocks(){
+  var $row_bodys = $('body.show.admin_activities').find('.show-content-blocks').find('.row-body');
+  for(var i = 0; i < $row_bodys.length; i++) {
+    var td = $($row_bodys[i]).find('td')[0];
+    var content = td.innerHTML;
+    var obj = JSON.parse(content);
+    var html_content = quillGetHTML(obj);
+    td.innerHTML = html_content;
+  }
 }
