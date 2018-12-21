@@ -49,14 +49,14 @@ function initializeQuillEditor(editor){
 
     if (input.value) {
       var obj = JSON.parse(input.value);
-      var html_content = quillGetHTML(obj)
-      input.value = html_content
-      quill_editor_content[0].innerHTML = html_content
+      var html_content = quillGetHTML(obj);
+      input.value = html_content;
+      quill_editor_content[0].innerHTML = html_content;
     }
 
     var options = editor.getAttribute( 'data-options' ) ? JSON.parse( editor.getAttribute( 'data-options' ) ) : getDefaultOptions();
     editor['_quill-editor'] = new Quill( content, options );
-    quill_editor = editor['_quill-editor']
+    var quill_editor = editor['_quill-editor'];
     quill_editor.getModule('toolbar').addHandler('divider', () => {
       addHrDividerOnEditor(quill_editor);
     });
