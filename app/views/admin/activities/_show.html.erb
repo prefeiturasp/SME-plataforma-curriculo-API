@@ -17,16 +17,41 @@
     end
     row :estimated_time
     row :environment do |activity|
-      Activity.human_enum_name(:environment, activity.environment)
+      Activity.human_enum_name(:environment, activity.environment) if activity.environment
     end
     row :activity_types do |activity|
       activity.activity_types.map { |at| at.name }.join('; ')
     end
-    row :content do |activity|
-      raw(activity.content)
-    end
     row :created_at
     row :updated_at
+  end
+
+  panel I18n.t('activerecord.attributes.activity.activity_content_blocks'), class: 'show-content-blocks' do
+    if activity.activity_content_blocks.exists?
+      table_for activity.activity_content_blocks do
+        column do |act|
+          panel I18n.t("activerecord.attributes.enums.content_types.#{act.content_block.content_type}") do
+            attributes_table_for act do
+              row :title if act.title.present?
+              row :number if act.number.present?
+              if act.body.present?
+                row :body do
+                  raw(act.body)
+                end
+              end
+              if act.images.present?
+                table_for act.images do
+                  column :subtitle
+                  column :image do |i|
+                    image_tag variant_url(i.file, :thumb) if i.file.attached?
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
   end
 
   panel I18n.t('activerecord.attributes.activity.curricular_components') do
