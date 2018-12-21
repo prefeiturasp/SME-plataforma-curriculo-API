@@ -22,6 +22,7 @@ $(document).ready(function(){
     setContentStructure();
     hideUnusedRemoveButton();
     stickyContentsSidebar();
+    setSequenceOnActivityContentBlocks();
   }
 
 });
@@ -80,6 +81,7 @@ function bindUpdateStructureOnRemove(){
 
       }
       setContentStructure();
+      setSequenceOnActivityContentBlocks();
     }
   });
 }
@@ -145,6 +147,8 @@ function add_fields(link, association, content, father) {
 
   goToTop(last_fieldset.offset().top)
 
+  setSequenceOnActivityContentBlocks();
+
   return false;
 };
 
@@ -169,6 +173,15 @@ function goToTop(offset) {
 function stickyContentsSidebar(){
   $('.activity-content-structure').sticky({topSpacing:0});
   $('.activity-content-buttons').sticky({topSpacing:0});
+}
+
+function setSequenceOnActivityContentBlocks() {
+  var fieldset_list = $('fieldset.has_many_fields');
+  for ( var i = 0; i < fieldset_list.length; i++) {
+    var sequence = i + 1;
+    var sequence_input = $(fieldset_list[i]).find('.sequence-input');
+    sequence_input.val(sequence);
+  }
 }
 
 function setShowContentBlocks(){
