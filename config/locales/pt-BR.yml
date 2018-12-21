@@ -110,6 +110,7 @@ pt-BR:
       image:
         subtitle: "Legenda"
         file: "Arquivo"
+        image: "Imagem"
       knowledge_matrix:
         for_description: "Para"
         know_description: "Saber"
