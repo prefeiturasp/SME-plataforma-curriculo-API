@@ -9,8 +9,6 @@ class ActivityContentBlock < ApplicationRecord
   before_validation :check_required_fields
   before_save :change_format_content_images
 
-  default_scope { order(sequence: :asc) }
-
   accepts_nested_attributes_for :images, allow_destroy: true
 
   def initialize_dynamic_contents
