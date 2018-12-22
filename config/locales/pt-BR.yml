@@ -44,6 +44,7 @@ pt-BR:
       activity:
         activity_sequence: "Sequência de Atividade"
         activity_types: "Tipo de Atividade"
+        activity_content_blocks: "Blocos de Conteúdo"
         content: "Conteúdo"
         curricular_components: "Componentes Curriculares relacionados"
         environment: "Ambiente"
@@ -114,6 +115,7 @@ pt-BR:
       image:
         subtitle: "Legenda"
         file: "Arquivo"
+        image: "Imagem"
       knowledge_matrix:
         for_description: "Para"
         know_description: "Saber"
@@ -182,6 +184,12 @@ pt-BR:
           first: "1º"
           second: "2º"
           third: "3º"
+          fourth: "4º"
+          fifth: "5º"
+          sixth: "6º"
+          seventh: "7º"
+          eighth: "8º"
+          nineth: "9º"
         content_types:
           to_teacher: "Para o Professor(a)"
           to_student: "Para o Estudante"
@@ -190,7 +198,6 @@ pt-BR:
           long_text: "Texto longo"
           gallery: "Galeria"
           free_text: "Texto Livre"
-
     errors:
       messages:
         none_learning_objectives: "Nenhum Objetivo de aprendizagem disponível para o componente curricular principal selecionado"
