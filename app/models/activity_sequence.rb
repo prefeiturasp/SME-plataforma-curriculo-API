@@ -6,13 +6,16 @@ class ActivitySequence < ApplicationRecord
   has_and_belongs_to_many :knowledge_matrices
   has_and_belongs_to_many :learning_objectives
   has_many :activities,
-           -> { order 'sequence' },
+           -> { order 'activities.sequence' },
            dependent: :destroy
   has_many :collection_activity_sequences
   has_many :collections,
            through: :collection_activity_sequences
+  has_many :activity_content_blocks, through: :activities
 
   enum status: { draft: 0, published: 1 }
+
+  searchkick language: 'brazilian'
 
   validates :title, presence: true, uniqueness: true
   validates :presentation_text, presence: true
@@ -37,6 +40,20 @@ class ActivitySequence < ApplicationRecord
        .all_or_with_knowledge_matrices(params)
        .all_or_with_learning_objectives(params)
        .all_or_with_activity_types(params).group('activity_sequences.id')
+  end
+
+  def search_data
+    {
+      main_curricular_component_name: main_curricular_component.name,
+      title: title,
+      activities_title: activities.map(&:title),
+      keywords: keywords,
+      presentation_text: presentation_text,
+      activity_content_block_titles: activity_content_blocks.map(&:title).compact,
+      activity_content_block_bodies: activity_content_blocks.map(&:body).compact,
+      sustainable_development_goal_names: sustainable_development_goals.map(&:name),
+      learning_objective_descriptions: learning_objectives.map(&:description)
+    }
   end
 
   def curricular_components
