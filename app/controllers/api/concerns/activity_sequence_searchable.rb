@@ -10,9 +10,7 @@ module Api
         ActivitySequence.search(
             query,
             fields: list_fields,
-            where: { 
-              status: 'published'
-            },
+            where: where,
             order: order_by,
             page: params[:page] || 0,
             per_page: 30
@@ -31,6 +29,54 @@ module Api
           'sustainable_development_goal_names^3',
           'learning_objective_descriptions^2',
         ]
+      end
+
+      def where
+        options = { status: 'published' }
+        [
+          :all_or_with_year, :all_or_with_main_curricular_component, :all_or_with_axes,
+          :all_or_with_sustainable_development_goals, :all_or_with_knowledge_matrices,
+          :all_or_with_learning_objectives, :all_or_with_activity_types
+        ].each do |method|
+          options.merge!(send(method.to_s))
+        end
+
+        options
+      end
+
+      def all_or_with_year
+        return {} unless params[:years]
+        { year: params[:years] }
+      end
+
+      def all_or_with_main_curricular_component
+        return {} unless params[:curricular_component_slugs]
+        { main_curricular_component_slug: params[:curricular_component_slugs] }
+      end
+
+      def all_or_with_axes
+        return {} unless params[:axis_ids]
+        { axis_ids: params[:axis_ids] }
+      end
+
+      def all_or_with_sustainable_development_goals
+        return {} unless params[:sustainable_development_goal_ids]
+        { sustainable_development_goal_ids: params[:sustainable_development_goal_ids] }
+      end
+
+      def all_or_with_knowledge_matrices
+        return {} unless params[:knowledge_matrix_ids]
+        { knowledge_matrix_ids: params[:knowledge_matrix_ids] }
+      end
+
+      def all_or_with_learning_objectives
+        return {} unless params[:learning_objective_ids]
+        { learning_objective_ids: params[:learning_objective_ids] }
+      end
+
+      def all_or_with_activity_types
+        return {} unless params[:activity_type_ids]
+        { activity_type_ids: params[:activity_type_ids] }
       end
 
       def order_by

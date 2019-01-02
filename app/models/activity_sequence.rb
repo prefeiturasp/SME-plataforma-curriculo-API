@@ -12,6 +12,8 @@ class ActivitySequence < ApplicationRecord
   has_many :collections,
            through: :collection_activity_sequences
   has_many :activity_content_blocks, through: :activities
+  has_many :axes, through: :learning_objectives
+  has_many :sustainable_development_goals, through: :learning_objectives
 
   enum status: { draft: 0, published: 1 }
 
@@ -63,7 +65,19 @@ class ActivitySequence < ApplicationRecord
       sustainable_development_goal_names: sustainable_development_goals.map(&:name),
       learning_objective_descriptions: learning_objectives.map(&:description),
       status: status,
-      created_at: created_at
+  }.merge(search_filters)
+  end
+
+  def search_filters
+    {
+      created_at: created_at,
+      year: read_attribute_before_type_cast(:year),
+      main_curricular_component_slug: main_curricular_component.slug,
+      axis_ids: axis_ids,
+      sustainable_development_goal_ids: sustainable_development_goal_ids,
+      knowledge_matrix_ids: knowledge_matrix_ids,
+      learning_objective_ids: learning_objective_ids,
+      activity_type_ids: activity_types.pluck(:id)
     }
   end
 
@@ -83,6 +97,24 @@ class ActivitySequence < ApplicationRecord
                                   id: learning_objective_ids
                                 }
                               ).group('sustainable_development_goals.id')
+  end
+
+  def activity_types
+    ActivityType.joins(activities: :activity_sequence).where(
+      activities: {
+        activity_sequence_id: id
+      }
+    ).uniq
+  end
+
+  def self.where_optional_params(params = {})
+    all.all_or_with_year(params[:years])
+      .all_or_with_main_curricular_component(params)
+      .all_or_with_axes(params)
+      .all_or_with_sustainable_development_goal(params)
+      .all_or_with_knowledge_matrices(params)
+      .all_or_with_learning_objectives(params)
+      .all_or_with_activity_types(params).group('activity_sequences.id')
   end
 
   def self.all_or_with_year(years = nil)
@@ -148,5 +180,28 @@ class ActivitySequence < ApplicationRecord
         }
       }
     )
+  end
+
+  def self.search_with(word)
+    ActivitySequence.search(
+      word,
+      fields: list_fields,
+      where: { status: 'published' }
+      )
+  end
+
+
+  def self.list_fields
+    [
+      'main_curricular_component_name^10',
+      'title^9',
+      'activities_title^8',
+      'keywords^7',
+      'presentation_text^6',
+      'activity_content_block_titles^5',
+      'activity_content_block_bodies^4',
+      'sustainable_development_goal_names^3',
+      'learning_objective_descriptions^2',
+    ]
   end
 end
