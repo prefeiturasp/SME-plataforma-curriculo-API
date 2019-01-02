@@ -15,7 +15,16 @@ class ActivitySequence < ApplicationRecord
 
   enum status: { draft: 0, published: 1 }
 
-  searchkick language: 'brazilian'
+  searchkick language: 'brazilian',
+             word_middle: [ :main_curricular_component_name,
+                            :title,
+                            :activities_title,
+                            :keywords,
+                            :presentation_text,
+                            :activity_content_block_titles,
+                            :activity_content_block_bodies,
+                            :sustainable_development_goal_names,
+                            :learning_objective_descriptions ]
 
   validates :title, presence: true, uniqueness: true
   validates :presentation_text, presence: true
@@ -52,7 +61,9 @@ class ActivitySequence < ApplicationRecord
       activity_content_block_titles: activity_content_blocks.map(&:title).compact,
       activity_content_block_bodies: activity_content_blocks.map(&:body).compact,
       sustainable_development_goal_names: sustainable_development_goals.map(&:name),
-      learning_objective_descriptions: learning_objectives.map(&:description)
+      learning_objective_descriptions: learning_objectives.map(&:description),
+      status: status,
+      created_at: created_at
     }
   end
 

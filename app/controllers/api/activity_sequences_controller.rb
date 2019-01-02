@@ -1,11 +1,12 @@
 module Api
   class ActivitySequencesController < ApiController
-    before_action :authenticate_api_user!, except: %i[index show]
+    before_action :authenticate_api_user!, except: %i[index show search]
     before_action :set_teacher, only: %i[show index create destroy update]
     before_action :set_collection, only: %i[index show create update destroy]
     before_action :set_collection_activity_sequence, only: %i[destroy update]
     before_action :set_activity_sequence, only: %i[show update]
     before_action :check_collection_owner, only: %i[create update]
+    include Api::Concerns::ActivitySequenceSearchable
 
     def index
       render_unauthorized_resource && return if @collection && !user_signed_in?
@@ -46,6 +47,12 @@ module Api
       else
         render json: @collection_activity_sequence.errors, status: :unprocessable_entity
       end
+    end
+
+    def search
+      @activity_sequences = search_activity_sequences
+
+      render :index
     end
 
     private
