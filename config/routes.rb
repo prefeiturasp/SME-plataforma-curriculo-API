@@ -14,7 +14,6 @@ Rails.application.routes.draw do
 
     get 'filtros', to: 'filters#index'
     get 'sequencias', to: 'activity_sequences#index'
-    get 'sequencias/busca', to: 'activity_sequences#search'
     get 'sequencias/:slug', to: 'activity_sequences#show'
     get 'sequencias/:activity_sequence_slug/atividades/:activity_slug', to: 'activities#show'
     get 'saberes', to: 'knowledge_matrices#index'

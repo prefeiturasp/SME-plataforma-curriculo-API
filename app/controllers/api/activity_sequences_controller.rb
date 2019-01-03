@@ -10,14 +10,12 @@ module Api
 
     def index
       render_unauthorized_resource && return if @collection && !user_signed_in?
-      @activity_sequences =
-        if @collection
-          @collection.activity_sequences.published.includes(:collection_activity_sequences)
-        else
-          ActivitySequence.where(status: :published).where_optional_params(params).order(title: :asc)
-        end
-
-      @activity_sequences = paginate(@activity_sequences)
+      if @collection
+        @activity_sequences = @collection.activity_sequences.published.includes(:collection_activity_sequences)
+        @activity_sequences = paginate(@activity_sequences)
+      else
+        @activity_sequences = search_activity_sequences
+      end
 
       render :index
     end
@@ -47,12 +45,6 @@ module Api
       else
         render json: @collection_activity_sequence.errors, status: :unprocessable_entity
       end
-    end
-
-    def search
-      @activity_sequences = search_activity_sequences
-
-      render :index
     end
 
     private
