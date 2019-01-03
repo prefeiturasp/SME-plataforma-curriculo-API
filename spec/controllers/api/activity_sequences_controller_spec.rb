@@ -39,7 +39,7 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
 
       context 'returns http success' do
         before do
-          @activity_sequence = create :activity_sequence, title: "ZZZZZ", status: :published
+          @activity_sequence = create :activity_sequence, :reindex, title: "ZZZZZ", status: :published
         end
 
         it 'returns http success' do
@@ -50,10 +50,11 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
         end
 
         it 'orders by ascending title' do
-          activity_sequence_one = create :activity_sequence, title: 'BBBB', status: :published
-          activity_sequence_two = create :activity_sequence, title: "AAAA", status: :published
+          activity_sequence_one = create :activity_sequence, :reindex, title: 'BBBB', status: :published
+          activity_sequence_two = create :activity_sequence, :reindex, title: "AAAA", status: :published
+          ActivitySequence.searchkick_index.refresh
 
-          get :index
+          get :index, params: { order_by: 'title', sort: 'asc' }
 
           response_titles = response_body.map {|a_sequence| a_sequence["title"]}
 
