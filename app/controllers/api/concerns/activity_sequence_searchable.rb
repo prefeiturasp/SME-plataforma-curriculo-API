@@ -13,7 +13,7 @@ module Api
             where: where,
             order: order_by,
             page: params[:page] || 0,
-            per_page: 30
+            per_page: per_page
           )
       end
     
@@ -98,6 +98,11 @@ module Api
 
       def whitelist_sort
         [ :asc, :desc ]
+      end
+
+      def per_page
+        return 30 if params[:per_page].to_i.zero? || params[:per_page].to_i > 100
+        params[:per_page]
       end
     end
   end
