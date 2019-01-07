@@ -3,7 +3,8 @@ const ImageFormatAttributesList = [
     'alt',
     'height',
     'width',
-    'style'
+    'style',
+    'data-caption'
 ];
 
 class ImageFormat extends BaseImageFormat {
@@ -29,3 +30,7 @@ class ImageFormat extends BaseImageFormat {
 }
 
 Quill.register(ImageFormat, true);
+
+var Image = Quill.import('formats/image');
+Image.className = 'new-image-format';
+Quill.register(Image, true);
