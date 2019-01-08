@@ -51,18 +51,12 @@ function setBaseFigure(figure, quill) {
 }
 
 function getNode(node) {
-  while (true) {
-    if (nodeIsInvalid(node) || (node.classList && node.classList.contains('new-image-format'))) {
-      break;
-    } else {
-      node = node.parentNode;
-    }
+  while (node != undefined || node != null) {
+    if (node.classList && node.classList.contains('new-image-format')) { break; }
+    node = node.parentNode;
   }
-  return node;
-}
 
-function nodeIsInvalid(node) {
-  return (node === undefined || node === null);
+  return node;
 }
 
 function show(figure, quill) {
