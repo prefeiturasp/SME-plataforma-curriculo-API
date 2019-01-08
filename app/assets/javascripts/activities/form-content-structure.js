@@ -1,14 +1,19 @@
-function createContentStructureItem(content_name, span, id_legend, activity_content_id, anchor_id, optional_text){
-  if(content_name) {
-    if(!span.hasClass('removed')){
-      content_name = optional_text ? `${content_name} (${optional_text})` : content_name;
-      var icon = "<span class='icon-sortable'>&#9650;<br>&#9660;</span>";
-      var link = $("<a></a>").text(content_name);
-      link.attr('href', `#${id_legend}`);
-      var new_li = $("<li></li>").attr('id', activity_content_id).attr('data-anchor_id', anchor_id).append(link).append(icon);
-    }
+function createContentStructureItem(content_name, span, id_legend, li_item){
+  if(content_name && !span.hasClass('removed')) {
+    var icon = "<span class='icon-sortable'>&#9650;<br>&#9660;</span>";
+    var link = $("<a></a>").text(content_name);
+    link.attr('href', `#${id_legend}`);
+    li_item = li_item.append(link).append(icon);
   }
-  return new_li;
+  return li_item;
+}
+
+function createItem(activity_content_id, anchor_id){
+  var li = $("<li></li>");
+  li.attr('id', activity_content_id);
+  li.attr('data-anchor_id', anchor_id);
+
+  return li;
 }
 
 function getOptionalText($fieldset_parent){
@@ -35,8 +40,10 @@ function setContentStructure(){
     var optional_text = getOptionalText($ol_parent.parent());
     var span = $(contents[i]).find('ol legend span');
     var content_name = span.text();
+    content_name = setOptionalText(content_name, optional_text);
+    var li_item = createItem(activity_content_id, anchor_id);
     sortable_list.append(
-      createContentStructureItem(content_name, span, id_legend, activity_content_id, anchor_id, optional_text)
+      createContentStructureItem(content_name, span, id_legend, li_item)
     );
   }
   structure_list.append(structure_list.find('.preview-item'));
@@ -58,6 +65,14 @@ function openLinkInNewTab($activity_form, data, link_to_redirect, post_url){
   } else {
     alert('Por favor, permita pop-ups para este site');
   }
+}
+
+function setOptionalText(content_name, optional_text) {
+  if(content_name) {
+    content_name = optional_text ? `${content_name} (${optional_text})` : content_name;
+  }
+
+  return content_name;
 }
 
 function renderErrorsResponse(errors){
@@ -121,4 +136,3 @@ function saveContentWhenClickInPreview(){
     }
   });
 }
-
