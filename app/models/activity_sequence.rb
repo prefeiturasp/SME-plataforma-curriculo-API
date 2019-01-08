@@ -18,15 +18,15 @@ class ActivitySequence < ApplicationRecord
   enum status: { draft: 0, published: 1 }
 
   searchkick language: 'brazilian',
-             word_middle: [ :main_curricular_component_name,
-                            :title,
-                            :activities_title,
-                            :keywords,
-                            :presentation_text,
-                            :activity_content_block_titles,
-                            :activity_content_block_bodies,
-                            :sustainable_development_goal_names,
-                            :learning_objective_descriptions ]
+             word_middle: %i[main_curricular_component_name
+                             title
+                             activities_title
+                             keywords
+                             presentation_text
+                             activity_content_block_titles
+                             activity_content_block_bodies
+                             sustainable_development_goal_names
+                             learning_objective_descriptions]
 
   validates :title, presence: true, uniqueness: true
   validates :presentation_text, presence: true
@@ -54,18 +54,16 @@ class ActivitySequence < ApplicationRecord
   end
 
   def search_data
-    {
-      main_curricular_component_name: main_curricular_component.name,
+    { main_curricular_component_name: main_curricular_component.name,
       title: title,
-      activities_title: activities.map(&:title),
+      activities_title: activity_titles,
       keywords: keywords,
       presentation_text: presentation_text,
-      activity_content_block_titles: activity_content_blocks.map(&:title).compact,
-      activity_content_block_bodies: activity_content_blocks.map(&:body).compact,
-      sustainable_development_goal_names: sustainable_development_goals.map(&:name),
-      learning_objective_descriptions: learning_objectives.map(&:description),
-      status: status,
-  }.merge(search_filters)
+      activity_content_block_titles: activity_content_block_titles,
+      activity_content_block_bodies: activity_content_block_bodies,
+      sustainable_development_goal_names: sustainable_development_goal_names,
+      learning_objective_descriptions: learning_objective_descriptions,
+      status: status }.merge(search_filters)
   end
 
   def search_filters
@@ -105,16 +103,6 @@ class ActivitySequence < ApplicationRecord
         activity_sequence_id: id
       }
     ).uniq
-  end
-
-  def self.where_optional_params(params = {})
-    all.all_or_with_year(params[:years])
-      .all_or_with_main_curricular_component(params)
-      .all_or_with_axes(params)
-      .all_or_with_sustainable_development_goal(params)
-      .all_or_with_knowledge_matrices(params)
-      .all_or_with_learning_objectives(params)
-      .all_or_with_activity_types(params).group('activity_sequences.id')
   end
 
   def self.all_or_with_year(years = nil)
@@ -187,21 +175,38 @@ class ActivitySequence < ApplicationRecord
       word,
       fields: list_fields,
       where: { status: 'published' }
-      )
+    )
   end
 
-
   def self.list_fields
-    [
-      'main_curricular_component_name^10',
-      'title^9',
-      'activities_title^8',
-      'keywords^7',
-      'presentation_text^6',
-      'activity_content_block_titles^5',
-      'activity_content_block_bodies^4',
-      'sustainable_development_goal_names^3',
-      'learning_objective_descriptions^2',
-    ]
+    ['main_curricular_component_name^10',
+     'title^9',
+     'activities_title^8',
+     'keywords^7',
+     'presentation_text^6',
+     'activity_content_block_titles^5',
+     'activity_content_block_bodies^4',
+     'sustainable_development_goal_names^3',
+     'learning_objective_descriptions^2']
+  end
+
+  def activity_content_block_titles
+    activity_content_blocks.map(&:title).compact
+  end
+
+  def activity_content_block_bodies
+    activity_content_blocks.map(&:body).compact
+  end
+
+  def sustainable_development_goal_names
+    sustainable_development_goals.map(&:name)
+  end
+
+  def learning_objective_descriptions
+    learning_objectives.map(&:description)
+  end
+
+  def activity_titles
+    activities.map(&:title)
   end
 end
