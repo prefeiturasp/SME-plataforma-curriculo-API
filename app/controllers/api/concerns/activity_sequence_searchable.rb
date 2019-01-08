@@ -1,5 +1,5 @@
 module Api
-  module Concerns  
+  module Concerns
     module ActivitySequenceSearchable
       extend ActiveSupport::Concern
 
@@ -8,35 +8,33 @@ module Api
       def search_activity_sequences
         query = params[:q].blank? ? '*' : params[:q]
         ActivitySequence.search(
-            query,
-            fields: list_fields,
-            where: where,
-            order: order_by,
-            page: params[:page] || 0,
-            per_page: per_page
-          )
+          query,
+          fields: list_fields,
+          where: where,
+          order: order_by,
+          page: params[:page] || 0,
+          per_page: per_page
+        )
       end
-    
+
       def list_fields
-        [
-          'main_curricular_component_name^10',
-          'title^9',
-          'activities_title^8',
-          'keywords^7',
-          'presentation_text^6',
-          'activity_content_block_titles^5',
-          'activity_content_block_bodies^4',
-          'sustainable_development_goal_names^3',
-          'learning_objective_descriptions^2',
-        ]
+        ['main_curricular_component_name^10',
+         'title^9',
+         'activities_title^8',
+         'keywords^7',
+         'presentation_text^6',
+         'activity_content_block_titles^5',
+         'activity_content_block_bodies^4',
+         'sustainable_development_goal_names^3',
+         'learning_objective_descriptions^2']
       end
 
       def where
         options = { status: 'published' }
-        [
-          :all_or_with_year, :all_or_with_main_curricular_component, :all_or_with_axes,
-          :all_or_with_sustainable_development_goals, :all_or_with_knowledge_matrices,
-          :all_or_with_learning_objectives, :all_or_with_activity_types
+        %i[
+          all_or_with_year all_or_with_main_curricular_component all_or_with_axes
+          all_or_with_sustainable_development_goals all_or_with_knowledge_matrices
+          all_or_with_learning_objectives all_or_with_activity_types
         ].each do |method|
           options.merge!(send(method.to_s))
         end
@@ -81,9 +79,11 @@ module Api
 
       def order_by
         order = { _score: :desc } # most relevant first - default
-        order = {
-          "#{params[:order_by]}" => { "order" => "#{params[:sort]}" }
-        } if valid_order_by?
+        if valid_order_by?
+          order = {
+            params[:order_by].to_s => { 'order' => params[:sort].to_s }
+          }
+        end
 
         order
       end
@@ -93,11 +93,11 @@ module Api
       end
 
       def whitelist_order
-        [ :title, :created_at ]
+        %i[title created_at]
       end
 
       def whitelist_sort
-        [ :asc, :desc ]
+        %i[asc desc]
       end
 
       def per_page
