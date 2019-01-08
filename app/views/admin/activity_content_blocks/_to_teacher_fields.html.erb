@@ -13,6 +13,7 @@
               color: '#FFFFFF'
           }
         },
+        imageOptions: true,
         toolbar: f.object.new_record? ? "#toolbar_NEW_RECORD_ID" : "#toolbar_#{f.object.id}"
       },
       formats: [
@@ -29,7 +30,11 @@
         'super',
         'image',
         'video',
-        'divider'
+        'divider',
+        'width',
+        'script',
+        'style',
+        'data-caption'
       ],
       theme: 'snow'
     }

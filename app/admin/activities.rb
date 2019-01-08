@@ -17,6 +17,7 @@ ActiveAdmin.register Activity do
 
   permit_params :sequence,
                 :title,
+                :status,
                 :slug,
                 :estimated_time,
                 :content,
@@ -30,7 +31,9 @@ ActiveAdmin.register Activity do
                   :id,
                   :content_type,
                   :content_block_id,
+                  :sequence,
                   :content,
+                  :sequence,
                   :_destroy,
                   images_attributes: [
                     :id,
@@ -43,14 +46,11 @@ ActiveAdmin.register Activity do
   controller do
     def set_activity_content_block
       return unless params[:activity][:activity_content_blocks_attributes]
-      Rails.logger.debug("*"*80)
-      Rails.logger.debug(params[:activity][:activity_content_blocks_attributes])
-      Rails.logger.debug("*"*80)
-
       new_hash = {}
       params[:activity][:activity_content_blocks_attributes].each do |k, v|
         hash = {}
         activity_content_block_id = v.delete('id').to_i #always delete id
+        sequence = v.delete('sequence').to_i
         images_attributes = v.delete('images_attributes')
         icon_url = assign_icon_url(v)
         v['icon_url'] = icon_url if icon_url.present?
@@ -63,13 +63,10 @@ ActiveAdmin.register Activity do
 
         hash.merge!(id: activity_content_block_id) unless activity_content_block_id.zero?
         hash.merge!(images_attributes: images_attributes) if images_attributes.present?
+        hash[:sequence] = sequence
         new_hash.merge!("#{k}" => hash)
       end
       params[:activity][:activity_content_blocks_attributes] = new_hash
-
-      Rails.logger.debug("n"*80)
-      Rails.logger.debug(params[:activity][:activity_content_blocks_attributes])
-      Rails.logger.debug("n"*80)
     end
 
 
