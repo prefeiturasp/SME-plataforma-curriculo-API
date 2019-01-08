@@ -85,12 +85,24 @@ RSpec.describe Activity, type: :model do
         expect(subject.next_activity).to be_nil
       end
 
-      it 'return valid next activity' do
-        activity_sequence = create :activity_sequence
-        create_list(:activity, 2, activity_sequence: activity_sequence)
-        activities = Activity.all
+      context 'return valid next activity' do
+        it 'if status is published' do
+          activity_sequence = create :activity_sequence
+            create_list(:activity, 2, activity_sequence: activity_sequence, status: :published)
+          activities = Activity.all
 
-        expect(activities.first.next_activity).to eq(activities.last)
+          expect(activities.first.next_activity).to eq(activities.last)
+        end
+
+        it 'skip draft status' do
+          activity_sequence = create :activity_sequence
+          activity_1 = create :activity, activity_sequence: activity_sequence, status: :published, sequence: 1
+          activity_2 = create :activity, activity_sequence: activity_sequence, status: :draft, sequence: 2
+          activity_3 = create :activity, activity_sequence: activity_sequence, status: :published, sequence: 3
+
+          expect(activity_1.next_activity).to_not eq(activity_2)
+          expect(activity_1.next_activity).to eq(activity_3)
+        end
       end
     end
 
@@ -103,12 +115,23 @@ RSpec.describe Activity, type: :model do
         expect(activity_test.last_activity).to be_nil
       end
 
-      it 'return valid last activity' do
+      context 'return valid last activity' do
+        it 'if all status is published' do
         activity_sequence = create :activity_sequence
-        create_list(:activity, 2, activity_sequence: activity_sequence)
+          create_list(:activity, 2, activity_sequence: activity_sequence, status: :published)
         activities = Activity.all
 
         expect(activities.last.last_activity).to eq(activities.first)
+      end
+
+        it 'skip draft activity' do
+          activity_sequence = create :activity_sequence
+          activity_1 = create :activity, activity_sequence: activity_sequence, status: :published, sequence: 1
+          activity_2 = create :activity, activity_sequence: activity_sequence, status: :draft, sequence: 2
+          activity_3 = create :activity, activity_sequence: activity_sequence, status: :published, sequence: 3
+
+          expect(activity_3.last_activity).to eq(activity_1)
+        end
       end
     end
   end

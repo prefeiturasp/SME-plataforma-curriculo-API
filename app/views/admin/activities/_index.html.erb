@@ -4,5 +4,8 @@
   column :sequence
   column :estimated_time
   column :activity_sequence
+  column :status do |activity|
+    Activity.human_enum_name(:status, activity.status)
+  end
   actions
 end %>

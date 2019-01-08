@@ -2,9 +2,11 @@
 //= require activeadmin_addons/all
 //= require activeadmin/quill_editor/quill
 //= require activeadmin/quill_editor_input
-//= require image-resize.min
-//= require divider_blot
 //= require helpers
+//= require lib/image-resize.min
+//= require lib/quill-divider-blot
+//= require lib/quill-image-format
+//= require lib/quill-image-caption
 //= require activities
 //= require activity_sequences
 //= require learning_objectives
@@ -33,7 +35,7 @@ window.onload = function() {
   });
 };
 
-function convertAllEditorsToDelta() {
+function convertAllEditorsToDeltaOnSubmit() {
   var editors = document.querySelectorAll( '.quill-editor' );
   var formtastic = document.querySelector( 'form.formtastic' );
   if( formtastic ) {
@@ -51,14 +53,14 @@ function initializeQuillEditor(editor){
 
     if (input.value) {
       var obj = JSON.parse(input.value);
-      var html_content = quillGetHTML(obj)
-      input.value = html_content
-      quill_editor_content[0].innerHTML = html_content
+      var html_content = quillGetHTML(obj);
+      input.value = html_content;
+      quill_editor_content[0].innerHTML = html_content;
     }
 
     var options = editor.getAttribute( 'data-options' ) ? JSON.parse( editor.getAttribute( 'data-options' ) ) : getDefaultOptions();
     editor['_quill-editor'] = new Quill( content, options );
-    quill_editor = editor['_quill-editor']
+    var quill_editor = editor['_quill-editor'];
     quill_editor.getModule('toolbar').addHandler('divider', () => {
       addHrDividerOnEditor(quill_editor);
     });
@@ -93,11 +95,11 @@ function validFileSize(inserts) {
       size += insert.image.length;
     }
   }
-  return ((size/1024/1024) < 5);
+  return ((size / 1024 / 1024) < 5);
 }
 
 function getDefaultOptions(){
-  default_options = {
+  return {
     modules: {
       toolbar: [
         ['bold', 'italic', 'underline'],
@@ -111,19 +113,22 @@ function getDefaultOptions(){
     placeholder: '',
     theme: 'snow'
   };
-
-  return default_options
 }
 
 function set_colors(){
   var color_divs = document.querySelectorAll('div.pick_color');
 
   for( var i = 0; i < color_divs.length; i++ ) {
-    color_value = color_divs[i].innerHTML;
+    var color_value = color_divs[i].innerHTML;
     color_divs[i].innerHTML = null;
     color_divs[i].style.width = "45px";
     color_divs[i].style.height = "45px";
     color_divs[i].style.borderRadius = '50%';
     color_divs[i].style.background = color_value;
   }
+}
+
+function convertAllEditorsToDelta(){
+  var editors = document.querySelectorAll( '.quill-editor' );
+  convertContentToDelta(editors);
 }

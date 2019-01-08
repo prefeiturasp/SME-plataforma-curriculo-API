@@ -69,7 +69,7 @@ gem 'inherited_resources', git: 'https://github.com/activeadmin/inherited_resour
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # ActiveAdmin Quill Editor
-gem 'activeadmin_quill_editor'
+gem 'activeadmin_quill_editor', '~> 0.1.4'
 
 # Pretty URLs and work with human-friendly strings
 gem 'friendly_id', '~> 5.2.4', github: 'norman/friendly_id'
