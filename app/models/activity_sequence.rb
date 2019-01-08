@@ -170,25 +170,7 @@ class ActivitySequence < ApplicationRecord
     )
   end
 
-  def self.search_with(word)
-    ActivitySequence.search(
-      word,
-      fields: list_fields,
-      where: { status: 'published' }
-    )
-  end
-
-  def self.list_fields
-    ['main_curricular_component_name^10',
-     'title^9',
-     'activities_title^8',
-     'keywords^7',
-     'presentation_text^6',
-     'activity_content_block_titles^5',
-     'activity_content_block_bodies^4',
-     'sustainable_development_goal_names^3',
-     'learning_objective_descriptions^2']
-  end
+  private
 
   def activity_content_block_titles
     activity_content_blocks.map(&:title).compact
