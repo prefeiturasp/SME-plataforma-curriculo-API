@@ -47,16 +47,3 @@ function setSortableList(){
   });
   $('#sortable-list').disableSelection();
 }
-
-function createContentStructureItem(content_name, span, id_legend, activity_content_id, anchor_id, optional_text){
-  if(content_name) {
-    if(!span.hasClass('removed')){
-      content_name = optional_text ? `${content_name} (${optional_text})` : content_name;
-      var icon = "<span class='icon-sortable'>&#9650;<br>&#9660;</span>";
-      var link = $("<a></a>").text(content_name);
-      link.attr('href', `#${id_legend}`);
-      var new_li = $("<li></li>").attr('id', activity_content_id).attr('data-anchor_id', anchor_id).append(link).append(icon);
-    }
-  }
-  return new_li;
-}
