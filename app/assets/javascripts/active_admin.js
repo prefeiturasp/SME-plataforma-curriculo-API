@@ -4,6 +4,7 @@
 //= require lib/image-resize.min
 //= require lib/quill-divider-blot
 //= require lib/quill-image-format
+//= require lib/quill-image-caption
 //= require activities
 //= require activity_sequences
 //= require lib/jquery.sticky
