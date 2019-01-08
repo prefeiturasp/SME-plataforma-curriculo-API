@@ -34,7 +34,7 @@ module Api
         %i[
           all_or_with_year all_or_with_main_curricular_component all_or_with_axes
           all_or_with_sustainable_development_goals all_or_with_knowledge_matrices
-          all_or_with_learning_objectives all_or_with_activity_types
+          all_or_with_learning_objectives
         ].each do |method|
           options.merge!(send(method.to_s))
         end
@@ -70,11 +70,6 @@ module Api
       def all_or_with_learning_objectives
         return {} unless params[:learning_objective_ids]
         { learning_objective_ids: params[:learning_objective_ids] }
-      end
-
-      def all_or_with_activity_types
-        return {} unless params[:activity_type_ids]
-        { activity_type_ids: params[:activity_type_ids] }
       end
 
       def order_by

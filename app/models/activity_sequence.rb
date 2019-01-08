@@ -74,8 +74,7 @@ class ActivitySequence < ApplicationRecord
       axis_ids: axis_ids,
       sustainable_development_goal_ids: sustainable_development_goal_ids,
       knowledge_matrix_ids: knowledge_matrix_ids,
-      learning_objective_ids: learning_objective_ids,
-      activity_type_ids: activity_types.pluck(:id)
+      learning_objective_ids: learning_objective_ids
     }
   end
 
@@ -95,14 +94,6 @@ class ActivitySequence < ApplicationRecord
                                   id: learning_objective_ids
                                 }
                               ).group('sustainable_development_goals.id')
-  end
-
-  def activity_types
-    ActivityType.joins(activities: :activity_sequence).where(
-      activities: {
-        activity_sequence_id: id
-      }
-    ).uniq
   end
 
   def self.all_or_with_year(years = nil)
