@@ -26,5 +26,11 @@ FactoryBot.define do
       presentation_text nil
       year nil
     end
+
+    trait :reindex do
+      after(:create) do |activity_sequence, _evaluator|
+        activity_sequence.reindex(refresh: true)
+      end
+    end
   end
 end

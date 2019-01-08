@@ -79,3 +79,6 @@ gem 'kaminari'
 
 # Paginate in your headers
 gem 'api-pagination'
+
+# Intelligent search made easy with Rails and Elasticsearch
+gem 'searchkick'

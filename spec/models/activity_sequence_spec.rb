@@ -131,6 +131,8 @@ RSpec.describe ActivitySequence, type: :model do
   end
 
   describe 'Queries' do
+    let(:c1) { create :curricular_component }
+
     before do
       create_list(:activity_sequence, 4)
       create :activity_sequence,
@@ -138,7 +140,6 @@ RSpec.describe ActivitySequence, type: :model do
     end
 
     let(:all_response) { ActivitySequence.all }
-    let(:c1) { create :curricular_component }
     let(:params) { {} }
 
     context 'with main curricular component' do
@@ -277,33 +278,6 @@ RSpec.describe ActivitySequence, type: :model do
       it 'not include learning objectives' do
         other_learning_objective = create :learning_objective
         a = create :activity_sequence, learning_objective_ids: [other_learning_objective.id]
-
-        expect(response).to_not include(a)
-      end
-    end
-
-    context 'with activity types' do
-      let(:activity_type) { create :activity_type }
-      let(:activity) { create :activity, activity_type_ids: [activity_type.id] }
-
-      let(:params) { { activity_type_ids: activity_type.id } }
-      let(:response) { ActivitySequence.all_or_with_activity_types(params) }
-      it 'return all with none params' do
-        response = ActivitySequence.all_or_with_activity_types
-
-        expect(all_response).to eq(response)
-      end
-
-      it 'include activity types' do
-        a = create :activity_sequence, activity_ids: [activity.id]
-
-        expect(response).to include(a)
-      end
-
-      it 'not include activity types' do
-        other_activity_type = create :activity_type
-        other_activity = create :activity, activity_type_ids: [other_activity_type.id]
-        a = create :activity_sequence, activity_ids: [other_activity.id]
 
         expect(response).to_not include(a)
       end

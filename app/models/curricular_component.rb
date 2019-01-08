@@ -13,6 +13,8 @@ class CurricularComponent < ApplicationRecord
 
   accepts_nested_attributes_for :axes, allow_destroy: true
 
+  after_save :activity_sequence_reindex
+
   def should_generate_new_friendly_id?
     name_changed? || super
   end
@@ -43,5 +45,9 @@ class CurricularComponent < ApplicationRecord
       'Matemática': 'M',
       'Tecnologias de Aprendizagem': 'TA'
     }
+  end
+
+  def activity_sequence_reindex
+    main_activity_sequences.each(&:reindex)
   end
 end

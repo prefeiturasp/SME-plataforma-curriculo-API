@@ -1,22 +1,21 @@
 module Api
   class ActivitySequencesController < ApiController
-    before_action :authenticate_api_user!, except: %i[index show]
+    before_action :authenticate_api_user!, except: %i[index show search]
     before_action :set_teacher, only: %i[show index create destroy update]
     before_action :set_collection, only: %i[index show create update destroy]
     before_action :set_collection_activity_sequence, only: %i[destroy update]
     before_action :set_activity_sequence, only: %i[show update]
     before_action :check_collection_owner, only: %i[create update]
+    include Api::Concerns::ActivitySequenceSearchable
 
     def index
       render_unauthorized_resource && return if @collection && !user_signed_in?
-      @activity_sequences =
-        if @collection
-          @collection.activity_sequences.published.includes(:collection_activity_sequences)
-        else
-          ActivitySequence.where(status: :published).where_optional_params(params).order(title: :asc)
-        end
-
-      @activity_sequences = paginate(@activity_sequences)
+      if @collection
+        @activity_sequences = @collection.activity_sequences.published.includes(:collection_activity_sequences)
+        @activity_sequences = paginate(@activity_sequences)
+      else
+        @activity_sequences = search_activity_sequences
+      end
 
       render :index
     end
@@ -58,8 +57,7 @@ module Api
         :sustainable_development_goal_ids,
         :knowledge_matrix_ids,
         :learning_objective_ids,
-        :axis_ids,
-        :activity_type_ids
+        :axis_ids
       )
     end
 
