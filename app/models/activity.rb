@@ -3,7 +3,6 @@ class Activity < ApplicationRecord
   include ImageConcern
 
   belongs_to :activity_sequence
-  has_and_belongs_to_many :activity_types
   has_and_belongs_to_many :curricular_components
   has_and_belongs_to_many :learning_objectives
   has_many :activity_content_blocks

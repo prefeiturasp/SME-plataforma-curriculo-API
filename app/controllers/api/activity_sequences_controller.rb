@@ -57,8 +57,7 @@ module Api
         :sustainable_development_goal_ids,
         :knowledge_matrix_ids,
         :learning_objective_ids,
-        :axis_ids,
-        :activity_type_ids
+        :axis_ids
       )
     end
 

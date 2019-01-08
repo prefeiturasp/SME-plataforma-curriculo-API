@@ -16,9 +16,6 @@
     row :environment do |activity|
       Activity.human_enum_name(:environment, activity.environment)
     end
-    row :activity_types do |activity|
-      activity.activity_types.map { |at| at.name }.join('; ')
-    end
     row :content do |activity|
       raw(activity.content)
     end

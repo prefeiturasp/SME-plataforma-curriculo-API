@@ -10,10 +10,6 @@ RSpec.describe Activity, type: :model do
       should belong_to(:activity_sequence)
     end
 
-    it 'has and belongs to many activity types' do
-      should have_and_belong_to_many(:activity_types)
-    end
-
     it 'has and belongs to many curricular components' do
       should have_and_belong_to_many(:curricular_components)
     end
@@ -48,12 +44,6 @@ RSpec.describe Activity, type: :model do
         new_object = build :activity, title: subject.title
 
         expect(new_object).to_not be_valid
-      end
-
-      it 'without a content' do
-        subject.content = nil
-
-        expect(subject).to_not be_valid
       end
 
       it 'without a activity sequence' do

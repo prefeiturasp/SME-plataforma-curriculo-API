@@ -49,8 +49,7 @@ class ActivitySequence < ApplicationRecord
        .all_or_with_axes(params)
        .all_or_with_sustainable_development_goal(params)
        .all_or_with_knowledge_matrices(params)
-       .all_or_with_learning_objectives(params)
-       .all_or_with_activity_types(params).group('activity_sequences.id')
+       .all_or_with_learning_objectives(params).group('activity_sequences.id')
   end
 
   def search_data
@@ -146,17 +145,6 @@ class ActivitySequence < ApplicationRecord
     joins(:learning_objectives).where(
       learning_objectives: {
         id: params[:learning_objective_ids]
-      }
-    )
-  end
-
-  def self.all_or_with_activity_types(params = {})
-    return all unless params[:activity_type_ids]
-    joins(activities: :activity_types).where(
-      activities: {
-        activity_types: {
-          id: params[:activity_type_ids]
-        }
       }
     )
   end
