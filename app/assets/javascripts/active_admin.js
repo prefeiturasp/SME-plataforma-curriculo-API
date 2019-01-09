@@ -5,7 +5,12 @@
 //= require lib/quill-divider-blot
 //= require lib/quill-image-format
 //= require lib/quill-image-caption
-//= require lib/quill-table
+//= require lib/quill_table/TableTrick
+//= require lib/quill_table/ContainBlot
+//= require lib/quill_table/TableCellBlot
+//= require lib/quill_table/TableRowBlot
+//= require lib/quill_table/TableBlot
+//= require lib/quill_table/TableModule
 //= require activities
 //= require activity_sequences
 //= require lib/jquery.sticky
@@ -55,11 +60,6 @@ function initializeQuillEditor(editor){
       input.value = html_content;
       quill_editor_content[0].innerHTML = html_content;
     }
-    quill_editor_content[0].innerHTML.replace('<tbody>', '').replace('</tbody>','')
-
-    console.log("============= Quill Editor Content +++++=========");
-    console.log(quill_editor_content[0].innerHTML);
-    console.log("//////////////////////////////");
 
     var options = editor.getAttribute( 'data-options' ) ? JSON.parse( editor.getAttribute( 'data-options' ) ) : getDefaultOptions();
     editor['_quill-editor'] = new Quill( content, options );
@@ -67,19 +67,7 @@ function initializeQuillEditor(editor){
     quill_editor.getModule('toolbar').addHandler('divider', () => {
       addHrDividerOnEditor(quill_editor);
     });
-
-    quill_editor.getModule('toolbar').addHandler('table', (option) => {
-      addTableOnEditor(quill_editor, option);
-    });
-
   }
-}
-
-function addTableOnEditor(quill, option) {
-  const range = quill.getSelection();
-  quill.insertText(range.index, '\n', Quill.sources.USER);
-  quill.insertEmbed(range.index + 1, 'table', {option: option, quill: quill}, Quill.sources.USER);
-  quill.setSelection(range.index + 2, Quill.sources.SILENT);
 }
 
 function addHrDividerOnEditor(quill) {
