@@ -86,7 +86,7 @@ class TableTrick {
   static random_id() {
     return Math.random().toString(36).slice(2)
   }
-  static find_td(what) {
+  static find_td(what, quill) {
     let leaf = quill.getLeaf(quill.getSelection()['index']);
     let blot = leaf[0];
     for(;blot!=null && blot.statics.blotName!=what;) {
@@ -94,8 +94,8 @@ class TableTrick {
     }
     return blot; // return TD or NULL
   }
-  static append_col() {
-    let td = TableTrick.find_td('td')
+  static append_col(quill) {
+    let td = TableTrick.find_td('td', quill)
     if(td) {
       let table = td.parent.parent;
       let table_id = table.domNode.getAttribute('table_id')
@@ -107,8 +107,8 @@ class TableTrick {
       });
     }
   }
-  static append_row() {
-    let td = TableTrick.find_td('td')
+  static append_row(quill) {
+    let td = TableTrick.find_td('td', quill)
     if(td) {
       let col_count = td.parent.children.length;
       let table = td.parent.parent;
@@ -128,14 +128,47 @@ class TableTrick {
 }
 
 class Table extends Container {
-  static create(value) {
+  // constructor(domNode) {
+  //     console.log("COnstrutor");
+  //     console.log(domNode);
+  //     console.log(domNode.domNode);
+  //     console.log("&&&&&")
+  //     super(domNode);
+
+  //     console.log(`domNode`);
+  //     console.log(domNode);
+  //     console.log("_1_1_1_1_1_1__1_1_");
+
+  //     // Bind our click handler to the class.
+  //     this.clickHandler = this.clickHandler.bind(this);
+
+  //     // domNode.addEventListener('click', this.clickHandler);
+  //     console.log("Fim do construtor");
+  // }
+
+  // clickHandler(event) {
+  //     console.log("ClickableSpan was clicked. Blot: ", this);
+  // }
+
+  static create(params) {
+    var quill = params.quill;
+    var value = params.option ? params.option : params;
+    console.log("1111111");
+    console.log(`params: ${params}`);
+    console.log(quill);
+    console.log(`value ${value}`);
+    console.log("_______________________");
+
+    // console.log(value);
+    // var a = Table.getQuillInstance(node);
     if(value == 'append-row') {
-      let blot = TableTrick.append_row();
+      let blot = TableTrick.append_row(quill);
       return blot;
     } else if(value == 'append-col') {
-      let blot = TableTrick.append_col();
+      let blot = TableTrick.append_col(quill);
       return blot;
     } else if(value.includes('newtable_')) {
+      // let node = super.create(value);
       let node = null;
       let sizes = value.split('_');
       let row_count = Number.parseInt(sizes[1])
@@ -162,16 +195,20 @@ class Table extends Container {
       let blot = leaf[0];
       let top_branch = null;
       for(;blot!=null && !(blot instanceof Container || blot instanceof Scroll);) {
-        top_branch = blot
-        blot=blot.parent;
-      }
-      blot.insertBefore(table, top_branch);
+          top_branch = blot
+          blot=blot.parent;
+        }
+        blot.insertBefore(table, top_branch);
+
+      console.log("===== Retornei o node =====");
+
       return node;
     } else {
       // normal table
       let tagName = 'table';
       let node = super.create(tagName);
       node.setAttribute('table_id', value);
+      console.log(node);
       return node;
     }
   }
@@ -187,16 +224,20 @@ class Table extends Container {
       next.moveChildren(this);
       next.remove();
     }
+    console.log("FIM o OPTIMIZE")
   }
-
 }
 
-Table.blotName = 'table';
-Table.tagName = 'table';
-Table.scope = Parchment.Scope.BLOCK_BLOT;
-Table.defaultChild = 'tr';
-Table.allowedChildren = [TableRow];
-Quill.register(Table);
+Table.getQuillInstance = function(domNode) {
+  let scrollBlot = Quill.find(domNode);
+  console.log(scrollBlot);
+  // Navigate up to Scroll blot
+  while(scrollBlot.parent) {
+    scrollBlot = scrollBlot.parent;
+  }
+
+  return Quill.find(scrollBlot.domNode.parentNode);
+}
 
 class TableCell extends ContainBlot {
   static create(value) {
@@ -263,3 +304,10 @@ Container.order = [
 ];
 
 Quill.debug('debug');
+
+Table.blotName = 'table';
+Table.tagName = 'table';
+Table.scope = Parchment.Scope.BLOCK_BLOT;
+Table.defaultChild = 'tr';
+Table.allowedChildren = [TableRow];
+Quill.register(Table);

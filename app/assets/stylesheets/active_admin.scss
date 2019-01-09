@@ -223,21 +223,17 @@ div.draft {
   }
 }
 
-#editor .ql-editor {
-  height: 300px;
-}
-
-#editor x-contain, contain {
+.ql-editor x-contain, contain {
   background: #ffbb88;
   display: block;
 }
 
-#editor table {
+.ql-editor table {
   width: 100%;
   border-collapse: collapse;
 }
 
-#editor table td {
+.ql-editor table td {
   border: 1px solid black;
   padding: 5px;
   height: 25px;
