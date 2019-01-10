@@ -32,28 +32,36 @@ function setContentStructure(){
   var sortable_list = $('.activity-content-structure ul#sortable-list');
   $('.activity-content-structure ol li').not(".preview-item").remove();
   for( var i = 0; i < contents.length; i++ ) {
-    var input = $(contents[i]).find('input.activity-content-id');
-    var activity_content_id = input.val();
-    var anchor_id = $(contents[i]).find('legend').attr('id');
-    var $ol_parent = $(input[0]).parent().parent();
-    var id_legend = $ol_parent.find('legend.title_content_block')[0].id;
-    var optional_text = getOptionalText($ol_parent.parent());
-    var span = $(contents[i]).find('ol legend span');
-    var content_name = span.text();
-    content_name = setOptionalText(content_name, optional_text);
-    var li_item = createItem(activity_content_id, anchor_id);
-    sortable_list.append(
-      createContentStructureItem(content_name, span, id_legend, li_item)
-    );
+    if (!blockWasRemoved(contents[i])) {
+      var input = $(contents[i]).find('input.activity-content-id');
+      var activity_content_id = input.val();
+      var anchor_id = $(contents[i]).find('legend').attr('id');
+      var $ol_parent = $(input[0]).parent().parent();
+      var id_legend = $ol_parent.find('legend.title_content_block')[0].id;
+      var optional_text = getOptionalText($ol_parent.parent());
+      var span = $(contents[i]).find('ol legend span');
+      var content_name = span.text();
+      content_name = setOptionalText(content_name, optional_text);
+      var li_item = createItem(activity_content_id, anchor_id);
+      sortable_list.append(
+        createContentStructureItem(content_name, span, id_legend, li_item)
+      );
+    }
   }
   structure_list.append(structure_list.find('.preview-item'));
+}
+
+function blockWasRemoved(content_block) {
+  var span = $(content_block).find('ol .title_content_block span');
+
+  return span.hasClass('removed');
 }
 
 function focusOrRedirect(win, $activity_form, post_url, data){
   if ($activity_form.is("#new_activity")) {
     window.location.href = post_url + "/" + data.slug + "/edit";
   } else {
-    win.focus();
+    window.location.reload(false);
   }
 }
 

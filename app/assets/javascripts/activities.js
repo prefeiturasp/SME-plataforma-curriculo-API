@@ -13,17 +13,20 @@ $(document).ready(function(){
       var hint = parent.find("p.inline-hints");
       hint.empty();
     });
-    fixActivityActionPosition();
-    setToolbarToActivityContents();
-    setAnchorIdIfFormError();
-    setTitleLegendClassNames();
-    bindUpdateStructureOnRemove();
-    setContentStructure();
-    setSortableList();
-    hideUnusedRemoveButton();
-    stickyContentsSidebar();
-    saveContentWhenClickInPreview();
-    bindPredefinedExercisesSelect();
+    $.when( setActivityContentBlockToolbarId() ).done(function() {
+      fixActivityActionPosition();
+      setToolbarToActivityContents();
+      setAnchorIdIfFormError();
+      setTitleLegendClassNames();
+      bindUpdateStructureOnRemove();
+      setContentStructure();
+      setSortableList();
+      hideUnusedRemoveButton();
+      stickyContentsSidebar();
+      saveContentWhenClickInPreview();
+      bindPredefinedExercisesSelect();
+      fixSelectsContentToolbar();
+    });
   }
 });
 
@@ -186,4 +189,8 @@ function setShowContentBlocks(){
     var html_content = quillGetHTML(obj);
     td.innerHTML = html_content;
   }
+}
+
+function fixSelectsContentToolbar(){
+  $('span.ql-formats span.ql-picker').removeClass('select2-hidden-accessible');
 }

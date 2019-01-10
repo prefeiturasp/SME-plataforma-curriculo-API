@@ -68,7 +68,7 @@ class ActivitySequence < ApplicationRecord
   def search_filters
     {
       created_at: created_at,
-      year: read_attribute_before_type_cast(:year),
+      year: year_reference_on_database,
       main_curricular_component_slug: main_curricular_component.slug,
       axis_ids: axis_ids,
       sustainable_development_goal_ids: sustainable_development_goal_ids,
@@ -147,6 +147,12 @@ class ActivitySequence < ApplicationRecord
         id: params[:learning_objective_ids]
       }
     )
+  end
+
+  def year_reference_on_database
+    key = year_before_type_cast
+    return key if key.is_a? Integer
+    ActivitySequence.years[key]
   end
 
   private

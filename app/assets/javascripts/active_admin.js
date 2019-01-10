@@ -7,6 +7,12 @@
 //= require lib/quill-divider-blot
 //= require lib/quill-image-format
 //= require lib/quill-image-caption
+//= require lib/quill_table/TableTrick
+//= require lib/quill_table/ContainBlot
+//= require lib/quill_table/TableCellBlot
+//= require lib/quill_table/TableRowBlot
+//= require lib/quill_table/TableBlot
+//= require lib/quill_table/TableModule
 //= require activities
 //= require activity_sequences
 //= require learning_objectives
@@ -32,6 +38,7 @@ window.onload = function() {
         return convertContentToDelta(editors);
       };
     }
+    fixSelectsContentToolbar();
   });
 };
 
