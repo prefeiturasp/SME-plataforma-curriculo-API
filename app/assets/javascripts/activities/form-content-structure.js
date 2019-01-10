@@ -53,7 +53,7 @@ function focusOrRedirect(win, $activity_form, post_url, data){
   if ($activity_form.is("#new_activity")) {
     window.location.href = post_url + "/" + data.slug + "/edit";
   } else {
-    win.focus();
+    window.location.reload(false);
   }
 }
 
