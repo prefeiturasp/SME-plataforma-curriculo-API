@@ -38,6 +38,7 @@ window.onload = function() {
         return convertContentToDelta(editors);
       };
     }
+    fixSelectsContentToolbar();
   });
 };
 

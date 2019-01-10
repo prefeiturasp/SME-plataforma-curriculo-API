@@ -47,10 +47,6 @@ button.ql-table[value="append-col"]::after { content: "Coluna +"; }
   font-weight: normal;
 }
 
-/* .ql-picker.ql-table svg {
-  display: none;
-} */
-
 .ql-picker.ql-table .ql-picker-label {
   padding-left: 0px !important;
   width: 85px;
