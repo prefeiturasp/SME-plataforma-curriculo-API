@@ -1,3 +1,7 @@
+// The module for creating and editing tables in Quill editor
+// is based on the Quilljs Table project fork.
+// Repo: https://github.com/MrMadClown/quill-table
+
 var Delta = Quill.import('delta');
 
 Container.order = [
