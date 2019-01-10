@@ -14,8 +14,8 @@
   height: 25px;
 }
 
-button.ql-table::after { content: "Tabela"; }
-.ql-picker.ql-table .ql-picker-label::before { content: "Tabela"; }
+button.ql-table::after { content: "Tabela +"; }
+.ql-picker.ql-table .ql-picker-label::before { content: "Tabela +"; }
 button.ql-contain::after { content: "WRAP"; }
 button.ql-table[value="append-row"]::after { content: "Linha +"; }
 button.ql-table[value="append-col"]::after { content: "Coluna +"; }
@@ -37,21 +37,27 @@ button.ql-table[value="append-col"]::after { content: "Coluna +"; }
 }
 
 .ql-picker.ql-table {
-  margin-right: -15px;
-  font-size: 11px;
+  margin-right: -5px;
+  /* font-size: 11px;
+  font-weight: normal; */
+}
+
+.ql-picker.ql-table .ql-picker-item {
+  font-size: 10px;
   font-weight: normal;
 }
 
-.ql-picker.ql-table svg {
+/* .ql-picker.ql-table svg {
   display: none;
-}
+} */
 
 .ql-picker.ql-table .ql-picker-label {
-  padding: 0px 3px;
+  padding-left: 0px !important;
+  width: 85px;
 }
 
 .ql-picker.ql-table .ql-picker-options {
-  width: 190px;
+  width: 178px;
 }
 
 .ql-picker.ql-table .ql-picker-item {
