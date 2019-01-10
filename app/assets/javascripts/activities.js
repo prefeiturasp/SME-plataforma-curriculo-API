@@ -13,17 +13,19 @@ $(document).ready(function(){
       var hint = parent.find("p.inline-hints");
       hint.empty();
     });
-    fixActivityActionPosition();
-    setToolbarToActivityContents();
-    setAnchorIdIfFormError();
-    setTitleLegendClassNames();
-    bindUpdateStructureOnRemove();
-    setContentStructure();
-    setSortableList();
-    hideUnusedRemoveButton();
-    stickyContentsSidebar();
-    saveContentWhenClickInPreview();
-    bindPredefinedExercisesSelect();
+    $.when( setActivityContentBlockToolbarId() ).done(function() {
+      fixActivityActionPosition();
+      setToolbarToActivityContents();
+      setAnchorIdIfFormError();
+      setTitleLegendClassNames();
+      bindUpdateStructureOnRemove();
+      setContentStructure();
+      setSortableList();
+      hideUnusedRemoveButton();
+      stickyContentsSidebar();
+      saveContentWhenClickInPreview();
+      bindPredefinedExercisesSelect();
+    });
   }
 });
 
