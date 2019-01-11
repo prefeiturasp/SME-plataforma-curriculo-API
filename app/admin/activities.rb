@@ -17,6 +17,7 @@ ActiveAdmin.register Activity do
 
   permit_params :sequence,
                 :title,
+                :status,
                 :slug,
                 :estimated_time,
                 :content,
@@ -31,6 +32,7 @@ ActiveAdmin.register Activity do
                   :content_type,
                   :content_block_id,
                   :content,
+                  :sequence,
                   :_destroy,
                   images_attributes: [
                     :id,
@@ -59,6 +61,7 @@ ActiveAdmin.register Activity do
 
         hash.merge!(id: activity_content_block_id) unless activity_content_block_id.zero?
         hash.merge!(images_attributes: images_attributes) if images_attributes.present?
+        hash[:sequence] = sequence
         new_hash.merge!("#{k}" => hash)
       end
       params[:activity][:activity_content_blocks_attributes] = new_hash

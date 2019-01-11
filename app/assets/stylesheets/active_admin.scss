@@ -135,7 +135,17 @@
   }
 
   .activity-content-structure {
+    #sortable-list{
+      li{
+        padding: 10px;
+      }
+      .icon-sortable {
+        display: none;
+      }
+    }
+
     a {
+      text-decoration: none;
       font-size: 1.3em;
     }
 
@@ -171,5 +181,44 @@
 .quill-editor {
   .select2-container {
     display: none;
+  }
+}
+
+div.draft {
+  position: fixed;
+  display: table;
+  overflow: hidden;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #d23a1d;
+  padding: 10px;
+
+  p {
+    color: white;
+    font-size: 1.0em;
+    font-weight: 600;
+    display:table-cell;
+    vertical-align:middle;
+    text-align: center;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .activity-content-structure {
+    #sortable-list{
+      li:hover {
+        background-color: #d8d8d8;
+      }
+
+      .icon-sortable {
+        display: block !important;
+        outline: 1px dotted gray;
+        display: inline-block;
+        font-size: 0.8em;
+        vertical-align: middle;
+        float:right
+      }
+    }
   }
 }

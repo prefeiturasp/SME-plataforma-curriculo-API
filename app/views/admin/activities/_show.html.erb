@@ -1,10 +1,13 @@
 <% context.instance_eval do
   attributes_table do
     row :activity_sequence
+    row :status do |activity|
+      Activity.human_enum_name(:status, activity.status)
+    end
     row :sequence
     row :title
     row :year do |activity|
-      ActivitySequence.human_enum_name(:year, activity.activity_sequence.year, true)
+      Activity.human_enum_name(:year, activity.activity_sequence.year, true)
     end
     row :main_curricular_component do |activity|
       activity.activity_sequence.main_curricular_component
