@@ -2,6 +2,7 @@ module Api
   module Concerns
     module ActivitySequenceSearchable
       extend ActiveSupport::Concern
+      include Api::Concerns::SearchkickPagination
 
       private
 
@@ -11,8 +12,15 @@ module Api
           query,
           fields: list_fields,
           where: where,
-          order: order_by
+          order: order_by,
+          load: false,
+          page: page,
+          per_page: per_page
         )
+      end
+
+      def activity_sequence_ids_from_search(search_result)
+        search_result.hits.map { |h| h['_id'] }
       end
 
       def list_fields
@@ -93,9 +101,13 @@ module Api
         %i[asc desc]
       end
 
+      def page
+        params[:page].to_i || 0
+      end
+
       def per_page
         return default_per_page if params[:per_page].to_i.zero? || params[:per_page].to_i > max_per_page
-        params[:per_page]
+        params[:per_page].to_i
       end
 
       def default_per_page
