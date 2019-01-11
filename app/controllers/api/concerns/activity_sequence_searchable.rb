@@ -11,9 +11,7 @@ module Api
           query,
           fields: list_fields,
           where: where,
-          order: order_by,
-          page: params[:page] || 0,
-          per_page: per_page
+          order: order_by
         )
       end
 
@@ -96,8 +94,16 @@ module Api
       end
 
       def per_page
-        return 30 if params[:per_page].to_i.zero? || params[:per_page].to_i > 100
+        return default_per_page if params[:per_page].to_i.zero? || params[:per_page].to_i > max_per_page
         params[:per_page]
+      end
+
+      def default_per_page
+        ActivitySequence.default_per_page
+      end
+
+      def max_per_page
+        ActivitySequence.max_per_page
       end
     end
   end

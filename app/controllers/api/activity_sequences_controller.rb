@@ -14,7 +14,8 @@ module Api
         @activity_sequences = @collection.activity_sequences.published.includes(:collection_activity_sequences)
         @activity_sequences = paginate(@activity_sequences)
       else
-        @activity_sequences = search_activity_sequences
+        activity_sequences = search_activity_sequences
+        @activity_sequences = paginate activity_sequences.results
       end
 
       render :index
