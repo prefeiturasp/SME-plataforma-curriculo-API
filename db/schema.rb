@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_08_184242) do
+ActiveRecord::Schema.define(version: 2019_01_14_141105) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -241,6 +241,14 @@ ActiveRecord::Schema.define(version: 2019_01_08_184242) do
     t.bigint "learning_objective_id", null: false
     t.index ["learning_objective_id", "sustainable_development_goal_id"], name: "index_sdg_lo_on_lo_id_asdg_id"
     t.index ["sustainable_development_goal_id", "learning_objective_id"], name: "index_sdg_lo_on_sdg_id_alo_id"
+  end
+
+  create_table "ratings", force: :cascade do |t|
+    t.integer "sequence"
+    t.text "description"
+    t.boolean "enable", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "roadmaps", force: :cascade do |t|
