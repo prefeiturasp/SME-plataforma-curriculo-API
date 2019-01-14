@@ -1,9 +1,7 @@
-# encoding: utf-8
-# rubocop:disable Style/AsciiComments
 if Rails.env.development?
   admin = User.find_or_create_by(email: '')
-  admin.password = ''
-  admin.password_confirmation = ''
+  admin.password = 'qwe123'
+  admin.password_confirmation = 'qwe123'
   admin.save
 end
 
@@ -15,9 +13,8 @@ end
   ActivityType.find_or_create_by(attributes)
 end
 
-
 [
-  { name: 'Arte'},
+  { name: 'Arte' },
   { name: 'Ciências Naturais' },
   { name: 'Educação Física' },
   { name: 'Geografia' },
@@ -37,7 +34,7 @@ end
     sequence: 1,
     name: 'Erradicação da Pobreza',
     description: 'Acabar com a pobreza em todas as suas formas, em todos os lugares',
-    color: '#ff1f39',
+    color: '#ff1f39'
   },
   {
     sequence: 2,
@@ -143,7 +140,7 @@ end
     name: 'Parcerias e meios de implementação',
     description: 'Fortalecer os meios de implementação e revitalizar a parceria global para o
      desenvolvimento sustentável',
-     color: '#00466b'
+    color: '#00466b'
   }
 ].each do |attributes|
   sequence = attributes[:sequence]
@@ -156,7 +153,7 @@ end
     content_type: 'image/jpg'
   )
 
-  #TODO change to sub_icon image
+  # TODO: change to sub_icon image
   sdg.sub_icon.attach(
     io: File.open("public/seeds/sub_icon#{sequence}.png"),
     filename: "sub_icon#{sequence}.png",
@@ -239,12 +236,29 @@ end
   know.update_attributes(attributes)
 end
 
-
 CurricularComponent.all.each do |curricular_component|
   (1..3).each do |i|
     Axis.create(description: "Eixo #{i} - #{curricular_component.name}", curricular_component_id: curricular_component.id)
   end
 end
 
+[
+  {
+    sequence: 1,
+    description: 'Como você avalia a qualidade do conteúdo?'
+  },
+  {
+    sequence: 2,
+    description: 'E a metodologia aplicada?'
+  },
+  {
+    sequence: 3,
+    description: 'Qual foi o nível de envolvimento dos estudantes com as Atividades?'
+  }
+].each do |rating_params|
+  rating = Rating.find_or_create_by(sequence: rating_params[:sequence])
+  rating.description = rating_params[:description]
+  rating.save
+end
+
 Rake::Task['db:seed:create_or_update_content_blocks'].invoke
-# rubocop:enable Style/AsciiComments

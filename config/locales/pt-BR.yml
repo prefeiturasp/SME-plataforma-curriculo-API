@@ -31,6 +31,9 @@ pt-BR:
       learning_objective:
         one: "Objetivo de Aprendizagem"
         other: "Objetivos de Aprendizagem"
+      rating:
+        one: "Avaliação"
+        other: "Avaliações"
       roadmap:
         one: "Roteiro"
         other: "Roteiros"
@@ -132,6 +135,12 @@ pt-BR:
         curricular_component_id: "Componente Curricular"
         sustainable_development_goals: "Objetivos de Desenvolvimento Sustentável"
         year: "Ano"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      rating:
+        sequence: "Ordem"
+        description: "Descrição"
+        enable: "Habilitado"
         created_at: "Criado em"
         updated_at: "Atualizado em"
       roadmap:
