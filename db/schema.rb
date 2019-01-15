@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_14_141105) do
+ActiveRecord::Schema.define(version: 2019_01_14_191021) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -92,6 +92,16 @@ ActiveRecord::Schema.define(version: 2019_01_14_141105) do
     t.datetime "updated_at", null: false
     t.index ["activity_id"], name: "index_activity_content_blocks_on_activity_id"
     t.index ["content_block_id"], name: "index_activity_content_blocks_on_content_block_id"
+  end
+
+  create_table "activity_sequence_performeds", force: :cascade do |t|
+    t.bigint "activity_sequence_id"
+    t.bigint "teacher_id"
+    t.boolean "evaluated", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["activity_sequence_id"], name: "index_activity_sequence_performeds_on_activity_sequence_id"
+    t.index ["teacher_id"], name: "index_activity_sequence_performeds_on_teacher_id"
   end
 
   create_table "activity_sequences", force: :cascade do |t|
@@ -320,6 +330,8 @@ ActiveRecord::Schema.define(version: 2019_01_14_141105) do
   add_foreign_key "activities", "activity_sequences"
   add_foreign_key "activity_content_blocks", "activities"
   add_foreign_key "activity_content_blocks", "content_blocks"
+  add_foreign_key "activity_sequence_performeds", "activity_sequences"
+  add_foreign_key "activity_sequence_performeds", "teachers"
   add_foreign_key "activity_sequences", "curricular_components", column: "main_curricular_component_id"
   add_foreign_key "axes", "curricular_components"
   add_foreign_key "collection_activity_sequences", "activity_sequences"

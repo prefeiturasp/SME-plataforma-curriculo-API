@@ -44,3 +44,5 @@ json.activities @activity_sequence.activities do |activity|
   json.estimated_time activity.estimated_time
   json.partial! 'api/images/image', image_param: activity.image, sizes: %i[small extra_small]
 end
+
+json.partial! 'api/activity_sequence_performeds/status', activity_sequence: activity_sequence if current_teacher

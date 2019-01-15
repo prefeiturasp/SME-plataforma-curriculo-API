@@ -30,4 +30,5 @@ json.array! @activity_sequences do |activity_sequence|
     json.icon_url variant_url(sds.icon, :icon)
     json.sub_icon_url url_for(sds.sub_icon)
   end
+  json.partial! 'api/activity_sequence_performeds/status', activity_sequence: activity_sequence if current_teacher
 end

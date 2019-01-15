@@ -14,6 +14,7 @@ class ActivitySequence < ApplicationRecord
   has_many :activity_content_blocks, through: :activities
   has_many :axes, through: :learning_objectives
   has_many :sustainable_development_goals, through: :learning_objectives
+  has_many :performeds, class_name: 'ActivitySequencePerformed'
 
   enum status: { draft: 0, published: 1 }
 
@@ -153,6 +154,19 @@ class ActivitySequence < ApplicationRecord
     key = year_before_type_cast
     return key if key.is_a? Integer
     ActivitySequence.years[key]
+  end
+
+  def performed_by_teacher(teacher)
+    performeds.by_teacher(teacher).last
+  end
+
+  def already_performed_by_teacher?(teacher)
+    performed_by_teacher(teacher).present?
+  end
+
+  def already_evaluated_by_teacher?(teacher)
+    return false unless performed_by_teacher(teacher).present?
+    performed_by_teacher(teacher).evaluated?
   end
 
   private

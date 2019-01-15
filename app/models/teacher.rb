@@ -1,5 +1,6 @@
 class Teacher < ApplicationRecord
   has_many :collections, dependent: :destroy
+  has_many :activity_sequence_performeds
   belongs_to :user
   has_one_attached :avatar
 
