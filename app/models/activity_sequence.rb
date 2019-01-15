@@ -95,6 +95,16 @@ class ActivitySequence < ApplicationRecord
                               ).group('sustainable_development_goals.id')
   end
 
+  def self.where_id_with_includes(activity_sequence_ids)
+    ActivitySequence.where(id: activity_sequence_ids)
+                    .includes(:main_curricular_component)
+                    .includes(learning_objectives: :axes)
+                    .includes(learning_objectives: :curricular_component)
+                    .includes(learning_objectives: :sustainable_development_goals)
+                    .includes(:knowledge_matrices)
+                    .includes(:learning_objectives)
+  end
+
   def self.all_or_with_year(years = nil)
     return all unless years
     where(year: years)

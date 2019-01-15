@@ -14,10 +14,11 @@ module Api
         @activity_sequences = @collection.activity_sequences.published.includes(:collection_activity_sequences)
         @activity_sequences = paginate(@activity_sequences)
       else
-        @activity_sequences = search_activity_sequences
+        activity_sequences = search_activity_sequences
+        searchkick_paginate(activity_sequences)
+        activity_sequence_ids = activity_sequence_ids_from_search(activity_sequences)
+        @activity_sequences = ActivitySequence.where_id_with_includes(activity_sequence_ids)
       end
-
-      render :index
     end
 
     def show
