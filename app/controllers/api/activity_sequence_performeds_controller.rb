@@ -20,10 +20,15 @@ module Api
     def set_activity_sequence_performeds
       @activity_sequence_performeds = @teacher.activity_sequence_performeds
                                               .ordered_by_created_at
+                                              .all_or_with_evaluated(evaluated_filter)
     end
 
     def requested_teacher_id
       params['teacher_id']
+    end
+
+    def evaluated_filter
+      ['true', 'false'].include?(params['evaluated']) ? params['evaluated'] == "true" : nil
     end
 
     def check_user_permission

@@ -51,4 +51,30 @@ RSpec.describe ActivitySequencePerformed, type: :model do
       end
     end
   end
+
+  context 'Filters' do
+    context 'with evaluated' do
+      let(:all_response) { ActivitySequencePerformed.all }
+      let(:params)   { { evaluated: 'true' } }
+      let(:response) { ActivitySequencePerformed.all_or_with_evaluated(params[:evaluated]) }
+
+      it 'return all with none params' do
+        response = ActivitySequencePerformed.all_or_with_evaluated
+
+        expect(all_response).to eq(response)
+      end
+
+      it 'include' do
+        a = create :activity_sequence_performed,
+                  evaluated: true
+        expect(response).to include(a)
+      end
+
+      it 'not include' do
+        a = create :activity_sequence_performed,
+                  evaluated: false
+        expect(response).to_not include(a)
+      end
+    end
+  end
 end

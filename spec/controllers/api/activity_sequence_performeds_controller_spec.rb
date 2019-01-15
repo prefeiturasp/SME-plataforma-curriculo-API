@@ -76,6 +76,23 @@ RSpec.describe Api::ActivitySequencePerformedsController, type: :controller do
         end
       end
 
+      context 'filter by evaluated attribute' do
+        let!(:activity_sequence_performed_evaluated) { create :activity_sequence_performed, teacher: teacher, evaluated: true }
+        let!(:activity_sequence_performed_not_evaluated) { create :activity_sequence_performed, teacher: teacher, evaluated: false }
+
+        it 'list performeds which were evaluated' do
+          get :index, params: { teacher_id: teacher.id, evaluated: 'true' }
+
+          expect(first_body['activity_sequence']['slug']).to eq(activity_sequence_performed_evaluated.activity_sequence.slug)
+        end
+
+        it 'list performeds which were not evaluated' do
+          get :index, params: { teacher_id: teacher.id, evaluated: 'false' }
+
+          expect(first_body['activity_sequence']['slug']).to eq(activity_sequence_performed_not_evaluated.activity_sequence.slug)
+        end
+      end
+
       context 'returns http unauthorized' do
         it 'if the current user is different from the requested one' do
           another_user = create :user
