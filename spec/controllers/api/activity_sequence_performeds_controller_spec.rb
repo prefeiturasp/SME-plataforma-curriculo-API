@@ -62,6 +62,18 @@ RSpec.describe Api::ActivitySequencePerformedsController, type: :controller do
           expect(first_body['activity_sequence']['main_curricular_component']).to be_present
           expect(first_body['activity_sequence']['image_attributes']).to be_present
         end
+
+        it 'order by created at' do
+          activity_sequence_performed_first = create :activity_sequence_performed, teacher: teacher, evaluated: true
+          activity_sequence_performed_second = create :activity_sequence_performed, teacher: teacher, evaluated: true
+
+          get :index, params: { teacher_id: teacher.id }
+
+          expect(first_body['activity_sequence_id']).to eq(activity_sequence_performed_first.activity_sequence_id)
+          expect(response_body[1]['activity_sequence_id']).to eq(activity_sequence_performed_second.activity_sequence_id)
+          expect(first_body['teacher_id']).to eq(activity_sequence_performed_first.teacher_id)
+          expect(response_body[1]['teacher_id']).to eq(activity_sequence_performed_second.teacher_id)
+        end
       end
 
       context 'returns http unauthorized' do

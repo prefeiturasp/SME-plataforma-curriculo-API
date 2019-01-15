@@ -19,6 +19,7 @@ module Api
 
     def set_activity_sequence_performeds
       @activity_sequence_performeds = @teacher.activity_sequence_performeds
+                                              .ordered_by_created_at
     end
 
     def requested_teacher_id

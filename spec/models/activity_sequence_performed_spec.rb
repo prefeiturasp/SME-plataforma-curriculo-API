@@ -40,5 +40,15 @@ RSpec.describe ActivitySequencePerformed, type: :model do
         expect(ActivitySequencePerformed.evaluateds).to_not include(activity_sequence_performed_2)
       end
     end
+
+    context 'ordered_by_created_at' do
+      let(:activity_sequence_performed_first)  { create :activity_sequence_performed }
+      let(:activity_sequence_performed_second) { create :activity_sequence_performed }
+
+      it 'list all order by created_at ASC' do
+        expected = [activity_sequence_performed_first, activity_sequence_performed_second]
+        expect(ActivitySequencePerformed.ordered_by_created_at).to eq(expected)
+      end
+    end
   end
 end

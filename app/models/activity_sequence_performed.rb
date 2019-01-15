@@ -6,4 +6,5 @@ class ActivitySequencePerformed < ApplicationRecord
     where(teacher_id: teacher.id)
   }
   scope :evaluateds, -> { where(evaluated: true) }
+  scope :ordered_by_created_at, -> { order(created_at: :asc) }
 end
