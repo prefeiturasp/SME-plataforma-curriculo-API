@@ -15,6 +15,7 @@ class Activity < ApplicationRecord
   validates :sequence, presence: true
 
   enum environment: { interior: 0, exterior: 1 }
+  enum status: { draft: 0, published: 1 }
 
   has_many_attached :content_images
 
@@ -25,6 +26,7 @@ class Activity < ApplicationRecord
 
   def next_activity
     activity_sequence.activities
+                     .where(status: :published)
                      .where('sequence >= ?', next_sequence)
                      .order('sequence ASC').first
   end
@@ -32,6 +34,7 @@ class Activity < ApplicationRecord
   def last_activity
     return unless last_sequence
     activity_sequence.activities
+                     .where(status: :published)
                      .where('sequence <= ?', last_sequence)
                      .order('sequence ASC').last
   end
