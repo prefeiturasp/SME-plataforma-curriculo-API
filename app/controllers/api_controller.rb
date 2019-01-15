@@ -4,6 +4,11 @@ class ApiController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound, with: :render_no_content
   include DeviseTokenAuth::Concerns::SetUserByToken
   before_action :skip_set_cookies_header
+  helper_method :current_teacher
+
+  def current_teacher
+    @current_teacher ||= current_user&.teacher
+  end
 
   protected
 

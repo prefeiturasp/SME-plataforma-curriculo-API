@@ -28,8 +28,10 @@ Rails.application.routes.draw do
       resources :collections, path: 'colecoes' do
         resources :activity_sequences, path: 'sequencias'
       end
+      get 'sequencias_realizadas', to: 'activity_sequence_performeds#index'
     end
     resources :ratings, path: 'avaliacao_criterios', only: [:index]
+    resources :activity_sequence_performeds, path: 'sequencias_realizadas', only: [:index]
 
     namespace :v1 do
       resources :activities

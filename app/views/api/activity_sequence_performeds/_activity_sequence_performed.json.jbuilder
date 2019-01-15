@@ -1,0 +1,3 @@
+json.activity_sequence_id activity_sequence_performed.activity_sequence_id
+json.teacher_id activity_sequence_performed.teacher_id
+json.evaluated activity_sequence_performed.evaluated?
