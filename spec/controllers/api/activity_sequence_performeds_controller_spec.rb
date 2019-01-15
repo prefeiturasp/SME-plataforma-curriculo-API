@@ -47,6 +47,20 @@ RSpec.describe Api::ActivitySequencePerformedsController, type: :controller do
           expect(first_body['activity_sequence_id']).to be_present
           expect(first_body['teacher_id']).to be_present
           expect(first_body['evaluated']).to be_present
+          expect(first_body['activity_sequence']).to be_present
+        end
+
+        it 'return valid activity sequence JSON' do
+          create :activity_sequence_performed, teacher: teacher, evaluated: true
+
+          get :index, params: { teacher_id: teacher.id }
+
+          expect(first_body['activity_sequence']).to be_present
+          expect(first_body['activity_sequence']['id']).to be_present
+          expect(first_body['activity_sequence']['slug']).to be_present
+          expect(first_body['activity_sequence']['title']).to be_present
+          expect(first_body['activity_sequence']['main_curricular_component']).to be_present
+          expect(first_body['activity_sequence']['image_attributes']).to be_present
         end
       end
 
