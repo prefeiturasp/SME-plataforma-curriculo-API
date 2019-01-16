@@ -2,6 +2,7 @@ class ActivitySequence < ApplicationRecord
   include FriendlyId
   include ImageConcern
   include YearsEnum
+  include ActivitySequenceSearchable
   belongs_to :main_curricular_component, class_name: 'CurricularComponent'
   has_and_belongs_to_many :knowledge_matrices
   has_and_belongs_to_many :learning_objectives
@@ -14,19 +15,9 @@ class ActivitySequence < ApplicationRecord
   has_many :activity_content_blocks, through: :activities
   has_many :axes, through: :learning_objectives
   has_many :sustainable_development_goals, through: :learning_objectives
+  has_many :performeds, class_name: 'ActivitySequencePerformed'
 
   enum status: { draft: 0, published: 1 }
-
-  searchkick language: 'brazilian',
-             word_middle: %i[main_curricular_component_name
-                             title
-                             activities_title
-                             keywords
-                             presentation_text
-                             activity_content_block_titles
-                             activity_content_block_bodies
-                             sustainable_development_goal_names
-                             learning_objective_descriptions]
 
   validates :title, presence: true, uniqueness: true
   validates :presentation_text, presence: true
@@ -50,31 +41,6 @@ class ActivitySequence < ApplicationRecord
        .all_or_with_sustainable_development_goal(params)
        .all_or_with_knowledge_matrices(params)
        .all_or_with_learning_objectives(params).group('activity_sequences.id')
-  end
-
-  def search_data
-    { main_curricular_component_name: main_curricular_component.name,
-      title: title,
-      activities_title: activity_titles,
-      keywords: keywords,
-      presentation_text: presentation_text,
-      activity_content_block_titles: activity_content_block_titles,
-      activity_content_block_bodies: activity_content_block_bodies,
-      sustainable_development_goal_names: sustainable_development_goal_names,
-      learning_objective_descriptions: learning_objective_descriptions,
-      status: status }.merge(search_filters)
-  end
-
-  def search_filters
-    {
-      created_at: created_at,
-      year: year_reference_on_database,
-      main_curricular_component_slug: main_curricular_component.slug,
-      axis_ids: axis_ids,
-      sustainable_development_goal_ids: sustainable_development_goal_ids,
-      knowledge_matrix_ids: knowledge_matrix_ids,
-      learning_objective_ids: learning_objective_ids
-    }
   end
 
   def curricular_components
@@ -159,31 +125,24 @@ class ActivitySequence < ApplicationRecord
     )
   end
 
-  def year_reference_on_database
-    key = year_before_type_cast
-    return key if key.is_a? Integer
-    ActivitySequence.years[key]
+  def performed_by_teacher(teacher)
+    performeds.by_teacher(teacher).last
+  end
+
+  def already_performed_by_teacher?(teacher)
+    performed_by_teacher(teacher).present?
+  end
+
+  def already_evaluated_by_teacher?(teacher)
+    return false unless performed_by_teacher(teacher).present?
+    performed_by_teacher(teacher).evaluated?
   end
 
   private
 
-  def activity_content_block_titles
-    activity_content_blocks.map(&:title).compact
-  end
-
-  def activity_content_block_bodies
-    activity_content_blocks.map(&:body).compact
-  end
-
-  def sustainable_development_goal_names
-    sustainable_development_goals.map(&:name)
-  end
-
-  def learning_objective_descriptions
-    learning_objectives.map(&:description)
-  end
-
-  def activity_titles
-    activities.map(&:title)
+  def year_reference_on_database
+    key = year_before_type_cast
+    return key if key.is_a? Integer
+    ActivitySequence.years[key]
   end
 end

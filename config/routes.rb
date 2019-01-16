@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users, { skip: :omniauth_callbacks }.merge(ActiveAdmin::Devise.config)
-  
+
   ActiveAdmin.routes(self)
 
-  root :to => 'rails/welcome#index'
+  root to: 'rails/welcome#index'
 
   namespace :api, defaults: { format: 'json' } do
     mount_devise_token_auth_for 'User',
@@ -22,13 +22,16 @@ Rails.application.routes.draw do
     get 'roteiros', to: 'roadmaps#index'
     get 'perfil', to: 'profiles#me'
 
-    resources :teachers, path: 'professores', only: [:show, :create, :update] do
+    resources :teachers, path: 'professores', only: %i[show create update] do
       post :avatar, action: :avatar
       delete :avatar, action: :avatar_purge
       resources :collections, path: 'colecoes' do
         resources :activity_sequences, path: 'sequencias'
       end
+      get 'sequencias_realizadas', to: 'activity_sequence_performeds#index'
     end
+    resources :ratings, path: 'avaliacao_criterios', only: [:index]
+    resources :activity_sequence_performeds, path: 'sequencias_realizadas', only: [:index]
 
     namespace :v1 do
       resources :activities
@@ -42,6 +45,6 @@ Rails.application.routes.draw do
       resources :knowledge_matrices
     end
 
-    match "*path", to: "errors#catch_404", via: :all
+    match '*path', to: 'errors#catch_404', via: :all
   end
 end
