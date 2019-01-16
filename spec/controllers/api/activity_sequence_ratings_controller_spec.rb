@@ -5,9 +5,11 @@ RSpec.describe Api::ActivitySequenceRatingsController, type: :controller do
     request.env['HTTP_ACCEPT'] = 'application/json'
   end
 
+  let(:invalid_score) { Faker::Number.between(6, 10) }
   let(:user) { create :user }
   let(:teacher) { create :teacher, user: user }
   let(:rating) { create :rating }
+  let(:another_rating) { create :rating }
   let(:activity_sequence) { create :activity_sequence }
   let(:activity_sequence_performed) do
     create :activity_sequence_performed, teacher: teacher, activity_sequence: activity_sequence
@@ -21,10 +23,30 @@ RSpec.describe Api::ActivitySequenceRatingsController, type: :controller do
     }
   end
 
+  let(:valid_attributes_multiple_ratings) do
+    {
+      teacher_id: activity_sequence_performed.teacher.id,
+      ratings: [
+        { rating_id: rating.id, score: Faker::Number.between(0, 5) },
+        { rating_id: another_rating.id, score: Faker::Number.between(0, 5) }
+      ]
+    }
+  end
+
   let(:invalid_attributes) do
     {
       teacher_id: activity_sequence_performed.teacher.id,
-      score: Faker::Number.between(6, 10)
+      score: invalid_score
+    }
+  end
+
+  let(:invalid_multiple_attributes) do
+    {
+      teacher_id: activity_sequence_performed.teacher.id,
+      ratings: [
+        { rating_id: rating.id, score: Faker::Number.between(0, 5) },
+        { rating_id: another_rating.id, score: invalid_score }
+      ]
     }
   end
 
@@ -35,29 +57,60 @@ RSpec.describe Api::ActivitySequenceRatingsController, type: :controller do
       end
 
       context 'with valid params' do
-        it 'creates a new Activity Sequence Rating' do
-          expect {
+        context 'with uniq rating' do
+          it 'creates a new Activity Sequence Rating' do
+            expect {
+              post :create, params: { activity_sequence_slug: activity_sequence.slug,
+                                      activity_sequence_rating: valid_attributes }
+            }.to change(ActivitySequenceRating, :count).by(1)
+          end
+
+          it 'renders a JSON response with the new Activity Sequence Rating' do
             post :create, params: { activity_sequence_slug: activity_sequence.slug,
                                     activity_sequence_rating: valid_attributes }
-          }.to change(ActivitySequenceRating, :count).by(1)
+
+            expect(response).to have_http_status(:created)
+            expect(response.content_type).to eq('application/json')
+          end
         end
 
-        it 'renders a JSON response with the new Activity Sequence Rating' do
-          post :create, params: { activity_sequence_slug: activity_sequence.slug,
-                                  activity_sequence_rating: valid_attributes }
+        context 'with multiple ratings' do
+          it 'creates a new Activity Sequence Rating' do
+            expect {
+              post :create, params: { activity_sequence_slug: activity_sequence.slug,
+                                      activity_sequence_rating: valid_attributes_multiple_ratings }
+            }.to change(ActivitySequenceRating, :count).by(2)
+          end
 
-          expect(response).to have_http_status(:created)
-          expect(response.content_type).to eq('application/json')
+          it 'renders a JSON response with the new Activity Sequence Rating' do
+            post :create, params: { activity_sequence_slug: activity_sequence.slug,
+                                    activity_sequence_rating: valid_attributes_multiple_ratings }
+
+            expect(response).to have_http_status(:created)
+            expect(response.content_type).to eq('application/json')
+          end
         end
       end
 
       context 'with invalid params' do
-        it 'renders a JSON response with errors for the new Activity Sequence Rating' do
-          post :create, params: { activity_sequence_slug: activity_sequence.slug,
-                                  activity_sequence_rating: invalid_attributes }
+        context 'with uniq rating' do
+          it 'renders a JSON response with errors for the new Activity Sequence Rating' do
+            post :create, params: { activity_sequence_slug: activity_sequence.slug,
+                                    activity_sequence_rating: invalid_attributes }
 
-          expect(response).to have_http_status(:unprocessable_entity)
-          expect(response.content_type).to eq('application/json')
+            expect(response).to have_http_status(:unprocessable_entity)
+            expect(response.content_type).to eq('application/json')
+          end
+        end
+
+        context 'with multiple ratings' do
+          it 'renders a JSON response with errors for the new Activity Sequence Rating' do
+            post :create, params: { activity_sequence_slug: activity_sequence.slug,
+                                    activity_sequence_rating: invalid_multiple_attributes }
+
+            expect(response).to have_http_status(:unprocessable_entity)
+            expect(response.content_type).to eq('application/json')
+          end
         end
       end
 

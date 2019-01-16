@@ -7,17 +7,14 @@ module Api
     before_action :set_activity_sequence_rating, only: [:update]
 
     def create
-      @activity_sequence_rating = ActivitySequenceRating.new(
-        activity_sequence_performed_id: @activity_sequence_performed.id,
-        rating_id: activity_seq_rating_params[:rating_id],
-        score: activity_seq_rating_params[:score]
-      )
-
-      if @activity_sequence_rating.save
-        render :show, status: :created
+      if activity_seq_rating_params[:ratings].blank?
+        @activity_sequence_rating = ActivitySequenceRating.new(activity_seq_rating_normalized_params)
+        @activity_sequence_rating.save
       else
-        render json: @activity_sequence_rating.errors, status: :unprocessable_entity
+        create_multiple_act_seq_ratings
       end
+
+      render_after_create
     end
 
     def update
@@ -59,12 +56,47 @@ module Api
         if current_teacher != @teacher
     end
 
+    def render_after_create
+      if @activity_sequence_rating.errors.empty?
+        render :show, status: :created
+      else
+        render json: @activity_sequence_rating.errors, status: :unprocessable_entity
+      end
+    end
+
+    def create_multiple_act_seq_ratings
+      ActivitySequenceRating.transaction do
+        block_rating_params.each do |block_rating_param|
+          @activity_sequence_rating = ActivitySequenceRating.new(block_rating_param)
+          raise ActiveRecord::Rollback unless @activity_sequence_rating.save
+        end
+      end
+    end
+
+    def block_rating_params
+      activity_seq_rating_params[:ratings].each do |r|
+        r[:activity_sequence_performed_id] = @activity_sequence_performed.id
+      end
+    end
+
+    def activity_seq_rating_normalized_params
+      {
+        activity_sequence_performed_id: @activity_sequence_performed.id,
+        rating_id: activity_seq_rating_params[:rating_id],
+        score: activity_seq_rating_params[:score]
+      }
+    end
+
     def activity_seq_rating_params
       params.require(:activity_sequence_rating).permit(
         :activity_sequence_id,
         :teacher_id,
         :rating_id,
-        :score
+        :score,
+        ratings: %i[
+          rating_id
+          score
+        ]
       )
     end
   end
