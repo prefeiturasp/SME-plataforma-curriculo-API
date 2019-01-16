@@ -2,6 +2,9 @@ class ActivitySequencePerformed < ApplicationRecord
   belongs_to :activity_sequence
   belongs_to :teacher
 
+  validates :activity_sequence, uniqueness: { scope: :teacher,
+                                              message: 'should happen once per teacher' }
+
   scope :by_teacher, ->(teacher) {
     where(teacher_id: teacher.id)
   }

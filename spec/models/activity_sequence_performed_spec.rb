@@ -13,6 +13,33 @@ RSpec.describe ActivitySequencePerformed, type: :model do
     end
   end
 
+  describe 'Validations' do
+    describe 'is valid' do
+      it 'with valid attributes' do
+        expect(subject).to be_valid
+      end
+
+      it 'if teacher must exists' do
+        should validate_presence_of(:teacher).with_message(:required)
+      end
+
+      it 'if activity sequence must exists' do
+        should validate_presence_of(:activity_sequence).with_message(:required)
+      end
+    end
+
+    describe 'is not valid' do
+      it 'if activity sequence duplicated per teacher' do
+        teacher = create :teacher
+        activity_sequence = create :activity_sequence
+        activity_seq_performed = create :activity_sequence_performed, teacher: teacher, activity_sequence: activity_sequence
+        another_activity_seq_performed = build :activity_sequence_performed, teacher: teacher, activity_sequence: activity_sequence
+
+        expect(another_activity_seq_performed).to_not be_valid
+      end
+    end
+  end
+
   describe 'Scopes' do
     context 'by_teacher' do
       let(:teacher) { create :teacher }
