@@ -28,7 +28,7 @@ module Api
     end
 
     def evaluated_filter
-      ['true', 'false'].include?(params['evaluated']) ? params['evaluated'] == "true" : nil
+      %w[true false].include?(params['evaluated']) ? params['evaluated'] == 'true' : nil
     end
 
     def check_user_permission
