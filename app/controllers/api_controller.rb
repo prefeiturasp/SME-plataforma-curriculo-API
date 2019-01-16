@@ -27,6 +27,14 @@ class ApiController < ActionController::API
     render '/api/errors/errors', status: :no_content
   end
 
+  def render_unprocessable_entity(exception = nil)
+    @response = response
+    @request_path = request.path
+    @message = exception
+
+    render '/api/errors/errors', status: :unprocessable_entity
+  end
+
   def render_unauthorized_resource
     render json: { error: 'Acesso negado' }, status: :unauthorized
   end

@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     resources :filters, path: 'filtros', only: [:index]
     resources :activity_sequences, path: 'sequencias', param: :slug, only: %i[index show] do
       get 'atividades/:activity_slug', to: 'activities#show'
+      post 'avaliacao', to: 'activity_sequence_ratings#create'
     end
     resources :knowledge_matrices, path: 'saberes', only: [:index]
     resources :sustainable_development_goals, path: 'ods', only: %i[index show]

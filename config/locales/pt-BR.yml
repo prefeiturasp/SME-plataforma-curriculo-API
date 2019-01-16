@@ -209,6 +209,7 @@ pt-BR:
           free_text: "Texto Livre"
     errors:
       messages:
+        not_found_activity_sequence_performed: "Esta sequência de atividade ainda não foi avaliada pelo professor."
         none_learning_objectives: "Nenhum Objetivo de aprendizagem disponível para o componente curricular principal selecionado"
         record_invalid: 'A validação falhou: %{errors}'
         restrict_dependent_destroy:
