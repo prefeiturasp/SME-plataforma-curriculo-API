@@ -2,6 +2,7 @@ class ApiController < ActionController::API
   helper ApplicationHelper
   rescue_from ActionController::RoutingError, with: :render_not_found
   rescue_from ActiveRecord::RecordNotFound, with: :render_no_content
+  rescue_from ActionController::ParameterMissing, with: :render_unprocessable_entity
   include DeviseTokenAuth::Concerns::SetUserByToken
   before_action :skip_set_cookies_header
   helper_method :current_teacher
