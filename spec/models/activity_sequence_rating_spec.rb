@@ -102,4 +102,69 @@ RSpec.describe ActivitySequenceRating, type: :model do
       end
     end
   end
+
+  describe 'Class Methods' do
+    context 'create multiple ratings' do
+      let(:rating_1) { create :rating, enable: true }
+      let(:rating_2) { create :rating, enable: true }
+      let(:activity_sequence_performed) { create :activity_sequence_performed }
+      let(:valid_attributes) do
+        [
+          { "rating_id": rating_1.id, "score": '1', "activity_sequence_performed_id": activity_sequence_performed.id },
+          { "rating_id": rating_2.id, "score": '2', "activity_sequence_performed_id": activity_sequence_performed.id }
+        ]
+      end
+      let(:invalid_attributes) do
+        [
+          { "rating_id": rating_1.id, "score": '1', "activity_sequence_performed_id": activity_sequence_performed.id }
+        ]
+      end
+      let(:attributes_with_errors) do
+        [
+          { "rating_id": rating_1.id, "score": '1', "activity_sequence_performed_id": activity_sequence_performed.id },
+          { "rating_id": rating_2.id, "score": '10', "activity_sequence_performed_id": activity_sequence_performed.id }
+        ]
+      end
+
+      it 'return nil if params not contains all ratings types' do
+        create :rating, enable: true
+        expect(ActivitySequenceRating.create_multiples(invalid_attributes)).to be nil
+      end
+
+      it 'return last object if already created' do
+        expected_return = ActivitySequenceRating.create_multiples(valid_attributes)
+
+        expect(expected_return).to eq(ActivitySequenceRating.last)
+      end
+
+      it 'return errors if params contains errors' do
+        expected_return = ActivitySequenceRating.create_multiples(attributes_with_errors)
+
+        expect(expected_return.errors.present?).to be true
+      end
+    end
+
+    context 'contains_all_enabled_ratings?' do
+      it 'params contains all enable rating types' do
+        rating_1 = create :rating, enable: true
+        rating_2 = create :rating, enable: true
+        array_params = [
+          { "rating_id": rating_1.id, "score": '1', "activity_sequence_performed_id": 1 },
+          { "rating_id": rating_2.id, "score": '1', "activity_sequence_performed_id": 2 }
+        ]
+
+        expect(ActivitySequenceRating.contains_all_enabled_ratings?(array_params)).to be true
+      end
+
+      it 'return false if params without a enabled rating' do
+        rating_1 = create :rating, enable: true
+        create :rating, enable: true
+        array_params = [
+          { "rating_id": rating_1.id, "score": '1', "activity_sequence_performed_id": 1 }
+        ]
+
+        expect(ActivitySequenceRating.contains_all_enabled_ratings?(array_params)).to_not be true
+      end
+    end
+  end
 end

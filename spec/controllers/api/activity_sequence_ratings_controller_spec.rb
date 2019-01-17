@@ -146,6 +146,17 @@ RSpec.describe Api::ActivitySequenceRatingsController, type: :controller do
           expect(response).to have_http_status(:unprocessable_entity)
           expect(response.content_type).to eq('application/json')
         end
+
+        context 'with multiple ratings' do
+          it 'if any evaluation is missing ' do
+            create :rating, enable: true # create new rating
+            post :create, params: { activity_sequence_slug: activity_sequence.slug,
+                                    activity_sequence_rating: valid_attributes_multiple_ratings }
+
+            expect(response).to have_http_status(:unprocessable_entity)
+            expect(response.content_type).to eq('application/json')
+          end
+        end
       end
 
       context 'return http not content' do

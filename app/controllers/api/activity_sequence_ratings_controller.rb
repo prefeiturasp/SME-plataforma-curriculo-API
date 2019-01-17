@@ -10,11 +10,11 @@ module Api
       if activity_seq_rating_params[:ratings].blank?
         @activity_sequence_rating = ActivitySequenceRating.new(activity_seq_rating_normalized_params)
         @activity_sequence_rating.save
-      else
-        create_multiple_act_seq_ratings
-      end
 
-      render_after_create
+        render_after_create
+      else
+        create_multiple_and_render
+      end
     end
 
     def update
@@ -64,12 +64,14 @@ module Api
       end
     end
 
-    def create_multiple_act_seq_ratings
-      ActivitySequenceRating.transaction do
-        block_rating_params.each do |block_rating_param|
-          @activity_sequence_rating = ActivitySequenceRating.new(block_rating_param)
-          raise ActiveRecord::Rollback unless @activity_sequence_rating.save
-        end
+    def create_multiple_and_render
+      @activity_sequence_rating = ActivitySequenceRating.create_multiples(block_rating_params)
+      error_message = I18n.t('activerecord.errors.messages.all_ratings_is_required')
+      render_unprocessable_entity(error_message) && return if @activity_sequence_rating.nil?
+      if @activity_sequence_rating.errors.empty?
+        render :show, status: :created
+      else
+        render json: @activity_sequence_rating.errors, status: :unprocessable_entity
       end
     end
 

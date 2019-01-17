@@ -209,6 +209,7 @@ pt-BR:
           free_text: "Texto Livre"
     errors:
       messages:
+        all_ratings_is_required: "É necessário votar em todos os critérios de avaliação."
         not_found_activity_sequence_performed: "Esta sequência de atividade ainda não foi avaliada pelo professor."
         none_learning_objectives: "Nenhum Objetivo de aprendizagem disponível para o componente curricular principal selecionado"
         record_invalid: 'A validação falhou: %{errors}'

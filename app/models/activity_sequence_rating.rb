@@ -11,6 +11,23 @@ class ActivitySequenceRating < ApplicationRecord
   after_save :assign_evaluated_on_performeds
   after_destroy :remove_evaluated_on_performeds
 
+  def self.create_multiples(array_params)
+    return unless contains_all_enabled_ratings?(array_params)
+    ActivitySequenceRating.transaction do
+      array_params.each do |params|
+        @activity_sequence_rating = ActivitySequenceRating.new(params)
+        raise ActiveRecord::Rollback unless @activity_sequence_rating.save
+      end
+    end
+
+    @activity_sequence_rating
+  end
+
+  def self.contains_all_enabled_ratings?(array_params)
+    rating_ids = array_params.map { |params| params[:rating_id].to_i }
+    Rating.enabled_rating_ids.sort == rating_ids.sort
+  end
+
   private
 
   def assign_evaluated_on_performeds
