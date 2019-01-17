@@ -48,6 +48,8 @@ RSpec.describe Api::CollectionsController, type: :controller do
           expect(first_body['id']).to be_present
           expect(first_body['name']).to be_present
           expect(first_body['teacher_id']).to be_present
+          expect(first_body['number_of_activity_sequences']).to be_present
+          expect(first_body['number_of_classes']).to be_present
         end
       end
 
@@ -85,6 +87,17 @@ RSpec.describe Api::CollectionsController, type: :controller do
 
           expect(response).to be_successful
           expect(response).to have_http_status(:ok)
+        end
+
+        it 'return valid JSON all filters' do
+          collection = create :collection, teacher: teacher
+          get :show, params: { teacher_id: teacher.id, id: collection.to_param }
+
+          expect(response_body['id']).to be_present
+          expect(response_body['name']).to be_present
+          expect(response_body['teacher_id']).to be_present
+          expect(response_body['number_of_activity_sequences']).to be_present
+          expect(response_body['number_of_classes']).to be_present
         end
       end
 

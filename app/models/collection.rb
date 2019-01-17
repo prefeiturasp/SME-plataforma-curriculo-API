@@ -8,4 +8,13 @@ class Collection < ApplicationRecord
   validates :name, presence: true, length: { maximum: 30 }
 
   accepts_nested_attributes_for :collection_activity_sequences, allow_destroy: true
+
+  def number_of_published_activity_sequences
+    activity_sequences.published.count
+  end
+
+  # TODO: change when inserting classes that come from SME
+  def number_of_classes
+    rand(1..10)
+  end
 end
