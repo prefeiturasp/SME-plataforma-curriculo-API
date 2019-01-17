@@ -68,12 +68,37 @@ RSpec.describe ActivitySequenceRating, type: :model do
       it 'if activity sequence performed not unique per rating' do
         rating = create :rating
         act_seq_performed = create :activity_sequence_performed
-        act_seq_rating = create :activity_sequence_rating, activity_sequence_performed: act_seq_performed, rating: rating
-        same_act_seq_rating = build :activity_sequence_rating, activity_sequence_performed: act_seq_performed, rating: rating
+        act_seq_rating = create :activity_sequence_rating,
+                                activity_sequence_performed: act_seq_performed, rating: rating
+        same_act_seq_rating = build :activity_sequence_rating,
+                                    activity_sequence_performed: act_seq_performed, rating: rating
         act_seq_another_rating = build :activity_sequence_rating, activity_sequence_performed: act_seq_performed
 
+        expect(act_seq_rating).to be_valid
         expect(same_act_seq_rating).to_not be_valid
         expect(act_seq_another_rating).to be_valid
+      end
+    end
+  end
+
+  describe 'Callbacks' do
+    context 'on after save' do
+      it 'assign evaluated TRUE on activity sequence performed' do
+        act_seq_performed = create :activity_sequence_performed, evaluated: false
+        create :activity_sequence_rating, activity_sequence_performed: act_seq_performed
+
+        expect(act_seq_performed.evaluated?).to be true
+      end
+    end
+
+    context 'on after destroy' do
+      it 'assign evaluated FALSE on activity sequence performed' do
+        act_seq_performed = create :activity_sequence_performed, evaluated: false
+        act_seq_rating = create :activity_sequence_rating, activity_sequence_performed: act_seq_performed
+
+        act_seq_rating.destroy
+
+        expect(act_seq_performed.evaluated?).to be false
       end
     end
   end
