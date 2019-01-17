@@ -15,8 +15,7 @@ class ActivitySequenceRating < ApplicationRecord
     return unless contains_all_enabled_ratings?(array_params)
     ActivitySequenceRating.transaction do
       array_params.each do |params|
-        @activity_sequence_rating = ActivitySequenceRating.new(params)
-        raise ActiveRecord::Rollback unless @activity_sequence_rating.save
+        @activity_sequence_rating = save_or_raise_rollback(params)
       end
     end
 
@@ -26,6 +25,13 @@ class ActivitySequenceRating < ApplicationRecord
   def self.contains_all_enabled_ratings?(array_params)
     rating_ids = array_params.map { |params| params[:rating_id].to_i }
     Rating.enabled_rating_ids.sort == rating_ids.sort
+  end
+
+  def self.save_or_raise_rollback(params)
+    @activity_sequence_rating = ActivitySequenceRating.new(params)
+    raise ActiveRecord::Rollback unless @activity_sequence_rating.save
+
+    @activity_sequence_rating
   end
 
   private
