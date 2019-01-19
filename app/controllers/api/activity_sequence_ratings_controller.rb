@@ -7,14 +7,14 @@ module Api
     before_action :set_activity_sequence_rating, only: [:update]
 
     def create
-      if activity_seq_rating_params[:ratings].blank?
-        @activity_sequence_rating = ActivitySequenceRating.new(activity_seq_rating_normalized_params)
-        @activity_sequence_rating.save
-
-        render_after_create
+      @activity_sequence_rating = ActivitySequenceRating.create_one_or_multiples(rating_params)
+      if @activity_sequence_rating.errors.empty?
+        render :show, status: :created
       else
-        create_multiple_and_render
+        render json: @activity_sequence_rating.errors, status: :unprocessable_entity
       end
+    rescue MissingRating => e
+      render_unprocessable_entity(e.message)
     end
 
     def update
@@ -56,23 +56,8 @@ module Api
         if current_teacher != @teacher
     end
 
-    def render_after_create
-      if @activity_sequence_rating.errors.empty?
-        render :show, status: :created
-      else
-        render json: @activity_sequence_rating.errors, status: :unprocessable_entity
-      end
-    end
-
-    def create_multiple_and_render
-      @activity_sequence_rating = ActivitySequenceRating.create_multiples(block_rating_params)
-      error_message = I18n.t('activerecord.errors.messages.all_ratings_is_required')
-      render_unprocessable_entity(error_message) && return if @activity_sequence_rating.nil?
-      if @activity_sequence_rating.errors.empty?
-        render :show, status: :created
-      else
-        render json: @activity_sequence_rating.errors, status: :unprocessable_entity
-      end
+    def rating_params
+      activity_seq_rating_params[:ratings].blank? ? simple_rating_params : block_rating_params
     end
 
     def block_rating_params
@@ -81,7 +66,7 @@ module Api
       end
     end
 
-    def activity_seq_rating_normalized_params
+    def simple_rating_params
       {
         activity_sequence_performed_id: @activity_sequence_performed.id,
         rating_id: activity_seq_rating_params[:rating_id],

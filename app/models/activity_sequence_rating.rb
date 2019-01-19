@@ -11,14 +11,23 @@ class ActivitySequenceRating < ApplicationRecord
   after_save :assign_evaluated_on_performeds
   after_destroy :remove_evaluated_on_performeds
 
+  def self.create_one_or_multiples(attributes)
+    if attributes.is_a?(Array)
+      @activity_sequence_rating = create_multiples(attributes)
+    else
+      @activity_sequence_rating = ActivitySequenceRating.new(attributes)
+      @activity_sequence_rating.save
+    end
+    @activity_sequence_rating
+  end
+
   def self.create_multiples(array_params)
-    return unless contains_all_enabled_ratings?(array_params)
+    raise MissingRating unless contains_all_enabled_ratings?(array_params)
     ActivitySequenceRating.transaction do
       array_params.each do |params|
         @activity_sequence_rating = save_or_raise_rollback(params)
       end
     end
-
     @activity_sequence_rating
   end
 

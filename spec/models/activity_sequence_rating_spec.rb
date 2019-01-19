@@ -128,7 +128,8 @@ RSpec.describe ActivitySequenceRating, type: :model do
 
       it 'return nil if params not contains all ratings types' do
         create :rating, enable: true
-        expect(ActivitySequenceRating.create_multiples(invalid_attributes)).to be nil
+
+        expect { ActivitySequenceRating.create_multiples(invalid_attributes) }.to raise_error(MissingRating)
       end
 
       it 'return last object if already created' do
