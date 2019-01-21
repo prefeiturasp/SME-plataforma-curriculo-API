@@ -249,4 +249,37 @@ RSpec.describe Api::TeachersController, type: :controller do
       end
     end
   end
+
+  describe 'GET #all_collections' do
+    it 'returns a success response' do   
+      create :collection, teacher: teacher
+
+      get :all_collections, params: { teacher_id: teacher.id }
+
+      expect(response).to be_successful
+    end
+
+    it 'return valid JSON' do
+      collection = create :collection, teacher: teacher
+      create :collection_activity_sequence, collection: collection
+
+      get :all_collections, params: { teacher_id: teacher.id }
+
+      expect(response_body[0]['id']).to be_present
+      expect(response_body[0]['name']).to be_present
+      expect(response_body[0]['activity_sequences']).to be_present
+    end
+
+    it 'return valid activity sequences on JSON' do
+      collection = create :collection, teacher: teacher
+      create :collection_activity_sequence, collection: collection
+
+      get :all_collections, params: { teacher_id: teacher.id }
+      first_activity_sequence = response_body[0]['activity_sequences'].first
+
+      expected_keys = %W(id slug title)
+      expect(first_activity_sequence.keys).to contain_exactly(*expected_keys)
+    end
+
+  end
 end
