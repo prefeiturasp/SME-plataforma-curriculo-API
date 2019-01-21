@@ -1,6 +1,7 @@
 require 'rails_helper'
 include ActionController::RespondWith
 
+
 RSpec.describe Api::CollectionsController, type: :controller do
   before :each do
     request.env['HTTP_ACCEPT'] = 'application/json'
@@ -11,6 +12,7 @@ RSpec.describe Api::CollectionsController, type: :controller do
   let(:user) { create :user }
   let(:teacher) { create :teacher, user: user }
   let(:collection) { create :collection, teacher: teacher }
+  let(:activity_sequence) { create :activity_sequence }
 
   let(:valid_attributes) { attributes_for :collection }
   let(:invalid_attributes) { attributes_for :collection, :invalid }
@@ -21,46 +23,95 @@ RSpec.describe Api::CollectionsController, type: :controller do
         authenticate_user user
       end
 
-      context 'returns http no content' do
-        it 'returns no content' do
-          get :index, params: { teacher_id: teacher.id }
+      context 'on teacher_id scope' do
+        context 'returns http no content' do
+          it 'returns no content' do
+            get :index, params: { teacher_id: teacher.id }
 
-          expect(response).to have_http_status(:ok)
-          expect(response).to be_successful
+            expect(response).to have_http_status(:ok)
+            expect(response).to be_successful
+          end
+        end
+
+        context 'returns http success' do
+          it 'if valid content' do
+            create :collection, teacher: teacher
+
+            get :index, params: { teacher_id: teacher.id }
+
+            expect(response.content_type).to eq('application/json')
+            expect(response).to be_successful
+          end
+
+          it 'return valid JSON all filters' do
+            create :collection, teacher: teacher
+
+            get :index, params: { teacher_id: teacher.id }
+
+            expect(first_body['id']).to be_present
+            expect(first_body['name']).to be_present
+            expect(first_body['teacher_id']).to be_present
+            expect(first_body['number_of_activity_sequences']).to be_present
+            expect(first_body['number_of_classes']).to be_present
+          end
+        end
+
+        context 'returns http unauthorized' do
+          it 'if the current user is different from the requested one' do
+            another_user = create :user
+            another_teacher = create :teacher, user: another_user
+
+            get :index, params: { teacher_id: another_teacher.id }
+
+            expect(response).to have_http_status(:unauthorized)
+          end
         end
       end
 
-      context 'returns http success' do
-        it 'if valid content' do
-          create :collection, teacher: teacher
+      context 'on activity sequence scope' do
+        context 'returns http no content' do
+          it 'returns no content' do
+            get :index, params: { activity_sequence_slug: activity_sequence.slug }
 
-          get :index, params: { teacher_id: teacher.id }
-
-          expect(response.content_type).to eq('application/json')
-          expect(response).to be_successful
+            expect(response).to have_http_status(:no_content)
+            expect(response).to be_successful
+          end
         end
 
-        it 'return valid JSON all filters' do
-          create :collection, teacher: teacher
+        context 'returns http success' do
+          it 'if valid content' do
+            create :collection, teacher: teacher
+            create :collection_activity_sequence, collection: collection, activity_sequence: activity_sequence
 
-          get :index, params: { teacher_id: teacher.id }
+            get :index, params: { activity_sequence_slug: activity_sequence.slug }
 
-          expect(first_body['id']).to be_present
-          expect(first_body['name']).to be_present
-          expect(first_body['teacher_id']).to be_present
-          expect(first_body['number_of_activity_sequences']).to be_present
-          expect(first_body['number_of_classes']).to be_present
+            expect(response.content_type).to eq('application/json')
+            expect(response).to be_successful
+          end
+
+          it 'return valid JSON all filters' do
+            create :collection, teacher: teacher
+            create :collection_activity_sequence, collection: collection, activity_sequence: activity_sequence
+
+            get :index, params: { activity_sequence_slug: activity_sequence.slug }
+
+            expect(first_body['id']).to be_present
+            expect(first_body['name']).to be_present
+            expect(first_body['teacher_id']).to be_present
+            expect(first_body['number_of_activity_sequences']).to be_present
+            expect(first_body['number_of_classes']).to be_present
+          end
         end
-      end
 
-      context 'returns http unauthorized' do
-        it 'if the current user is different from the requested one' do
-          another_user = create :user
-          another_teacher = create :teacher, user: another_user
+        context 'returns http unauthorized' do
+          it 'if the current user is different from the requested one' do
+            another_user = create :user
+            another_teacher = create :teacher, user: another_user
 
-          get :index, params: { teacher_id: another_teacher.id }
+            get :index, params: { teacher_id: another_teacher.id }
 
-          expect(response).to have_http_status(:unauthorized)
+            expect(response).to have_http_status(:unauthorized)
+          end
         end
       end
     end
