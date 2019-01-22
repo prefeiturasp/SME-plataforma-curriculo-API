@@ -7,8 +7,7 @@ module Api
     before_action :set_activity_sequence_rating, only: [:update]
 
     def create
-      @activity_sequence_rating = ActivitySequenceRating.create_one_or_multiples(rating_params)
-      if @activity_sequence_rating.errors.empty?
+      if (@activity_sequence_rating = ActivitySequenceRating.create_one_or_multiples(rating_params)).valid?
         render :show, status: :created
       else
         render json: @activity_sequence_rating.errors, status: :unprocessable_entity
