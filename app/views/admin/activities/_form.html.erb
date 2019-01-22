@@ -6,7 +6,9 @@
         as: :select,
         collection: activity_sequence_options(activity),
         selected: activity.sequence.present? ? activity.sequence : activity_sequence_options(activity).last
-    f.input :image, as: :file
+    f.input :image, as: :file, hint: f.object.image.attached? \
+      ? image_container(f.object.image, :thumb)
+      : content_tag(:span, "Anda não há pré-visualização")
     f.input :title
     f.input :estimated_time
     f.input :activity_sequence_id, as: :hidden
