@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :learning_objective do
-    year :first
+    year { :first }
     description { Faker::Lorem.sentence(20) }
 
     sequence(:code) { |n| "#{Faker::Code.asin}#{n}" }

@@ -23,8 +23,8 @@ FactoryBot.define do
     end
 
     trait :invalid do
-      name nil
-      description nil
+      name { nil }
+      description { nil }
     end
   end
 end

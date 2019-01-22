@@ -4,7 +4,7 @@ FactoryBot.define do
     color { Faker::Color.hex_color }
 
     trait :invalid_name do
-      name nil
+      name { nil }
     end
   end
 end

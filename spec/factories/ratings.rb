@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :rating do
     description { Faker::Lorem.sentence(20) }
-    enable true
+    enable { true} 
     sequence :sequence do |n|
       n
     end
