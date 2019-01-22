@@ -12,15 +12,16 @@ Rails.application.routes.draw do
                                   omniauth_callbacks: 'api/omniauth_callbacks'
                                 }
 
-    get 'filtros', to: 'filters#index'
-    get 'sequencias', to: 'activity_sequences#index'
-    get 'sequencias/:slug', to: 'activity_sequences#show'
-    get 'sequencias/:activity_sequence_slug/atividades/:activity_slug', to: 'activities#show'
-    get 'saberes', to: 'knowledge_matrices#index'
-    get 'ods', to: 'sustainable_development_goals#index'
-    get 'ods/:id', to: 'sustainable_development_goals#show'
-    get 'roteiros', to: 'roadmaps#index'
-    get 'perfil', to: 'profiles#me'
+    resources :filters, path: 'filtros', only: [:index]
+    resources :activity_sequences, path: 'sequencias', param: :slug, only: %i[index show] do
+      get 'atividades/:activity_slug', to: 'activities#show'
+      post 'avaliacao', to: 'activity_sequence_ratings#create'
+      resources :collections, path: 'colecoes', only: [:index]
+    end
+    resources :knowledge_matrices, path: 'saberes', only: [:index]
+    resources :sustainable_development_goals, path: 'ods', only: %i[index show]
+    resources :roadmaps, path: 'roteiros', only: [:index]
+    get :perfil, to: 'profiles#me'
 
     resources :teachers, path: 'professores', only: %i[show create update] do
       post :avatar, action: :avatar

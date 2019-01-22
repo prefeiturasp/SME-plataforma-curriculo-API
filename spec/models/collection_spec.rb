@@ -63,4 +63,17 @@ RSpec.describe Collection, type: :model do
       expect(collection.activity_sequences).to eq([activity_sequence_one, activity_sequence_two])
     end
   end
+
+  describe 'Methods' do
+    it 'returns number of published activity sequences' do
+      activity_sequence_one = create :activity_sequence, status: :published
+      activity_sequence_two = create :activity_sequence, status: :published
+
+      collection = create :collection
+      create :collection_activity_sequence, collection: collection, activity_sequence: activity_sequence_one
+      create :collection_activity_sequence, collection: collection, activity_sequence: activity_sequence_two
+
+      expect(collection.number_of_published_activity_sequences).to eq(2)
+    end
+  end
 end

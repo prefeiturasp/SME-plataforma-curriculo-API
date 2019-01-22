@@ -11,6 +11,38 @@ RSpec.describe ActivitySequencePerformed, type: :model do
     it 'belongs to teacher' do
       should belong_to(:teacher)
     end
+
+    it 'has many activity sequence ratings' do
+      should have_many(:activity_sequence_ratings)
+    end
+  end
+
+  describe 'Validations' do
+    describe 'is valid' do
+      it 'with valid attributes' do
+        expect(subject).to be_valid
+      end
+
+      it 'if teacher must exists' do
+        should validate_presence_of(:teacher).with_message(:required)
+      end
+
+      it 'if activity sequence must exists' do
+        should validate_presence_of(:activity_sequence).with_message(:required)
+      end
+    end
+
+    describe 'is not valid' do
+      it 'if activity sequence duplicated per teacher' do
+        teacher = create :teacher
+        activity_sequence = create :activity_sequence
+        create :activity_sequence_performed, teacher: teacher, activity_sequence: activity_sequence
+        another_activity_seq_performed = build :activity_sequence_performed,
+                                               teacher: teacher, activity_sequence: activity_sequence
+
+        expect(another_activity_seq_performed).to_not be_valid
+      end
+    end
   end
 
   describe 'Scopes' do
@@ -41,6 +73,21 @@ RSpec.describe ActivitySequencePerformed, type: :model do
       end
     end
 
+    context 'not evaluateds' do
+      let(:activity_sequence_performed_1) { create :activity_sequence_performed, evaluated: false }
+      let(:activity_sequence_performed_2) { create :activity_sequence_performed, evaluated: true }
+      let(:activity_sequence_performed_3) { create :activity_sequence_performed, evaluated: false }
+
+      it 'List all if evaluated is false' do
+        expected = [activity_sequence_performed_1, activity_sequence_performed_3]
+        expect(ActivitySequencePerformed.not_evaluateds).to eq(expected)
+      end
+
+      it 'Not list if evaluated is true' do
+        expect(ActivitySequencePerformed.not_evaluateds).to_not include(activity_sequence_performed_2)
+      end
+    end
+
     context 'ordered_by_created_at' do
       let(:activity_sequence_performed_first)  { create :activity_sequence_performed }
       let(:activity_sequence_performed_second) { create :activity_sequence_performed }
@@ -66,13 +113,13 @@ RSpec.describe ActivitySequencePerformed, type: :model do
 
       it 'include' do
         a = create :activity_sequence_performed,
-                  evaluated: true
+                   evaluated: true
         expect(response).to include(a)
       end
 
       it 'not include' do
         a = create :activity_sequence_performed,
-                  evaluated: false
+                   evaluated: false
         expect(response).to_not include(a)
       end
     end

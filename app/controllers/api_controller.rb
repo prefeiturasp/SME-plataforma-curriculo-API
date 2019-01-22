@@ -2,6 +2,9 @@ class ApiController < ActionController::API
   helper ApplicationHelper
   rescue_from ActionController::RoutingError, with: :render_not_found
   rescue_from ActiveRecord::RecordNotFound, with: :render_no_content
+  rescue_from ActionController::ParameterMissing, with: :render_unprocessable_entity
+  # rescue_from MissingRating, with: :render_unprocessable_entity
+
   include DeviseTokenAuth::Concerns::SetUserByToken
   before_action :skip_set_cookies_header
   helper_method :current_teacher
@@ -25,6 +28,14 @@ class ApiController < ActionController::API
     @message = exception
 
     render '/api/errors/errors', status: :no_content
+  end
+
+  def render_unprocessable_entity(exception = nil)
+    @response = response
+    @request_path = request.path
+    @message = exception
+
+    render '/api/errors/errors', status: :unprocessable_entity
   end
 
   def render_unauthorized_resource

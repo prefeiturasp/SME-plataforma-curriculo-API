@@ -3,6 +3,12 @@ require 'rails_helper'
 RSpec.describe Rating, type: :model do
   let(:subject) { build :rating }
 
+  describe 'Associations' do
+    it 'has many activity sequence ratings' do
+      should have_many(:activity_sequence_ratings)
+    end
+  end
+
   describe 'Validations' do
     context 'is valid' do
       it 'with valid attributes' do
@@ -23,6 +29,36 @@ RSpec.describe Rating, type: :model do
 
         expect(new_object).to_not be_valid
       end
+    end
+  end
+
+  describe 'Scopes' do
+    context 'enableds' do
+      let(:rating_1) { create :rating, enable: true }
+      let(:rating_2) { create :rating, enable: false }
+      let(:rating_3) { create :rating, enable: true }
+
+      it 'List all if enable is true' do
+        expected = [rating_1, rating_3]
+        expect(Rating.enableds).to eq(expected)
+      end
+
+      it 'Not list if enable is false' do
+        expect(Rating.enableds).to_not include(rating_2)
+      end
+    end
+  end
+
+  describe 'Methods' do
+    it 'List all ids enabled' do
+      rating_1 = create :rating, enable: true
+      rating_2 = create :rating, enable: false
+      rating_3 = create :rating, enable: true
+
+      expected_array = [rating_1.id, rating_3.id]
+
+      expect(Rating.enabled_rating_ids).to eq(expected_array)
+      expect(Rating.enabled_rating_ids).to_not include(rating_2)
     end
   end
 end
