@@ -16,6 +16,7 @@ class ActivitySequence < ApplicationRecord
   has_many :axes, through: :learning_objectives
   has_many :sustainable_development_goals, through: :learning_objectives
   has_many :performeds, class_name: 'ActivitySequencePerformed'
+  has_many :activity_sequence_ratings, through: :performeds
 
   enum status: { draft: 0, published: 1 }
 
@@ -27,6 +28,11 @@ class ActivitySequence < ApplicationRecord
   validates :slug, presence: true, uniqueness: true
 
   friendly_id :title, use: %i[slugged finders]
+
+  scope :evaluateds, -> {
+                       includes(:performeds)
+                         .where(activity_sequence_performeds: { evaluated: true })
+                     }
 
   accepts_nested_attributes_for :activities, allow_destroy: true
 
@@ -136,6 +142,14 @@ class ActivitySequence < ApplicationRecord
   def already_evaluated_by_teacher?(teacher)
     return false unless performed_by_teacher(teacher).present?
     performed_by_teacher(teacher).evaluated?
+  end
+
+  def average_by_rating_type(rating_id)
+    activity_sequence_ratings.where(rating_id: rating_id).pluck(:score).mean
+  end
+
+  def total_evaluations
+    performeds.where(evaluated: true).count
   end
 
   private

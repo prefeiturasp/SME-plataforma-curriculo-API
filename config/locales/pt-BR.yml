@@ -13,6 +13,7 @@ pt-BR:
       activity_content_block:
         one: "Bloco de conteúdo"
         other: "Blocos de conteúdo"
+      activity_sequences_report: "Relatório das avaliações"
       axis:
         one: "Eixo"
         other: "Eixos"
@@ -91,6 +92,7 @@ pt-BR:
           published: "Publicada"
         sustainable_development_goals: "Objetivos de Desenvolvimento Sustentável"
         title: "Título"
+        total_evaluations: "Total de avaliações"
         year: "Ano"
         created_at: "Criado em"
         updated_at: "Atualizado em"

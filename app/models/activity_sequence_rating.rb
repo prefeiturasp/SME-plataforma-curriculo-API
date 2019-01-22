@@ -1,6 +1,7 @@
 class ActivitySequenceRating < ApplicationRecord
   belongs_to :activity_sequence_performed
   belongs_to :rating
+  has_one :activity_sequence, through: :activity_sequence_performed
 
   validates :activity_sequence_performed, uniqueness: { scope: :rating,
                                                         message: 'should happen once per rating' }

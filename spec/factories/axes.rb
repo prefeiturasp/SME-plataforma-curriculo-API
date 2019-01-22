@@ -4,11 +4,11 @@ FactoryBot.define do
     association :curricular_component, factory: :curricular_component
 
     trait :invalid_description do
-      description nil
+      description { nil }
     end
 
     trait :invalid_curricular_component do
-      curricular_component nil
+      curricular_component { nil }
     end
   end
 end

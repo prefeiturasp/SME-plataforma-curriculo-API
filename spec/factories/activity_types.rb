@@ -3,7 +3,7 @@ FactoryBot.define do
     name { Faker::Lorem.sentence(4) }
 
     trait :invalid_name do
-      name nil
+      name { nil }
     end
   end
 end
