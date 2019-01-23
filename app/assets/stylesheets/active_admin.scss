@@ -49,7 +49,8 @@
 .activity {
   .panel_contents {
     display: grid;
-    grid-template-columns: 20% auto 15%;
+    grid-template-columns: 20% 65% 15%;
+
 
     fieldset.has_many_fields {
       border: 1px solid #eaeaea;
