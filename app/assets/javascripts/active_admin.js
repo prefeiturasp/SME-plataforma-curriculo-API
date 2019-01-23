@@ -27,6 +27,7 @@ function quillGetHTML(inputDelta) {
 
 window.onload = function() {
   set_colors();
+  enableConvertEditorsAfterHasManyAdd();
   $.when( setActivityContentBlockToolbarId() ).done(function() {
     var editors = document.querySelectorAll( '.quill-editor' );
     for( var i = 0; i < editors.length; i++ ) {
@@ -138,4 +139,19 @@ function set_colors(){
 function convertAllEditorsToDelta(){
   var editors = document.querySelectorAll( '.quill-editor' );
   convertContentToDelta(editors);
+}
+
+function addSecs(d, s) {
+  return new Date(d.valueOf()+s*1000);
+}
+
+function enableConvertEditorsAfterHasManyAdd(){
+  $('fieldset.has_many_fields.gallery').find('a.has_many_add').click( function(){
+    setTimeout(function(){
+      start = new Date();
+      end = addSecs(start,0.3);
+      do {start = new Date();} while (end-start > 0);
+      convertAllEditorsToDeltaOnSubmit();
+    },10);
+  })
 }

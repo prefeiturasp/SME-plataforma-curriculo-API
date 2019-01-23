@@ -1,5 +1,7 @@
 $(document).ready(function(){
   showCheckBoxesTooltip();
+  changePreviewMessage();
+  removeImageAfterUserConfirm();
   var body = document.getElementsByClassName('show admin_activity_sequences');
   if (body[0]) {
     var row_content = body[0].getElementsByClassName('row-books');
@@ -62,5 +64,24 @@ function showCheckBoxesTooltip(){
     self = $(this)
     new_title = self.find('input[type="checkbox"]')[0].title
     self.attr('title', new_title);
+  });
+}
+
+function changePreviewMessage() {
+  var image_inputs = $('#activity_sequence_image_input, #activity_image_input');
+  image_inputs.find('input[type=file]').on('change', function(){
+    var span = $('<span>').text('Imagem alterada, salve ou atualize para visualizar');
+    var inline_hits = image_inputs.find('.inline-hints');;
+    inline_hits.html(span);
+  });
+}
+
+function removeImageAfterUserConfirm(){
+  $('.remove-image-link').bind('confirm:complete', function(evt, data) {
+    if(data){
+      $(this).slideUp('slow', function(){
+        $(this).remove();
+      });
+    }
   });
 }
