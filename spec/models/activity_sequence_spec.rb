@@ -329,6 +329,22 @@ RSpec.describe ActivitySequence, type: :model do
         expect(activity_sequence.average_by_rating_type(rating.id)).to eq(3)
       end
     end
+
+    context 'already saved in collection' do
+      let(:teacher) { create :teacher }
+      let(:activity_sequence) { create :activity_sequence }
+
+      it 'return true if saved in some collection' do
+        collection = create :collection, teacher: teacher
+        create :collection_activity_sequence, collection: collection, activity_sequence: activity_sequence
+
+        expect(activity_sequence.already_saved_in_collection?(teacher)).to be true
+      end
+
+      it 'return false if not saved in collections' do
+        expect(activity_sequence.already_saved_in_collection?(teacher)).to be false
+      end
+    end
   end
 
   it_behaves_like 'image_concern'

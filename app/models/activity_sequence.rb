@@ -144,6 +144,10 @@ class ActivitySequence < ApplicationRecord
     performed_by_teacher(teacher).evaluated?
   end
 
+  def already_saved_in_collection?(teacher)
+    collections.where(teacher_id: teacher.id).present?
+  end
+
   def average_by_rating_type(rating_id)
     activity_sequence_ratings.where(rating_id: rating_id).pluck(:score).mean
   end
