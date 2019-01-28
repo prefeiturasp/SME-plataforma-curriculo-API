@@ -68,6 +68,7 @@ class ActivitySequence < ApplicationRecord
   end
 
   def self.where_id_with_includes(activity_sequence_ids)
+    id_indices = Hash[activity_sequence_ids.map.with_index { |id, idx| [id, idx] }]
     ActivitySequence.where(id: activity_sequence_ids)
                     .includes(:main_curricular_component)
                     .includes(learning_objectives: :axes)
@@ -75,15 +76,18 @@ class ActivitySequence < ApplicationRecord
                     .includes(learning_objectives: :sustainable_development_goals)
                     .includes(:knowledge_matrices)
                     .includes(:learning_objectives)
+                    .sort_by { |a| id_indices[a.id.to_s] }
   end
 
   def self.all_or_with_year(years = nil)
     return all unless years
+
     where(year: years)
   end
 
   def self.all_or_with_main_curricular_component(params = {})
     return all unless params[:curricular_component_slugs]
+
     joins(:main_curricular_component).merge(
       CurricularComponent.where(
         slug: params[:curricular_component_slugs]
@@ -93,6 +97,7 @@ class ActivitySequence < ApplicationRecord
 
   def self.all_or_with_axes(params = {})
     return all unless params[:axis_ids]
+
     joins(learning_objectives: :axes).where(
       learning_objectives: {
         axes: {
@@ -104,6 +109,7 @@ class ActivitySequence < ApplicationRecord
 
   def self.all_or_with_sustainable_development_goal(params = {})
     return all unless params[:sustainable_development_goal_ids]
+
     joins(learning_objectives: :sustainable_development_goals).where(
       learning_objectives: {
         sustainable_development_goals: {
@@ -115,6 +121,7 @@ class ActivitySequence < ApplicationRecord
 
   def self.all_or_with_knowledge_matrices(params = {})
     return all unless params[:knowledge_matrix_ids]
+
     joins(:knowledge_matrices).where(
       knowledge_matrices: {
         id: params[:knowledge_matrix_ids]
@@ -124,6 +131,7 @@ class ActivitySequence < ApplicationRecord
 
   def self.all_or_with_learning_objectives(params = {})
     return all unless params[:learning_objective_ids]
+
     joins(:learning_objectives).where(
       learning_objectives: {
         id: params[:learning_objective_ids]
@@ -141,6 +149,7 @@ class ActivitySequence < ApplicationRecord
 
   def already_evaluated_by_teacher?(teacher)
     return false unless performed_by_teacher(teacher).present?
+
     performed_by_teacher(teacher).evaluated?
   end
 
@@ -161,6 +170,7 @@ class ActivitySequence < ApplicationRecord
   def year_reference_on_database
     key = year_before_type_cast
     return key if key.is_a? Integer
+
     ActivitySequence.years[key]
   end
 end
