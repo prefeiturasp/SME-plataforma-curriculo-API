@@ -113,4 +113,20 @@ RSpec.describe Api::ActivitySequencePerformedsController, type: :controller do
       end
     end
   end
+
+  describe 'GET #show_ratings' do
+    it 'show ratings specific activity sequence' do
+      activity_sequence = create :activity_sequence
+      activity_sequence_performed = create :activity_sequence_performed,
+                                           activity_sequence: activity_sequence,
+                                           teacher: teacher,
+                                           evaluated: true
+      create :activity_sequence_rating,
+             activity_sequence_performed: activity_sequence_performed
+
+      get :index, params: { teacher_id: teacher.id, activity_sequence_slug: activity_sequence.slug }
+
+      expect(response).to have_http_status(:ok)
+    end
+  end
 end
