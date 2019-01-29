@@ -11,7 +11,8 @@ module ActivitySequenceSearchable
                                activity_content_block_titles
                                activity_content_block_bodies
                                sustainable_development_goal_names
-                               learning_objective_descriptions]
+                               learning_objective_descriptions],
+               settings: { blocks: { read_only: false } }
   end
 
   def search_data

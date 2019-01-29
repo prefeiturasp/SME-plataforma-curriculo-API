@@ -1,10 +1,17 @@
 module Api
   class ActivitySequenceRatingsController < ApiController
     before_action :authenticate_api_user!
-    before_action :set_activity_sequence, only: %i[create update]
-    before_action :set_teacher, only: %i[create update]
+    before_action :set_activity_sequence, only: %i[create update index]
+    before_action :set_teacher, only: %i[create update index]
     before_action :set_activity_sequence_performed, only: %i[create update]
     before_action :set_activity_sequence_rating, only: [:update]
+
+    def index
+      @activity_sequence_ratings = ActivitySequenceRating.includes(:activity_sequence)
+                                                         .where(activity_sequences: {
+                                                                  slug: @activity_sequence.slug
+                                                                })
+    end
 
     def create
       if (@activity_sequence_rating = ActivitySequenceRating.create_one_or_multiples(rating_params)).valid?
@@ -27,7 +34,7 @@ module Api
     private
 
     def set_teacher
-      @teacher = Teacher.find_by(id: activity_seq_rating_params[:teacher_id])
+      @teacher = Teacher.find_by(id: teacher_id)
       check_user_permission
     end
 
@@ -84,6 +91,10 @@ module Api
           score
         ]
       )
+    end
+
+    def teacher_id
+      params[:teacher_id].present? ? params[:teacher_id] : activity_seq_rating_params[:teacher_id]
     end
   end
 end

@@ -31,6 +31,7 @@ Rails.application.routes.draw do
       end
       get :all_collections, path: 'todas_colecoes'
       get 'sequencias_realizadas', to: 'activity_sequence_performeds#index'
+      get 'sequencias_realizadas/:activity_sequence_slug/avaliacoes', to: 'activity_sequence_ratings#index'
     end
     resources :ratings, path: 'avaliacao_criterios', only: [:index]
     resources :activity_sequence_performeds, path: 'sequencias_realizadas', only: [:index]

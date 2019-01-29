@@ -175,4 +175,64 @@ RSpec.describe Api::ActivitySequenceRatingsController, type: :controller do
       end
     end
   end
+
+  describe 'GET #index' do
+    let(:response_body) { JSON.parse(response.body) }
+    let(:first_body) { response_body[0] }
+    let(:another_teacher) { create :teacher }
+
+    let(:activity_sequence) { create :activity_sequence }
+    let(:activity_sequence_performed) do
+      create :activity_sequence_performed,
+            activity_sequence: activity_sequence,
+            teacher: teacher,
+            evaluated: true
+    end
+
+    context 'logged in users' do
+      before do
+        authenticate_user user
+      end
+
+      it 'get ok response on show ratings specific activity sequence' do
+        create :activity_sequence_rating,
+              activity_sequence_performed: activity_sequence_performed
+
+        get :index, params: { teacher_id: teacher.id, activity_sequence_slug: activity_sequence.slug }
+
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'show JSON ratings specific activity sequence' do
+        create :activity_sequence_rating,
+              activity_sequence_performed: activity_sequence_performed
+
+        get :index, params: { teacher_id: teacher.id, activity_sequence_slug: activity_sequence.slug }
+
+        expected_keys = %w[rating_id description score]
+
+        expect(first_body.keys).to contain_exactly(*expected_keys)
+      end
+
+      it 'render unauthorized if another teacher' do
+        create :activity_sequence_rating,
+              activity_sequence_performed: activity_sequence_performed
+
+        get :index, params: { teacher_id: another_teacher.id, activity_sequence_slug: activity_sequence.slug }
+
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context 'unlogged users' do
+      it 'get unauthorized' do
+        create :activity_sequence_rating,
+              activity_sequence_performed: activity_sequence_performed
+
+        get :index, params: { teacher_id: teacher.id, activity_sequence_slug: activity_sequence.slug }
+
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
 end
