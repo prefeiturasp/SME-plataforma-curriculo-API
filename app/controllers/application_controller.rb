@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def verify_api
-    permitted_routes = %w[api devise_token_auth]
+    permitted_routes = %w[api]
     if params[:controller]
       (params[:controller].split('/') & permitted_routes).any?
     else

@@ -58,9 +58,7 @@ gem 'activeadmin', '~> 1.3.0'
 gem 'activeadmin_addons', '~> 1.6.0'
 gem "devise", '~> 4.4.3'
 
-gem 'devise_token_auth'
-gem 'omniauth'
-gem 'omniauth-saml'
+gem 'devise-jwt'
 
 # gem 'devise_saml_authenticatable', '~>1.4.1'
 gem 'inherited_resources', git: 'https://github.com/activeadmin/inherited_resources'

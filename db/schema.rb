@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_16_134511) do
+ActiveRecord::Schema.define(version: 2019_02_01_143441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -332,8 +332,14 @@ ActiveRecord::Schema.define(version: 2019_01_16_134511) do
     t.string "provider", default: "email", null: false
     t.string "nickname"
     t.json "tokens"
+    t.string "jti", null: false
+    t.string "sme_token"
+    t.string "sme_refresh_token"
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["sme_refresh_token"], name: "index_users_on_sme_refresh_token"
+    t.index ["sme_token"], name: "index_users_on_sme_token"
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 

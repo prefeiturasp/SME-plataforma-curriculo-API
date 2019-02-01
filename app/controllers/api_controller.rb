@@ -5,12 +5,16 @@ class ApiController < ActionController::API
   rescue_from ActionController::ParameterMissing, with: :render_unprocessable_entity
   # rescue_from MissingRating, with: :render_unprocessable_entity
 
-  include DeviseTokenAuth::Concerns::SetUserByToken
   before_action :skip_set_cookies_header
   helper_method :current_teacher
+  helper_method :authenticate_api_user!
 
   def current_teacher
     @current_teacher ||= current_user&.teacher
+  end
+
+  def authenticate_api_user!
+    authenticate_user!
   end
 
   protected
