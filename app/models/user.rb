@@ -48,6 +48,23 @@ class User < ApplicationRecord
     end
   end
 
+  def refresh_sme_token!
+    return false if valid_sme_token?
+
+    response = SMEAuthentication.refresh_token(refresh_token_params)
+    verifier = TokenValidator.new(response.token, response.refreshToken)
+    return !revoke_jwt! unless verifier.valid?
+
+    update(sme_token: verifier.token, sme_refresh_token: verifier.refresh_token)
+  rescue StandardError
+    revoke_jwt!
+    false
+  end
+
+  def refresh_token_params
+    { username: username, refreshToken: sme_refresh_token }
+  end
+
   private
 
   def assign_teacher

@@ -5,12 +5,10 @@ module JtiMatcherAndSmeStrategy
     before_create :initialize_jti
 
     def self.jwt_revoked?(payload, user)
-      Rails.logger.debug("jwt1 "*40)
-      payload['jti'] != user.jti
+      user.invalid_payload?(payload) || user.invalid_refresh_sme_token?
     end
 
     def self.revoke_jwt(_payload, user)
-      Rails.logger.debug("jwt2 "*40)
       user.update_column(:jti, generate_jti)
     end
 
@@ -20,7 +18,24 @@ module JtiMatcherAndSmeStrategy
   end
 
   def jwt_payload
-    { 'jti' => jti }
+    { 'jti' => jti, 'username' => username }
+  end
+
+  def invalid_refresh_sme_token?
+    (!valid_sme_token? && !refresh_sme_token!)
+  end
+
+  def invalid_payload?(payload)
+    payload['jti'] != jti || payload['username'] != username
+  end
+
+  def valid_sme_token?
+    verifier = TokenValidator.new(sme_token)
+    verifier.token_fresh?
+  end
+
+  def revoke_jwt!
+    User.revoke_jwt(nil, self)
   end
 
   private

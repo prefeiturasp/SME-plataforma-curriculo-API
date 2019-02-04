@@ -1,5 +1,5 @@
 class TokenValidator
-  def initialize(token, refresh_token)
+  def initialize(token, refresh_token = nil)
     @token = token
     @refresh_token = refresh_token
     @time = Time.now.to_i

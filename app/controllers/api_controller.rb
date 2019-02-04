@@ -3,13 +3,17 @@ class ApiController < ActionController::API
   rescue_from ActionController::RoutingError, with: :render_not_found
   rescue_from ActiveRecord::RecordNotFound, with: :render_no_content
   rescue_from ActionController::ParameterMissing, with: :render_unprocessable_entity
-  # rescue_from MissingRating, with: :render_unprocessable_entity
 
   before_action :skip_set_cookies_header
   helper_method :authenticate_api_user!
+  helper_method :current_teacher
 
   def authenticate_api_user!
     authenticate_user!
+  end
+
+  def current_teacher
+    @current_teacher ||= current_user&.teacher
   end
 
   protected
