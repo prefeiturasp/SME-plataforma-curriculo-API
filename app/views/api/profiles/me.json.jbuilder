@@ -1,5 +1,5 @@
 json.email current_user.email
-json.name current_user.name
+json.username current_user.username
 
 if current_teacher
   json.teacher do
