@@ -1,4 +1,6 @@
 class TokenValidator
+  attr_reader :token, :refresh_token
+
   def initialize(token, refresh_token = nil)
     @token = token
     @refresh_token = refresh_token
@@ -13,9 +15,23 @@ class TokenValidator
     jwt[:jti]
   end
 
-  attr_reader :refresh_token
+  def token_exists?
+    !jwt.nil? && !jwt.blank?
+  end
 
-  attr_reader :token
+  def token_valid_iss?
+    return false if jwt[:iss].blank?
+    URI.parse(jwt[:iss]).host == URI.parse(ENV['SME_JWT_ISSUER']).host
+  end
+
+  def token_valid_aud?
+    return false if jwt[:aud].blank?
+    URI.parse(jwt[:aud]).host == URI.parse(ENV['SME_JWT_AUDIENCE']).host
+  end
+
+  def token_fresh?
+    jwt[:exp] > @time
+  end
 
   VALIDATORS = %i[
     token_exists?
@@ -28,22 +44,6 @@ class TokenValidator
     VALIDATORS.all? do |expectation|
       send(expectation) ? true : false
     end
-  end
-
-  def token_exists?
-    !jwt.nil? && !jwt.blank?
-  end
-
-  def token_valid_iss?
-    URI.parse(jwt[:iss]).host == URI.parse(ENV['SME_JWT_ISSUER']).host
-  end
-
-  def token_valid_aud?
-    URI.parse(jwt[:aud]).host == URI.parse(ENV['SME_JWT_AUDIENCE']).host
-  end
-
-  def token_fresh?
-    jwt[:exp] > @time
   end
 
   private

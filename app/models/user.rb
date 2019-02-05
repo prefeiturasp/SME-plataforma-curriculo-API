@@ -5,7 +5,11 @@ class User < ApplicationRecord
 
   has_one :teacher, dependent: :destroy
 
-  validates :username, presence: true, uniqueness: { case_sensitive: false }
+  validates :email, presence: true, if: -> { username.blank? }
+  validates :email, uniqueness: { case_sensitive: false }, if: -> { email.present? }
+  validates :username, presence: true, if: -> { email.blank? }
+
+  validates_uniqueness_of :username, case_sensitive: false, if: -> { username.present? }
 
   attr_writer :login
 
@@ -20,9 +24,8 @@ class User < ApplicationRecord
 
     response = SMEAuthentication.login(credentials)
     verifier = TokenValidator.new(response.token, response.refreshToken)
-    return unless verifier.valid?
 
-    User.find_or_create_by_auth_params(verifier, credentials)
+    User.find_or_create_by_auth_params(verifier, credentials) if verifier.valid?
   rescue StandardError => e
     Rails.logger.error(e)
     false
@@ -53,12 +56,13 @@ class User < ApplicationRecord
 
     response = SMEAuthentication.refresh_token(refresh_token_params)
     verifier = TokenValidator.new(response.token, response.refreshToken)
-    return !revoke_jwt! unless verifier.valid?
-
-    update(sme_token: verifier.token, sme_refresh_token: verifier.refresh_token)
+    if verifier.valid?
+      update(sme_token: verifier.token, sme_refresh_token: verifier.refresh_token)
+    else
+      refresh_sme_token_fail
+    end
   rescue StandardError
-    revoke_jwt!
-    false
+    refresh_sme_token_fail
   end
 
   def refresh_token_params
@@ -68,6 +72,14 @@ class User < ApplicationRecord
   private
 
   def assign_teacher
+    puts "k"*80
+    puts "teacher: #{teacher.inspect}"
+    puts "k"*80
     create_teacher if username.present? && teacher.nil?
   end
+
+  def refresh_sme_token_fail
+    revoke_jwt! ? false : true
+  end
+
 end
