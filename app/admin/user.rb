@@ -3,6 +3,13 @@ ActiveAdmin.register User do
 
   config.filters = false
 
+  controller do
+    def scoped_collection
+      User.where(username: nil)
+    end
+  end
+
+
   index do
     selectable_column
     id_column
@@ -14,6 +21,7 @@ ActiveAdmin.register User do
   end
 
   form do |f|
+    f.semantic_errors *f.object.errors.keys
     f.inputs do
       f.input :email
       f.input :password
