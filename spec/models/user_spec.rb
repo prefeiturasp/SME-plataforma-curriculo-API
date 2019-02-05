@@ -179,8 +179,8 @@ RSpec.describe User, type: :model do
     it 'return nil unless credentials' do
       expected = User.authenticate_in_sme nil
 
-      expect(expected).to be nil
-    end   
+      expect(expected).to be false
+    end
 
     it 'return TRUE if VALID credentials' do
       stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/LoginJWT")

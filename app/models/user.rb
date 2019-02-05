@@ -20,8 +20,6 @@ class User < ApplicationRecord
   end
 
   def self.authenticate_in_sme(credentials)
-    return unless credentials
-
     response = SMEAuthentication.login(credentials)
     verifier = TokenValidator.new(response.token, response.refreshToken)
 
@@ -55,14 +53,18 @@ class User < ApplicationRecord
     return false if valid_sme_token?
 
     response = SMEAuthentication.refresh_token(refresh_token_params)
+    update_user_from_sme_response(response)
+  rescue StandardError
+    refresh_sme_token_fail
+  end
+
+  def update_user_from_sme_response(response)
     verifier = TokenValidator.new(response.token, response.refreshToken)
     if verifier.valid?
       update(sme_token: verifier.token, sme_refresh_token: verifier.refresh_token)
     else
       refresh_sme_token_fail
     end
-  rescue StandardError
-    refresh_sme_token_fail
   end
 
   def refresh_token_params
@@ -72,14 +74,10 @@ class User < ApplicationRecord
   private
 
   def assign_teacher
-    puts "k"*80
-    puts "teacher: #{teacher.inspect}"
-    puts "k"*80
     create_teacher if username.present? && teacher.nil?
   end
 
   def refresh_sme_token_fail
     revoke_jwt! ? false : true
   end
-
 end
