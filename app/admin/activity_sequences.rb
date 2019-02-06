@@ -44,8 +44,8 @@ ActiveAdmin.register ActivitySequence do
   end
 
   collection_action :delete_image_attachment, method: :delete do
-    attachment = ActiveStorage::Attachment.find(params[:id])
-    if attachment.purge
+    attachment = ActiveStorage::Attachment.find_by(id: params[:id])
+    if attachment&.purge
       head :no_content
     else
       head :unprocessable_entity
