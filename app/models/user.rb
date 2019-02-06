@@ -21,7 +21,7 @@ class User < ApplicationRecord
   end
 
   def self.authenticate_in_sme(credentials)
-    response = SMEAuthentication.login(credentials)
+    response = SMEAuthentication.login(credentials.symbolize_keys)
     verifier = TokenValidator.new(response.token, response.refreshToken)
 
     User.find_or_create_by_auth_params(verifier, credentials) if verifier.valid?
