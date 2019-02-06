@@ -12,8 +12,9 @@ class User < ApplicationRecord
   validates_uniqueness_of :username, case_sensitive: false, if: -> { username.present? }
 
   attr_writer :login
+  attr_accessor :_skip_creating_teacher
 
-  after_create :assign_teacher
+  after_create :assign_teacher, unless: :_skip_creating_teacher
 
   def login
     @login || username || email

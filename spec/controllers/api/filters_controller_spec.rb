@@ -50,7 +50,7 @@ RSpec.describe Api::FiltersController, type: :controller do
           get :index
 
           expect(json['years']).to be_present
-          expect(json['years'].length).to eq(3)
+          expect(json['years'].length).to eq(9)
           expect(json['years'][0]['id']).to be_present
           expect(json['years'][0]['description']).to be_present
         end
@@ -97,7 +97,7 @@ RSpec.describe Api::FiltersController, type: :controller do
         it 'invalid curricular component' do
           get :index, params: { curricular_component_slug: 'invalid-slug' }
 
-          expect(json['axes']).to be_present #show all
+          expect(json['axes']).to be_present # show all
           expect(json['learning_objectives']).to_not be_present
         end
       end

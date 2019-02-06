@@ -8,7 +8,7 @@ class Teacher < ApplicationRecord
   validates :nickname, length: { maximum: 15 }
 
   def name
-    user.name
+    user.username
   end
 
   def number_of_sequences_not_evaluated

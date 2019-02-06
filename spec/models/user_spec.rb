@@ -126,6 +126,14 @@ RSpec.describe User, type: :model do
 
           expect(user.teacher).to eq(teacher)
         end
+
+        it 'assign teacher if not skip crerating teacher' do
+          subject_false = create :user, _skip_creating_teacher: false
+          subject_nil   = create :user, _skip_creating_teacher: nil
+
+          expect(subject_false.teacher).to_not be nil
+          expect(subject_nil.teacher).to_not   be nil
+        end
       end
     end
   end

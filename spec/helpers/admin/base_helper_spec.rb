@@ -74,7 +74,7 @@ RSpec.describe Admin::BaseHelper, type: :helper do
     end
 
     it 'for the activity' do
-      link_expected = "#{ENV['HTTP_STAGING_URL']}/sequencia/#{activity_sequence.slug}/atividade/#{activity.slug}"
+      link_expected = "#{ENV['HTTP_STAGING_URL']}/atividade/#{activity_sequence.slug}/#{activity.slug}"
       expect(helper.activity_preview_path(activity_sequence.slug, activity.slug)).to eq(link_expected)
     end
   end
