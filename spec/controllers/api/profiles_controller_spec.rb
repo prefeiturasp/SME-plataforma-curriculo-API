@@ -31,7 +31,7 @@ RSpec.describe Api::ProfilesController, type: :controller do
         get :me
 
         expect(response_body['email']).to be_present
-        expect(response_body['name']).to be_present
+        expect(response_body['username']).to be_present
       end
 
       context 'with user has teacher' do

@@ -1,16 +1,25 @@
 Rails.application.routes.draw do
-  devise_for :users, { skip: :omniauth_callbacks }.merge(ActiveAdmin::Devise.config)
-
+  devise_for :users, ActiveAdmin::Devise.config
+  devise_for :users,
+              path: 'api',
+              skip: %i[sessions registrations passwords],
+              controllers: {
+               sessions: 'api/sessions'
+              },
+              path_names: {
+                sign_in: 'login',
+                sign_out: 'logout'
+              }
   ActiveAdmin.routes(self)
 
   root to: 'rails/welcome#index'
 
   namespace :api, defaults: { format: 'json' } do
-    mount_devise_token_auth_for 'User',
-                                at: 'auth',
-                                controllers: {
-                                  omniauth_callbacks: 'api/omniauth_callbacks'
-                                }
+    as :user do
+      get :login, to: 'sessions#new', as: :new_jwt_user_session
+      post :login, to: 'sessions#create'
+      match :logout, to: 'sessions#destroy', as: :destroy_jwt_user_session, via: [:delete, :get]
+    end
 
     resources :filters, path: 'filtros', only: [:index]
     resources :activity_sequences, path: 'sequencias', param: :slug, only: %i[index show] do
