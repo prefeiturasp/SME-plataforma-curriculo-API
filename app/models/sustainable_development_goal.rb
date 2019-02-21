@@ -2,6 +2,7 @@ class SustainableDevelopmentGoal < ApplicationRecord
   include SequenceConcern
   has_and_belongs_to_many :learning_objectives
   has_many :goals, dependent: :restrict_with_error
+  has_many :activity_sequences, through: :learning_objectives
   has_one_attached :icon
   has_one_attached :sub_icon
 
@@ -17,6 +18,8 @@ class SustainableDevelopmentGoal < ApplicationRecord
   default_scope -> { order('sequence') }
 
   accepts_nested_attributes_for :goals, allow_destroy: true
+
+  after_save :activity_sequence_reindex
 
   def sequence_and_name
     "#{sequence} - #{name}"
@@ -46,5 +49,11 @@ class SustainableDevelopmentGoal < ApplicationRecord
     return true if sub_icon.content_type.start_with? 'image/'
     sub_icon.purge_later
     errors.add(:sub_icon, 'needs to be only images')
+  end
+
+  private
+
+  def activity_sequence_reindex
+    activity_sequences.each(&:reindex)
   end
 end

@@ -1,12 +1,21 @@
 //= require active_admin/base
+//= require activeadmin_addons/all
 //= require activeadmin/quill_editor/quill
 //= require activeadmin/quill_editor_input
+//= require helpers
 //= require lib/image-resize.min
 //= require lib/quill-divider-blot
 //= require lib/quill-image-format
 //= require lib/quill-image-caption
+//= require lib/quill_table/TableTrick
+//= require lib/quill_table/ContainBlot
+//= require lib/quill_table/TableCellBlot
+//= require lib/quill_table/TableRowBlot
+//= require lib/quill_table/TableBlot
+//= require lib/quill_table/TableModule
 //= require activities
 //= require activity_sequences
+//= require learning_objectives
 //= require lib/jquery.sticky
 
 function quillGetHTML(inputDelta) {
@@ -18,6 +27,7 @@ function quillGetHTML(inputDelta) {
 
 window.onload = function() {
   set_colors();
+  enableConvertEditorsAfterHasManyAdd();
   $.when( setActivityContentBlockToolbarId() ).done(function() {
     var editors = document.querySelectorAll( '.quill-editor' );
     for( var i = 0; i < editors.length; i++ ) {
@@ -29,6 +39,7 @@ window.onload = function() {
         return convertContentToDelta(editors);
       };
     }
+    fixSelectsContentToolbar();
   });
 };
 
@@ -128,4 +139,19 @@ function set_colors(){
 function convertAllEditorsToDelta(){
   var editors = document.querySelectorAll( '.quill-editor' );
   convertContentToDelta(editors);
+}
+
+function addSecs(d, s) {
+  return new Date(d.valueOf()+s*1000);
+}
+
+function enableConvertEditorsAfterHasManyAdd(){
+  $('fieldset.has_many_fields.gallery').find('a.has_many_add').click( function(){
+    setTimeout(function(){
+      start = new Date();
+      end = addSecs(start,0.3);
+      do {start = new Date();} while (end-start > 0);
+      convertAllEditorsToDeltaOnSubmit();
+    },10);
+  })
 }

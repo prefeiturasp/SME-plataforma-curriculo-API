@@ -22,24 +22,15 @@ ActiveAdmin.register ActivitySequence do
                 :estimated_time,
                 :status,
                 :image,
+                :keywords,
                 :main_curricular_component_id,
                 knowledge_matrix_ids: [],
-                learning_objective_ids: [],
-                axis_ids: []
+                learning_objective_ids: []
 
   controller do
     def find_resource
       scoped_collection.friendly.find(params[:id])
     end
-  end
-
-  collection_action :change_axes, method: :get do
-    axes = Axis.where(
-      curricular_component_id: params[:main_curricular_component_id]
-    )
-
-    data = axes.pluck(:id, :description)
-    render json: data
   end
 
   collection_action :change_learning_objectives, method: :get do
@@ -50,6 +41,15 @@ ActiveAdmin.register ActivitySequence do
     data = @learning_objectives.pluck(:id, :code, :description)
 
     render json: data
+  end
+
+  collection_action :delete_image_attachment, method: :delete do
+    attachment = ActiveStorage::Attachment.find_by(id: params[:id])
+    if attachment&.purge
+      head :no_content
+    else
+      head :unprocessable_entity
+    end
   end
 
   form do |f|
@@ -72,11 +72,11 @@ ActiveAdmin.register ActivitySequence do
     column do |activity_sequence|
       span link_to t('helpers.links.show'), admin_activity_sequence_path(activity_sequence)
       span link_to t('helpers.links.preview'), activity_sequence_preview_path(activity_sequence.slug), target: :_blank
-      span link_to t('helpers.links.edit'),edit_admin_activity_sequence_path(activity_sequence)
+      span link_to t('helpers.links.edit'), edit_admin_activity_sequence_path(activity_sequence)
       span link_to t('helpers.links.destroy'),
-        admin_activity_sequence_path(activity_sequence),
-        method: :delete,
-        data: { confirm: t('active_admin.delete_confirmation') }
+                   admin_activity_sequence_path(activity_sequence),
+                   method: :delete,
+                   data: { confirm: t('active_admin.delete_confirmation') }
     end
   end
 

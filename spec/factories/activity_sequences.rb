@@ -4,8 +4,9 @@ FactoryBot.define do
     presentation_text { Faker::Lorem.sentence(10) }
     books { Faker::Lorem.sentence(10) }
     estimated_time { Faker::Number.between(1, 500) }
-    year :first
-    status :draft
+    year { :first }
+    status { :draft }
+    keywords { 'keyword 1, keyword 2' }
 
     after(:build) do |activity_sequence|
       activity_sequence.image.attach(
@@ -18,12 +19,18 @@ FactoryBot.define do
     association :main_curricular_component, factory: :curricular_component
 
     knowledge_matrix_ids { [create(:knowledge_matrix).id] }
-    learning_objective_ids { [create(:learning_objective).id] }
+    learning_objectives { [create(:learning_objective)] }
 
     trait :invalid do
-      title nil
-      presentation_text nil
-      year nil
+      title { nil }
+      presentation_text { nil }
+      year { nil }
+    end
+
+    trait :reindex do
+      after(:create) do |activity_sequence, _evaluator|
+        activity_sequence.reindex(refresh: true)
+      end
     end
   end
 end

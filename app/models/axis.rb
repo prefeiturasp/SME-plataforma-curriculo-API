@@ -1,6 +1,7 @@
 class Axis < ApplicationRecord
   belongs_to :curricular_component
-  has_and_belongs_to_many :activity_sequences
+  has_and_belongs_to_many :learning_objectives
+
   include DestroyValidator # has_and_belongs_to_many doesn't support dependent restrict_with_error
 
   validates :description, presence: true, uniqueness: true
@@ -17,7 +18,7 @@ class Axis < ApplicationRecord
 
   private
 
-  def check_associations(associations = %i[activity_sequences curricular_component])
+  def check_associations(associations = %i[learning_objectives curricular_component])
     super(associations)
   end
 end

@@ -7,6 +7,9 @@ json.array! @activity_sequences do |activity_sequence|
   json.number_of_activities activity_sequence.activities.count
   json.partial! 'api/images/image', image_param: activity_sequence.image, sizes: %i[thumb extra_thumb]
   json.year ActivitySequence.human_enum_name(:year, activity_sequence.year, true)
+  json.keywords activity_sequence.keywords
+  json.sequence activity_sequence.collection_activity_sequences.find_by(collection_id: @collection.id).sequence if @collection
+  json.already_saved_in_collection activity_sequence.already_saved_in_collection? current_teacher if current_teacher
 
   json.main_curricular_component do
     json.name activity_sequence.main_curricular_component.name
@@ -28,4 +31,5 @@ json.array! @activity_sequences do |activity_sequence|
     json.icon_url variant_url(sds.icon, :icon)
     json.sub_icon_url url_for(sds.sub_icon)
   end
+  json.partial! 'api/activity_sequence_performeds/status', activity_sequence: activity_sequence if current_teacher
 end

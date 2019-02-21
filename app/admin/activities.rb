@@ -24,7 +24,6 @@ ActiveAdmin.register Activity do
                 :activity_sequence_id,
                 :image,
                 :environment,
-                activity_type_ids: [],
                 curricular_component_ids: [],
                 learning_objective_ids: [],
                 activity_content_blocks_attributes: [
