@@ -22,7 +22,6 @@ require 'rspec/rails'
 # require only the support files necessary.
 #
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
-Dir[Rails.root.join('spec/concerns/**/*.rb')].each { |f| require f }
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -58,9 +57,9 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
-  # Need because of the Devise and Devise Token Auth
+  # Need because of the Devise
   config.include Devise::Test::ControllerHelpers, type: :controller
-  config.include AuthenticationHelper, type: :controller
+  config.extend ControllerMacros, type: :controller
 
   config.render_views = true
 end

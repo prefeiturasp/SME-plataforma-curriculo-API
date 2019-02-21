@@ -1,5 +1,6 @@
 module Admin
   module BaseHelper
+
     def sustainable_development_goals_collection
       SustainableDevelopmentGoal.all.order('sequence ASC').collect do |sds|
         [sds.sequence_and_name, sds.id]
@@ -47,15 +48,6 @@ module Admin
 
     def books_toolbar_options
       [['link']]
-    end
-
-    def image_container(image, size)
-      link_to delete_image_attachment_admin_activity_sequences_url(id: image.id),
-              method: :delete,
-              class: 'remove-image-link',
-              data: { confirm: 'Deseja remover esta imagem?' } do
-        content_tag(:span, 'Clique para remover', class: 'remove-image-message') + image_tag(variant_url(image, size))
-      end
     end
   end
 end

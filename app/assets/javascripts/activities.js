@@ -26,7 +26,6 @@ $(document).ready(function(){
       setSequenceOnActivityContentBlocks();
       saveContentWhenClickInPreview();
       bindPredefinedExercisesSelect();
-      fixSelectsContentToolbar();
     });
   }
 });
@@ -202,8 +201,4 @@ function setShowContentBlocks(){
     var html_content = quillGetHTML(obj);
     td.innerHTML = html_content;
   }
-}
-
-function fixSelectsContentToolbar(){
-  $('span.ql-formats span.ql-picker').removeClass('select2-hidden-accessible');
 }

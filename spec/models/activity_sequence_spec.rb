@@ -15,19 +15,12 @@ RSpec.describe ActivitySequence, type: :model do
     it 'has and belongs to many learning objectives' do
       should have_and_belong_to_many(:learning_objectives)
     end
-
-    it 'has many collection activity sequences' do
-      should have_many(:collection_activity_sequences)
-    end
-
-    it 'has many collections' do
-      should have_many(:collections)
-    end
   end
 
   context 'slug' do
     it 'should generate a slug' do
-      subject = create :activity_sequence, title: 'Hello World'
+      subject.title = 'Hello World'
+      subject.save
 
       expect(subject.slug).to eq('hello-world')
     end
@@ -111,10 +104,7 @@ RSpec.describe ActivitySequence, type: :model do
 
   describe 'Sustainable Development Goals' do
     let(:sustainable_development_goal) { create :sustainable_development_goal }
-    let(:learning_objective) do
-      create :learning_objective,
-             sustainable_development_goal_ids: [sustainable_development_goal.id]
-    end
+    let(:learning_objective) { create :learning_objective, sustainable_development_goal_ids: [sustainable_development_goal.id] }
     context 'list' do
       it 'with learning_objective has this sustainable_development_goal' do
         activity_sequence = create :activity_sequence, learning_objective_ids: [learning_objective.id]
@@ -133,9 +123,17 @@ RSpec.describe ActivitySequence, type: :model do
     end
   end
 
-  describe 'Queries' do
-    let(:c1) { create :curricular_component }
+  describe 'default scope' do
+    let!(:activity_sequence_one) { create :activity_sequence, title: "ZZZZZ" }
+    let!(:activity_sequence_two) { create :activity_sequence, title: "AAAA" }
 
+    it 'orders by ascending code' do
+      expect(ActivitySequence.all).to eq([activity_sequence_two, activity_sequence_one])
+    end
+  end
+
+
+  describe 'Queries' do
     before do
       create_list(:activity_sequence, 4)
       create :activity_sequence,
@@ -143,6 +141,7 @@ RSpec.describe ActivitySequence, type: :model do
     end
 
     let(:all_response) { ActivitySequence.all }
+    let(:c1) { create :curricular_component }
     let(:params) { {} }
 
     context 'with main curricular component' do
@@ -156,7 +155,6 @@ RSpec.describe ActivitySequence, type: :model do
       end
 
       it 'include on response' do
-        c1.reload
         expect(response).to include(c1.main_activity_sequences.first)
       end
     end
@@ -185,30 +183,23 @@ RSpec.describe ActivitySequence, type: :model do
     end
 
     context 'with axes' do
-      let(:curricular_component) { create :curricular_component }
-      let(:axis) { create :axis, curricular_component: curricular_component }
+      let(:axis) { create :axis }
       let(:params) { { axis_ids: axis.id } }
       let(:response) { ActivitySequence.all_or_with_axes(params) }
 
-      it 'return all, if there are no params' do
+      it 'return all with none params' do
         response = ActivitySequence.all_or_with_axes
 
         expect(all_response).to eq(response)
       end
 
-      it 'return activity sequence, if axis exists on learning objectives' do
-        learning_objective = create :learning_objective, axes: [axis], curricular_component: curricular_component
-        activity_sequence = create :activity_sequence, learning_objectives: [learning_objective]
+      it 'not include different axis id' do
+        axis_2 = create :axis
+        a = create :activity_sequence, axis_ids: [axis_2.id]
 
-        expect(response).to include(activity_sequence)
+        expect(response).to_not include(a)
       end
 
-      it 'NOT return activity sequence, if axis NOT exists on learning objectives' do
-        learning_objective = create :learning_objective, curricular_component: curricular_component
-        activity_sequence = create :activity_sequence, learning_objectives: [learning_objective]
-
-        expect(response).to_not include(activity_sequence)
-      end
     end
 
     context 'with sustainable development goal' do
@@ -230,7 +221,7 @@ RSpec.describe ActivitySequence, type: :model do
       end
 
       it 'not include sustainable development goals' do
-        create :sustainable_development_goal
+        other_sdg = create :sustainable_development_goal
         other_learning_objective = create :learning_objective
         a = create :activity_sequence, learning_objective_ids: [other_learning_objective.id]
 
@@ -285,64 +276,31 @@ RSpec.describe ActivitySequence, type: :model do
         expect(response).to_not include(a)
       end
     end
-  end
 
-  describe 'Scope' do
-    context 'evaluateds' do
-      it 'returns those already evaluated' do
-        activity_sequence_evaluated = create :activity_sequence
-        create :activity_sequence_performed, evaluated: true, activity_sequence: activity_sequence_evaluated
-        activity_sequence_not_evaluated = create :activity_sequence
+    context 'with activity types' do
+      let(:activity_type) { create :activity_type }
+      let(:activity) { create :activity, activity_type_ids: [activity_type.id] }
 
-        expect(ActivitySequence.evaluateds).to include(activity_sequence_evaluated)
-        expect(ActivitySequence.evaluateds).to_not include(activity_sequence_not_evaluated)
-      end
-    end
-  end
+      let(:params) { { activity_type_ids: activity_type.id } }
+      let(:response) { ActivitySequence.all_or_with_activity_types(params) }
+      it 'return all with none params' do
+        response = ActivitySequence.all_or_with_activity_types
 
-  describe 'Methods' do
-    context 'total evaluations' do
-      it 'return total' do
-        activity_sequence = create :activity_sequence
-        create_list(:activity_sequence_performed, 4, activity_sequence: activity_sequence, evaluated: true)
-
-        expect(activity_sequence.total_evaluations).to eq(4)
-      end
-    end
-
-    def average_by_rating_type(rating_id)
-      activity_sequence_ratings.where(rating_id: rating_id).pluck(:score).mean
-    end
-
-    context 'average by rating type' do
-      it 'returns mean' do
-        rating = create :rating, enable: true
-        activity_sequence = create :activity_sequence
-        activity_sequence_performed = create :activity_sequence_performed, activity_sequence: activity_sequence
-        activity_sequence_performed_2 = create :activity_sequence_performed, activity_sequence: activity_sequence
-        create :activity_sequence_rating,
-               activity_sequence_performed: activity_sequence_performed, rating: rating, score: 1
-        create :activity_sequence_rating,
-               activity_sequence_performed: activity_sequence_performed_2, rating: rating, score: 5
-
-        # (5 + 1)/2 = 3
-        expect(activity_sequence.average_by_rating_type(rating.id)).to eq(3)
-      end
-    end
-
-    context 'already saved in collection' do
-      let(:teacher) { create :teacher }
-      let(:activity_sequence) { create :activity_sequence }
-
-      it 'return true if saved in some collection' do
-        collection = create :collection, teacher: teacher
-        create :collection_activity_sequence, collection: collection, activity_sequence: activity_sequence
-
-        expect(activity_sequence.already_saved_in_collection?(teacher)).to be true
+        expect(all_response).to eq(response)
       end
 
-      it 'return false if not saved in collections' do
-        expect(activity_sequence.already_saved_in_collection?(teacher)).to be false
+      it 'include activity types' do
+        a = create :activity_sequence, activity_ids: [activity.id]
+
+        expect(response).to include(a)
+      end
+
+      it 'not include activity types' do
+        other_activity_type = create :activity_type
+        other_activity = create :activity, activity_type_ids: [other_activity_type.id]
+        a = create :activity_sequence, activity_ids: [other_activity.id]
+
+        expect(response).to_not include(a)
       end
     end
   end

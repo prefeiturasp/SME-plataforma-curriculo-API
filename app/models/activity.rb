@@ -3,6 +3,7 @@ class Activity < ApplicationRecord
   include ImageConcern
 
   belongs_to :activity_sequence
+  has_and_belongs_to_many :activity_types
   has_and_belongs_to_many :curricular_components
   has_and_belongs_to_many :learning_objectives
   has_many :activity_content_blocks, dependent: :destroy
@@ -22,7 +23,6 @@ class Activity < ApplicationRecord
 
   after_save    :update_sequences, on: %i[create update]
   after_destroy :update_sequences
-  after_save :activity_sequence_reindex
 
   def next_activity
     activity_sequence.activities
@@ -66,9 +66,5 @@ class Activity < ApplicationRecord
     valid_sequence = (1..sequences.count).to_a
 
     sequences == valid_sequence
-  end
-
-  def activity_sequence_reindex
-    activity_sequence.reindex
   end
 end

@@ -1,4 +1,4 @@
-var Parchment = Quill.import('parchment');
+Parchment = Quill.import('parchment');
 const CaptionElement = new Parchment.Attributor.Attribute('caption', 'data-caption');
 
 var FigureOptions = function(quill, options){

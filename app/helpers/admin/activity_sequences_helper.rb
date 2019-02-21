@@ -18,7 +18,7 @@ module Admin
           [a.description, a.id, { title: a.description }]
         end
       else
-        [[t('helpers.select.prompt_year_and_main_curricular'), nil, { style: 'display: none;' }]]
+        [ [t('helpers.select.prompt_year_and_main_curricular'), nil, {style: "display: none;"} ] ]
       end
     end
 

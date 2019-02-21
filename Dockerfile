@@ -33,5 +33,4 @@ RUN bundle install --jobs 20 --retry 5
 COPY . ./
 EXPOSE 8666
 
-
-CMD bundle exec rake db:migrate && bundle exec puma -v -C config/puma.rb
+CMD bundle exec puma -v -C config/puma.rb

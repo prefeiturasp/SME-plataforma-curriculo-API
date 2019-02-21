@@ -4,7 +4,7 @@ FactoryBot.define do
     association :sustainable_development_goal, factory: :sustainable_development_goal
 
     trait :invalid_sustainable_development_goal do
-      sustainable_development_goal { nil }
+      sustainable_development_goal nil
     end
   end
 end

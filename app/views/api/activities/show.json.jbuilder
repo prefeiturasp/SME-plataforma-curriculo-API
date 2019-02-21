@@ -20,6 +20,10 @@ json.activity_sequence do
   json.partial! 'api/images/image', image_param: @activity.activity_sequence.image, sizes: %i[thumb extra_thumb]
 end
 
+json.activity_types @activity.activity_types do |activity_type|
+  json.name activity_type.name
+end
+
 json.curricular_components @activity.curricular_components do |curricular_component|
   json.name curricular_component.name
 end

@@ -16,7 +16,6 @@
     row :status do |activity_sequence|
       ActivitySequence.human_enum_name(:status, activity_sequence.status)
     end
-    row :keywords
   end
 
   if activity_sequence.curricular_components.exists?
@@ -24,6 +23,12 @@
       table_for activity_sequence.curricular_components do
         column :name
       end
+    end
+  end
+
+  panel I18n.t('activerecord.attributes.activity_sequence.axes') do
+    table_for activity_sequence.axes do
+      column :description
     end
   end
 

@@ -1,13 +1,7 @@
 ActiveAdmin.register User do
-  permit_params :email, :password, :password_confirmation, :admin
+  permit_params :email, :password, :password_confirmation
 
   config.filters = false
-
-  controller do
-    def scoped_collection
-      User.where(username: nil)
-    end
-  end
 
   index do
     selectable_column
@@ -20,15 +14,10 @@ ActiveAdmin.register User do
   end
 
   form do |f|
-    f.semantic_errors
     f.inputs do
       f.input :email
       f.input :password
       f.input :password_confirmation
-      f.input :admin, as: :select,
-                      collection: [['Sim', true], ['Não', false]],
-                      selected: user.admin,
-                      include_blank: false
     end
     f.actions
   end

@@ -34,17 +34,17 @@ RSpec.describe Api::V1::ActivitySequencesController, type: :controller do
   describe 'POST #create' do
     context 'with valid params' do
       it 'creates a new ActivitySequence' do
-        # expect {
-        #   post :create, params: { activity_sequence: valid_attributes }, session: valid_session
-        # }.to change(ActivitySequence, :count).by(1)
-        # activity_sequence = ActivitySequence.last
+        expect {
+          post :create, params: { activity_sequence: valid_attributes }, session: valid_session
+        }.to change(ActivitySequence, :count).by(1)
+        activity_sequence = ActivitySequence.last
 
-        # expect(activity_sequence.image.attached?).to be true
+        expect(activity_sequence.image.attached?).to be true
       end
 
       it 'renders a JSON response with the new activity_sequence' do
         post :create, params: { activity_sequence: valid_attributes }, session: valid_session
-        # expect(response).to have_http_status(:created)
+        expect(response).to have_http_status(:created)
         expect(response.content_type).to eq('application/json')
       end
     end

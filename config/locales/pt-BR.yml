@@ -13,7 +13,6 @@ pt-BR:
       activity_content_block:
         one: "Bloco de conteúdo"
         other: "Blocos de conteúdo"
-      activity_sequences_report: "Relatório das avaliações"
       axis:
         one: "Eixo"
         other: "Eixos"
@@ -32,9 +31,6 @@ pt-BR:
       learning_objective:
         one: "Objetivo de Aprendizagem"
         other: "Objetivos de Aprendizagem"
-      rating:
-        one: "Avaliação"
-        other: "Avaliações"
       roadmap:
         one: "Roteiro"
         other: "Roteiros"
@@ -82,7 +78,6 @@ pt-BR:
         estimated_time: "Tempo estimado(aulas)"
         image: "Imagem"
         knowledge_matrices: "Matriz dos Saberes"
-        keywords: "Palavras-chave"
         learning_objectives: "Objetivos de Aprendizagem"
         main_curricular_component: "Componente Curricular Principal"
         presentation_text: "Texto de apresentação"
@@ -92,7 +87,6 @@ pt-BR:
           published: "Publicada"
         sustainable_development_goals: "Objetivos de Desenvolvimento Sustentável"
         title: "Título"
-        total_evaluations: "Total de avaliações"
         year: "Ano"
         created_at: "Criado em"
         updated_at: "Atualizado em"
@@ -129,7 +123,6 @@ pt-BR:
         created_at: "Criado em"
         updated_at: "Atualizado em"
       learning_objective:
-        axes: Eixos
         year: "Ano"
         code: "Código"
         description: "Descrição"
@@ -137,12 +130,6 @@ pt-BR:
         curricular_component_id: "Componente Curricular"
         sustainable_development_goals: "Objetivos de Desenvolvimento Sustentável"
         year: "Ano"
-        created_at: "Criado em"
-        updated_at: "Atualizado em"
-      rating:
-        sequence: "Ordem"
-        description: "Descrição"
-        enable: "Habilitado"
         created_at: "Criado em"
         updated_at: "Atualizado em"
       roadmap:
@@ -163,7 +150,6 @@ pt-BR:
         created_at: "Criado em"
         updated_at: "Atualizado em"
       user:
-        admin: Administrador
         confirmation_sent_at: Confirmação enviada em
         confirmation_token: Token de confirmação
         confirmed_at: Confirmado em
@@ -211,8 +197,6 @@ pt-BR:
           free_text: "Texto Livre"
     errors:
       messages:
-        all_ratings_is_required: "É necessário votar em todos os critérios de avaliação."
-        not_found_activity_sequence_performed: "Esta sequência de atividade ainda não foi avaliada pelo professor."
         none_learning_objectives: "Nenhum Objetivo de aprendizagem disponível para o componente curricular principal selecionado"
         record_invalid: 'A validação falhou: %{errors}'
         restrict_dependent_destroy:
@@ -508,7 +492,6 @@ pt-BR:
       prompt_main_curricular: Selecione um componente curricular principal
       prompt_year_and_main_curricular: Selecione um componente curricular principal
       prompt_none_learning_objectives: "A sequência não possui objetivos de aprendizagem"
-      prompt_curricular_component: "Selecione um componente curricular"
     submit:
       create: Confirmar %{model}
       submit: Salvar %{model}

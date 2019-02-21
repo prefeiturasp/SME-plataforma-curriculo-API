@@ -9,6 +9,7 @@ module Api
       @curricular_components = CurricularComponent.all
       @sustainable_development_goals = SustainableDevelopmentGoal.all
       @knowledge_matrices = KnowledgeMatrix.all
+      @activity_types = ActivityType.all
 
       @curricular_components.present? ? render(:index) : render(json: {}, status: :no_content)
     end

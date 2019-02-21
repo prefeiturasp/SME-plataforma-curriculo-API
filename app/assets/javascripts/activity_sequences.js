@@ -1,7 +1,5 @@
 $(document).ready(function(){
   showCheckBoxesTooltip();
-  changePreviewMessage();
-  removeImageAfterUserConfirm();
   var body = document.getElementsByClassName('show admin_activity_sequences');
   if (body[0]) {
     var row_content = body[0].getElementsByClassName('row-books');
@@ -13,11 +11,14 @@ $(document).ready(function(){
     td.innerHTML = html_content
   }
 
+  fill_axes();
   $('#activity_sequence_main_curricular_component_id').change(function(e) {
+    fill_axes();
     fillLearningObjectives();
   });
 
   $('#activity_sequence_year').change(function(){
+    fill_axes();
     fillLearningObjectives();
   });
 });
@@ -27,6 +28,20 @@ function fillCheckBoxes(path, parent, ids, model) {
   $.get(url, {}, function(res) {
     onGetResponse(res, parent, ids, model);
   })
+}
+
+function fill_axes(){
+  var parent = $('#activity_sequence_axes_input ol');
+  var main_curricular_component_id = $('#activity_sequence_main_curricular_component_id').val();
+  if (!main_curricular_component_id) {
+    fillTextOnChecKBoxes(parent, 'Selecione um componente curricular');
+    return
+  }
+  var path = 'change_axes?main_curricular_component_id=' + main_curricular_component_id
+  fillCheckBoxes(path,
+                 parent,
+                 'axis_ids',
+                 'eixos')
 }
 
 function fillLearningObjectives() {
@@ -58,30 +73,58 @@ function onGetResponse(res, parent, ids, model) {
     }
 }
 
+function create_check_box_list(object, method, collection, parent){
+  clean_check_boxes(parent);
+  collection.forEach(function(data){
+    var id = data[0];
+    var name = data[1];
+    var tooltip = data[2] || name;
+
+    var show_id = object+'_'+ method +'_'+id;
+    var input_name = object+'['+method+'][]'
+    var li = $('<li/>')
+        .addClass('choice')
+        .appendTo(parent);
+
+    var label = $('<label/>')
+        .addClass('choice')
+        .attr('for', show_id)
+        .attr('title', tooltip)
+        .appendTo(li)
+
+    var input = $('<input/>')
+        .attr('type', 'checkbox')
+        .attr('name', input_name)
+        .attr('id', show_id)
+        .attr('value', id)
+        .attr('multiple', 'multiple')
+        .appendTo(label);
+
+    label.append(name);
+  });
+}
+
+function fillTextOnChecKBoxes(parent, fill_text){
+  clean_check_boxes(parent);
+  var li = $('<li/>')
+    .addClass('none_available')
+    .appendTo(parent);
+
+  var label = $('<label/>')
+    .addClass('none_available')
+    .appendTo(li)
+    .text(fill_text)
+}
+
+function clean_check_boxes(parent){
+   parent.empty();
+}
+
 function showCheckBoxesTooltip(){
   label = $('.choices-group label');
   label.each(function(){
     self = $(this)
     new_title = self.find('input[type="checkbox"]')[0].title
     self.attr('title', new_title);
-  });
-}
-
-function changePreviewMessage() {
-  var image_inputs = $('#activity_sequence_image_input, #activity_image_input');
-  image_inputs.find('input[type=file]').on('change', function(){
-    var span = $('<span>').text('Imagem alterada, salve ou atualize para visualizar');
-    var inline_hits = image_inputs.find('.inline-hints');;
-    inline_hits.html(span);
-  });
-}
-
-function removeImageAfterUserConfirm(){
-  $('.remove-image-link').bind('confirm:complete', function(evt, data) {
-    if(data){
-      $(this).slideUp('slow', function(){
-        $(this).remove();
-      });
-    }
   });
 }
