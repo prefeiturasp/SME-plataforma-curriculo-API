@@ -34,6 +34,7 @@ class User < ApplicationRecord
     user = User.find_or_create_by(username: response.username)
     user.email = response.email
     user.password = credentials['password']
+    user.teacher.update(name: response.name) if response.name.present?
     user.save
   end
 

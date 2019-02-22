@@ -15,6 +15,6 @@ class Collection < ApplicationRecord
 
   # TODO: change when inserting classes that come from SME
   def number_of_classes
-    rand(1..10)
+    ''
   end
 end
