@@ -37,9 +37,6 @@ ActiveAdmin.register CurricularComponent do
     panel I18n.t('activerecord.models.axis', count: 2) do
       table_for curricular_component.axes do
         column :description
-        column :year do |curricular_component|
-          CurricularComponent.human_enum_name(:year, curricular_component.year, true)
-        end
       end
     end
   end

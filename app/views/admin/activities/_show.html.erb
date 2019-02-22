@@ -19,9 +19,6 @@
     row :environment do |activity|
       Activity.human_enum_name(:environment, activity.environment) if activity.environment
     end
-    row :activity_types do |activity|
-      activity.activity_types.map { |at| at.name }.join('; ')
-    end
     row :created_at
     row :updated_at
   end

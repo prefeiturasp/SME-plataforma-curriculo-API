@@ -23,9 +23,5 @@ module Admin
     def partials_path
       ContentBlock.partials_path
     end
-
-    def human_attribute_content_blocks
-      ContentBlock.content_types.map { |k, _v| [I18n.t("activerecord.attributes.enums.content_types.#{k}"), k] }
-    end
   end
 end

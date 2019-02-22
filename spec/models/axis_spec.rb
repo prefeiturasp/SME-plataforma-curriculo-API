@@ -5,6 +5,10 @@ RSpec.describe Axis, type: :model do
 
   describe 'Associations' do
     it { should belong_to(:curricular_component) }
+
+    it 'has and belongs to many learning objectives' do
+      should have_and_belong_to_many(:learning_objectives)
+    end
   end
 
   describe 'Validations' do
@@ -53,14 +57,14 @@ RSpec.describe Axis, type: :model do
         end
       end
 
-      context 'if has activity_sequences' do
+      context 'if has learning_objectives' do
         before do
-          create :activity_sequence, axis_ids: [subject.id]
+          create :learning_objective, axis_ids: [subject.id]
         end
 
         it 'not valid' do
           subject.destroy
-          expect(subject.errors[:activity_sequences]).to include(I18n.t('activerecord.errors.messages.restrict_dependent_destroy.has_many', record: ActivitySequence.model_name.human))
+          expect(subject.errors[:learning_objectives]).to include(I18n.t('activerecord.errors.messages.restrict_dependent_destroy.has_many', record: LearningObjective.model_name.human))
         end
       end
     end

@@ -4,6 +4,7 @@ class LearningObjective < ApplicationRecord
   has_and_belongs_to_many :sustainable_development_goals
   has_and_belongs_to_many :activity_sequences
   has_and_belongs_to_many :activities
+  has_and_belongs_to_many :axes
 
   include DestroyValidator # has_and_belongs_to_many doesn't support dependent restrict_with_error
 
@@ -13,6 +14,8 @@ class LearningObjective < ApplicationRecord
   validates :code, presence: true, uniqueness: true
 
   default_scope { order(code: :asc) }
+
+  after_save :activity_sequence_reindex
 
   def code_and_description
     "#{code} - #{description}"
@@ -43,5 +46,9 @@ class LearningObjective < ApplicationRecord
                                            sustainable_development_goals
                                            activities])
     super(associations)
+  end
+
+  def activity_sequence_reindex
+    activity_sequences.each(&:reindex)
   end
 end

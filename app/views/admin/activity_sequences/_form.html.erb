@@ -2,7 +2,9 @@
   f.inputs do
     f.input :status
     f.input :title
-    f.input :image, as: :file
+    f.input :image, as: :file, hint: f.object.image.attached? \
+      ? image_container(f.object.image, :thumb)
+      : content_tag(:span, "Anda não há pré-visualização")
     f.input :presentation_text
     f.input :year, as: :select, collection: human_attribute_years
     f.input :main_curricular_component
@@ -12,13 +14,6 @@
               [t('helpers.select.prompt_year_and_main_curricular'), nil, {style: "display: none;"}] ],
             input_html: {
               multiple: true
-            }
-    f.input :axes,
-            as: :check_boxes,
-            collection: axes_collection(activity_sequence),
-            input_html: {
-              multiple: true,
-              disabled: true
             }
     f.input :books,
       as: :quill_editor, input_html: {
@@ -39,6 +34,7 @@
             as: :check_boxes,
             collection: knowledge_matrices_collection,
             input_html: { multiple: true }
+    f.input :keywords, as: :tags
   end
   f.actions
 %>
