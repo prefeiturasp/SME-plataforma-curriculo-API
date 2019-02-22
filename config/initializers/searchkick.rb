@@ -1,1 +1,1 @@
-Searchkick.time_out = 200
+Searchkick.timeout = 200
