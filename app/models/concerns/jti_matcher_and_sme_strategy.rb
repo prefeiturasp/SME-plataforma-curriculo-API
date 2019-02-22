@@ -5,7 +5,7 @@ module JtiMatcherAndSmeStrategy
     before_create :initialize_jti
 
     def self.jwt_revoked?(payload, user)
-      user.invalid_payload?(payload) || user.invalid_refresh_sme_token?
+      user.invalid_payload?(payload)
     end
 
     def self.revoke_jwt(_payload, user)
