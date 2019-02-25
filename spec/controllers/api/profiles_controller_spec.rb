@@ -42,6 +42,7 @@ RSpec.describe Api::ProfilesController, type: :controller do
 
           expect(response_body['teacher']).to be_present
           expect(response_body['teacher']['id']).to be_present
+          expect(response_body['teacher']['name']).to be_present
           expect(response_body['teacher']['nickname']).to be_present
           expect(response_body['teacher']['number_of_classes']).to be_present
           expect(response_body['teacher']['number_of_sequences_not_evaluated']).to be_present
