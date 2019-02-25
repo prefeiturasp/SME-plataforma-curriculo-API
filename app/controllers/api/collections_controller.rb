@@ -7,7 +7,7 @@ module Api
 
     def index
       @collections = if @activity_sequence
-                       paginate(@activity_sequence.collections)
+                       paginate(@activity_sequence.collections.where(teacher_id: @teacher.id))
                      else
                        paginate(@teacher.collections)
                      end
