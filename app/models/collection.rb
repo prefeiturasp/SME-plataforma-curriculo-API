@@ -1,6 +1,6 @@
 class Collection < ApplicationRecord
   belongs_to :teacher
-  has_many :collection_activity_sequences
+  has_many :collection_activity_sequences, dependent: :destroy
   has_many :activity_sequences,
            -> { order 'collection_activity_sequences.sequence ASC' },
            through: :collection_activity_sequences
