@@ -4,6 +4,7 @@ json.username current_user.username
 if current_teacher
   json.teacher do
     json.id current_teacher.id
+    json.name current_teacher.name
     json.nickname current_teacher.nickname
     json.number_of_classes current_teacher.number_of_classes
     json.number_of_sequences_not_evaluated current_teacher.number_of_sequences_not_evaluated
