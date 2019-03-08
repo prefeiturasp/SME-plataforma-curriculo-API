@@ -154,7 +154,7 @@ RSpec.describe User, type: :model do
     }
   end
 
-  let(:user) { create :user }
+  let(:user) { create :user, :with_teacher }
   let(:refresh_token) { 'TokjrJZ1JnrhJX8A+meznJg+Gi//1tmK6Ysuc6MA4WQ=' }
   let(:valid_sme_token) { JWT.encode(claims, nil, 'none') }
   let(:invalid_sme_token) { JWT.encode(invalid_claims, nil, 'none') }
@@ -169,10 +169,16 @@ RSpec.describe User, type: :model do
       'User-Agent' => 'Flexirest/1.7.5'
     }
   end
+
   let(:response_body) do
     {
-      "token": valid_sme_token,
-      "refreshToken": refresh_token
+      "name": user.username,
+      "username": user.username,
+      "email": user.email,
+      "sgpToken": {
+        "token": valid_sme_token,
+        "refreshToken": refresh_token
+      }
     }
   end
 
@@ -191,7 +197,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'return TRUE if VALID credentials' do
-      stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/LoginJWT")
+      stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/LoginIdentity")
         .with(
           body: {
             'username' => user.username,
@@ -206,7 +212,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'return FALSE if INVALID credentials' do
-      stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/LoginJWT")
+      stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/LoginIdentity")
         .with(
           body: {
             'username' => user.username,
@@ -225,7 +231,7 @@ RSpec.describe User, type: :model do
         "token": invalid_sme_token,
         "refreshToken": refresh_token
       }.to_json
-      stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/LoginJWT")
+      stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/LoginIdentity")
         .with(
           body: {
             'username' => user.username,
@@ -236,7 +242,7 @@ RSpec.describe User, type: :model do
 
       expected = User.authenticate_in_sme credentials
 
-      expect(expected).to be nil
+      expect(expected).to be false
     end
   end
 
@@ -245,7 +251,8 @@ RSpec.describe User, type: :model do
       let(:token_validator) { TokenValidator.new(valid_sme_token, refresh_token) }
 
       it 'update sme tokens' do
-        response = User.find_or_create_by_auth_params(token_validator, credentials)
+        puts "("*80
+        response = User.find_or_create_by_auth_params(response_body, credentials)
         user.reload
 
         expect(response).to be true
