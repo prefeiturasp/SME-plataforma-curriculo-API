@@ -44,10 +44,11 @@ RSpec.describe Api::ProfilesController, type: :controller do
           expect(response_body['teacher']['id']).to be_present
           expect(response_body['teacher']['name']).to be_present
           expect(response_body['teacher']['nickname']).to be_present
-          expect(response_body['teacher']['number_of_classes']).to be_present
           expect(response_body['teacher']['number_of_sequences_not_evaluated']).to be_present
-          expect(response_body['teacher']['number_of_components']).to be_present
           expect(response_body['teacher']['avatar_attributes']).to be_present
+          # TODO: Remove comment from the line below when classes are implemented
+          # expect(response_body['teacher']['number_of_classes']).to be_present
+          # expect(response_body['teacher']['number_of_components']).to be_present
         end
       end
     end

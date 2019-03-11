@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :teacher do
     nickname { Faker::Internet.user_name(7..15) }
+    name { Faker::Name.unique.name }
 
     after(:build) do |teacher|
       teacher.avatar.attach(

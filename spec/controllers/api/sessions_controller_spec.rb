@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Api::SessionsController, type: :controller do
   let(:response_body) { JSON.parse(response.body) }
-  let(:user) { create :user }
+  let(:user) { create :user, :with_teacher }
   let(:claims) do
     {
       "username": user.username,
@@ -25,8 +25,13 @@ RSpec.describe Api::SessionsController, type: :controller do
   let(:refresh_token) { 'TokjrJZ1JnrhJX8A+meznJg+Gi//1tmK6Ysuc6MA4WQ=' }
   let(:response_sme_body) do
     {
-      "token": valid_sme_token,
-      "refreshToken": refresh_token
+      "name": user.username,
+      "username": user.username,
+      "email": user.email,
+      "sgpToken": {
+        "token": valid_sme_token,
+        "refreshToken": refresh_token
+      }
     }
   end
 
@@ -38,10 +43,11 @@ RSpec.describe Api::SessionsController, type: :controller do
     @request.env['devise.mapping'] = Devise.mappings[:user]
   end
 
+
   describe 'POST #create' do
     context 'with valid params' do
       it 'renders a JSON response with the new session' do
-        stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/LoginJWT")
+        stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/LoginIdentity")
           .with(
             body: {
               'username' => user.username,
@@ -58,7 +64,7 @@ RSpec.describe Api::SessionsController, type: :controller do
 
     context 'returns http unauthorized' do
       it 'renders a JSON response with errors for the new session' do
-        stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/LoginJWT")
+        stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/LoginIdentity")
           .with(
             body: {
               'username' => user.username,

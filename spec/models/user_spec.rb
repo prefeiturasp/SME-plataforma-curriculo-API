@@ -251,18 +251,17 @@ RSpec.describe User, type: :model do
       let(:token_validator) { TokenValidator.new(valid_sme_token, refresh_token) }
 
       it 'update sme tokens' do
-        puts "("*80
-        response = User.find_or_create_by_auth_params(response_body, credentials)
+        os = OpenStruct.new(response_body)
+        response = User.find_or_create_by_auth_params(os, credentials)
         user.reload
 
         expect(response).to be true
-        expect(user.sme_token).to eq(valid_sme_token)
-        expect(user.sme_refresh_token).to eq(refresh_token)
       end
     end
 
     context 'if user NOT exists' do
       let(:new_username) { 'new_username' }
+      let(:new_email) { 'new_email@gedu.com' }
       let(:claims) do
         {
           "username": new_username,
@@ -275,85 +274,28 @@ RSpec.describe User, type: :model do
       let(:valid_sme_token) { JWT.encode(claims, nil, 'none') }
       let(:token_validator) { TokenValidator.new(valid_sme_token, refresh_token) }
 
+
+      let(:new_response_body) do
+        {
+          "name": new_username,
+          "username": new_username,
+          "email": new_email,
+          "sgpToken": {
+            "token": valid_sme_token,
+            "refreshToken": refresh_token
+          }
+        }
+      end
+
       it 'create user on database with tokens' do
-        response = User.find_or_create_by_auth_params(token_validator, credentials)
+        os = OpenStruct.new(new_response_body)
+        response = User.find_or_create_by_auth_params(os, credentials)
 
         user = User.find_by(username: new_username)
 
         expect(response).to be true
         expect(user).to_not be nil
         expect(user.username).to eq(new_username)
-        expect(user.sme_token).to eq(valid_sme_token)
-        expect(user.sme_refresh_token).to eq(refresh_token)
-      end
-    end
-  end
-
-  describe 'refresh_sme_token' do
-    let(:sme_refresh_token) { '12345678' }
-    let(:invalid_exp_claims) do
-      {
-        "username": user.username,
-        "jti": user.jti,
-        "exp": (Time.now - 15_000).to_i,
-        "iss": ENV['SME_JWT_ISSUER'],
-        "aud": ENV['SME_JWT_AUDIENCE']
-      }
-    end
-    let(:invalid_exp_sme_token) { JWT.encode(invalid_exp_claims, nil, 'none') }
-
-    context 'return FALSE' do
-      it 'if valid sme token' do
-        user = create :user, sme_token: valid_sme_token, sme_refresh_token: '12345678'
-
-        expect(user.refresh_sme_token!).to be false
-      end
-
-      it 'if api error when refresh token in SME' do
-        user = create :user, sme_token: invalid_exp_sme_token, sme_refresh_token: sme_refresh_token
-
-        stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/RefreshLoginJWT")
-          .with(
-            body: {
-              'username' => user.username,
-              'refreshToken' => sme_refresh_token
-            },
-            headers: request_headers
-          ).to_return(status: 401, body: {}.to_json, headers: request_headers)
-
-        expect(user.refresh_sme_token!).to be false
-      end
-
-      it 'if reponse token is invalid' do
-        user = create :user, sme_token: invalid_exp_sme_token, sme_refresh_token: sme_refresh_token
-
-        stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/RefreshLoginJWT")
-          .with(
-            body: {
-              'username' => user.username,
-              'refreshToken' => sme_refresh_token
-            },
-            headers: request_headers
-          ).to_return(status: 200, body: response_body_invalid_token.to_json, headers: request_headers)
-
-        expect(user.refresh_sme_token!).to be false
-      end
-    end
-
-    context 'return TRUE' do
-      it 'refresh token in SME' do
-        user = create :user, sme_token: invalid_exp_sme_token, sme_refresh_token: sme_refresh_token
-
-        stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/RefreshLoginJWT")
-          .with(
-            body: {
-              'username' => user.username,
-              'refreshToken' => sme_refresh_token
-            },
-            headers: request_headers
-          ).to_return(status: 200, body: response_body.to_json, headers: request_headers)
-
-        expect(user.refresh_sme_token!).to be true
       end
     end
   end
