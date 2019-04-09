@@ -10,6 +10,7 @@ WORKDIR /app
 RUN apk update && apk upgrade
 
 RUN apk add -U --no-cache \
+    bash \
     build-base \
     git \
     imagemagick \
@@ -17,6 +18,7 @@ RUN apk add -U --no-cache \
     libxslt-dev \
     nodejs \
     postgresql-dev \
+    postgresql-client \
     tzdata \
     yaml-dev \
     yarn \
@@ -32,6 +34,5 @@ RUN bundle install --jobs 20 --retry 5
 
 COPY . ./
 EXPOSE 8666
-
 
 CMD bundle exec rake db:migrate && bundle exec puma -v -C config/puma.rb
