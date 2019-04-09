@@ -15,6 +15,8 @@ class LearningObjective < ApplicationRecord
 
   default_scope { order(code: :asc) }
 
+  after_save :activity_sequence_reindex
+
   def code_and_description
     "#{code} - #{description}"
   end
@@ -44,5 +46,9 @@ class LearningObjective < ApplicationRecord
                                            sustainable_development_goals
                                            activities])
     super(associations)
+  end
+
+  def activity_sequence_reindex
+    activity_sequences.each(&:reindex)
   end
 end

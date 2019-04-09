@@ -1,17 +1,18 @@
-<%= render 'content_toolbar' %>
 <% 
   f.inputs do
     f.input :id, as: :hidden
+    f.input :status
     f.input :sequence,
         as: :select,
         collection: activity_sequence_options(activity),
         selected: activity.sequence.present? ? activity.sequence : activity_sequence_options(activity).last
-    f.input :image, as: :file
+    f.input :image, as: :file, hint: f.object.image.attached? \
+      ? image_container(f.object.image, :thumb)
+      : content_tag(:span, "Anda não há pré-visualização")
     f.input :title
     f.input :estimated_time
-    f.input :activity_sequence, as: :hidden
+    f.input :activity_sequence_id, as: :hidden
     f.input :environment, as: :select, collection: human_attribute_environments
-    f.input :activity_types, as: :select
     f.input :curricular_components, as: :check_boxes, input_html: { multiple: true }
     f.input :learning_objectives,
             as: :check_boxes,
@@ -20,33 +21,20 @@
             input_html: {
               multiple: true
             }
-    f.input :content, as: :quill_editor, input_html: {
-      data: {
-        options: {
-          modules: {
-            toolbar: "#toolbar"
-          },
-          formats: [
-            'bold',
-            'italic',
-            'underline',
-            'strike',
-            'link',
-            'blockquote',
-            'header',
-            'image',
-            'list',
-            'sub',
-            'super',
-            'image',
-            'video',
-            'divider'
-          ],
-          theme: 'snow'
-        }
-      }
-    }
 
+    f.panel 'Conteúdos', class: 'content' do
+      f.inputs class: 'activity-content-buttons' do
+        render partial: 'activity_content_buttons', locals: { activity: activity, f: f }
+      end
+
+      f.has_many :activity_content_blocks, new_record: false, allow_destroy: false do |a|
+        render partial: 'activity_content_list', locals: { a: a }
+      end
+
+      f.inputs class: 'activity-content-structure' do
+        render partial: 'activity_content_structure', locals: { activity: activity }
+      end
+    end
   end
   f.actions
 %>

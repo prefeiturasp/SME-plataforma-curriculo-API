@@ -1,0 +1,10 @@
+<%= render "#{ContentBlock.partials_path}header_fields", f: f, content_block: content_block %>
+
+<% f.has_many :images, allow_destroy: true, class: 'gallery-has-many-images' do |ff| %>
+<%   ff.input :subtitle, required: true %>
+<%   ff.input :file, required: true, as: :file, hint: ff.object.file.attached? \
+      ? image_tag(variant_url(ff.object.file, :thumb))
+      : content_tag(:span, "Anda não há pré-visualização"),
+      input_html: { class: 'gallery-image-add-button' } %>
+<% end %>
+<li><a class="button remove-activity-content-block" href="#">Remover</a></li>

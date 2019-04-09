@@ -39,7 +39,7 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
 
       context 'returns http success' do
         before do
-          @activity_sequence = create :activity_sequence, title: "ZZZZZ", status: :published
+          @activity_sequence = create :activity_sequence, :reindex, title: 'ZZZZZ', status: :published
         end
 
         it 'returns http success' do
@@ -50,14 +50,39 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
         end
 
         it 'orders by ascending title' do
-          activity_sequence_one = create :activity_sequence, title: 'BBBB', status: :published
-          activity_sequence_two = create :activity_sequence, title: "AAAA", status: :published
+          activity_sequence_one = create :activity_sequence, :reindex, title: 'BBBB', status: :published
+          activity_sequence_two = create :activity_sequence, :reindex, title: 'AAAA', status: :published
+          ActivitySequence.searchkick_index.refresh
 
-          get :index
+          get :index, params: { order_by: 'title', sort: 'asc' }
 
-          response_titles = response_body.map {|a_sequence| a_sequence["title"]}
+          response_titles = response_body.map { |a_sequence| a_sequence['title'] }
 
           expect(response_titles).to eq([activity_sequence_two.title, activity_sequence_one.title, @activity_sequence.title])
+        end
+
+        it 'orders by descendant title' do
+          activity_sequence_one = create :activity_sequence, :reindex, title: 'BBBB', status: :published
+          activity_sequence_two = create :activity_sequence, :reindex, title: 'AAAA', status: :published
+          ActivitySequence.searchkick_index.refresh
+
+          get :index, params: { order_by: 'title', sort: 'desc' }
+
+          response_titles = response_body.map { |a_sequence| a_sequence['title'] }
+
+          expect(response_titles).to eq([@activity_sequence.title, activity_sequence_one.title, activity_sequence_two.title])
+        end
+
+        it 'orders by ascending created_at' do
+          activity_sequence_one = create :activity_sequence, :reindex, title: 'BBBB', status: :published
+          activity_sequence_two = create :activity_sequence, :reindex, title: 'AAAA', status: :published
+          ActivitySequence.searchkick_index.refresh
+
+          get :index, params: { order_by: 'created_at', sort: 'asc' }
+
+          response_titles = response_body.map { |a_sequence| a_sequence['title'] }
+
+          expect(response_titles).to eq([@activity_sequence.title, activity_sequence_one.title, activity_sequence_two.title])
         end
 
         it 'return valid JSON all filters' do
@@ -115,6 +140,19 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
 
           expect(first_body['main_curricular_component']['name']).to be_present
           expect(first_body['main_curricular_component']['color']).to be_present
+        end
+      end
+
+      context 'logged in users' do
+        before do
+          authenticate_user user
+
+          it 'return valid JSON keys' do
+            get :index
+
+            expect(first_body['already_saved_in_collection']).to be_present
+            expect(first_body['performeds_status']).to be_present
+          end
         end
       end
     end
@@ -482,7 +520,7 @@ RSpec.describe Api::ActivitySequencesController, type: :controller do
         before do
           authenticate_user user
         end
-        let(:new_sequence_number) { 987654 }
+        let(:new_sequence_number) { 987_654 }
         let(:new_attributes_in_collection) do
           attributes_for :collection_activity_sequence, activity_sequence_id: activity_sequence.id, sequence: new_sequence_number
         end

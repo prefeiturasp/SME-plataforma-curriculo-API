@@ -2,7 +2,8 @@ FactoryBot.define do
   factory :activity do
     title { Faker::Lorem.sentence(4) }
     estimated_time { Faker::Number.between(1, 500) }
-    content '{"ops":[{"insert":"Text\\n"}]}'
+    content { '{"ops":[{"insert":"Text\\n"}]}' }
+    status { :published }
 
     association :activity_sequence, factory: :activity_sequence
 
@@ -22,9 +23,9 @@ FactoryBot.define do
     end
 
     trait :invalid do
-      title nil
-      estimated_time nil
-      activity_sequence_id nil
+      title { nil }
+      estimated_time { nil }
+      activity_sequence_id { nil }
     end
   end
 end

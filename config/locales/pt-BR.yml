@@ -10,6 +10,10 @@ pt-BR:
       activity_type:
         one: "Tipo de atividade"
         other: "Tipos de atividades"
+      activity_content_block:
+        one: "Bloco de conteúdo"
+        other: "Blocos de conteúdo"
+      activity_sequences_report: "Relatório das avaliações"
       axis:
         one: "Eixo"
         other: "Eixos"
@@ -19,12 +23,18 @@ pt-BR:
       goal:
         one: "Meta"
         other: "Metas"
+      image:
+        one: "Imagem"
+        other: "Imagens"
       knowledge_matrix:
         one: "Matriz do Saber"
         other: "Matriz dos Saberes"
       learning_objective:
         one: "Objetivo de Aprendizagem"
         other: "Objetivos de Aprendizagem"
+      rating:
+        one: "Avaliação"
+        other: "Avaliações"
       roadmap:
         one: "Roteiro"
         other: "Roteiros"
@@ -38,6 +48,7 @@ pt-BR:
       activity:
         activity_sequence: "Sequência de Atividade"
         activity_types: "Tipo de Atividade"
+        activity_content_blocks: "Blocos de Conteúdo"
         content: "Conteúdo"
         curricular_components: "Componentes Curriculares relacionados"
         environment: "Ambiente"
@@ -52,8 +63,16 @@ pt-BR:
         sequence: "Número de Atividade"
         title: "Título"
         year: "Ano"
+        status: "Status"
+        statuses:
+          draft: "Rascunho"
+          published: "Publicada"
         created_at: "Criado em"
         updated_at: "Atualizado em"
+      activity_content_block:
+        body: "Conteúdo"
+        title: "Título"
+        number: "Número"
       activity_sequence:
         activities: "Atividades"
         axes: "Eixos"
@@ -73,6 +92,7 @@ pt-BR:
           published: "Publicada"
         sustainable_development_goals: "Objetivos de Desenvolvimento Sustentável"
         title: "Título"
+        total_evaluations: "Total de avaliações"
         year: "Ano"
         created_at: "Criado em"
         updated_at: "Atualizado em"
@@ -97,6 +117,10 @@ pt-BR:
         description: Descrição
         created_at: "Criado em"
         updated_at: "Atualizado em"
+      image:
+        subtitle: "Legenda"
+        file: "Arquivo"
+        image: "Imagem"
       knowledge_matrix:
         for_description: "Para"
         know_description: "Saber"
@@ -113,6 +137,12 @@ pt-BR:
         curricular_component_id: "Componente Curricular"
         sustainable_development_goals: "Objetivos de Desenvolvimento Sustentável"
         year: "Ano"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      rating:
+        sequence: "Ordem"
+        description: "Descrição"
+        enable: "Habilitado"
         created_at: "Criado em"
         updated_at: "Atualizado em"
       roadmap:
@@ -165,8 +195,24 @@ pt-BR:
           first: "1º"
           second: "2º"
           third: "3º"
+          fourth: "4º"
+          fifth: "5º"
+          sixth: "6º"
+          seventh: "7º"
+          eighth: "8º"
+          nineth: "9º"
+        content_types:
+          to_teacher: "Para o Professor(a)"
+          to_student: "Para o Estudante"
+          question:   "Questão"
+          predefined_exercise: "Execício pré-definido"
+          long_text: "Texto longo"
+          gallery: "Galeria"
+          free_text: "Texto Livre"
     errors:
       messages:
+        all_ratings_is_required: "É necessário votar em todos os critérios de avaliação."
+        not_found_activity_sequence_performed: "Esta sequência de atividade ainda não foi avaliada pelo professor."
         none_learning_objectives: "Nenhum Objetivo de aprendizagem disponível para o componente curricular principal selecionado"
         record_invalid: 'A validação falhou: %{errors}'
         restrict_dependent_destroy:
@@ -472,8 +518,11 @@ pt-BR:
       cancel: Cancelar
       show: Visualizar
       preview: "Pré-visualização"
+      save_and_preview: "Salvar e Visualizar"
       destroy: Excluir
       edit: Editar
+    titles:
+      structure: Estrutura
   number:
     currency:
       format:

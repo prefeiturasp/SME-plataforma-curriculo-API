@@ -5,7 +5,7 @@ FactoryBot.define do
     association :teacher, factory: :teacher
 
     trait :invalid do
-      name nil
+      name { nil }
     end
   end
 end

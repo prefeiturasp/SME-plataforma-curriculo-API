@@ -24,7 +24,6 @@ RSpec.describe Api::FiltersController, type: :controller do
         create :learning_objective
         create :knowledge_matrix
         create :axis
-        create :activity_type
       end
 
       context 'without optional params' do
@@ -42,7 +41,7 @@ RSpec.describe Api::FiltersController, type: :controller do
           expect(json['curricular_components']).to be_present
           expect(json['sustainable_development_goals']).to be_present
           expect(json['knowledge_matrices']).to be_present
-          expect(json['activity_types']).to be_present
+          expect(json['activity_types']).to_not be_present
           expect(json['learning_objectives']).to_not be_present
           expect(json['axes']).to be_present
         end
@@ -51,7 +50,7 @@ RSpec.describe Api::FiltersController, type: :controller do
           get :index
 
           expect(json['years']).to be_present
-          expect(json['years'].length).to eq(3)
+          expect(json['years'].length).to eq(9)
           expect(json['years'][0]['id']).to be_present
           expect(json['years'][0]['description']).to be_present
         end
@@ -83,12 +82,10 @@ RSpec.describe Api::FiltersController, type: :controller do
           expect(json['knowledge_matrices'][0]['title']).to be_present
         end
 
-        it 'return valid activity types JSON' do
+        it 'not return activity types JSON' do
           get :index
 
-          expect(json['activity_types']).to be_present
-          expect(json['activity_types'][0]['id']).to be_present
-          expect(json['activity_types'][0]['name']).to be_present
+          expect(json['activity_types']).to_not be_present
         end
 
         it 'invalid number year' do
@@ -100,7 +97,7 @@ RSpec.describe Api::FiltersController, type: :controller do
         it 'invalid curricular component' do
           get :index, params: { curricular_component_slug: 'invalid-slug' }
 
-          expect(json['axes']).to be_present #show all
+          expect(json['axes']).to be_present # show all
           expect(json['learning_objectives']).to_not be_present
         end
       end
@@ -124,7 +121,7 @@ RSpec.describe Api::FiltersController, type: :controller do
           expect(json['curricular_components']).to be_present
           expect(json['sustainable_development_goals']).to be_present
           expect(json['knowledge_matrices']).to be_present
-          expect(json['activity_types']).to be_present
+          expect(json['activity_types']).to_not be_present
           expect(json['learning_objectives']).to be_present
           expect(json['axes']).to be_present
         end

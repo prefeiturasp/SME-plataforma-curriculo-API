@@ -43,6 +43,15 @@ ActiveAdmin.register ActivitySequence do
     render json: data
   end
 
+  collection_action :delete_image_attachment, method: :delete do
+    attachment = ActiveStorage::Attachment.find_by(id: params[:id])
+    if attachment&.purge
+      head :no_content
+    else
+      head :unprocessable_entity
+    end
+  end
+
   form do |f|
     render 'form', f: f, activity_sequence: activity_sequence
   end

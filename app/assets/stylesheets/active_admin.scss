@@ -12,6 +12,7 @@
 @import "active_admin/base";
 @import "quill.snow";
 @import "quill.sme";
+@import "quill-table";
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i");
 @import 'activeadmin_addons/all';
 
@@ -39,4 +40,216 @@
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+}
+
+.has_many_fields {
+  padding-top: 0px;
+}
+
+.activity {
+  .panel_contents {
+    display: grid;
+    grid-template-columns: 20% 65% 15%;
+
+
+    fieldset.has_many_fields {
+      border: 1px solid #eaeaea;
+    }
+    .activity-content-buttons, .activity-content-structure {
+      legend span {
+        background-image: none;
+        background-color: #d8d9d9;
+        color: #707070;
+        font-size: 1.6em;
+        font-weight: 900;
+      }
+
+      ol {
+        background-color: #eaeaea;
+      }
+
+    }
+
+    .activity-content-buttons {
+      ol {
+        background-color: #eaeaea;
+        padding-bottom: 15px;
+
+        legend {
+          margin-bottom: 15px;
+        }
+
+        a {
+          margin: 0 15px 10px 15px;
+          display: block;
+          text-align: center;
+        }
+
+        a.button {
+          line-height: 12px;
+          margin-right: 3px;
+          padding: 7px 16px 6px;
+          text-decoration: none;
+          background-color: #FFFFFF;
+          background-image: linear-gradient(180deg, #FFFFFF, #E7E7E7);
+          box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 1px 0 0 rgba(255, 255, 255, 0.8) inset;
+          border: solid 1px #c7c7c7;
+          border-color: #c7c7c7;
+          border-top-color: #d3d3d3;
+          border-right-color: #c7c7c7;
+          border-bottom-color: #c2c2c2;
+          border-left-color: #c7c7c7;
+          text-shadow: #fff 0 1px 0;
+          color: #5E6469;
+          padding: 12px 17px 10px;
+        }
+      }
+    }
+  }
+  .activity_content_blocks {
+    h3 {
+      display: none;
+    }
+
+    .ql-editor{
+      h3 {
+        display: block;
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
+    margin: 10px;
+
+    fieldset.gallery {
+      padding: 10px;
+
+      ol {
+        li {
+          padding: 10px;
+        }
+      }
+
+      .has_many_add {
+        float: right;
+      }
+    }
+  }
+
+  .activity-content-structure {
+    #sortable-list{
+      li{
+        padding: 10px;
+      }
+      .icon-sortable {
+        display: none;
+      }
+    }
+
+    a {
+      text-decoration: none;
+      font-size: 1.3em;
+    }
+
+    .preview-item {
+      text-align: center;
+
+      .preview-link {
+        margin-right: 5%;
+      }
+
+      a.button {
+        line-height: 12px;
+        margin-right: 3px;
+        padding: 7px 16px 6px;
+        text-decoration: none;
+        background-color: #FFFFFF;
+        background-image: linear-gradient(180deg, #FFFFFF, #E7E7E7);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 1px 0 0 rgba(255, 255, 255, 0.8) inset;
+        border: solid 1px #c7c7c7;
+        border-color: #c7c7c7;
+        border-top-color: #d3d3d3;
+        border-right-color: #c7c7c7;
+        border-bottom-color: #c2c2c2;
+        border-left-color: #c7c7c7;
+        text-shadow: #fff 0 1px 0;
+        color: #5E6469;
+        padding: 12px 17px 10px;
+      }
+    }
+  }
+}
+
+.quill-editor {
+  .select2-container {
+    display: none;
+  }
+}
+
+div.draft {
+  position: fixed;
+  display: table;
+  overflow: hidden;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #d23a1d;
+  padding: 10px;
+
+  p {
+    color: white;
+    font-size: 1.0em;
+    font-weight: 600;
+    display:table-cell;
+    vertical-align:middle;
+    text-align: center;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .activity-content-structure {
+    #sortable-list{
+      li:hover {
+        background-color: #d8d8d8;
+      }
+
+      .icon-sortable {
+        display: block !important;
+        outline: 1px dotted gray;
+        display: inline-block;
+        font-size: 0.8em;
+        vertical-align: middle;
+        float:right
+      }
+    }
+  }
+}
+
+.remove-image-link {
+  position: relative;
+
+  .remove-image-message {
+    display: none;
+  }
+}
+
+.remove-image-link:hover {
+  position: relative;
+
+
+  .remove-image-message {
+    display: block;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+    font-weight: 900;
+    margin-top: 10%;
+  }
+
+  img {
+    opacity: 0.5;
+  }
 }
