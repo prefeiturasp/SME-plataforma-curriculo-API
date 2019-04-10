@@ -125,14 +125,14 @@ function createOrUpdateActivityContentBlock ($activity_form, link_to_redirect) {
   var formData = window.FormData ? new FormData($activity_form[0]) : $activity_form.serialize();
 
   $.ajax({
-    url: post_url,
+    url: post_url +'.json',
     data: formData,
     cache: false,
     contentType: false,
     processData: false,
     type: 'POST'
   })
-    .done(function(data){
+    .done(function (data) {
       openLinkInNewTab($activity_form, data, link_to_redirect, post_url);
     })
     .fail(function(xhr, status, error) {
