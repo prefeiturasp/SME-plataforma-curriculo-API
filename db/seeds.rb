@@ -1,17 +1,17 @@
 if Rails.env.development?
-  admin = User.find_or_create_by(email: '')
+  admin = User.find_or_create_by(email: 'admin@jurema.la')
   admin.password = 'qwe123'
   admin.password_confirmation = 'qwe123'
   admin.save
 end
 
-[
-  { name: 'Grupo' },
-  { name: 'Individual' },
-  { name: 'Dupla' }
-].each do |attributes|
-  ActivityType.find_or_create_by(attributes)
-end
+#[
+#  { name: 'Grupo' },
+#  { name: 'Individual' },
+#  { name: 'Dupla' }
+#].each do |attributes|
+#  ActivityType.find_or_create_by(attributes)
+#end
 
 [
   { name: 'Arte' },

@@ -284,7 +284,7 @@ Devise.setup do |config|
 
   # JWT configs
   config.jwt do |jwt|
-    jwt.secret = ENV['DEVISE_JWT_SECRET_KEY']
+    jwt.secret = ENV['DEVISE_JWT_SECRET_KEY'] || File.read("/run/secrets/DEVISE_JWT_SECRET_KEY").strip
     jwt.dispatch_requests = [
       ['POST', %r{^/api/login$}]
     ]
