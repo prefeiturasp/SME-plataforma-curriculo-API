@@ -37,3 +37,6 @@ config/initializers/secret_token.rb
 .docker-env-dev
 /config/secrets.yml
 ._*
+
+public/assets
+db/schema.rb
