@@ -75,6 +75,20 @@ ActiveAdmin.register Activity do
 
       URI.join(root_url, icon_url)
     end
+
+    def create
+      super do |format|
+        format.html { redirect_to admin_activity_sequences_path }
+        format.json { render json: resource }
+      end
+    end
+
+    def update
+      super do |format|
+        format.html { redirect_to admin_activity_sequences_path }
+        format.json { render json: resource }
+      end
+    end
   end
 
   index do

@@ -120,10 +120,19 @@ function generateInputNameFromKey(key){
   return input_name;
 }
 
-function createOrUpdateActivityContentBlock($activity_form, link_to_redirect){
+function createOrUpdateActivityContentBlock ($activity_form, link_to_redirect) {
   var post_url = $activity_form.attr('action');
-  $.post(post_url, $activity_form.serialize(), function(){}, 'json')
-    .done(function(data){
+  var formData = window.FormData ? new FormData($activity_form[0]) : $activity_form.serialize();
+
+  $.ajax({
+    url: post_url +'.json',
+    data: formData,
+    cache: false,
+    contentType: false,
+    processData: false,
+    type: 'POST'
+  })
+    .done(function (data) {
       openLinkInNewTab($activity_form, data, link_to_redirect, post_url);
     })
     .fail(function(xhr, status, error) {
