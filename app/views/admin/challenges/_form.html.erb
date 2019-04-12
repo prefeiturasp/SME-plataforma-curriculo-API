@@ -17,22 +17,22 @@
     f.input :learning_objectives,
             as: :check_boxes,
             collection:
-            learning_objectives_activity_collection(activity).present? ? learning_objectives_activity_collection(activity) : [ [t('helpers.select.prompt_none_learning_objectives'), nil, {style: "display: none;"}] ],
+            learning_objectives_challenge_collection(activity).present? ? learning_objectives_challenge_collection(activity) : [ [t('helpers.select.prompt_none_learning_objectives'), nil, {style: "display: none;"}] ],
             input_html: {
               multiple: true
             }
 
     f.panel 'Conteúdos', class: 'content' do
       f.inputs class: 'activity-content-buttons' do
-        render partial: 'activity_content_buttons', locals: { activity: activity, f: f }
+        render partial: 'challenge_content_buttons', locals: { challenge: challenge, f: f }
       end
 
       f.has_many :activity_content_blocks, new_record: false, allow_destroy: false do |a|
-        render partial: 'activity_content_list', locals: { a: a }
+        render partial: 'challenge_content_list', locals: { a: a }
       end
 
       f.inputs class: 'activity-content-structure' do
-        render partial: 'activity_content_structure', locals: { activity: activity }
+        render partial: 'challenge_content_structure', locals: { challenge: challenge }
       end
     end
   end

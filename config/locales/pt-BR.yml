@@ -10,7 +10,7 @@ pt-BR:
       activity_type:
         one: "Tipo de atividade"
         other: "Tipos de atividades"
-      activity_content_block:
+      activity_content_block: &content_block
         one: "Bloco de conteúdo"
         other: "Blocos de conteúdo"
       activity_sequences_report: "Relatório das avaliações"
@@ -20,6 +20,11 @@ pt-BR:
       curricular_component:
         one: "Componente Curricular"
         other: "Componentes Curriculares"
+      challenge:
+        one: "Desafio"
+        other: "Desafios"
+      challenge_content_block:
+        <<: *content_block
       goal:
         one: "Meta"
         other: "Metas"
@@ -69,7 +74,7 @@ pt-BR:
           published: "Publicada"
         created_at: "Criado em"
         updated_at: "Atualizado em"
-      activity_content_block:
+      activity_content_block: &activity_content_block_attrs
         body: "Conteúdo"
         title: "Título"
         number: "Número"
@@ -106,6 +111,29 @@ pt-BR:
         curricular_component: "Componente Curricular"
         created_at: "Criado em"
         updated_at: "Atualizado em"
+      challenge:
+        axes: "Eixos"
+        id: "Identificador"
+        curricular_components: "Componentes Curriculares relacionados"
+        image: "Imagem"
+        knowledge_matrices: "Matriz dos Saberes"
+        keywords: "Palavras-chave"
+        learning_objectives: "Objetivos de Aprendizagem"
+        finish_at: "Data de Encerramento"
+        status: "Status"
+        statuses:
+          draft: "Rascunho"
+          published: "Publicada"
+        category: "Categoria"
+        categories:
+          project: "Projeto"
+          make_and_remake: "Fazer e Refazer"
+          games_and_investigation: "Jogos e Investigação"
+        title: "Título"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      challenge_content_block:
+        <<: *activity_content_block_attrs
       curricular_component:
         name: "Nome"
         axes: "Eixos"

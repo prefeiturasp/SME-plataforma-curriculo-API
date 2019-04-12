@@ -12,7 +12,8 @@ class ContentBlock < ApplicationRecord
   validates :content_type, presence: true, uniqueness: true
 
   def self.partials_path
-    'admin/activity_content_blocks/'
+    #'admin/activity_content_blocks/'
+    'admin/partials/blocks/'
   end
 
   def fields

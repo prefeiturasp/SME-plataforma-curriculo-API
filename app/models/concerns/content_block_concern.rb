@@ -3,7 +3,7 @@ module ContentBlockConcern
 
   included do
     belongs_to :content_block
-    #has_many :images, dependent: :destroy
+
     has_many :images, as: :imageable, dependent: :destroy
 
     after_initialize :initialize_dynamic_contents
