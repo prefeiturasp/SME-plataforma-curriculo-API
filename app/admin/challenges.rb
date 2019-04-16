@@ -1,18 +1,11 @@
 ActiveAdmin.register Challenge do
-#  action_item :back, only: %i[show edit] do
-#    link_to t('active_admin.back_to_model', model: ActivitySequence.model_name.human),
-#            admin_activity_sequence_path(activity.activity_sequence)
-#  end
 
   before_action :set_challenge_content_block, only: %i[create update]
 
-#  action_item :new, only: :show do
-#    link_to t('active_admin.new_model', model: activity.model_name.human),
-#            new_admin_activity_sequence_activity_path(activity.activity_sequence)
-#    link_to t('helpers.links.preview'), activity_preview_path(activity_sequence.slug, activity.slug), target: :_blank
-#  end
-
-  permit_params :title,
+  permit_params :category,
+                :finish_at,
+                :keywords,
+                :title,
                 :status,
                 :slug,
                 :content,
@@ -35,7 +28,7 @@ ActiveAdmin.register Challenge do
                 ]
 
   controller do
-    def set_activity_content_block
+    def set_challenge_content_block
       return unless params[:challenge][:challenge_content_blocks_attributes]
       new_hash = {}
       params[:challenge][:challenge_content_blocks_attributes].each do |k, v|

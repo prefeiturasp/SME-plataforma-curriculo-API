@@ -3,7 +3,7 @@
 
 $(document).ready(function(){
   setShowContentBlocks();
-  var form = $('form.activity');
+  var form = $('form.activity, form.challenge');
   if(form.length) {
     $("input[name='activity[image]']").change(function() {
       validateSize(this);
@@ -73,13 +73,13 @@ function setTitleLegendClassNames(){
 }
 
 function bindUpdateStructureOnRemove(){
-  $('a.remove-activity-content-block').click( function(e){
+  $('a.remove-activity-content-block, a.remove-challenge-content-block').click( function(e){
     e.preventDefault();
     var fieldset = $(this).parent().parent().parent();
     var ol = $(this).parent().parent();
 
     if(fieldset.length){
-      var input_id = ol.find('.activity-content-id');
+      var input_id = ol.find('.activity-content-id, .challenge-content-id');
       if(input_id.val()) {
         fieldset.addClass('hidden');
         var destroy_input = ol.find('.destroy-input');
@@ -114,7 +114,7 @@ function add_fields(link, association, content, father) {
   content = content.replace(regexp, new_id);
   regexp = new RegExp("NEW_RECORD_ID", "g");
   content = content.replace(regexp, new_id);
-  $('li.activity_content_blocks').append(content);
+  $('li.activity_content_blocks, li.challenge_content_blocks').append(content);
   initializeQuillEditorAndToolbar(new_id);
   convertAllEditorsToDeltaOnSubmit();
   bindPredefinedExercisesSelect();
@@ -122,7 +122,7 @@ function add_fields(link, association, content, father) {
   setSortableList();
   bindUpdateStructureOnRemove();
   setSequenceInContentBlocks();
-  var last_fieldset = $('li.activity_content_blocks fieldset').last();
+  var last_fieldset = $('li.activity_content_blocks fieldset, li.challenge_content_blocks fieldset').last();
   goToTop(last_fieldset.offset().top);
 
   setSequenceOnActivityContentBlocks();
@@ -171,8 +171,9 @@ function goToTop(offset) {
 }
 
 function stickyContentsSidebar(){
-  $('.activity-content-structure').sticky({topSpacing:0});
-  $('.activity-content-buttons').sticky({topSpacing:0});
+  $(
+    '.activity-content-structure, .challenge-content-structure, .activity-content-buttons, .challenge-content-buttons'
+  ).sticky({topSpacing:0});
 }
 
 function setAnchorIdIfFormError(){

@@ -110,6 +110,34 @@ namespace :db do
               }
             }
           }
+        },
+        {
+          "content_type": "open_text",
+          "schema": {
+            "required": ["title", "body"],
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "body": {
+                "type": "json"
+              }
+            }
+          }
+        },
+        {
+          "content_type": "bullet",
+          "schema": {
+            "required": ["title", "body"],
+            "properties": {
+              "title": {
+                "type": "string"
+              },
+              "body": {
+                "type": "json"
+              }
+            }
+          }
         }
       ].each do |attributes|
         cb = ContentBlock.find_or_create_by(content_type: attributes[:content_type])

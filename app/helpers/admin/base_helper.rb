@@ -37,12 +37,24 @@ module Admin
       end
     end
 
+    def learning_objectives_challenge_collection challenge
+#      learning_objectives = challenge.learning_objectives
+      LearningObjective.all.collect do |lo|
+        [lo.code, lo.id, { title: lo.description }]
+      end
+    end
+
     def activity_sequence_preview_path(activity_sequence_slug)
       "#{ENV['HTTP_STAGING_URL']}/sequencia/#{activity_sequence_slug}"
     end
 
     def activity_preview_path(activity_sequence_slug, activity_slug)
       activity_sequence_preview_path(activity_sequence_slug) << "/atividade/#{activity_slug}"
+    end
+
+    def challenge_preview_path challenge_slug
+      "#{ENV['HTTP_STAGING_URL']}/desafio/#{challenge_slug}"
+      #activity_sequence_preview_path(activity_sequence_slug) << "/atividade/#{activity_slug}"
     end
 
     def books_toolbar_options
