@@ -4,8 +4,10 @@ FactoryBot.define do
     finish_at { Faker::Date.forward 20 }
     status { :published }
     category { :project }
+    keywords { 'keyword 1, keyword 2' }
 
     learning_objective_ids { [create(:learning_objective).id] }
+    curricular_component_ids { [create(:curricular_component).id] }
 
     after(:build) do |challenge|
       challenge.image.attach(
