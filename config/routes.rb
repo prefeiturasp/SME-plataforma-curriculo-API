@@ -44,6 +44,7 @@ Rails.application.routes.draw do
     end
     resources :ratings, path: 'avaliacao_criterios', only: [:index]
     resources :activity_sequence_performeds, path: 'sequencias_realizadas', only: [:index]
+    resources :challenges, path: 'desafios', only: [:show]
 
     namespace :v1 do
       resources :activities
