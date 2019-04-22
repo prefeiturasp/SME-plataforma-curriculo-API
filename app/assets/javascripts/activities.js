@@ -37,8 +37,9 @@ function fixActivityActionPosition(){
   form.append(action_buttons);
 }
 
-function setActivityContentBlockToolbarId(){
+function setActivityContentBlockToolbarId () {
   var $fieldsets = $('fieldset.has_many_fields');
+
   for( var i = 0; i < $fieldsets.length; i++ ) {
     var new_id = new Date().valueOf() + i;
     var $toolbar = $($fieldsets[i]).find(".replace-id");
@@ -130,8 +131,12 @@ function add_fields(link, association, content, father) {
   return false;
 };
 
-function initializeQuillEditorAndToolbar(id){
+function initializeQuillEditorAndToolbar (id) {
   var editor = $(`#activity_activity_content_blocks_attributes_${id}_body.quill-editor`);
+
+  if (!editor.length)
+    editor = $(`#challenge_challenge_content_blocks_attributes_${id}_body.quill-editor`);
+
   if (editor.length) {
     initializeQuillEditor(editor[0]);
     var quill_content = editor[0].querySelector(".quill-editor-content");
