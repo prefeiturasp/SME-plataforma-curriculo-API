@@ -1,6 +1,9 @@
 pt-BR:
   activerecord:
     models:
+      acl:
+        one: "Acl"
+        other: "Acls"
       activity:
         one: "Atividade"
         other: "Atividades"
@@ -37,9 +40,15 @@ pt-BR:
       learning_objective:
         one: "Objetivo de Aprendizagem"
         other: "Objetivos de Aprendizagem"
+      link:
+        one: "Link"
+        other: "Links"
       rating:
         one: "Avaliação"
         other: "Avaliações"
+      result:
+        one: "Resultado"
+        other: "Resultados"
       roadmap:
         one: "Roteiro"
         other: "Roteiros"
@@ -50,6 +59,8 @@ pt-BR:
         one: "Usuário"
         other: "Usuários"
     attributes:
+      acl:
+        reason: "Motivo"
       activity:
         activity_sequence: "Sequência de Atividade"
         activity_types: "Tipo de Atividade"
@@ -167,10 +178,24 @@ pt-BR:
         year: "Ano"
         created_at: "Criado em"
         updated_at: "Atualizado em"
+      link:
+        link: "Link"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
       rating:
         sequence: "Ordem"
         description: "Descrição"
         enable: "Habilitado"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      result:
+        links: "Links"
+        challenge: "Desafio"
+        challenge_id: "Desafio"
+        teacher: "Professor"
+        teacher_id: "Professor"
+        enabled: "Habilitado"
+        description: "Descrição"
         created_at: "Criado em"
         updated_at: "Atualizado em"
       roadmap:

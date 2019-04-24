@@ -28,8 +28,8 @@ function getOptionalText($fieldset_parent){
 
 function setContentStructure(){
   var contents = $('li .has_many_fields').not('.gallery-has-many-images');
-  var structure_list = $('.activity-content-structure ol');
-  var sortable_list = $('.activity-content-structure ul#sortable-list');
+  var structure_list = $('.activity-content-structure ol, .challenge-content-structure ol');
+  var sortable_list = $('.activity-content-structure ul#sortable-list, .challenge-content-structure ul#sortable-list');
   $('.activity-content-structure ol li').not(".preview-item").remove();
   for( var i = 0; i < contents.length; i++ ) {
     if (!blockWasRemoved(contents[i])) {
@@ -106,12 +106,17 @@ function renderErrorsResponse(errors){
   goToTop(input_offset);
 }
 
-function generateInputNameFromKey(key){
+function generateInputNameFromKey (key) {
+  console.log(key);
+
   var input_name = "activity";
   var keySplited = key.split(".");
   for(var k of keySplited){
     if (k === 'activity_content_blocks') {
       input_name = input_name + '[activity_content_blocks_attributes]';
+      break;
+    } else if (k === 'challenge_content_blocks') {
+      input_name = input_name + '[challenge_content_blocks_attributes]';
       break;
     } else {
       input_name = input_name + "[" + k + "]";

@@ -26,17 +26,25 @@
 <li><a class="button remove-activity-content-block" href="#">Remover</a></li>
 
 <script>
-  jQuery(document).ready(function () {
-    var qx = jQuery('.bullet .quill-editor');
+function setBulletQuill () {
+  jQuery('.bullet .quill-editor').each(function () {
+    if (!$(this).prop('bullet-set')) {
+      $(this)[0]["_quill-editor"].keyboard.addBinding(
+        {key: ' '},
+        {collapsed: true, format: {list: false}},
+        function(range, context) {
+          this.quill.formatLine(range.index, 1, 'list', 'bullet');
+          this.quill.insertText(range.index, ' ');
+          this.quill.setSelection(range.index + 1);
+        }
+      );
 
-    qx[0]["_quill-editor"].keyboard.addBinding(
-      {key: ' '},
-      {collapsed: true, format: {list: false}},
-      function(range, context) {
-        this.quill.formatLine(range.index, 1, 'list', 'bullet');
-        this.quill.insertText(range.index, ' ');
-        this.quill.setSelection(range.index + 1);
-      }
-    );
+      $(this).prop('bullet-set', true);
+    }
   });
+}
+
+jQuery(document).ready(function () {
+  setTimeout(setBulletQuill, 1000);
+});
 </script>

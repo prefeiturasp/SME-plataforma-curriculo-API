@@ -18,7 +18,7 @@ class AddPolymorphismToImages < ActiveRecord::Migration[5.2]
 
     Image
       .where(imageable_type: 'ActivityContentBlock')
-      .puck(:id, :imageable_id).each do |id, assoc_id|
+      .pluck(:id, :imageable_id).each do |id, assoc_id|
       execute "UPDATE images SET activity_content_block_id = #{assoc_id} WHERE id = #{id}"
     end
 

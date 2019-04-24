@@ -147,7 +147,7 @@ function initializeQuillEditorAndToolbar (id) {
   }
 }
 
-function setToolbarToActivityContents(){
+function setToolbarToActivityContents () {
   var editors = document.querySelectorAll( '.quill-editor' );
   for( var i = 0; i < editors.length; i++ ) {
     var content = editors[i].querySelector(".quill-editor-content");
@@ -155,7 +155,17 @@ function setToolbarToActivityContents(){
     var toolbar_options = JSON.parse(div_parent.dataset.options);
     var toolbar_id = toolbar_options.modules.toolbar;
     var toolbar = $(toolbar_id);
-    editors[i].insertBefore(toolbar[0], content);
+
+    console.log(' #### ');
+    console.log(toolbar_options.modules.toolbar);
+    console.log(toolbar_id);
+    console.log(content);
+    console.log(' #### ');
+
+    if (typeof toolbar_id == 'string') {
+      editors[i].insertBefore(toolbar[0], content);
+      jQuery(toolbar[0]).show();
+    }
   }
 }
 
