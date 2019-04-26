@@ -30,10 +30,10 @@ function setContentStructure(){
   var contents = $('li .has_many_fields').not('.gallery-has-many-images');
   var structure_list = $('.activity-content-structure ol, .challenge-content-structure ol');
   var sortable_list = $('.activity-content-structure ul#sortable-list, .challenge-content-structure ul#sortable-list');
-  $('.activity-content-structure ol li').not(".preview-item").remove();
+  $('.activity-content-structure ol li, .challenge-content-structure ol li').not(".preview-item").remove();
   for( var i = 0; i < contents.length; i++ ) {
     if (!blockWasRemoved(contents[i])) {
-      var input = $(contents[i]).find('input.activity-content-id');
+      var input = $(contents[i]).find('input.activity-content-id, input.challenge-content-id');
       var activity_content_id = input.val();
       var anchor_id = $(contents[i]).find('legend').attr('id');
       var $ol_parent = $(input[0]).parent().parent();
@@ -107,8 +107,6 @@ function renderErrorsResponse(errors){
 }
 
 function generateInputNameFromKey (key) {
-  console.log(key);
-
   var input_name = "activity";
   var keySplited = key.split(".");
   for(var k of keySplited){
@@ -151,9 +149,10 @@ function saveContentWhenClickInPreview(){
   $('a.preview-link').on('click', function(evt){
     var link_to_redirect = $(this).attr('href');
     evt.preventDefault();
-    var $activity_form = $('form.activity');
-    if ($activity_form.length > 0){
-      convertAllEditorsToDelta();
+    var $activity_form = $('form.activity, form.chellenge');
+    if ($activity_form.length > 0) {
+      //convertAllEditorsToDelta();
+      convertContentToDelta();
       createOrUpdateActivityContentBlock($activity_form, link_to_redirect);
     }
   });

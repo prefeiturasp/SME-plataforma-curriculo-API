@@ -32,7 +32,7 @@ $(document).ready(function(){
 });
 
 function fixActivityActionPosition(){
-  var form = $('form.activity');
+  var form = $('form.activity, form.challenge');
   var action_buttons = $('fieldset.actions');
   form.append(action_buttons);
 }
@@ -59,7 +59,10 @@ function setActivityContentBlockToolbarId () {
 }
 
 function hideUnusedRemoveButton(){
-  $('li.activity_content_blocks .has_many_fields .has_many_remove').hide();
+  $(
+    'li.activity_content_blocks .has_many_fields .has_many_remove, ' +
+    'li.challenge_content_blocks .has_many_fields .has_many_remove'
+  ).hide();
   $('li.has_many_containes.images .has_many_remove').show();
 }
 
@@ -156,12 +159,6 @@ function setToolbarToActivityContents () {
     var toolbar_id = toolbar_options.modules.toolbar;
     var toolbar = $(toolbar_id);
 
-    console.log(' #### ');
-    console.log(toolbar_options.modules.toolbar);
-    console.log(toolbar_id);
-    console.log(content);
-    console.log(' #### ');
-
     if (typeof toolbar_id == 'string') {
       editors[i].insertBefore(toolbar[0], content);
       jQuery(toolbar[0]).show();
@@ -210,7 +207,8 @@ function setSequenceOnActivityContentBlocks() {
 }
 
 function setShowContentBlocks(){
-  var $row_bodys = $('body.show.admin_activities').find('.show-content-blocks').find('.row-body');
+  var $row_bodys = $('body.show.admin_activities, body.show.admin_challenges')
+    .find('.show-content-blocks').find('.row-body');
   for(var i = 0; i < $row_bodys.length; i++) {
     var td = $($row_bodys[i]).find('td')[0];
     var content = td.innerHTML;
