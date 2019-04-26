@@ -1,5 +1,40 @@
 namespace :db do
   namespace :seed do
+
+    def create_content_block kind #= :open_text
+      return unless [:bullet, :open_text, :gallery].include? kind
+
+      lines          = rand 3..9
+      content_blocks = ContentBlock.where(content_type: [:bullet, :open_text, :gallery])
+        .pluck(:id, :content_type).map{|id,type| {type.to_sym => id}}.reduce(:merge)
+
+      return {
+        content_block_id: content_blocks[:bullet],
+        content:          {
+          body: {
+            ops: [
+              { insert: Array.new(rand(10..20)) { Faker::Lorem.sentence(rand(5..10)) }.join("\n") }
+            ]
+          }
+        }.to_json
+      } if kind == :open_text
+
+      return {
+        content_block_id: content_blocks[:bullet],
+        content:          {
+          title: Faker::Lorem.sentence,
+          body: {
+            ops: Array.new(lines) { {insert: Faker::Lorem.sentence} }
+                   .zip(Array.new(lines) { {attributes: {list: :bullet}} })
+                   .zip(Array.new(lines) { {insert: "\n"} })
+                   .flatten
+          }
+        }.to_json
+      } if kind == :bullet
+
+      { content_block_id: content_blocks[:gallery], content: '' }
+    end
+
     desc "Create or Update Teachers"
     task create_or_update_teachers: :environment do
       [
@@ -62,33 +97,48 @@ namespace :db do
       end
     end
 
-
-
     desc "Create or Update Challenges"
     task create_or_update_challenges: :environment do
+      categories            = [:project, :make_and_remake, :games_and_investigation]
+      knowledge_matrices    = KnowledgeMatrix.pluck :id
+      learning_objectives   = LearningObjective.pluck(:curricular_component_id, :id)
+                                .map{|ccid,id| {ccid => id}}.reduce(:merge)
+      curricular_components = CurricularComponent.pluck(:slug, :id)
+                                .map{|slug,id| {slug => id}}.reduce(:merge)
 
+      index = 0
+      # title => curricular component
+      {
+        'Legenda de filmes'        => 'lingua-inglesa',
+        'Cartografia popular'      => 'geografia',
+        'Feira de ciencias'        => 'ciencias-naturais',
+        'Sarau e Poesia'           => 'lingua-portuguesa',
+        'Esporte e Saude'          => 'educacao-fisica',
+        'Arte e Cultura'           => 'arte',
+        'Olimpiadas de Matematica' => 'matematica',
+        'Quiz de Historia'         => 'historia'
+      }.each do |title, cc|
+        index += 1
 
+        if Challenge.where(title: title).blank?
+          ccx = curricular_components[cc]
 
-=begin
-  has_and_belongs_to_many :learning_objectives
-  has_and_belongs_to_many :curricular_components
-  has_and_belongs_to_many :knowledge_matrices
+          challenge = Challenge.create!(
+            title:                    title,
+            keywords:                 Faker::Lorem.words.join(', '),
+            finish_at:                Faker::Date.forward(rand(60..1000)),
+            category:                 categories.sample,
+            status:                   (index > 3 && 6 < index ? :draft : :published),
+            curricular_component_ids: [ccx],
+            knowledge_matrix_ids:     knowledge_matrices.sample(1),
+            learning_objective_ids:   learning_objectives[ccx]
+          )
 
-  has_many :axes, through: :learning_objectives
-  has_many :challenge_content_blocks, dependent: :destroy
-
-  enum category: { project: 0, make_and_remake: 1, games_and_investigation: 2 }
-  enum status: { draft: 0, published: 1 }
-
-  validates :title, presence: true, uniqueness: true
-  validates :finish_at, presence: true
-  validates :category, presence: true
-  validates :learning_objectives, presence: true
-  validates :slug, presence: true, uniqueness: true
-=end
-
-
-
+          rand(2..5).times do
+            challenge.challenge_content_blocks.create! create_content_block([:open_text, :bullet].sample)
+          end
+        end
+      end
     end
 
     desc "Create or Update Results"
