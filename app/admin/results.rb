@@ -1,23 +1,14 @@
 ActiveAdmin.register Result do
-#  permit_params :description,
-#                :curricular_component_id
-
-#  config.filters = false
+  actions :all, except: [:new]
 
   controller do
-#    def destroy
-#      @axis = Axis.find(params[:id])
-#      flash[:error] = @axis.errors.full_messages.join(',') unless @axis.destroy
-#      redirect_to action: :index
-#    end
-  end
+    def index
+#      collection = [{}]
 
-  form do |f|
-#    f.inputs do
-#      f.input :description
-#      f.input :curricular_component
-#    end
-    f.actions
+      super do |format|
+        format.html
+      end
+    end
   end
 
   index do
