@@ -32,8 +32,14 @@ module ContentBlockConcern
 
     def change_format_content_images
       return nil if content_hash['body'].blank?
+
+#      puts "\n\n ++++++++ "
+#      puts content_hash['body'].inspect
+#      puts " -------- \n\n"
+
       content = JSON.parse content_hash['body']
       content['ops'].each do |c|
+#        puts "\n\n !! \n\n"
         uri_parts = extract_image c['insert']['image']
         next if uri_parts.blank?
         c['insert']['image'] = base64_to_url uri_parts

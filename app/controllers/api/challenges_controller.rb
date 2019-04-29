@@ -6,6 +6,14 @@ module Api
       render :show
     end
 
+    def index
+      @challenges = Challenge.published
+      @challenges = paginate params[:state] == 'finalizados' ?
+        @challenges.finished : @challenges.ongoing
+
+      render :index
+    end
+
     private
 
       def set_challenge

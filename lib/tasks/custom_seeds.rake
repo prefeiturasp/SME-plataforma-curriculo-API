@@ -1,7 +1,7 @@
 namespace :db do
   namespace :seed do
 
-    def create_content_block kind #= :open_text
+    def create_content_block kind
       return unless [:bullet, :open_text, :gallery].include? kind
 
       lines          = rand 3..9
@@ -9,26 +9,26 @@ namespace :db do
         .pluck(:id, :content_type).map{|id,type| {type.to_sym => id}}.reduce(:merge)
 
       return {
-        content_block_id: content_blocks[:bullet],
-        content:          {
-          body: {
+        'content_block_id' => content_blocks[:open_text],
+        'content'          => {
+          title: Faker::Lorem.sentence,
+          body:  {
             ops: [
               { insert: Array.new(rand(10..20)) { Faker::Lorem.sentence(rand(5..10)) }.join("\n") }
             ]
-          }
+          }.to_json
         }.to_json
       } if kind == :open_text
 
       return {
-        content_block_id: content_blocks[:bullet],
-        content:          {
+        'content_block_id' => content_blocks[:bullet],
+        'content'          => {
           title: Faker::Lorem.sentence,
-          body: {
+          body:  {
             ops: Array.new(lines) { {insert: Faker::Lorem.sentence} }
-                   .zip(Array.new(lines) { {attributes: {list: :bullet}} })
-                   .zip(Array.new(lines) { {insert: "\n"} })
+                   .zip(Array.new(lines) { {attributes: {list: :bullet}, insert: "\n"} })
                    .flatten
-          }
+          }.to_json
         }.to_json
       } if kind == :bullet
 
@@ -121,12 +121,13 @@ namespace :db do
         index += 1
 
         if Challenge.where(title: title).blank?
-          ccx = curricular_components[cc]
+          ccx  = curricular_components[cc]
+          ends = index % 2 == 0 ? Faker::Date.backward(rand(10..100)) : Faker::Date.forward(rand(60..1000))
 
           challenge = Challenge.create!(
             title:                    title,
             keywords:                 Faker::Lorem.words.join(', '),
-            finish_at:                Faker::Date.forward(rand(60..1000)),
+            finish_at:                ends,
             category:                 categories.sample,
             status:                   (index > 3 && 6 < index ? :draft : :published),
             curricular_component_ids: [ccx],
@@ -134,7 +135,13 @@ namespace :db do
             learning_objective_ids:   learning_objectives[ccx]
           )
 
-          rand(2..5).times do
+          challenge.image.attach(
+            io:           File.open(Rails.root.join('spec', 'fixtures', 'activities', "#{[1, 2, 3, 4].sample}.jpg")),
+            filename:     'challenge.jpg',
+            content_type: 'image/jpg'
+          )
+
+          rand(2..4).times do
             challenge.challenge_content_blocks.create! create_content_block([:open_text, :bullet].sample)
           end
         end

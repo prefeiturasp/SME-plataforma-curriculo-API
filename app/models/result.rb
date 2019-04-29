@@ -4,4 +4,6 @@ class Result < ApplicationRecord
   belongs_to :teacher, dependent: :destroy
 
   default_scope { where enabled: true }
+
+  accepts_nested_attributes_for :links, allow_destroy: true
 end

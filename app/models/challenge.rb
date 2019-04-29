@@ -9,6 +9,10 @@ class Challenge < ApplicationRecord
   has_many :axes, through: :learning_objectives
   has_many :challenge_content_blocks, dependent: :destroy
 
+  scope :finished,  -> { where ['challenges.finish_at <= ?', DateTime.now] }
+  scope :ongoing,   -> { where ['challenges.finish_at  > ?', DateTime.now] }
+#  scope :published, -> { where status: :published }
+
   enum category: { project: 0, make_and_remake: 1, games_and_investigation: 2 }
   enum status: { draft: 0, published: 1 }
 
