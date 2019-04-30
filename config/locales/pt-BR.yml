@@ -226,9 +226,11 @@ pt-BR:
         email: Email
         encrypted_password: Senha criptografada
         failed_attempts: Tentativas sem sucesso
+        kind: Tipo
         last_sign_in_at: "Último acesso em"
         last_sign_in_ip: "Último IP de acesso"
         locked_at: Bloqueado em
+        name: Nome
         password: Senha
         password_confirmation: Confirme sua senha
         remember_created_at: Lembrar criado em

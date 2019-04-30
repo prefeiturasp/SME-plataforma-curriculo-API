@@ -63,10 +63,12 @@ namespace :db do
       ].each do |email|
         user = FactoryBot.build :user
 
-        user.email = email
+        user.email    = email
         user.password = "qwe123"
 
-        User.where(email: email).first_or_create.update user.as_json.reject{|k,v| v.blank?}
+        User.where(email: email).first_or_create.update(
+          user.as_json.reject{|k,v| v.blank?}.merge(admin: false)
+        )
 
         if Teacher.joins(:user).where(users: { email: email }).blank?
           teacher = Teacher.create!(
@@ -116,7 +118,6 @@ namespace :db do
           sustainable_development_goal_ids: sustainables.sample(rand(2..4)),
           axis_ids:                         cc.axes.pluck(:id).sample
         )
-
       end
     end
 
@@ -182,7 +183,6 @@ namespace :db do
 
         create_challenge_result teachers.sample, cid
       end
-
 
       [
         '5º serie B - EMEF Luis Carlos Prestes',

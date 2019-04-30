@@ -14,13 +14,13 @@ ActiveAdmin.register Result do
   index do
     selectable_column
     column :id
-    column do |result|
-      link_to result.teacher.name, "javascript:void(0);"
+    column :teacher do |result|
+      link_to result.teacher.name, admin_user_path(id: result.teacher.user.id)
     end
-    column do |result|
-      link_to result.challenge.title, "javascript:void(0);"
+    column :challenge do |result|
+      link_to result.challenge.title, admin_challenge_path(id: result.challenge.id)
     end
-    column do |result|
+    column :description do |result|
       truncate result.description, omision: "...", length: 100
     end
 
@@ -30,18 +30,21 @@ ActiveAdmin.register Result do
   show do
     attributes_table do
       row :id
-      row do |result|
+      row :teacher do |result|
         link_to result.teacher.name, "javascript:void(0);"
       end
-      row do |result|
+      row :challenge do |result|
         link_to result.challenge.title, "javascript:void(0);"
       end
-      row do |result|
+      row :links do |result|
         ul do
-          results.links.each do |link|
+          result.links.each do |link|
             li link_to link.link, link.link
           end
         end
+      end
+      row :archive do |result|
+        link_to result.archive.filename, url_for(result.archive)
       end
       row :description
 
