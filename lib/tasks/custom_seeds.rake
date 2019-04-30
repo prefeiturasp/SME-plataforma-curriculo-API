@@ -35,6 +35,27 @@ namespace :db do
       { content_block_id: content_blocks[:gallery], content: '' }
     end
 
+    def create_challenge_result teacher, challenge, class_name = nil
+      result = Result.create!(
+        class_name:   class_name.blank? ? Faker::Lorem.sentence : class_name,
+        description:  Faker::Lorem.sentence(200),
+        teacher_id:   teacher,
+        challenge_id: challenge
+      )
+
+      rand(1..2).times do
+        result.links.create! link: Faker::Internet.url
+      end
+
+      document = ['sample.doc', 'sample.pdf'].sample
+
+      result.archive.attach(
+        filename:     document,
+        content_type: (document == 'sample.doc' ? 'application/msword' : 'application/pdf'),
+        io:           File.open(Rails.root.join('spec', 'fixtures', 'documents', document))
+      )
+    end
+
     desc "Create or Update Teachers"
     task create_or_update_teachers: :environment do
       [
@@ -75,25 +96,27 @@ namespace :db do
       curricular_component.each do |cc|
         next unless cc_index[cc.slug.to_sym]
 
-        if LearningObjective.joins(:curricular_component).where(curricular_components: { slug: cc.slug }).blank?
-          year = rand 1..9
-          code = [0, 12, 12, 35, 35, 35, 67, 67, 89, 89][year]
+        next unless LearningObjective.joins(:curricular_component)
+                      .where(curricular_components: { slug: cc.slug }).blank?
 
-          if ['lingua-portuguesa', 'arte'].include? cc.slug
-            code = (year > 0 and year < 6) ? 15 : 69
-          end
+        year = rand 1..9
+        code = [0, 12, 12, 35, 35, 35, 67, 67, 89, 89][year]
 
-          code = "EF#{code}#{cc_index[cc.slug.to_sym]}#{rand(1..33).to_s.rjust(2, '0')}"
-
-          LearningObjective.create!(
-            year:                             year,
-            description:                      Faker::Lorem.sentence(20),
-            code:                             code,
-            curricular_component:             cc,
-            sustainable_development_goal_ids: sustainables.sample(rand(2..4)),
-            axis_ids:                         cc.axes.pluck(:id).sample
-          )
+        if ['lingua-portuguesa', 'arte'].include? cc.slug
+          code = (year > 0 and year < 6) ? 15 : 69
         end
+
+        code = "EF#{code}#{cc_index[cc.slug.to_sym]}#{rand(1..33).to_s.rjust(2, '0')}"
+
+        LearningObjective.create!(
+          year:                             year,
+          description:                      Faker::Lorem.sentence(20),
+          code:                             code,
+          curricular_component:             cc,
+          sustainable_development_goal_ids: sustainables.sample(rand(2..4)),
+          axis_ids:                         cc.axes.pluck(:id).sample
+        )
+
       end
     end
 
@@ -120,44 +143,64 @@ namespace :db do
       }.each do |title, cc|
         index += 1
 
-        if Challenge.where(title: title).blank?
-          ccx  = curricular_components[cc]
-          ends = index % 2 == 0 ? Faker::Date.backward(rand(10..100)) : Faker::Date.forward(rand(60..1000))
+        next unless Challenge.where(title: title).blank?
 
-          challenge = Challenge.create!(
-            title:                    title,
-            keywords:                 Faker::Lorem.words.join(', '),
-            finish_at:                ends,
-            category:                 categories.sample,
-            status:                   (index > 3 && 6 < index ? :draft : :published),
-            curricular_component_ids: [ccx],
-            knowledge_matrix_ids:     knowledge_matrices.sample(1),
-            learning_objective_ids:   learning_objectives[ccx]
-          )
+        ccx  = curricular_components[cc]
+        ends = index % 2 == 0 ? Faker::Date.backward(rand(10..100)) : Faker::Date.forward(rand(60..1000))
 
-          challenge.image.attach(
-            io:           File.open(Rails.root.join('spec', 'fixtures', 'activities', "#{[1, 2, 3, 4].sample}.jpg")),
-            filename:     'challenge.jpg',
-            content_type: 'image/jpg'
-          )
+        challenge = Challenge.create!(
+          title:                    title,
+          keywords:                 Faker::Lorem.words.join(', '),
+          finish_at:                ends,
+          category:                 categories.sample,
+          status:                   (index > 3 && 6 < index ? :draft : :published),
+          curricular_component_ids: [ccx],
+          knowledge_matrix_ids:     knowledge_matrices.sample(1),
+          learning_objective_ids:   learning_objectives[ccx]
+        )
 
-          rand(2..4).times do
-            challenge.challenge_content_blocks.create! create_content_block([:open_text, :bullet].sample)
-          end
+        challenge.image.attach(
+          io:           File.open(Rails.root.join('spec', 'fixtures', 'activities', "#{[1, 2, 3, 4].sample}.jpg")),
+          filename:     'challenge.jpg',
+          content_type: 'image/jpg'
+        )
+
+        rand(2..4).times do
+          challenge.challenge_content_blocks.create! create_content_block([:open_text, :bullet].sample)
         end
       end
     end
 
     desc "Create or Update Results"
     task create_or_update_results: :environment do
+      teachers   = Teacher.pluck :id
+      challenges = Challenge.pluck :id
+      challenge  = Challenge.find 'feira-de-ciencias'
+
+      challenges.each do |cid|
+        next unless Result.where(challenge_id: cid).blank?
+
+        create_challenge_result teachers.sample, cid
+      end
+
+
       [
-        {
+        '5º serie B - EMEF Luis Carlos Prestes',
+        '4º serie A - EMEF Ulysses Guimaraes',
+        '3º serie D - EMEF Leonel Brizola',
+        '4º serie B - EMEF Luis Carlos Prestes',
+        '3º serie A - EMEF Leonel Brizola',
+        '2º serie D - EMEF Tarsila do Amaral',
+        '3º serie H - EMEF Tarsila do Amaral',
+        '2º serie E - EMEF Ulysses Guimaraes',
+        '4º serie A - EMEF Tarsila do Amaral',
+        '2º serie B - EMEF Getúlio Vargas',
+        '3º serie F - EMEF Getúlio Vargas',
+        '4º serie C - EMEF Getúlio Vargas'
+      ].each do |class_name|
+        next unless Result.where(class_name: class_name).blank?
 
-        }, {
-
-        }
-      ].each do |attributes|
-
+        create_challenge_result teachers.sample, challenge.id, class_name
       end
     end
 

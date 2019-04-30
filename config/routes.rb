@@ -48,7 +48,7 @@ Rails.application.routes.draw do
     get 'desafios/:state', to: 'challenges#index', constraints: { state: /finalizados|andamento/ }
 
     resources :challenges, path: 'desafios', param: :slug, only: [:show, :index] do
-      resources :results, path: 'resultados', only: [:index, :show]
+      resources :results, path: 'resultados', only: [:index, :show, :create]
     end
 
 

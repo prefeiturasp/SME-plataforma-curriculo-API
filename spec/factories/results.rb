@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :result do
     description { Faker::Lorem.sentence(200) }
+    class_name { Faker::Lorem.sentence }
     enabled { true }
 
     link_ids { [create(:link).id] }
@@ -10,6 +11,7 @@ FactoryBot.define do
 
     trait :invalid do
       description { nil }
+      class_name { nil }
     end
   end
 end
