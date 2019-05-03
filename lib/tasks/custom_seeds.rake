@@ -204,6 +204,35 @@ namespace :db do
       end
     end
 
+    desc "Create or Update Methodologies"
+    task create_or_update_methodologies: :environment do
+      [
+        {
+          title: 'Projeto',
+          icon:  'project.png'
+        }, {
+          title: 'Investigação',
+          icon:  'investigation.png'
+        }, {
+          title: 'Jogos',
+          icon:  'games.png'
+        }, {
+          title: 'Fazer e refazer',
+          icon:  'make.png'
+        }
+      ].each do |title, icon|
+        next unless Methodology.where(title: title).blank?
+
+        meth = Methodology.create! title: title, description: Faker::Lorem.sentence(140)
+
+        meth.icon.attach(
+          io:           File.open(Rails.root.join('spec', 'fixtures', 'icons', icon)),
+          filename:     icon,
+          content_type: 'image/png'
+        )
+      end
+    end
+
     desc "Create or Update Content Block"
     task create_or_update_content_blocks: :environment do
       [
