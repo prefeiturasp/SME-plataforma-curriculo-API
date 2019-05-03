@@ -7,6 +7,7 @@ class Challenge < ApplicationRecord
   has_and_belongs_to_many :knowledge_matrices
 
   has_many :axes, through: :learning_objectives
+  has_many :sustainable_development_goals, through: :learning_objectives
   has_many :challenge_content_blocks, dependent: :destroy
   has_many :results, dependent: :destroy
 

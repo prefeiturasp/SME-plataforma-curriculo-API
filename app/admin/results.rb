@@ -31,10 +31,10 @@ ActiveAdmin.register Result do
     attributes_table do
       row :id
       row :teacher do |result|
-        link_to result.teacher.name, "javascript:void(0);"
+        link_to result.teacher.name, admin_user_path(id: result.teacher.user.id)
       end
       row :challenge do |result|
-        link_to result.challenge.title, "javascript:void(0);"
+        link_to result.challenge.title, admin_challenge_path(id: result.challenge.id)
       end
       row :links do |result|
         ul do
