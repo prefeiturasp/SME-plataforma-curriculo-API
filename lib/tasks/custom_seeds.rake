@@ -225,7 +225,7 @@ namespace :db do
 
         meth = Methodology.create! title: title, description: Faker::Lorem.sentence(140)
 
-        meth.icon.attach(
+        meth.image.attach(
           io:           File.open(Rails.root.join('spec', 'fixtures', 'icons', icon)),
           filename:     icon,
           content_type: 'image/png'
