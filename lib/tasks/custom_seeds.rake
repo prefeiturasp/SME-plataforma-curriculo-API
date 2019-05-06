@@ -166,7 +166,7 @@ namespace :db do
           content_type: 'image/jpg'
         )
 
-        rand(2..4).times do
+        rand(1..2).times do
           challenge.challenge_content_blocks.create! create_content_block([:open_text, :bullet].sample)
         end
       end

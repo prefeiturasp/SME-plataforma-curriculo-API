@@ -28,7 +28,7 @@ json.sustainable_development_goals @challenge.sustainable_development_goals do |
   json.sub_icon_url url_for(sds.sub_icon)
 end
 
-json.content_blocks @challenge.challenge_content_blocks do |challenge_content_block|
+json.content_blocks @challenge.contents do |challenge_content_block|
   json.type challenge_content_block.content_block.content_type
   json.content challenge_content_block.content_hash if challenge_content_block.content_hash.present?
   if challenge_content_block.images.present?
@@ -36,5 +36,14 @@ json.content_blocks @challenge.challenge_content_blocks do |challenge_content_bl
       json.subtitle image.subtitle
       json.partial! 'api/images/image', image_param: image.file, sizes: %i[medium]
     end
+  end
+end
+
+if @challenge.bullet.blank?
+  json.list nil
+else
+  json.set! "list" do |json|
+    json.title @challenge.bullet[:title]
+    json.items @challenge.bullet[:items]
   end
 end

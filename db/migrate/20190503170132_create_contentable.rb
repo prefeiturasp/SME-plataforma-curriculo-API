@@ -1,4 +1,4 @@
-class CreateContent < ActiveRecord::Migration[5.2]
+class CreateContentable < ActiveRecord::Migration[5.2]
   def change
     create_table :content do |t|
       t.integer    :contentable_id
