@@ -47,13 +47,23 @@ namespace :db do
         result.links.create! link: Faker::Internet.url
       end
 
-      document = ['sample.doc', 'sample.pdf', false].sample
+      rand(0..4).times do
+        document = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', 'sample.doc', 'sample.pdf', false].sample
 
-      result.archive.attach(
-        filename:     document,
-        content_type: (document == 'sample.doc' ? 'application/msword' : 'application/pdf'),
-        io:           File.open(Rails.root.join('spec', 'fixtures', 'documents', document))
-      ) if document
+        next unless document
+
+        result.archives.attach(
+          io:           File.open(Rails.root.join('spec', 'fixtures', 'activities', document)),
+          filename:     document,
+          content_type: 'image/jpg'
+        ) unless ['sample.doc', 'sample.pdf'].include? document
+
+        result.archives.attach(
+          filename:     document,
+          content_type: (document == 'sample.doc' ? 'application/msword' : 'application/pdf'),
+          io:           File.open(Rails.root.join('spec', 'fixtures', 'documents', document))
+        ) if ['sample.doc', 'sample.pdf'].include? document
+      end
     end
 
     desc "Create or Update Teachers"
