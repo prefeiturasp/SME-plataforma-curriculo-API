@@ -1,7 +1,8 @@
 class Result < ApplicationRecord
-  include ArchiveConcern
+  include ArchivesConcern
 
   has_many :links, as: :linkable, dependent: :destroy
+
   belongs_to :challenge
   belongs_to :teacher
 
