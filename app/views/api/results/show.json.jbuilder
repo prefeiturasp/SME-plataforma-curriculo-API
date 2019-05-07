@@ -9,7 +9,11 @@ end
 
 json.links @result.links.collect(&:link)
 
-json.set! "archive" do |json|
-  json.name @result.archive.filename
-  json.url url_for(@result.archive)
+if @result.archive.attached?
+  json.set! "archive" do |json|
+    json.name @result.archive.filename
+    json.url url_for(@result.archive)
+  end
+else
+  json.archive {}
 end

@@ -47,13 +47,13 @@ namespace :db do
         result.links.create! link: Faker::Internet.url
       end
 
-      document = ['sample.doc', 'sample.pdf'].sample
+      document = ['sample.doc', 'sample.pdf', false].sample
 
       result.archive.attach(
         filename:     document,
         content_type: (document == 'sample.doc' ? 'application/msword' : 'application/pdf'),
         io:           File.open(Rails.root.join('spec', 'fixtures', 'documents', document))
-      )
+      ) if document
     end
 
     desc "Create or Update Teachers"
@@ -207,19 +207,10 @@ namespace :db do
     desc "Create or Update Methodologies"
     task create_or_update_methodologies: :environment do
       [
-        {
-          title: 'Projeto',
-          icon:  'project.png'
-        }, {
-          title: 'Investigação',
-          icon:  'investigation.png'
-        }, {
-          title: 'Jogos',
-          icon:  'games.png'
-        }, {
-          title: 'Fazer e refazer',
-          icon:  'make.png'
-        }
+        ['Projeto', 'project.png'],
+        ['Investigação', 'investigation.png'],
+        ['Jogos', 'games.png'],
+        ['Fazer e refazer', 'make.png']
       ].each do |title, icon|
         next unless Methodology.where(title: title).blank?
 

@@ -40,7 +40,7 @@ json.content_blocks @challenge.contents do |challenge_content_block|
 end
 
 if @challenge.bullet.blank?
-  json.list nil
+  json.list {}
 else
   json.set! "list" do |json|
     json.title @challenge.bullet[:title]
