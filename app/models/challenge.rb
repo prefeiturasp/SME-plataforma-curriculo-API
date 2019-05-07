@@ -14,8 +14,13 @@ class Challenge < ApplicationRecord
   scope :finished, -> { where ['challenges.finish_at <= ?', DateTime.now] }
   scope :ongoing,  -> { where ['challenges.finish_at  > ?', DateTime.now] }
 
-  enum category: { project: 0, make_and_remake: 1, games_and_investigation: 2 }
   enum status: { draft: 0, published: 1 }
+  enum category: {
+    project: 0,
+    make_and_remake: 1,
+    games: 2,
+    investigation: 3
+  }
 
   validates :title, presence: true, uniqueness: true
   validates :finish_at, presence: true

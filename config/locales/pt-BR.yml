@@ -43,6 +43,9 @@ pt-BR:
       link:
         one: "Link"
         other: "Links"
+      methodology:
+        one: "Metodologia"
+        other: "Metodologias"
       rating:
         one: "Avaliação"
         other: "Avaliações"
@@ -55,6 +58,9 @@ pt-BR:
       sustainable_development_goal:
         one: "Objetivo de Desenvolvimento Sustentável"
         other: "Objetivos de Desenvolvimento Sustentável"
+      step:
+        one: "Passo"
+        other: "Passos"
       user:
         one: "Usuário"
         other: "Usuários"
@@ -139,7 +145,8 @@ pt-BR:
         categories:
           project: "Projeto"
           make_and_remake: "Fazer e Refazer"
-          games_and_investigation: "Jogos e Investigação"
+          games: "Jogos"
+          investigation: "Investigação"
         title: "Título"
         created_at: "Criado em"
         updated_at: "Atualizado em"
@@ -182,6 +189,13 @@ pt-BR:
         link: "Link"
         created_at: "Criado em"
         updated_at: "Atualizado em"
+      methodology:
+        title: "Titulo"
+        subtitle: "Subtitulo"
+        description: "Descrição"
+        content: "Conteúdo"
+        steps: "Passos"
+        archive: "Anexo"
       rating:
         sequence: "Ordem"
         description: "Descrição"
@@ -215,6 +229,10 @@ pt-BR:
         icon: "Ícone"
         created_at: "Criado em"
         updated_at: "Atualizado em"
+      step:
+        image: "Icone"
+        title: "Titulo"
+        description: "Descrição"
       user:
         admin: Administrador
         confirmation_sent_at: Confirmação enviada em

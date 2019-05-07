@@ -123,7 +123,7 @@ namespace :db do
 
     desc "Create or Update Challenges"
     task create_or_update_challenges: :environment do
-      categories            = [:project, :make_and_remake, :games_and_investigation]
+      categories            = [:project, :make_and_remake, :games, :investigation]
       knowledge_matrices    = KnowledgeMatrix.pluck :id
       learning_objectives   = LearningObjective.pluck(:curricular_component_id, :id)
                                 .map{|ccid,id| {ccid => id}}.reduce(:merge)
