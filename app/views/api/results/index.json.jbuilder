@@ -7,6 +7,6 @@ json.array! @results do |result|
     json.id       result.teacher.id
     json.name     result.teacher.name
     json.user_id  result.teacher.user_id
-    json.partial! 'api/images/image', image_param: @result.teacher.avatar, sizes: %i[thumb extra_thumb]
+    json.partial! 'api/images/image', image_param: result.teacher.avatar, sizes: %i[thumb extra_thumb]
   end
 end

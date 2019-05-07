@@ -1,4 +1,6 @@
 class Result < ApplicationRecord
+  include ArchiveConcern
+
   has_many :links, as: :linkable, dependent: :destroy
   belongs_to :challenge
   belongs_to :teacher
@@ -8,38 +10,4 @@ class Result < ApplicationRecord
   validates :class_name, presence: true
 
   accepts_nested_attributes_for :links, allow_destroy: true
-
-  has_one_attached :archive
-
-  before_destroy :purge_archive
-
-  validate :archive_valid?
-  validate :archive_valid_size?
-
-  private
-
-    def archive_valid?
-      return false unless archive.attached?
-      return true if [
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'application/msword', 'application/excel', 'application/pdf',
-        'application/powerpoint', 'application/vnd.ms-powerpoint',
-        'application/vnd.ms-excel', 'application/msexcel'
-      ].include? archive.content_type
-
-      archive.purge_later
-      errors.add(:archive, 'needs to be a pdf, doc or ppt')
-    end
-
-    def archive_valid_size?
-      return false unless archive.attached?
-      return true unless archive.byte_size > 4.megabytes
-      errors.add(:archive, 'should be less than 4MB')
-    end
-
-    def purge_archive
-      archive.purge if archive.attached?
-    end
-
 end
