@@ -16,4 +16,8 @@ module ApplicationHelper
       extra_large: '2220x1136'
     }
   end
+
+#  def protect_against_forgery?
+#    false
+#  end
 end
