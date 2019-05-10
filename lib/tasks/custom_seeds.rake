@@ -73,7 +73,7 @@ namespace :db do
       ].each do |email|
         user = FactoryBot.build :user
 
-        user.name     = email.split("@").first
+        user.username = email.split("@").first
         user.email    = email
         user.password = "qwe123"
 

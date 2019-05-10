@@ -86,4 +86,19 @@ ActiveAdmin.register LearningObjective do
       end
     end
   end
+
+  xls(
+    i18n_scope: [:activerecord, :attributes, :learning_objective],
+    header_format: { weight: :bold, color: :blue }
+  ) do
+    whitelist
+
+    column :code
+    column :year do |learning_objective|
+      LearningObjective.human_enum_name(:year, learning_objective.year, true)
+    end
+    column :description
+    column :curricular_component
+    column :created_at
+  end
 end

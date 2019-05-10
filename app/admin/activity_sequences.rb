@@ -3,8 +3,11 @@ ActiveAdmin.register ActivitySequence do
   config.filters = true
 
   filter :title
+  filter :year
   filter :presentation_text
   filter :main_curricular_component
+  filter :knowledge_matrices
+  filter :sustainable_development_goals
 
   action_item :new, only: :show do
     link_to t('helpers.links.preview'), activity_sequence_preview_path(activity_sequence.slug), target: :_blank
@@ -82,5 +85,12 @@ ActiveAdmin.register ActivitySequence do
 
   show do
     render 'show', context: self
+  end
+
+  xls(
+    i18n_scope: [:activerecord, :attributes, :activity_sequence],
+    header_format: { weight: :bold, color: :blue }
+  ) do
+    #
   end
 end
