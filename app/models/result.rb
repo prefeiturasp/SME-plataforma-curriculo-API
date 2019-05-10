@@ -12,6 +12,14 @@ class Result < ApplicationRecord
 
   accepts_nested_attributes_for :links, allow_destroy: true
 
+  def images
+    get_archives_of_type :images
+  end
+
+  def documents
+    get_archives_of_type :documents
+  end
+
   def prev_result
     siblings.first
   end
@@ -21,6 +29,14 @@ class Result < ApplicationRecord
   end
 
   private
+
+    def get_archives_of_type type = :images
+      return [] unless archives.attached?
+
+      archives.public_send((type == :images ? :select : :reject)) do |archive|
+        archive if ['image/png', 'image/jpeg', 'image/jpg'].include?(archive.content_type)
+      end
+    end
 
     def siblings
       return @siblings unless @siblings.blank?

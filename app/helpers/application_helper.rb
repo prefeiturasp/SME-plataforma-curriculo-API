@@ -1,7 +1,6 @@
 module ApplicationHelper
-  def variant_url(image, size)
-#    return unless image.attached?
-    url_for(image.variant(resize: image_sizes[size]))
+  def variant_url(image, size, attached = false)
+    url_for(image.variant(resize: image_sizes[size])) if attached || image.attached?
   end
 
   def image_sizes

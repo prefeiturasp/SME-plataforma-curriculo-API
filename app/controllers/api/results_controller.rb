@@ -36,6 +36,7 @@ module Api
                                                  archives: [],
                                                  links_attributes: [:link]
 
+        nparams[:teacher_id]   = current_user.teacher.id if current_user && current_user.teacher
         nparams[:challenge_id] = @challenge.id if nparams[:challenge_id].blank?
         nparams
       end

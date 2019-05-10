@@ -9,15 +9,9 @@ end
 
 json.links @result.links.collect(&:link)
 
-json.images @result.archives do |archive|
-  next unless ['image/png', 'image/jpeg', 'image/jpg'].include? archive.content_type
+json.partial! 'api/images/images', images_param: @result.images, sizes: %i[medium]
 
-  json.partial! 'api/images/image', image_param: archive, sizes: %i[medium]
-end
-
-json.documents @result.archives do |archive|
-  next if ['image/png', 'image/jpeg', 'image/jpg'].include? archive.content_type
-
+json.documents @result.documents do |archive|
   json.name archive.filename
   json.url  url_for(archive)
 end
