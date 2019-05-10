@@ -7,6 +7,12 @@ ActiveAdmin.register LearningObjective do
                 sustainable_development_goal_ids: [],
                 axis_ids: []
 
+  config.filters = true
+
+  filter :year
+  filter :curricular_component
+  filter :created_at
+
   collection_action :change_axes, method: :get do
     render json: {}, status: :unauthorized && return unless current_user.admin?
 
