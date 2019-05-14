@@ -232,6 +232,35 @@ namespace :db do
           filename:     icon,
           content_type: 'image/png'
         )
+
+        if title == 'Projeto'
+          [
+            ['Ponto de partida', '1.png'],
+            ['Formação de equipes', '2.png'],
+            ['Definição do produto final', '3.png'],
+            ['Organização e planejamento', '4.png'],
+            ['Compilação de informação', '5.png'],
+            ['Análise e síntese', '6.png']
+          ].each do |step_title, step_icon|
+            step = meth.steps.create! title: step_title, description: Faker::Lorem.sentence(140)
+
+            step.image.attach(
+              io:           File.open(Rails.root.join('spec', 'fixtures', 'steps', step_icon)),
+              filename:     step_icon,
+              content_type: 'image/png'
+            )
+          end
+        else
+          meth.content = Faker::Lorem.sentence(250)
+
+          archive = ['sample.doc', 'sample.pdf', false].sample
+
+          meth.archive.attach(
+            io:           File.open(Rails.root.join('spec', 'fixtures', 'documents', archive)),
+            filename:     archive,
+            content_type: (archive == 'sample.doc' ? 'application/msword' : 'application/pdf')
+          ) if archive
+        end
       end
     end
 

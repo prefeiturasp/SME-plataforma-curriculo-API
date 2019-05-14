@@ -2,6 +2,14 @@ json.extract! @methodology, :id, :slug, :title, :description
 
 json.partial! 'api/images/image', image_param: @methodology.image, sizes: %i[large extra_large]
 
+json.steps @methodology.steps do |step|
+  json.extract! step, :title, :description
+
+  json.partial! 'api/images/image', image_param: step.image, sizes: %[medium]
+end
+
+
+
 json.content_blocks @challenge.contents do |content_block|
   json.type    content_block.content_block.content_type
   json.content content_block.content_hash if content_block.content_hash.present?

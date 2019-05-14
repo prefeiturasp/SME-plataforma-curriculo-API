@@ -8,6 +8,11 @@ class Result < ApplicationRecord
 
   default_scope { where enabled: true }
 
+  scope :finished_eq, -> (finished) {
+    cond = finished == 'yes' || finished == true
+    joins(:challenge).where ["challenges.finish_at #{(cond ? '<=' : '>')} ?", DateTime.now]
+  }
+
   validates :class_name, presence: true
 
   accepts_nested_attributes_for :links, allow_destroy: true
@@ -26,6 +31,10 @@ class Result < ApplicationRecord
 
   def next_result
     siblings.last
+  end
+
+  def self.ransackable_scopes auth_object = nil
+    %i(finished_eq)
   end
 
   private

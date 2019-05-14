@@ -1,15 +1,13 @@
 ActiveAdmin.register Result do
   actions :all, except: [:new]
 
-  controller do
-    def index
-#      collection = [{}]
+  config.sort_order = 'created_at_asc'
+  config.filters = true
 
-      super do |format|
-        format.html
-      end
-    end
-  end
+  filter :challenge
+  filter :created_at
+  filter :finished, label: "Desafio Finalizado",
+         as: :select, collection: [["Sim", 'yes'], ["Não", 'no']]
 
   index do
     selectable_column
@@ -50,5 +48,22 @@ ActiveAdmin.register Result do
 
       row :created_at
     end
+  end
+
+  xls(
+    i18n_scope: [:activerecord, :attributes, :result],
+    header_format: { weight: :bold, color: :blue }
+  ) do
+    whitelist
+
+    column :id
+    column :teacher do |result|
+      result.teacher.name
+    end
+    column :challenge do |result|
+      result.challenge.title
+    end
+    column :description
+    column :created_at
   end
 end

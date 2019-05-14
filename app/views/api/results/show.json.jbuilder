@@ -12,6 +12,7 @@ json.links @result.links.collect(&:link)
 json.partial! 'api/images/images', images_param: @result.images, sizes: %i[medium]
 
 json.documents @result.documents do |archive|
+  json.size archive.byte_size
   json.name archive.filename
   json.url  url_for(archive)
 end
