@@ -11,4 +11,9 @@ class Methodology < ApplicationRecord
   friendly_id :title, use: %i[slugged finders]
 
   accepts_nested_attributes_for :steps, allow_destroy: true
+
+  def content_hash
+    return {} if content.blank?
+    JSON.parse content
+  end
 end

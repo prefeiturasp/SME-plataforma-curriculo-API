@@ -7,7 +7,7 @@ module Api
     end
 
     def index
-      @challenges = Methodology.all
+      @methodologies = Methodology.all
 
       render :index
     end

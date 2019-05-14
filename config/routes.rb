@@ -51,6 +51,7 @@ Rails.application.routes.draw do
       resources :results, path: 'resultados', only: [:index, :show, :create]
     end
 
+    resources :methodologies, path: 'metodos', param: :slug, only: [:show, :index]
 
     namespace :v1 do
       resources :activities
