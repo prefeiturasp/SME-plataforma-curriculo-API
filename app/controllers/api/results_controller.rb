@@ -45,6 +45,8 @@ module Api
         unless params[:challenge_slug].blank?
           challenge = Challenge.find params[:challenge_slug]
           @result = challenge.results.where(id: params[:id]).first
+
+          raise ActiveRecord::RecordNotFound if @result.blank?
         else
           @result = Result.find params[:id]
         end

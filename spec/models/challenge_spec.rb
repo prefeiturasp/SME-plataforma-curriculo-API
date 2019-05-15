@@ -50,9 +50,5 @@ RSpec.describe Challenge, type: :model do
     end
   end
 
-  describe 'methods' do
-
-  end
-
   it_behaves_like 'image_concern'
 end

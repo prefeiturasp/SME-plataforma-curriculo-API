@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Link, type: :model do
-  let(:subject) { build :link }
+  let(:subject) { create(:result).links.first }
 
   describe 'Validations' do
     context 'is valid' do
