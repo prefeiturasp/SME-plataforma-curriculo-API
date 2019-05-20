@@ -28,30 +28,26 @@ function quillGetHTML(inputDelta) {
 window.onload = function() {
   set_colors();
   enableConvertEditorsAfterHasManyAdd();
-  $.when( setActivityContentBlockToolbarId() ).done(function() {
+  $.when( setActivityContentBlockToolbarId() ).done(function () {
     var editors = document.querySelectorAll( '.quill-editor' );
-    for( var i = 0; i < editors.length; i++ ) {
+    for (var i = 0; i < editors.length; i++) {
       initializeQuillEditor(editors[i]);
     }
-    var formtastic = document.querySelector( 'form.formtastic' );
-    if( formtastic ) {
-      formtastic.onsubmit = function() {
-        return convertContentToDelta(editors);
-      };
-    }
+
+    convertAllEditorsToDeltaOnSubmit();
     fixSelectsContentToolbar();
   });
 };
 
-function convertAllEditorsToDeltaOnSubmit() {
-  var editors = document.querySelectorAll( '.quill-editor' );
+function convertAllEditorsToDeltaOnSubmit () {
   var formtastic = document.querySelector( 'form.formtastic' );
-  if( formtastic ) {
-    formtastic.onsubmit = function() {
-      return convertContentToDelta(editors);
-    };
-  }
+
+  if (formtastic)
+    formtastic.onsubmit = convertContentToDelta;
 }
+
+// disable default quill active admin init
+var initQuillEditors = function() {}
 
 function initializeQuillEditor(editor){
   var content = editor.querySelector( '.quill-editor-content' );
@@ -73,6 +69,26 @@ function initializeQuillEditor(editor){
       addHrDividerOnEditor(quill_editor);
     });
   }
+
+  setTimeout(setBulletContent, 1000);
+}
+
+function setBulletContent () {
+  $('.bullet .quill-editor').each(function () {
+    if (!$(this).prop('bullet-set')) {
+      $(this)[0]["_quill-editor"].keyboard.addBinding(
+        {key: ' '},
+        {collapsed: true, format: {list: false}},
+        function(range, context) {
+          this.quill.formatLine(range.index, 1, 'list', 'bullet');
+          this.quill.insertText(range.index, ' ');
+          this.quill.setSelection(range.index + 1);
+        }
+      );
+
+      $(this).prop('bullet-set', true);
+    }
+  });
 }
 
 function addHrDividerOnEditor(quill) {
@@ -82,8 +98,10 @@ function addHrDividerOnEditor(quill) {
   quill.setSelection(range.index + 2, Quill.sources.SILENT);
 }
 
-function convertContentToDelta(editors){
-  for( var i = 0; i < editors.length; i++ ) {
+function convertContentToDelta () {
+  var editors = document.querySelectorAll('.quill-editor');
+
+  for (var i = 0; i < editors.length; i++) {
     var delta = editors[i]['_quill-editor'].getContents();
     if (!delta.ops || validFileSize(delta.ops)) {
       var input = editors[i].querySelector( 'input[type="hidden"]' );
@@ -134,11 +152,6 @@ function set_colors(){
     color_divs[i].style.borderRadius = '50%';
     color_divs[i].style.background = color_value;
   }
-}
-
-function convertAllEditorsToDelta(){
-  var editors = document.querySelectorAll( '.quill-editor' );
-  convertContentToDelta(editors);
 }
 
 function addSecs(d, s) {

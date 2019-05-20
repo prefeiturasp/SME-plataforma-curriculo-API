@@ -78,14 +78,14 @@ ActiveAdmin.register Activity do
 
     def create
       super do |format|
-        format.html { redirect_to admin_activity_sequences_path }
+        format.html { redirect_to collection_url and return if resource.valid? }
         format.json { render json: resource }
       end
     end
 
     def update
       super do |format|
-        format.html { redirect_to admin_activity_sequences_path }
+        format.html { redirect_to collection_url and return if resource.valid? }
         format.json { render json: resource }
       end
     end

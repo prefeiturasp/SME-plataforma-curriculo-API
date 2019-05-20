@@ -262,3 +262,11 @@ end
 end
 
 Rake::Task['db:seed:create_or_update_content_blocks'].invoke
+
+if Rails.env.development?
+  Rake::Task['db:seed:create_or_update_teachers'].invoke
+  Rake::Task['db:seed:create_or_update_learning_objectives'].invoke
+  Rake::Task['db:seed:create_or_update_challenges'].invoke
+  Rake::Task['db:seed:create_or_update_results'].invoke
+  Rake::Task['db:seed:create_or_update_methodologies'].invoke
+end

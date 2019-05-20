@@ -45,6 +45,14 @@ Rails.application.routes.draw do
     resources :ratings, path: 'avaliacao_criterios', only: [:index]
     resources :activity_sequence_performeds, path: 'sequencias_realizadas', only: [:index]
 
+    get 'desafios/:state', to: 'challenges#index', constraints: { state: /finalizados|andamento/ }
+
+    resources :challenges, path: 'desafios', param: :slug, only: [:show, :index] do
+      resources :results, path: 'resultados', only: [:index, :show, :create]
+    end
+
+    resources :methodologies, path: 'metodos', param: :slug, only: [:show, :index]
+
     namespace :v1 do
       resources :activities
       resources :activity_sequences

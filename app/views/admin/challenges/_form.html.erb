@@ -1,0 +1,40 @@
+<%
+  f.inputs do
+    f.input :id, as: :hidden
+    f.input :status
+    f.input :category
+    f.input :image, as: :file, hint: f.object.image.attached? \
+      ? image_container(f.object.image, :thumb)
+      : content_tag(:span, "Anda não há pré-visualização")
+    f.input :title
+    f.input :finish_at
+    f.input :curricular_components, as: :check_boxes, input_html: { multiple: true }
+    f.input :learning_objectives,
+            as: :check_boxes,
+            collection:
+            learning_objectives_challenge_collection(challenge).present? ?
+              learning_objectives_challenge_collection(challenge) :
+              [ [t('helpers.select.prompt_none_learning_objectives'), nil, {style: "display: none;"}] ],
+            input_html: {
+              multiple: true
+              }
+
+    f.input :keywords, as: :tags
+
+    f.panel 'Conteúdos', class: 'content' do
+      f.inputs class: 'challenge-content-buttons' do
+        render partial: 'challenge_content_buttons', locals: { challenge: challenge, f: f }
+      end
+
+      f.has_many :challenge_content_blocks, new_record: false, allow_destroy: false do |a|
+        render partial: 'challenge_content_list', locals: { a: a }
+      end
+
+      f.inputs class: 'activity-content-structure' do
+        render partial: 'challenge_content_structure', locals: { challenge: challenge }
+      end
+    end
+
+    f.actions
+  end
+%>
