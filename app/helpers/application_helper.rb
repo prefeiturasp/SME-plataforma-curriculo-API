@@ -1,6 +1,8 @@
 module ApplicationHelper
   def variant_url(image, size, attached = false)
-    url_for(image.variant(resize: image_sizes[size])) if attached || image.attached?
+    url_for(
+      image.content_type == "image/svg+xml" ? image : image.variant(resize: image_sizes[size])
+    ) if attached || image.attached?
   end
 
   def image_sizes

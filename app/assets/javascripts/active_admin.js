@@ -13,6 +13,9 @@
 //= require lib/quill_table/TableRowBlot
 //= require lib/quill_table/TableBlot
 //= require lib/quill_table/TableModule
+//= require katex.min
+//= require mathquill.min
+//= require mathquill4quill
 //= require activities
 //= require activity_sequences
 //= require learning_objectives
@@ -68,6 +71,8 @@ function initializeQuillEditor(editor){
     quill_editor.getModule('toolbar').addHandler('divider', () => {
       addHrDividerOnEditor(quill_editor);
     });
+
+    quill_editor.enableMathQuillFormulaAuthoring();
   }
 
   setTimeout(setBulletContent, 1000);

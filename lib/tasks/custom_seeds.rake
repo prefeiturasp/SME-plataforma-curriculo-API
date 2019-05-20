@@ -8,6 +8,8 @@ namespace :db do
       content_blocks = ContentBlock.where(content_type: [:bullet, :open_text, :gallery])
         .pluck(:id, :content_type).map{|id,type| {type.to_sym => id}}.reduce(:merge)
 
+      formulas = ['F(x)=\\int_b^a\\frac{1}{3}x^3', '']
+
       return {
         'content_block_id' => content_blocks[:open_text],
         'content'          => {
@@ -53,15 +55,13 @@ namespace :db do
         next unless document
 
         result.archives.attach(
-          io:           File.open(Rails.root.join('spec', 'fixtures', 'activities', document)),
-          filename:     document,
-          content_type: 'image/jpg'
+          io:       File.open(Rails.root.join('spec', 'fixtures', 'activities', document)),
+          filename: document
         ) unless ['sample.doc', 'sample.pdf'].include? document
 
         result.archives.attach(
-          filename:     document,
-          content_type: (document == 'sample.doc' ? 'application/msword' : 'application/pdf'),
-          io:           File.open(Rails.root.join('spec', 'fixtures', 'documents', document))
+          filename: document,
+          io:       File.open(Rails.root.join('spec', 'fixtures', 'documents', document))
         ) if ['sample.doc', 'sample.pdf'].include? document
       end
     end
@@ -89,9 +89,8 @@ namespace :db do
           )
 
           teacher.avatar.attach(
-            io:           File.open(Rails.root.join('spec', 'factories', 'images', 'ruby.png')),
-            filename:     'ruby.png',
-            content_type: 'image/png'
+            io:       File.open(Rails.root.join('spec', 'factories', 'images', 'ruby.png')),
+            filename: 'ruby.png'
           )
         end
       end
@@ -172,9 +171,8 @@ namespace :db do
         )
 
         challenge.image.attach(
-          io:           File.open(Rails.root.join('spec', 'fixtures', 'activities', "#{[1, 2, 3, 4].sample}.jpg")),
-          filename:     'challenge.jpg',
-          content_type: 'image/jpg'
+          io:       File.open(Rails.root.join('spec', 'fixtures', 'activities', "#{[1, 2, 3, 4].sample}.jpg")),
+          filename: 'challenge.jpg'
         )
 
         rand(1..2).times do
@@ -218,36 +216,38 @@ namespace :db do
     desc "Create or Update Methodologies"
     task create_or_update_methodologies: :environment do
       [
-        ['Projeto', 'project.png'],
-        ['Investigação', 'investigation.png'],
-        ['Jogos', 'games.png'],
-        ['Fazer e refazer', 'make.png']
+        ['Projeto', 'project.svg'],
+        ['Investigação', 'investigation.svg'],
+        ['Jogos', 'games.svg'],
+        ['Fazer e refazer', 'make.svg']
       ].each do |title, icon|
         next unless Methodology.where(title: title).blank?
 
         meth = Methodology.create! title: title, description: Faker::Lorem.sentence(140)
 
         meth.image.attach(
-          io:           File.open(Rails.root.join('spec', 'fixtures', 'icons', icon)),
-          filename:     icon,
-          content_type: 'image/png'
+          io:       File.open(Rails.root.join('spec', 'fixtures', 'icons', icon)),
+          filename: icon
         )
 
         if title == 'Projeto'
           [
-            ['Ponto de partida', '1.png'],
-            ['Formação de equipes', '2.png'],
-            ['Definição do produto final', '3.png'],
-            ['Organização e planejamento', '4.png'],
-            ['Compilação de informação', '5.png'],
-            ['Análise e síntese', '6.png']
+            ['Ponto de partida', '1.svg'],
+            ['Formação de equipes', '2.svg'],
+            ['Definição do produto final', '3.svg'],
+            ['Organização e planejamento', '4.svg'],
+            ['Compilação de informação', '5.svg'],
+            ['Análise e síntese', '6.svg'],
+            ['Produção', '7.svg'],
+            ['Apresentação do projeto', '8.svg'],
+            ['Resposta coletiva à pergunta inicial', '9.svg'],
+            ['Avaliação e autoavaliação', '10.svg']
           ].each do |step_title, step_icon|
             step = meth.steps.create! title: step_title, description: Faker::Lorem.sentence(140)
 
             step.image.attach(
-              io:           File.open(Rails.root.join('spec', 'fixtures', 'steps', step_icon)),
-              filename:     step_icon,
-              content_type: 'image/png'
+              io:       File.open(Rails.root.join('spec', 'fixtures', 'steps', step_icon)),
+              filename: step_icon
             )
           end
         else
@@ -256,9 +256,8 @@ namespace :db do
           archive = ['sample.doc', 'sample.pdf', false].sample
 
           meth.archive.attach(
-            io:           File.open(Rails.root.join('spec', 'fixtures', 'documents', archive)),
-            filename:     archive,
-            content_type: (archive == 'sample.doc' ? 'application/msword' : 'application/pdf')
+            io:       File.open(Rails.root.join('spec', 'fixtures', 'documents', archive)),
+            filename: archive
           ) if archive
         end
       end

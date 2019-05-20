@@ -10,6 +10,8 @@
 // Active Admin's got SASS!
 @import "active_admin/mixins";
 @import "active_admin/base";
+@import "katex";
+@import "mathquill";
 @import "quill.snow";
 @import "quill.sme";
 @import "quill-table";
