@@ -52,27 +52,27 @@ function convertAllEditorsToDeltaOnSubmit () {
 // disable default quill active admin init
 var initQuillEditors = function() {}
 
-function initializeQuillEditor(editor){
-  var content = editor.querySelector( '.quill-editor-content' );
-  if( content ) {
-    var input = editor.querySelector( 'input[type="hidden"]' );
-    var quill_editor_content = editor.getElementsByClassName('quill-editor-content');
+function initializeQuillEditor (editor) {
+  var content = editor.querySelector('.quill-editor-content');
 
-    if (input.value) {
-      var obj = JSON.parse(input.value);
-      var html_content = quillGetHTML(obj);
-      input.value = html_content;
-      quill_editor_content[0].innerHTML = html_content;
-    }
+  if (!content)
+    return;
 
-    var options = editor.getAttribute( 'data-options' ) ? JSON.parse( editor.getAttribute( 'data-options' ) ) : getDefaultOptions();
-    editor['_quill-editor'] = new Quill( content, options );
-    var quill_editor = editor['_quill-editor'];
-    quill_editor.getModule('toolbar').addHandler('divider', () => {
-      addHrDividerOnEditor(quill_editor);
-    });
+  var options = editor.getAttribute('data-options') ?
+    JSON.parse(editor.getAttribute('data-options')) : getDefaultOptions();
 
-    quill_editor.enableMathQuillFormulaAuthoring();
+  var quillEditor = editor['_quill-editor'] = new Quill(content, options);
+
+  quillEditor.getModule('toolbar').addHandler('divider', addHrDividerOnEditor.bind(this, quillEditor));
+
+  if (options.modules && options.modules.formula)
+    quillEditor.enableMathQuillFormulaAuthoring();
+
+  var input = editor.querySelector('input[type="hidden"]');
+  if (input.value) {
+    quillEditor.setContents(JSON.parse(input.value));
+
+    input.value = editor.getElementsByClassName('ql-editor')[0].innerHTML;
   }
 
   setTimeout(setBulletContent, 1000);

@@ -88,4 +88,24 @@ ActiveAdmin.register Challenge do
   show do
     render 'show', context: self
   end
+
+  xls(
+    i18n_scope: [:activerecord, :attributes, :challenge],
+    header_format: { weight: :bold, color: :blue }
+  ) do
+    whitelist
+
+    column :title
+    column :category do |challenge|
+      Challenge.human_enum_name(:category, challenge.category, true)
+    end
+    column :status do |challenge|
+      Challenge.human_enum_name(:status, challenge.status, true)
+    end
+    column :results do |challenge|
+      challenge.results.count
+    end
+    column :created_at
+    column :finish_at
+  end
 end

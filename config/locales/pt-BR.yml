@@ -150,6 +150,7 @@ pt-BR:
         title: "Título"
         created_at: "Criado em"
         updated_at: "Atualizado em"
+        results: "Resultados"
       challenge_content_block:
         <<: *activity_content_block_attrs
       curricular_component:
@@ -275,6 +276,11 @@ pt-BR:
           seventh: "7º"
           eighth: "8º"
           nineth: "9º"
+        categories:
+          project: "Projeto"
+          make_and_remake: "Fazer e Refazer"
+          games: "Jogos"
+          investigation: "Investigação"
         content_types:
           to_teacher: "Para o Professor(a)"
           to_student: "Para o Estudante"
@@ -285,6 +291,9 @@ pt-BR:
           free_text: "Texto Livre"
           open_text: "Texto Aberto"
           bullet: "Lista"
+        statuses:
+          draft: "Rascunho"
+          published: "Publicada"
     errors:
       messages:
         all_ratings_is_required: "É necessário votar em todos os critérios de avaliação."

@@ -8,7 +8,7 @@ namespace :db do
       content_blocks = ContentBlock.where(content_type: [:bullet, :open_text, :gallery])
         .pluck(:id, :content_type).map{|id,type| {type.to_sym => id}}.reduce(:merge)
 
-      formulas = ['F(x)=\\int_b^a\\frac{1}{3}x^3', '']
+      formulas = ['F(x)=\\int_b^a\\frac{1}{3}x^3', 'e\ =\ mc^2', 'x=-b\\pm \\sqrt b^2 -4ac']
 
       return {
         'content_block_id' => content_blocks[:open_text],
@@ -16,8 +16,11 @@ namespace :db do
           title: Faker::Lorem.sentence,
           body:  {
             ops: [
-              { insert: Array.new(rand(10..20)) { Faker::Lorem.sentence(rand(5..10)) }.join("\n") }
-            ]
+              { insert: Array.new(rand(2..5)) { Faker::Lorem.sentence(rand(5..10)) }.join("\n") },
+              [{ insert: "\n" }, { insert: { formula: formulas.shuffle!.pop } }, { insert: "\n" }],
+              { insert: Array.new(rand(2..5)) { Faker::Lorem.sentence(rand(5..10)) }.join("\n") },
+              [{ insert: "\n" }, { insert: { formula: formulas.shuffle!.pop } }, { insert: "\n" }]
+            ].shuffle.flatten
           }.to_json
         }.to_json
       } if kind == :open_text
@@ -251,7 +254,7 @@ namespace :db do
             )
           end
         else
-          meth.content = Faker::Lorem.sentence(250)
+          meth.content = JSON.parse(create_content_block(:open_text)['content'])['body']
 
           archive = ['sample.doc', 'sample.pdf', false].sample
 
@@ -259,6 +262,8 @@ namespace :db do
             io:       File.open(Rails.root.join('spec', 'fixtures', 'documents', archive)),
             filename: archive
           ) if archive
+
+          meth.save!
         end
       end
     end
