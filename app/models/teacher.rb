@@ -2,6 +2,8 @@ class Teacher < ApplicationRecord
   has_many :collections, dependent: :destroy
   has_many :activity_sequence_performeds
   has_many :acls, dependent: :destroy
+  has_many :favourites, as: :favouritable, dependent: :destroy
+
   belongs_to :user
   has_one_attached :avatar
 

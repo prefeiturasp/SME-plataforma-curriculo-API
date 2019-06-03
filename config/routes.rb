@@ -41,6 +41,8 @@ Rails.application.routes.draw do
       get :all_collections, path: 'todas_colecoes'
       get 'sequencias_realizadas', to: 'activity_sequence_performeds#index'
       get 'sequencias_realizadas/:activity_sequence_slug/avaliacoes', to: 'activity_sequence_ratings#index'
+
+      resources :favourites, path: 'favoritos', param: :favourite_id, only: %i[index destroy create]
     end
     resources :ratings, path: 'avaliacao_criterios', only: [:index]
     resources :activity_sequence_performeds, path: 'sequencias_realizadas', only: [:index]
