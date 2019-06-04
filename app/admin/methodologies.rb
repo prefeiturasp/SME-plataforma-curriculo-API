@@ -22,9 +22,10 @@ ActiveAdmin.register Methodology do
           data: {
             options: {
               modules: {
-                toolbar: [['bold', 'italic','underline', 'strike', 'link', 'blockquote', 'list', 'sub', 'super']]
+                formula: true,
+                toolbar: [['bold', 'italic','underline', 'strike', 'link', 'blockquote', 'list', 'sub', 'super', 'formula']]
               },
-              formats: ['bold', 'italic', 'underline', 'strike', 'link', 'blockquote'],
+              formats: ['bold', 'italic', 'underline', 'strike', 'link', 'blockquote', 'formula'],
               theme: 'snow'
             }
           }

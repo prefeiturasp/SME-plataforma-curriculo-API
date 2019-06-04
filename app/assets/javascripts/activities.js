@@ -146,6 +146,7 @@ function initializeQuillEditorAndToolbar (id) {
     var toolbar = $(`#toolbar_${id}`);
     if (toolbar.length) {
       editor[0].insertBefore(toolbar[0], quill_content);
+      jQuery(toolbar[0]).show();
     }
   }
 }

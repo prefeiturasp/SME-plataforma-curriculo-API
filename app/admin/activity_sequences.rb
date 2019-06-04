@@ -117,7 +117,7 @@ ActiveAdmin.register ActivitySequence do
       as.knowledge_matrices.pluck(:title).join ', '
     end
     column :activities do |as|
-      as.activities.pluck(:title).join ', '
+      as.activities.count
     end
   end
 end

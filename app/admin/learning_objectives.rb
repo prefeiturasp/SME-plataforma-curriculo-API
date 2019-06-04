@@ -98,7 +98,9 @@ ActiveAdmin.register LearningObjective do
       LearningObjective.human_enum_name(:year, learning_objective.year, true)
     end
     column :description
-    column :curricular_component
+    column :curricular_component do |learning_objective|
+      learning_objective.curricular_component.name
+    end
     column :created_at
   end
 end
