@@ -5,8 +5,11 @@
 <% f.input :body, as: :quill_editor, label: false, class: 'bullet-fields', input_html: {
   data: {
     options: {
+      autolist: true,
       modules: {
-        toolbar: [['bold', 'italic','underline', 'strike', 'link', 'blockquote', 'list', 'sub', 'super']]
+        toolbar:  [
+          ['bold', 'italic','underline', 'strike', 'link', 'blockquote', 'list', 'sub', 'super']
+        ]
       },
       formats: [
         'bold',

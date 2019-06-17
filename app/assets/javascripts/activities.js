@@ -8,11 +8,13 @@ $(document).ready(function(){
     $("input[name='activity[image]']").change(function() {
       validateSize(this);
     });
+
     $('.gallery-image-add-button').change( function(){
       var parent = $(this).parent();
       var hint = parent.find("p.inline-hints");
       hint.empty();
     });
+
     $.when( setActivityContentBlockToolbarId() ).done(function() {
       fixActivityActionPosition();
       setToolbarToActivityContents();

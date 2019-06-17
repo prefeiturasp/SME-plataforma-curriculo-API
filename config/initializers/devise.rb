@@ -293,5 +293,4 @@ Devise.setup do |config|
     ]
     jwt.request_formats = { user: [:json] }
   end
-
 end

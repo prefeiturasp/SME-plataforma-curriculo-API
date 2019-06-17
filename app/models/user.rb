@@ -21,9 +21,10 @@ class User < ApplicationRecord
   end
 
   def self.authenticate_in_sme(credentials)
-    response = SMEAuthentication.login(credentials.symbolize_keys)
-    verifier = TokenValidator.new(response.sgpToken.token, response.sgpToken.refreshToken)
+    response       = SMEAuthentication.login(credentials.symbolize_keys)
+    verifier       = TokenValidator.new(response.sgpToken.token, response.sgpToken.refreshToken)
     valid_username = response.username.eql?(credentials[:username])
+
     User.find_or_create_by_auth_params(response, credentials) if valid_username && verifier.valid?
   rescue StandardError => e
     Rails.logger.error(e)

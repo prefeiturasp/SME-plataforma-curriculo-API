@@ -24,31 +24,28 @@
 //   .status_tag { background: #6090DB; }
 
 
-.ql-divider {
-  width: 55px !important;
-}
+.ql-divider { width: 55px !important }
 
-.bullet .replace-id, .bullet .another-toolbar, ol .another-toolbar { display: none }
+.bullet .replace-id, ol .another-toolbar { display: none }
+.bullet .another-toolbar { display: none !important }
 
 #span-divider{
   color: #6a6a6a;
-  text-shadow: none;
+  text-shadow: none
 }
 
 #span-divider:hover, .ql-divider button:focus, .ql-divider button:hover {
-  color: #06c !important;
+  color: #06c !important
 }
 
 .choices-group {
   max-height: 250px;
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
+  flex-wrap: wrap
 }
 
-.has_many_fields {
-  padding-top: 0px;
-}
+.has_many_fields { padding-top: 0px }
 
 .activity, .challenge {
   .panel_contents {

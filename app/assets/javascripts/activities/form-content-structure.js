@@ -57,19 +57,19 @@ function blockWasRemoved(content_block) {
   return span.hasClass('removed');
 }
 
-function focusOrRedirect(win, $activity_form, post_url, data){
-  if ($activity_form.is("#new_activity")) {
+function focusOrRedirect (win, form, post_url, data) {
+  if (form.is('#new_activity') || form.is('#new_challenge')) {
     window.location.href = post_url + "/" + data.slug + "/edit";
   } else {
     window.location.reload(false);
   }
 }
 
-function openLinkInNewTab($activity_form, data, link_to_redirect, post_url){
-  link_to_redirect = ($activity_form.is("#new_activity")) ? (link_to_redirect + data.slug) : link_to_redirect;
-  var win = window.open(link_to_redirect, '_blank');
+function openLinkInNewTab (form, data, link, post_url) {
+  link = (form.is("#new_activity") || form.is('#new_challenge')) ? (link + data.slug) : link;
+  var win = window.open(link, '_blank');
   if (win) {
-    focusOrRedirect(win, $activity_form, post_url, data);
+    focusOrRedirect(win, form, post_url, data);
   } else {
     alert('Por favor, permita pop-ups para este site');
   }
@@ -149,9 +149,8 @@ function saveContentWhenClickInPreview(){
   $('a.preview-link').on('click', function(evt){
     var link_to_redirect = $(this).attr('href');
     evt.preventDefault();
-    var $activity_form = $('form.activity, form.chellenge');
+    var $activity_form = $('form.activity, form.challenge');
     if ($activity_form.length > 0) {
-      //convertAllEditorsToDelta();
       convertContentToDelta();
       createOrUpdateActivityContentBlock($activity_form, link_to_redirect);
     }

@@ -61,6 +61,9 @@ function initializeQuillEditor (editor) {
   var options = editor.getAttribute('data-options') ?
     JSON.parse(editor.getAttribute('data-options')) : getDefaultOptions();
 
+  if (options.autolist)
+    options = setBulletContent(options);
+
   var quillEditor = editor['_quill-editor'] = new Quill(content, options);
 
   quillEditor.getModule('toolbar').addHandler('divider', addHrDividerOnEditor.bind(this, quillEditor));
@@ -74,26 +77,30 @@ function initializeQuillEditor (editor) {
 
     input.value = editor.getElementsByClassName('ql-editor')[0].innerHTML;
   }
-
-  setTimeout(setBulletContent, 1000);
 }
 
-function setBulletContent () {
-  $('.bullet .quill-editor').each(function () {
-    if (!$(this).prop('bullet-set')) {
-      $(this)[0]["_quill-editor"].keyboard.addBinding(
-        {key: ' '},
-        {collapsed: true, format: {list: false}},
-        function(range, context) {
+function setBulletContent (options) {
+  options.modules.keyboard = {
+    bindings: {
+      enter: {
+        key: 13,
+        handler: function (range, context) {
+          this.quill.formatLine(range.index, 1, 'list', 'bullet');
+          this.quill.insertText(range.index, '\n');
+        }
+      },
+      space: {
+        key: 32,
+        handler: function (range, context) {
           this.quill.formatLine(range.index, 1, 'list', 'bullet');
           this.quill.insertText(range.index, ' ');
           this.quill.setSelection(range.index + 1);
         }
-      );
-
-      $(this).prop('bullet-set', true);
+      }
     }
-  });
+  };
+
+  return options;
 }
 
 function addHrDividerOnEditor(quill) {
