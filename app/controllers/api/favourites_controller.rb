@@ -42,7 +42,9 @@ module Api
       end
 
       def set_favourite
-        @favourite = Favourite.challenges.where teacher_id: @teacher.id, id: params[:favourite_id]
+        @favourite = Favourite.challenges.where(
+          teacher_id: @teacher.id, favouritable_id: params[:favourite_id]
+        )
 
         raise ActiveRecord::RecordNotFound if @favourite.blank?
 

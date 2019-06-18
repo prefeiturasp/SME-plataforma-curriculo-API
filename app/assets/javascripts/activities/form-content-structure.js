@@ -66,6 +66,9 @@ function focusOrRedirect (win, form, post_url, data) {
 }
 
 function openLinkInNewTab (form, data, link, post_url) {
+  if (data && data.title && !data.slug)
+    data.slug = slugify(data.title);
+
   link = (form.is("#new_activity") || form.is('#new_challenge')) ? (link + data.slug) : link;
   var win = window.open(link, '_blank');
   if (win) {
@@ -155,4 +158,25 @@ function saveContentWhenClickInPreview(){
       createOrUpdateActivityContentBlock($activity_form, link_to_redirect);
     }
   });
+}
+
+function slugify (str) {
+  str = str.replace(/^\s+|\s+$/g, "");
+  str = str.toLowerCase();
+
+  // remove accents, swap ñ for n, etc
+  var from = "åàáãäâèéëêìíïîòóöôùúüûñç·/_,:;",
+      to   = "aaaaaaeeeeiiiioooouuuunc------";
+
+  for (var i = 0, l = from.length; i < l; i++)
+    str = str.replace(new RegExp(from.charAt(i), "g"), to.charAt(i));
+
+  str = str
+    .replace(/[^a-z0-9 -]/g, "") // remove invalid chars
+    .replace(/\s+/g, "-") // collapse whitespace and replace by -
+    .replace(/-+/g, "-") // collapse dashes
+    .replace(/^-+/, "") // trim - from start of text
+    .replace(/-+$/, ""); // trim - from end of text
+
+  return str;
 }

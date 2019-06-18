@@ -63,10 +63,8 @@
       handlers: {
         edit: function() {
           value = mqField.latex();
-//          console.log(mqField.latex());
           if (value.length > 0) {
-            console.log(value);
-            latexInput.value = value; //mqField.latex();
+            latexInput.value = value;
           }
         }
       }
@@ -74,7 +72,6 @@
 
     // don't show the old math when the tooltip gets opened next time
     getTooltipSaveButton(this).addEventListener("click", function() {
-      console.log(' here ? ');
       mqField.latex("");
     });
   };

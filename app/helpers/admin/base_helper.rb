@@ -49,12 +49,11 @@ module Admin
     end
 
     def activity_preview_path(activity_sequence_slug, activity_slug)
-      activity_sequence_preview_path(activity_sequence_slug) << "/atividade/#{activity_slug}"
+      "#{ENV['HTTP_STAGING_URL']}/atividade/#{activity_sequence_slug}/#{activity_slug}"
     end
 
     def challenge_preview_path challenge_slug
       "#{ENV['HTTP_STAGING_URL']}/desafio/#{challenge_slug}"
-      #activity_sequence_preview_path(activity_sequence_slug) << "/atividade/#{activity_slug}"
     end
 
     def books_toolbar_options
