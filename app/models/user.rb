@@ -26,6 +26,9 @@ class User < ApplicationRecord
     valid_username = response.username.eql?(credentials[:username])
 
     User.find_or_create_by_auth_params(response, credentials) if valid_username && verifier.valid?
+  rescue Flexirest::HTTPClientException, Flexirest::HTTPServerException => e
+    Rails.logger.error("API returned #{e.status} : #{e.result}")
+    false
   rescue StandardError => e
     Rails.logger.error(e)
     false
