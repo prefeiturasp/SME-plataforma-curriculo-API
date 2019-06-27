@@ -1,7 +1,10 @@
 ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation, :admin
 
-  config.filters = false
+  config.filters = true
+
+  filter :email
+  filter :admin
 
   controller do
     #
