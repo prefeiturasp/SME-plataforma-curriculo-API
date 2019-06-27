@@ -45,20 +45,6 @@ ActiveAdmin.register LearningObjective do
     f.actions
   end
 
-  index do
-    selectable_column
-    column :code
-    column :year do |learning_objective|
-      LearningObjective.human_enum_name(:year, learning_objective.year, true)
-    end
-    column :description
-    column :curricular_component
-    column :created_at
-    column :updated_at
-
-    actions
-  end
-
   show do
     attributes_table do
       row :code
@@ -85,6 +71,33 @@ ActiveAdmin.register LearningObjective do
         column :description
       end
     end
+  end
+
+  index do
+    selectable_column
+
+    column :code
+    column :year do |learning_objective|
+      LearningObjective.human_enum_name(:year, learning_objective.year, true)
+    end
+    column :description
+    column :curricular_component
+    column :created_at
+    column :updated_at
+
+    actions
+  end
+
+  csv do
+    column :code
+    column :year do |learning_objective|
+      LearningObjective.human_enum_name(:year, learning_objective.year, true)
+    end
+    column :description
+    column :curricular_component do |learning_objective|
+      learning_objective.curricular_component.name
+    end
+    column :created_at
   end
 
   xls(

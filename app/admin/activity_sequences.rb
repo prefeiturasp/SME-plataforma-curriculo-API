@@ -89,6 +89,33 @@ ActiveAdmin.register ActivitySequence do
     render 'show', context: self
   end
 
+  csv do
+    column :title
+    column :presentation_text
+    column :estimated_time
+    column :year do |activity_sequence|
+      ActivitySequence.human_enum_name(:year, activity_sequence.year, true)
+    end
+    column :main_curricular_component do |as|
+      as.main_curricular_component.name
+    end
+    column :learning_objectives do |as|
+      as.learning_objectives.pluck(:code).join ', '
+    end
+    column :axes do |as|
+      as.axes.pluck(:code).join ', '
+    end
+    column :sustainable_development_goals do |as|
+      as.sustainable_development_goals.pluck(:name).join ', '
+    end
+    column :knowledge_matrices do |as|
+      as.knowledge_matrices.pluck(:title).join ', '
+    end
+    column :activities do |as|
+      as.activities.count
+    end
+  end
+
   xls(
     i18n_scope: [:activerecord, :attributes, :activity_sequence],
     header_format: { weight: :bold, color: :blue }
