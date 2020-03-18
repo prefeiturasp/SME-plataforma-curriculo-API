@@ -86,3 +86,4 @@ gem 'searchkick'
 
 # Access your external REST API
 gem 'flexirest', '~> 1.7.5'
+gem 'httparty'
