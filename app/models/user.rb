@@ -27,8 +27,12 @@ class User < ApplicationRecord
       "#{base_uri}/api/AutenticacaoSgp/Autenticar",
       { body: credentials.symbolize_keys }
     )
-    body = JSON.parse(response.body, symbolize_names: true)
-    User.find_or_create_by_auth_params(body, credentials) if response.code == 200
+    if response.code == 200
+      body = JSON.parse(response.body, symbolize_names: true)
+      User.find_or_create_by_auth_params(body, credentials)
+    else
+      false
+    end
   rescue StandardError => e
     Rails.logger.error(e)
     false
