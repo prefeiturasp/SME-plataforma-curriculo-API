@@ -1,5 +1,7 @@
 class User < ApplicationRecord
   include JtiMatcherAndSmeStrategy
+  include HTTParty
+  base_uri ENV['SME_AUTHENTICATION_BASE_URL']
   devise :database_authenticatable, :recoverable, :rememberable, :trackable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
@@ -21,20 +23,33 @@ class User < ApplicationRecord
   end
 
   def self.authenticate_in_sme(credentials)
-    response = SMEAuthentication.login(credentials.symbolize_keys)
-    verifier = TokenValidator.new(response.sgpToken.token, response.sgpToken.refreshToken)
-    valid_username = response.username.eql?(credentials[:username])
-    User.find_or_create_by_auth_params(response, credentials) if valid_username && verifier.valid?
+    response = HTTParty.post(
+      "#{base_uri}/api/AutenticacaoSgp/Autenticar",
+      { body: credentials.symbolize_keys }
+    )
+    body = JSON.parse(response.body, symbolize_names: true)
+    User.find_or_create_by_auth_params(body, credentials) if response.code == 200
   rescue StandardError => e
     Rails.logger.error(e)
     false
   end
 
-  def self.find_or_create_by_auth_params(response, credentials)
-    user = User.find_or_create_by(username: response.username)
-    user.email = response.email
-    user.password = credentials['password']
+  def self.find_or_create_by_auth_params(body, credentials)
+    user = User.find_or_create_by(username: body[:codigoRf])
+    info = User.get_info_from_sme(body[:codigoRf])
+    user.email = info[:email]
+    user.password = credentials[:senha]
+    user.email = "test@email.com.br" if user.email.nil?
+    user.teacher = Teacher.find_or_create_by(name: body[:nome]) if body[:nome].present?
     user.save
+  end
+
+  def self.get_info_from_sme(rf_code)
+    response = HTTParty.get(
+      "#{base_uri}/api/AutenticacaoSgp/#{rf_code}/dados"
+    )
+    body = JSON.parse(response.body, symbolize_names: true)
+    body
   end
 
   def self.find_for_database_authentication(warden_conditions)
