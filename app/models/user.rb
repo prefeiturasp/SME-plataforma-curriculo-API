@@ -44,7 +44,6 @@ class User < ApplicationRecord
     user.email = info[:email]
     user.password = credentials[:senha]
     user.email = "test@email.com.br" if user.email.nil?
-    user.teacher = Teacher.find_or_create_by(name: body[:nome]) if body[:nome].present?
     user.save
   end
 
