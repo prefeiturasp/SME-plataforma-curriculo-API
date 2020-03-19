@@ -40,10 +40,10 @@ class User < ApplicationRecord
 
   def self.find_or_create_by_auth_params(body, credentials)
     user = User.find_or_create_by(username: body[:codigoRf])
-    info = User.get_info_from_sme(body[:codigoRf])
-    user.email = info[:email]
+    user_info = User.get_info_from_sme(body[:codigoRf])
+    user.name = user_info[:nome]
+    user.email = user_info[:email]
     user.password = credentials[:senha]
-    user.email = "test@email.com.br" if user.email.nil?
     user.save
   end
 
@@ -67,35 +67,9 @@ class User < ApplicationRecord
     end
   end
 
-  def refresh_sme_token!
-    return false if valid_sme_token?
-
-    response = SMEAuthentication.refresh_token(refresh_token_params)
-    update_user_from_sme_response(response)
-  rescue StandardError
-    refresh_sme_token_fail
-  end
-
-  def update_user_from_sme_response(response)
-    verifier = TokenValidator.new(response.token, response.refreshToken)
-    if verifier.valid?
-      update(sme_token: verifier.token, sme_refresh_token: verifier.refresh_token)
-    else
-      refresh_sme_token_fail
-    end
-  end
-
-  def refresh_token_params
-    { username: username, refreshToken: sme_refresh_token }
-  end
-
   private
 
   def assign_teacher
     create_teacher if username.present? && teacher.nil?
-  end
-
-  def refresh_sme_token_fail
-    revoke_jwt! ? false : true
   end
 end

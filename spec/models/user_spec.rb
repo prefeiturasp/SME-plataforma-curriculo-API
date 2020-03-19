@@ -99,14 +99,6 @@ RSpec.describe User, type: :model do
         expect(subject.login).to eq(subject.username)
       end
     end
-
-    context 'refresh_token_params' do
-      it 'return valid hash' do
-        expected = { username: subject.username, refreshToken: subject.sme_refresh_token }
-
-        expect(subject.refresh_token_params).to eq(expected)
-      end
-    end
   end
 
   describe 'Callbacks' do
