@@ -87,3 +87,6 @@ gem 'searchkick'
 # Access your external REST API
 gem 'flexirest', '~> 1.7.5'
 gem 'httparty'
+
+# User CarrierWave to provide a simple and extremely flexible way to upload files
+gem 'carrierwave', '~> 2.0'
