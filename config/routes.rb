@@ -49,6 +49,7 @@ Rails.application.routes.draw do
       resources :activities
       resources :activity_sequences
       resources :activity_types
+      resources :answer_books
       resources :axes
       resources :curricular_components
       resources :learning_objectives

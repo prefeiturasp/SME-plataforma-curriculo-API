@@ -44,6 +44,9 @@ pt-BR:
       user:
         one: "Usuário"
         other: "Usuários"
+      answer_book:
+        one: "Caderno de Respostas"
+        other: "Cadernos de Respostas"
     attributes:
       activity:
         activity_sequence: "Sequência de Atividade"
@@ -209,6 +212,11 @@ pt-BR:
           long_text: "Texto longo"
           gallery: "Galeria"
           free_text: "Texto Livre"
+      answer_book:
+          name: "Título"
+          cover_image: "Imagem de capa"
+          book_file: "Caderno resposta"
+          curricular_component: "Componente curricular"
     errors:
       messages:
         all_ratings_is_required: "É necessário votar em todos os critérios de avaliação."
