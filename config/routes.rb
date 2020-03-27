@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       match :logout, to: 'sessions#destroy', as: :destroy_jwt_user_session, via: [:delete, :get]
     end
 
+    resources :answer_books, only:[:index]
     resources :filters, path: 'filtros', only: [:index]
     resources :activity_sequences, path: 'sequencias', param: :slug, only: %i[index show] do
       get 'atividades/:activity_slug', to: 'activities#show'

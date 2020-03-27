@@ -53,6 +53,8 @@ module Api
           :name,
           :cover_image,
           :book_file,
+          :year,
+          :level,
           :curricular_component_id
         )
       end

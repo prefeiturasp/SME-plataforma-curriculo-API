@@ -2,6 +2,8 @@ ActiveAdmin.register AnswerBook do
   permit_params :name,
                 :cover_image,
                 :book_file,
+                :year,
+                :level,
                 :curricular_component_id
 
 
@@ -17,18 +19,22 @@ ActiveAdmin.register AnswerBook do
 
   form do |f|
     f.inputs do
-      f.input :name
+      f.input :name, required: true
+      f.input :year, required: true
+      f.input :curricular_component, required: true
+      f.input :level, label: 'Nível educacional', as: :select, collection: AnswerBook::EDUCATION_LEVEL
       f.input :cover_image, required: true, as: :file
       f.input :book_file, required: true, as: :file
-      f.input :curricular_component
     end
     f.actions
   end
-
+  
   index do
     selectable_column
     column :id
     column :name
+    column :year
+    column :level
     column :cover_image do |obj|
       image_tag(
         "/assets/#{obj.cover_image_identifier}",
@@ -49,6 +55,8 @@ ActiveAdmin.register AnswerBook do
     attributes_table do
       row :id
       row :name
+      row :year
+      row :level
       row :cover_image do |obj|
         image_tag(
           "/assets/#{obj.cover_image_identifier}",
