@@ -28,12 +28,12 @@ function getOptionalText($fieldset_parent){
 
 function setContentStructure(){
   var contents = $('li .has_many_fields').not('.gallery-has-many-images');
-  var structure_list = $('.activity-content-structure ol');
-  var sortable_list = $('.activity-content-structure ul#sortable-list');
-  $('.activity-content-structure ol li').not(".preview-item").remove();
+  var structure_list = $('.activity-content-structure ol, .challenge-content-structure ol');
+  var sortable_list = $('.activity-content-structure ul#sortable-list, .challenge-content-structure ul#sortable-list');
+  $('.activity-content-structure ol li, .challenge-content-structure ol li').not(".preview-item").remove();
   for( var i = 0; i < contents.length; i++ ) {
     if (!blockWasRemoved(contents[i])) {
-      var input = $(contents[i]).find('input.activity-content-id');
+      var input = $(contents[i]).find('input.activity-content-id, input.challenge-content-id');
       var activity_content_id = input.val();
       var anchor_id = $(contents[i]).find('legend').attr('id');
       var $ol_parent = $(input[0]).parent().parent();
@@ -106,12 +106,15 @@ function renderErrorsResponse(errors){
   goToTop(input_offset);
 }
 
-function generateInputNameFromKey(key){
+function generateInputNameFromKey (key) {
   var input_name = "activity";
   var keySplited = key.split(".");
   for(var k of keySplited){
     if (k === 'activity_content_blocks') {
       input_name = input_name + '[activity_content_blocks_attributes]';
+      break;
+    } else if (k === 'challenge_content_blocks') {
+      input_name = input_name + '[challenge_content_blocks_attributes]';
       break;
     } else {
       input_name = input_name + "[" + k + "]";
@@ -120,10 +123,19 @@ function generateInputNameFromKey(key){
   return input_name;
 }
 
-function createOrUpdateActivityContentBlock($activity_form, link_to_redirect){
+function createOrUpdateActivityContentBlock ($activity_form, link_to_redirect) {
   var post_url = $activity_form.attr('action');
-  $.post(post_url, $activity_form.serialize(), function(){}, 'json')
-    .done(function(data){
+  var formData = window.FormData ? new FormData($activity_form[0]) : $activity_form.serialize();
+
+  $.ajax({
+    url: post_url +'.json',
+    data: formData,
+    cache: false,
+    contentType: false,
+    processData: false,
+    type: 'POST'
+  })
+    .done(function (data) {
       openLinkInNewTab($activity_form, data, link_to_redirect, post_url);
     })
     .fail(function(xhr, status, error) {
@@ -137,9 +149,10 @@ function saveContentWhenClickInPreview(){
   $('a.preview-link').on('click', function(evt){
     var link_to_redirect = $(this).attr('href');
     evt.preventDefault();
-    var $activity_form = $('form.activity');
-    if ($activity_form.length > 0){
-      convertAllEditorsToDelta();
+    var $activity_form = $('form.activity, form.chellenge');
+    if ($activity_form.length > 0) {
+      //convertAllEditorsToDelta();
+      convertContentToDelta();
       createOrUpdateActivityContentBlock($activity_form, link_to_redirect);
     }
   });

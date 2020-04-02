@@ -11,6 +11,7 @@ RSpec.describe Api::SessionsController, type: :controller do
     @request.env['devise.mapping'] = Devise.mappings[:user]
   end
 
+
   describe 'POST #create' do
     context 'with valid params' do
       it 'renders a JSON response with the new session' do

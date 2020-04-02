@@ -7,6 +7,12 @@ ActiveAdmin.register LearningObjective do
                 sustainable_development_goal_ids: [],
                 axis_ids: []
 
+  config.filters = true
+
+  filter :year
+  filter :curricular_component
+  filter :created_at
+
   collection_action :change_axes, method: :get do
     render json: {}, status: :unauthorized && return unless current_user.admin?
 
@@ -79,5 +85,22 @@ ActiveAdmin.register LearningObjective do
         column :description
       end
     end
+  end
+
+  xls(
+    i18n_scope: [:activerecord, :attributes, :learning_objective],
+    header_format: { weight: :bold, color: :blue }
+  ) do
+    whitelist
+
+    column :code
+    column :year do |learning_objective|
+      LearningObjective.human_enum_name(:year, learning_objective.year, true)
+    end
+    column :description
+    column :curricular_component do |learning_objective|
+      learning_objective.curricular_component.name
+    end
+    column :created_at
   end
 end

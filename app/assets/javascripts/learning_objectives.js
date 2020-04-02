@@ -1,7 +1,6 @@
 $(document).ready(function(){
   if ($('form.learning_objective').length){
     $('#learning_objective_curricular_component_id').change(function(){
-      console.log("CHANGED");
       fillAxesFromLearningObjectives();
     });
 

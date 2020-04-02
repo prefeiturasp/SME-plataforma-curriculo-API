@@ -1,7 +1,7 @@
 module Api
   class TeachersController < ApiController
     before_action :authenticate_api_user!, except: [:all_collections]
-    before_action :set_teacher, only: %i[show update me]
+    before_action :set_teacher, only: %i[show update me all_challenges]
     before_action :check_user_permission, only: %i[show update]
 
     def me
@@ -52,6 +52,12 @@ module Api
       @collections = teacher.collections
 
       render :all_collections
+    end
+
+    def all_challenges
+      @challenges = @teacher.challenges
+
+      render :all_challenges
     end
 
     private

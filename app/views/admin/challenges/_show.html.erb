@@ -1,0 +1,64 @@
+<% context.instance_eval do
+
+  attributes_table do
+    row :title
+    row :status do |challenge|
+      Challenge.human_enum_name(:status, challenge.status)
+    end
+    row :category do |challenge|
+      Challenge.human_enum_name(:category, challenge.category)
+    end
+    row :finish_at
+    row :image do |challenge|
+      image_tag variant_url(challenge.image, :large) if challenge.image.attached?
+    end
+    row :keywords
+    row :created_at
+    row :updated_at
+  end
+
+  panel I18n.t('activerecord.attributes.activity.activity_content_blocks'), class: 'show-content-blocks' do
+    if challenge.challenge_content_blocks.exists?
+      table_for challenge.challenge_content_blocks do
+        column do |act|
+          panel I18n.t("activerecord.attributes.enums.content_types.#{act.content_block.content_type}") do
+            attributes_table_for act do
+              row :title if act.title.present?
+              row :number if act.number.present?
+              if act.body.present?
+                row :body do
+                  raw(act.body)
+                end
+              end
+              if act.images.present?
+                table_for act.images do
+                  column :subtitle
+                  column :image do |i|
+                    image_tag variant_url(i.file, :thumb) if i.file.attached?
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
+  panel I18n.t('activerecord.attributes.activity.curricular_components') do
+    if challenge.curricular_components.exists?
+      table_for challenge.curricular_components do
+        column :name
+      end
+    end
+ end
+
+  panel I18n.t('activerecord.attributes.activity.learning_objectives') do
+    if challenge.learning_objectives.exists?
+      table_for challenge.learning_objectives do
+        column :code
+        column :description
+      end
+    end
+  end
+end %>

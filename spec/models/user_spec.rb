@@ -159,10 +159,16 @@ RSpec.describe User, type: :model do
       'User-Agent' => 'Flexirest/1.7.5'
     }
   end
+
   let(:response_body) do
     {
-      "token": valid_sme_token,
-      "refreshToken": refresh_token
+      "name": user.username,
+      "username": user.username,
+      "email": user.email,
+      "sgpToken": {
+        "token": valid_sme_token,
+        "refreshToken": refresh_token
+      }
     }
   end
 
