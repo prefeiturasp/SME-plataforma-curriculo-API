@@ -2,8 +2,8 @@ ActiveAdmin.register AnswerBook do
   permit_params :name,
                 :cover_image,
                 :book_file,
-                :year,
                 :level,
+                :year,
                 :curricular_component_id
 
 
@@ -19,27 +19,30 @@ ActiveAdmin.register AnswerBook do
 
   form do |f|
     f.inputs do
+      f.input :curricular_component, required: true
       f.input :name, required: true
       f.input :year, required: true
-      f.input :curricular_component, required: true
-      f.input :level, label: 'Nível educacional', as: :select, collection: AnswerBook::EDUCATION_LEVEL
+      f.input :level, label: 'Segmento', as: :select, collection: AnswerBook::EDUCATION_LEVEL
       f.input :cover_image, required: true, as: :file
       f.input :book_file, required: true, as: :file
     end
     f.actions
   end
-  
+
   index do
     selectable_column
     column :id
-    column :name
-    column :year
-    column :level
     column :cover_image do |obj|
       image_tag(
-        "/assets/#{obj.cover_image_identifier}",
-        style: "max-width: 144px;"
+      "/assets/#{obj.cover_image_identifier}",
+      style: "max-width: 138px; min-height: 180px;"
       ) if obj.cover_image_identifier.present?
+    end
+    column :curricular_component
+    column :name
+    column :year
+    column :level do |obj|
+      AnswerBook::SEGMENTOS.select { |k,v| k ==  obj.level.to_sym }[obj.level.to_sym]
     end
     column :book_file do |obj|
       link_to(
@@ -47,7 +50,6 @@ ActiveAdmin.register AnswerBook do
         "/assets/#{obj.book_file_identifier}"
       ) if obj.book_file_identifier.present?
     end
-    column :curricular_component
     actions
   end
 
@@ -56,7 +58,9 @@ ActiveAdmin.register AnswerBook do
       row :id
       row :name
       row :year
-      row :level
+      row :level do |obj|
+        AnswerBook::SEGMENTOS.select { |k,v| k ==  obj.level.to_sym }[obj.level.to_sym]
+      end
       row :cover_image do |obj|
         image_tag(
           "/assets/#{obj.cover_image_identifier}",

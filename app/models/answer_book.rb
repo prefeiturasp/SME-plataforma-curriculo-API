@@ -7,8 +7,8 @@ class AnswerBook < ApplicationRecord
   validates :year, presence: true
   validates :level, presence: true
 
-  mount_uploader :cover_image, AnswerBookFilesUploader
-  mount_uploader :book_file, AnswerBookFilesUploader
+  mount_uploader :cover_image, AnswerBookImageUploader
+  mount_uploader :book_file, AnswerBookFileUploader
 
   EDUCATION_LEVEL = {
     'Infantil': :kid,
@@ -16,6 +16,14 @@ class AnswerBook < ApplicationRecord
     'Fundamental': :basic,
     'EJA': :eja,
     'Orientações': :guide
+  }
+
+  SEGMENTOS = {
+    kid: 'Infantil',
+    special: 'Especial',
+    basic: 'Fundamental',
+    eja: 'EJA',
+    guide: 'Orientações'
   }
 
   class << self

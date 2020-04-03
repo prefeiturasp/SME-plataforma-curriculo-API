@@ -44,6 +44,7 @@ class User < ApplicationRecord
     user.name = user_info[:nome]
     user.email = user_info[:email]
     user.password = credentials[:senha]
+    user.admin = false
     user.save
   end
 
