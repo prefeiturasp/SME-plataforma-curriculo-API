@@ -8,7 +8,10 @@ Rails.application.configure do
   # your application in memory, allowing both threaded web servers
   # and those relying on copy on write to perform better.
   # Rake tasks automatically ignore this option for performance.
-  config.eager_load = true
+  #config.eager_load = true
+  # DISABLE_SPRING=true console ...or...
+  # DISABLE_SPRING=true bundle exec rails console
+  config.eager_load = defined?(Rails::Console) ? false : true
 
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false

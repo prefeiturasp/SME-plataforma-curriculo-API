@@ -204,7 +204,7 @@ ActiveAdmin.setup do |config|
   #   config.register_stylesheet 'my_print_stylesheet.css', media: :print
   #
   # To load a javascript file:
-  #   config.register_javascript 'my_javascript.js'
+    config.register_javascript 'answer_book.js'
 
   # == CSV options
   #
@@ -242,7 +242,8 @@ ActiveAdmin.setup do |config|
   #
   # To disable/customize for the :admin namespace:
   #
-  #   config.namespace :admin do |admin|
+config.namespace :admin do |admin|
+  admin.download_links = %i[csv xls]
   #
   #     # Disable the links entirely
   #     admin.download_links = false
@@ -254,7 +255,7 @@ ActiveAdmin.setup do |config|
   #     #   (for example, with cancan)
   #     admin.download_links = proc { can?(:view_download_links) }
   #
-  #   end
+end
 
   # == Pagination
   #

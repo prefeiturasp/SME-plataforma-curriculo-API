@@ -17,7 +17,9 @@ FactoryBot.define do
     end
 
     association :main_curricular_component, factory: :curricular_component
-
+    association :segment, factory: :segment
+    association :stage, factory: :stage
+    
     knowledge_matrix_ids { [create(:knowledge_matrix).id] }
     learning_objectives { [create(:learning_objective)] }
 

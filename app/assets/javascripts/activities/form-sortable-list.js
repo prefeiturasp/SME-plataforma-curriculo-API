@@ -1,5 +1,5 @@
 function updateContentBlockSequenceOnDatabase() {
-  var activity_id = $('#activity_id').val();
+  var activity_id = $('#activity_id, #challenge_id').val();
   var post_url = `/admin/activities/${activity_id}/activity_content_blocks/set_order`;
   var order = $('#sortable-list').sortable('toArray');
   var post_data = { activity_content_block_ids: order };
@@ -40,7 +40,7 @@ function setSequenceInContentBlocks(){
 function setSortableList(){
   $('#sortable-list').sortable({
     update: function() {
-      $('form#edit_activity').length > 0 ? updateContentBlockSequenceOnDatabase() : null;
+      $('form#edit_activity, form#edit_challenge').length > 0 ? updateContentBlockSequenceOnDatabase() : null;
       setSequenceInContentBlocks();
       moveContentBlocksAfterSortable();
     }

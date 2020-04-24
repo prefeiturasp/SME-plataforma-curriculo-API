@@ -1,17 +1,17 @@
 if Rails.env.development?
-  admin = User.find_or_create_by(email: '')
+  admin = User.find_or_create_by(email: 'admin@jurema.la')
   admin.password = 'qwe123'
   admin.password_confirmation = 'qwe123'
   admin.save
 end
 
-[
-  { name: 'Grupo' },
-  { name: 'Individual' },
-  { name: 'Dupla' }
-].each do |attributes|
-  ActivityType.find_or_create_by(attributes)
-end
+#[
+#  { name: 'Grupo' },
+#  { name: 'Individual' },
+#  { name: 'Dupla' }
+#].each do |attributes|
+#  ActivityType.find_or_create_by(attributes)
+#end
 
 [
   { name: 'Arte' },
@@ -262,3 +262,11 @@ end
 end
 
 Rake::Task['db:seed:create_or_update_content_blocks'].invoke
+
+if Rails.env.development?
+  Rake::Task['db:seed:create_or_update_teachers'].invoke
+  Rake::Task['db:seed:create_or_update_learning_objectives'].invoke
+  Rake::Task['db:seed:create_or_update_challenges'].invoke
+  Rake::Task['db:seed:create_or_update_results'].invoke
+  Rake::Task['db:seed:create_or_update_methodologies'].invoke
+end

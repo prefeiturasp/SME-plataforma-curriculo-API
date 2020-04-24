@@ -8,6 +8,7 @@
 /.bundle
 
 # Ignore all logfiles and tempfiles.
+/app/assets/images/*
 /log/*
 /tmp/*
 !/log/.keep
@@ -37,3 +38,6 @@ config/initializers/secret_token.rb
 .docker-env-dev
 /config/secrets.yml
 ._*
+
+public/assets
+db/schema.rb

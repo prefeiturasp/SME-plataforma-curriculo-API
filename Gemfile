@@ -58,6 +58,7 @@ end
 # Admin area
 gem 'activeadmin', '~> 1.3.0'
 gem 'activeadmin_addons', '~> 1.6.0'
+gem 'activeadmin-xls', '~>2.0.0'
 
 # authentication solution for Rails based on Warden
 gem "devise", '~> 4.4.3'
@@ -86,3 +87,7 @@ gem 'searchkick'
 
 # Access your external REST API
 gem 'flexirest', '~> 1.7.5'
+gem 'httparty'
+
+# User CarrierWave to provide a simple and extremely flexible way to upload files
+gem 'carrierwave', '~> 2.0'

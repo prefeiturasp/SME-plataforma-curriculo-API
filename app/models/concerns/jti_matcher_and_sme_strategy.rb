@@ -21,21 +21,8 @@ module JtiMatcherAndSmeStrategy
     { 'jti' => jti, 'username' => username }
   end
 
-  def invalid_refresh_sme_token?
-    (!valid_sme_token? && !refresh_sme_token!)
-  end
-
   def invalid_payload?(payload)
     payload['jti'] != jti || payload['username'] != username
-  end
-
-  def valid_sme_token?
-    verifier = TokenValidator.new(sme_token)
-    verifier.token_fresh?
-  end
-
-  def revoke_jwt!
-    User.revoke_jwt(nil, self)
   end
 
   private

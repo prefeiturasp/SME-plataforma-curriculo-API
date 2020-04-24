@@ -1,0 +1,8 @@
+<%= content_tag :legend, (content_tag :span, t('helpers.titles.structure')) %>
+<%= content_tag :ul, '', id: 'sortable-list' %>
+<%= content_tag :li ,
+                link_to(t('helpers.links.save_and_preview'),
+                        challenge_preview_path(challenge.slug),
+                        target: :_blank,
+                        class: 'button grey-button preview-link'),
+                class: 'preview-item' %>

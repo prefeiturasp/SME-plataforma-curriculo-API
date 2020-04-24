@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  it_behaves_like 'jti_matcher_and_sme_strategy_spec'
-
   let(:subject) { build :user }
 
   describe 'Associations' do
@@ -101,14 +99,6 @@ RSpec.describe User, type: :model do
         expect(subject.login).to eq(subject.username)
       end
     end
-
-    context 'refresh_token_params' do
-      it 'return valid hash' do
-        expected = { username: subject.username, refreshToken: subject.sme_refresh_token }
-
-        expect(subject.refresh_token_params).to eq(expected)
-      end
-    end
   end
 
   describe 'Callbacks' do
@@ -153,13 +143,13 @@ RSpec.describe User, type: :model do
       "exp": (Time.now - 150).to_i
     }
   end
-
+  let(:rf_code) { '123456' }
   let(:user) { create :user }
   let(:refresh_token) { 'TokjrJZ1JnrhJX8A+meznJg+Gi//1tmK6Ysuc6MA4WQ=' }
   let(:valid_sme_token) { JWT.encode(claims, nil, 'none') }
   let(:invalid_sme_token) { JWT.encode(invalid_claims, nil, 'none') }
-  let(:credentials) { { username: user.username, password: user.password } }
-  let(:invalid_credentials) { { username: user.username, password: 'WRONG' } }
+  let(:credentials) { { login: rf_code, senha: user.password } }
+  let(:invalid_credentials) { { login: rf_code, senha: 'WRONG' } }
   let(:request_headers) do
     {
       'Accept' => 'application/hal+json, application/json;q=0.5',
@@ -169,10 +159,16 @@ RSpec.describe User, type: :model do
       'User-Agent' => 'Flexirest/1.7.5'
     }
   end
+
   let(:response_body) do
     {
-      "token": valid_sme_token,
-      "refreshToken": refresh_token
+      "name": user.username,
+      "username": user.username,
+      "email": user.email,
+      "sgpToken": {
+        "token": valid_sme_token,
+        "refreshToken": refresh_token
+      }
     }
   end
 
@@ -191,14 +187,28 @@ RSpec.describe User, type: :model do
     end
 
     it 'return TRUE if VALID credentials' do
-      stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/LoginJWT")
-        .with(
+      stub_request(:post, "http://hom-smeintegracaoapi.sme.prefeitura.sp.gov.br/api/AutenticacaoSgp/Autenticar").
+       with( body: "login=#{rf_code}&senha=#{user.password}" ).
+        to_return(
+          status: 200,
           body: {
-            'username' => user.username,
-            'password' => user.password
-          },
-          headers: request_headers
-        ).to_return(status: 200, body: response_body.to_json, headers: request_headers)
+            usuarioId: "1", status: 0, nome: user.username, codigoRf: rf_code,
+            perfis: [ "string" ], possuiCargoCJ: true, possuiPerfilCJ: true
+          }.to_json,
+          headers: {}
+        )
+
+      stub_request(:get, "http://hom-smeintegracaoapi.sme.prefeitura.sp.gov.br/api/AutenticacaoSgp/#{rf_code}/dados").
+        to_return(
+          status: 200,
+          body: {
+            cpf: "123.456.789-00",
+            nome: user.username,
+            codigoRf: rf_code,
+            email: "test@email.com"
+          }.to_json,
+          headers: {}
+        )
 
       expected = User.authenticate_in_sme credentials
 
@@ -206,148 +216,17 @@ RSpec.describe User, type: :model do
     end
 
     it 'return FALSE if INVALID credentials' do
-      stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/LoginJWT")
-        .with(
-          body: {
-            'username' => user.username,
-            'password' => 'WRONG'
-          },
-          headers: request_headers
-        ).to_return(status: 401, body: {}.to_json, headers: request_headers)
+       stub_request(:post, "http://hom-smeintegracaoapi.sme.prefeitura.sp.gov.br/api/AutenticacaoSgp/Autenticar").
+        with( body: "login=#{rf_code}&senha=WRONG" ).
+         to_return(
+           status: 401,
+           body: { error: "Usuário ou senha incorretos." }.to_json,
+           headers: {}
+         )
 
       expected = User.authenticate_in_sme invalid_credentials
 
       expect(expected).to be false
-    end
-
-    it 'return nil if sme reponse a invalid token' do
-      invalid_response =     {
-        "token": invalid_sme_token,
-        "refreshToken": refresh_token
-      }.to_json
-      stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/LoginJWT")
-        .with(
-          body: {
-            'username' => user.username,
-            'password' => user.password
-          },
-          headers: request_headers
-        ).to_return(status: 200, body: invalid_response, headers: request_headers)
-
-      expected = User.authenticate_in_sme credentials
-
-      expect(expected).to be nil
-    end
-  end
-
-  describe 'find_or_create_by_auth_params' do
-    context 'if user already exists' do
-      let(:token_validator) { TokenValidator.new(valid_sme_token, refresh_token) }
-
-      it 'update sme tokens' do
-        response = User.find_or_create_by_auth_params(token_validator, credentials)
-        user.reload
-
-        expect(response).to be true
-        expect(user.sme_token).to eq(valid_sme_token)
-        expect(user.sme_refresh_token).to eq(refresh_token)
-      end
-    end
-
-    context 'if user NOT exists' do
-      let(:new_username) { 'new_username' }
-      let(:claims) do
-        {
-          "username": new_username,
-          "jti": user.jti,
-          "exp": (Time.now + 150).to_i,
-          "iss": ENV['SME_JWT_ISSUER'],
-          "aud": ENV['SME_JWT_AUDIENCE']
-        }
-      end
-      let(:valid_sme_token) { JWT.encode(claims, nil, 'none') }
-      let(:token_validator) { TokenValidator.new(valid_sme_token, refresh_token) }
-
-      it 'create user on database with tokens' do
-        response = User.find_or_create_by_auth_params(token_validator, credentials)
-
-        user = User.find_by(username: new_username)
-
-        expect(response).to be true
-        expect(user).to_not be nil
-        expect(user.username).to eq(new_username)
-        expect(user.sme_token).to eq(valid_sme_token)
-        expect(user.sme_refresh_token).to eq(refresh_token)
-      end
-    end
-  end
-
-  describe 'refresh_sme_token' do
-    let(:sme_refresh_token) { '12345678' }
-    let(:invalid_exp_claims) do
-      {
-        "username": user.username,
-        "jti": user.jti,
-        "exp": (Time.now - 15_000).to_i,
-        "iss": ENV['SME_JWT_ISSUER'],
-        "aud": ENV['SME_JWT_AUDIENCE']
-      }
-    end
-    let(:invalid_exp_sme_token) { JWT.encode(invalid_exp_claims, nil, 'none') }
-
-    context 'return FALSE' do
-      it 'if valid sme token' do
-        user = create :user, sme_token: valid_sme_token, sme_refresh_token: '12345678'
-
-        expect(user.refresh_sme_token!).to be false
-      end
-
-      it 'if api error when refresh token in SME' do
-        user = create :user, sme_token: invalid_exp_sme_token, sme_refresh_token: sme_refresh_token
-
-        stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/RefreshLoginJWT")
-          .with(
-            body: {
-              'username' => user.username,
-              'refreshToken' => sme_refresh_token
-            },
-            headers: request_headers
-          ).to_return(status: 401, body: {}.to_json, headers: request_headers)
-
-        expect(user.refresh_sme_token!).to be false
-      end
-
-      it 'if reponse token is invalid' do
-        user = create :user, sme_token: invalid_exp_sme_token, sme_refresh_token: sme_refresh_token
-
-        stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/RefreshLoginJWT")
-          .with(
-            body: {
-              'username' => user.username,
-              'refreshToken' => sme_refresh_token
-            },
-            headers: request_headers
-          ).to_return(status: 200, body: response_body_invalid_token.to_json, headers: request_headers)
-
-        expect(user.refresh_sme_token!).to be false
-      end
-    end
-
-    context 'return TRUE' do
-      it 'refresh token in SME' do
-        user = create :user, sme_token: invalid_exp_sme_token, sme_refresh_token: sme_refresh_token
-
-        stub_request(:post, "#{ENV['SME_AUTHENTICATION_BASE_URL']}/RefreshLoginJWT")
-          .with(
-            body: {
-              'username' => user.username,
-              'refreshToken' => sme_refresh_token
-            },
-            headers: request_headers
-          ).to_return(status: 200, body: response_body.to_json, headers: request_headers)
-
-        expect(user.refresh_sme_token!).to be true
-      end
     end
   end
 end

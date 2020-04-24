@@ -4,19 +4,28 @@ ActiveAdmin.register User do
   config.filters = false
 
   controller do
-    def scoped_collection
-      User.where(username: nil)
-    end
+    #
   end
 
   index do
     selectable_column
     id_column
     column :email
+    column :name do |user|
+      span user.admin? ? "-" : user.teacher.name
+    end
+    column :kind do |user|
+      span user.admin? ? 'Administrador(a)' : 'Professor(a)'
+    end
     column :current_sign_in_at
     column :sign_in_count
     column :created_at
-    actions
+
+    actions defaults: true do |user|
+      unless user.teacher.blank?
+        #
+      end
+    end
   end
 
   form do |f|

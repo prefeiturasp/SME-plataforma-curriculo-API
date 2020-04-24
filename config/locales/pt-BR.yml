@@ -1,6 +1,9 @@
 pt-BR:
   activerecord:
     models:
+      acl:
+        one: "Acl"
+        other: "Acls"
       activity:
         one: "Atividade"
         other: "Atividades"
@@ -10,7 +13,7 @@ pt-BR:
       activity_type:
         one: "Tipo de atividade"
         other: "Tipos de atividades"
-      activity_content_block:
+      activity_content_block: &content_block
         one: "Bloco de conteúdo"
         other: "Blocos de conteúdo"
       activity_sequences_report: "Relatório das avaliações"
@@ -20,6 +23,11 @@ pt-BR:
       curricular_component:
         one: "Componente Curricular"
         other: "Componentes Curriculares"
+      challenge:
+        one: "Desafio"
+        other: "Desafios"
+      challenge_content_block:
+        <<: *content_block
       goal:
         one: "Meta"
         other: "Metas"
@@ -32,19 +40,36 @@ pt-BR:
       learning_objective:
         one: "Objetivo de Aprendizagem"
         other: "Objetivos de Aprendizagem"
+      link:
+        one: "Link"
+        other: "Links"
+      methodology:
+        one: "Metodologia"
+        other: "Metodologias"
       rating:
         one: "Avaliação"
         other: "Avaliações"
+      result:
+        one: "Resultado"
+        other: "Resultados"
       roadmap:
         one: "Roteiro"
         other: "Roteiros"
       sustainable_development_goal:
         one: "Objetivo de Desenvolvimento Sustentável"
         other: "Objetivos de Desenvolvimento Sustentável"
+      step:
+        one: "Passo"
+        other: "Passos"
       user:
         one: "Usuário"
         other: "Usuários"
+      answer_book:
+        one: "Caderno de Respostas"
+        other: "Cadernos de Respostas"
     attributes:
+      acl:
+        reason: "Motivo"
       activity:
         activity_sequence: "Sequência de Atividade"
         activity_types: "Tipo de Atividade"
@@ -69,7 +94,7 @@ pt-BR:
           published: "Publicada"
         created_at: "Criado em"
         updated_at: "Atualizado em"
-      activity_content_block:
+      activity_content_block: &activity_content_block_attrs
         body: "Conteúdo"
         title: "Título"
         number: "Número"
@@ -78,6 +103,8 @@ pt-BR:
         axes: "Eixos"
         id: "Identificador"
         books: "Referências"
+        segment: "Segmento"
+        stage: "Etapa"
         curricular_components: "Componentes Curriculares relacionados"
         estimated_time: "Tempo estimado(aulas)"
         image: "Imagem"
@@ -106,6 +133,31 @@ pt-BR:
         curricular_component: "Componente Curricular"
         created_at: "Criado em"
         updated_at: "Atualizado em"
+      challenge:
+        axes: "Eixos"
+        id: "Identificador"
+        curricular_components: "Componentes Curriculares relacionados"
+        image: "Imagem"
+        knowledge_matrices: "Matriz dos Saberes"
+        keywords: "Palavras-chave"
+        learning_objectives: "Objetivos de Aprendizagem"
+        finish_at: "Data de Encerramento"
+        status: "Status"
+        statuses:
+          draft: "Rascunho"
+          published: "Publicada"
+        category: "Categoria"
+        categories:
+          project: "Projeto"
+          make_and_remake: "Fazer e Refazer"
+          games: "Jogos"
+          investigation: "Investigação"
+        title: "Título"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+        results: "Resultados"
+      challenge_content_block:
+        <<: *activity_content_block_attrs
       curricular_component:
         name: "Nome"
         axes: "Eixos"
@@ -132,6 +184,8 @@ pt-BR:
         axes: Eixos
         year: "Ano"
         code: "Código"
+        segment: "Segmento"
+        stage: "Etapa"
         description: "Descrição"
         curricular_component: "Componente Curricular"
         curricular_component_id: "Componente Curricular"
@@ -139,10 +193,32 @@ pt-BR:
         year: "Ano"
         created_at: "Criado em"
         updated_at: "Atualizado em"
+      link:
+        link: "Link"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      methodology:
+        title: "Titulo"
+        subtitle: "Subtitulo"
+        description: "Descrição"
+        content: "Conteúdo"
+        steps: "Passos"
+        archive: "Anexo"
       rating:
         sequence: "Ordem"
         description: "Descrição"
         enable: "Habilitado"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
+      result:
+        id: "Identificador"
+        links: "Links"
+        challenge: "Desafio"
+        challenge_id: "Desafio"
+        teacher: "Professor"
+        teacher_id: "Professor"
+        enabled: "Habilitado"
+        description: "Descrição"
         created_at: "Criado em"
         updated_at: "Atualizado em"
       roadmap:
@@ -162,6 +238,10 @@ pt-BR:
         icon: "Ícone"
         created_at: "Criado em"
         updated_at: "Atualizado em"
+      step:
+        image: "Icone"
+        title: "Titulo"
+        description: "Descrição"
       user:
         admin: Administrador
         confirmation_sent_at: Confirmação enviada em
@@ -173,9 +253,11 @@ pt-BR:
         email: Email
         encrypted_password: Senha criptografada
         failed_attempts: Tentativas sem sucesso
+        kind: Tipo
         last_sign_in_at: "Último acesso em"
         last_sign_in_ip: "Último IP de acesso"
         locked_at: Bloqueado em
+        name: Nome
         password: Senha
         password_confirmation: Confirme sua senha
         remember_created_at: Lembrar criado em
@@ -201,6 +283,11 @@ pt-BR:
           seventh: "7º"
           eighth: "8º"
           nineth: "9º"
+        categories:
+          project: "Projeto"
+          make_and_remake: "Fazer e Refazer"
+          games: "Jogos"
+          investigation: "Investigação"
         content_types:
           to_teacher: "Para o Professor(a)"
           to_student: "Para o Estudante"
@@ -209,6 +296,19 @@ pt-BR:
           long_text: "Texto longo"
           gallery: "Galeria"
           free_text: "Texto Livre"
+      stage:
+          name: "Nome"
+          segment:  "Segmento"
+      segment:
+          name: "Nome"
+      answer_book:
+          name: "Título"
+          cover_image: "Imagem de capa"
+          book_file: "Caderno resposta"
+          year: "Ano do livro"
+          curricular_component: "Componente curricular"
+          segment: "Segmento"
+          stage: "Etapa"
     errors:
       messages:
         all_ratings_is_required: "É necessário votar em todos os critérios de avaliação."

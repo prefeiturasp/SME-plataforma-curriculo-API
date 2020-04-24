@@ -1,11 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe ActivitySequence, type: :model do
+
   include_examples 'image_concern'
 
   describe 'Associations' do
     it 'belongs to main curricular component' do
       should belong_to(:main_curricular_component)
+    end
+
+    it 'belongs to segment' do
+      should belong_to(:segment)
+    end
+
+    it 'belongs to stage' do
+      should belong_to(:stage)
     end
 
     it 'has and belongs to many knowledge matrices' do

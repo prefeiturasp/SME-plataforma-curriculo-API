@@ -4,7 +4,9 @@ RSpec.describe Api::V1::LearningObjectivesController, type: :controller do
   let(:valid_attributes) do
     attributes_for :learning_objective,
                    curricular_component_id: create(:curricular_component).id,
-                   sustainable_development_goal_ids: [create(:sustainable_development_goal).id]
+                   sustainable_development_goal_ids: [create(:sustainable_development_goal).id],
+                   segment_id: create(:segment).id,
+                   stage_id: create(:stage).id
   end
 
   let(:invalid_attributes) do

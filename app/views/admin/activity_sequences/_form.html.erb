@@ -1,5 +1,7 @@
 <%
   f.inputs do
+    f.input :segment, required: true
+    f.input :stage, collection: [], required: true
     f.input :status
     f.input :title
     f.input :image, as: :file, hint: f.object.image.attached? \
