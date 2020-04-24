@@ -67,6 +67,12 @@ pt-BR:
       answer_book:
         one: "Caderno de Respostas"
         other: "Cadernos de Respostas"
+      segment:
+        one: "Segmento"
+        other: "Segmentos"
+      stage:
+        one: "Etapa"
+        other: "Etapas"
     attributes:
       acl:
         reason: "Motivo"
