@@ -1,7 +1,6 @@
 $(document).ready(function(){
   if ($('form.learning_objective').length){
     $('#learning_objective_curricular_component_id').change(function(){
-      console.log("CHANGED");
       fillAxesFromLearningObjectives();
     });
 
@@ -25,4 +24,21 @@ $(document).ready(function(){
       })
     }
   }
+  $('#learning_objective_segment_id').change(function(){
+    var segment_id = $(this).val();
+    $.ajax({
+      type: "GET",
+      url: "/api/v1/stages",
+      dataType: "json",
+      data: {'segment_id': segment_id},
+      success: function(result){
+        $('#learning_objective_stage_id option').remove();
+        for (var i = 0; i < result.length; i++){
+          $('#learning_objective_stage_id').append(
+            new Option(`${result[i]['name']}`, `${result[i]['id']}`)
+          );
+        }
+      }
+    });
+  });
 });

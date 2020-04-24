@@ -9,6 +9,14 @@ RSpec.describe LearningObjective, type: :model do
       should belong_to(:curricular_component)
     end
 
+    it 'belongs to segment' do
+      should belong_to(:segment)
+    end
+
+    it 'belongs to stage' do
+      should belong_to(:stage)
+    end
+
     it 'has and belongs to many sustainable development goals' do
       should have_and_belong_to_many(:sustainable_development_goals)
     end

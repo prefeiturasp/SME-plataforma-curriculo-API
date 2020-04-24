@@ -4,6 +4,8 @@ class ActivitySequence < ApplicationRecord
   include YearsEnum
   include ActivitySequenceSearchable
   belongs_to :main_curricular_component, class_name: 'CurricularComponent'
+  belongs_to :stage
+  belongs_to :segment
   has_and_belongs_to_many :knowledge_matrices
   has_and_belongs_to_many :learning_objectives
   has_many :activities,

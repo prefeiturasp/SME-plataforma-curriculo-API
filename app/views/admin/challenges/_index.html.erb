@@ -1,0 +1,12 @@
+<% context.instance_eval do
+  selectable_column
+  column :title
+  column :finish_at
+  column :category do |challenge|
+    Challenge.human_enum_name(:category, challenge.category)
+  end
+  column :status do |challenge|
+    Challenge.human_enum_name(:status, challenge.status)
+  end
+  actions
+end %>

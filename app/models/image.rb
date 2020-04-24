@@ -1,5 +1,5 @@
 class Image < ApplicationRecord
-  belongs_to :activity_content_block
+  belongs_to :imageable, polymorphic: true
 
   has_one_attached :file
 end

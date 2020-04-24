@@ -54,6 +54,8 @@ module Api
           :code,
           :description,
           :curricular_component_id,
+          :segment_id,
+          :stage_id,
           sustainable_development_goal_ids: []
         )
       end

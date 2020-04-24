@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       match :logout, to: 'sessions#destroy', as: :destroy_jwt_user_session, via: [:delete, :get]
     end
 
+    resources :answer_books, only:[:index]
     resources :filters, path: 'filtros', only: [:index]
     resources :activity_sequences, path: 'sequencias', param: :slug, only: %i[index show] do
       get 'atividades/:activity_slug', to: 'activities#show'
@@ -38,6 +39,7 @@ Rails.application.routes.draw do
       resources :collections, path: 'colecoes' do
         resources :activity_sequences, path: 'sequencias'
       end
+      get :all_challenges, path: 'favoritos'
       get :all_collections, path: 'todas_colecoes'
       get 'sequencias_realizadas', to: 'activity_sequence_performeds#index'
       get 'sequencias_realizadas/:activity_sequence_slug/avaliacoes', to: 'activity_sequence_ratings#index'
@@ -45,14 +47,25 @@ Rails.application.routes.draw do
     resources :ratings, path: 'avaliacao_criterios', only: [:index]
     resources :activity_sequence_performeds, path: 'sequencias_realizadas', only: [:index]
 
+    get 'desafios/:state', to: 'challenges#index', constraints: { state: /finalizados|andamento/ }
+
+    resources :challenges, path: 'desafios', param: :slug, only: [:show, :index] do
+      resources :results, path: 'resultados', only: [:index, :show, :create]
+    end
+
+    resources :methodologies, path: 'metodos', param: :slug, only: [:show, :index]
+
     namespace :v1 do
       resources :activities
       resources :activity_sequences
       resources :activity_types
+      resources :answer_books
       resources :axes
       resources :curricular_components
       resources :learning_objectives
       resources :roadmaps
+      resources :segments
+      resources :stages
       resources :sustainable_development_goals
       resources :knowledge_matrices
     end

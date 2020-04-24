@@ -4,8 +4,16 @@ ActiveAdmin.register LearningObjective do
                 :description,
                 :code,
                 :curricular_component_id,
+                :segment_id,
+                :stage_id,
                 sustainable_development_goal_ids: [],
                 axis_ids: []
+
+  config.filters = true
+
+  filter :year
+  filter :curricular_component
+  filter :created_at
 
   collection_action :change_axes, method: :get do
     render json: {}, status: :unauthorized && return unless current_user.admin?
@@ -20,6 +28,8 @@ ActiveAdmin.register LearningObjective do
 
   form do |f|
     f.inputs do
+      f.input :segment, required: true
+      f.input :stage, collection: [], required: true
       f.input :year, as: :select, collection: human_attribute_years
       f.input :description
       f.input :curricular_component
@@ -42,6 +52,8 @@ ActiveAdmin.register LearningObjective do
   index do
     selectable_column
     column :code
+    column :segment
+    column :stage
     column :year do |learning_objective|
       LearningObjective.human_enum_name(:year, learning_objective.year, true)
     end
@@ -56,6 +68,8 @@ ActiveAdmin.register LearningObjective do
   show do
     attributes_table do
       row :code
+      row :segment
+      row :stage
       row :year do |learning_objective|
         LearningObjective.human_enum_name(:year, learning_objective.year, true)
       end
@@ -79,5 +93,22 @@ ActiveAdmin.register LearningObjective do
         column :description
       end
     end
+  end
+
+  xls(
+    i18n_scope: [:activerecord, :attributes, :learning_objective],
+    header_format: { weight: :bold, color: :blue }
+  ) do
+    whitelist
+
+    column :code
+    column :year do |learning_objective|
+      LearningObjective.human_enum_name(:year, learning_objective.year, true)
+    end
+    column :description
+    column :curricular_component do |learning_objective|
+      learning_objective.curricular_component.name
+    end
+    column :created_at
   end
 end
