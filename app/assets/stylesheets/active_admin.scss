@@ -10,6 +10,8 @@
 // Active Admin's got SASS!
 @import "active_admin/mixins";
 @import "active_admin/base";
+@import "katex";
+@import "mathquill";
 @import "quill.snow";
 @import "quill.sme";
 @import "quill-table";
@@ -25,6 +27,8 @@
 .ql-divider {
   width: 55px !important;
 }
+
+.bullet .replace-id, .bullet .another-toolbar, ol .another-toolbar { display: none }
 
 #span-divider{
   color: #6a6a6a;
@@ -46,7 +50,7 @@
   padding-top: 0px;
 }
 
-.activity {
+.activity, .challenge {
   .panel_contents {
     display: grid;
     grid-template-columns: 20% 65% 15%;
@@ -55,7 +59,8 @@
     fieldset.has_many_fields {
       border: 1px solid #eaeaea;
     }
-    .activity-content-buttons, .activity-content-structure {
+    .activity-content-buttons, .activity-content-structure,
+      .challenge-content-buttons, .challeng-content-structure {
       legend span {
         background-image: none;
         background-color: #d8d9d9;
@@ -70,7 +75,7 @@
 
     }
 
-    .activity-content-buttons {
+    .activity-content-buttons, .challenge-content-buttons {
       ol {
         background-color: #eaeaea;
         padding-bottom: 15px;
@@ -106,7 +111,7 @@
       }
     }
   }
-  .activity_content_blocks {
+  .activity_content_blocks, .challenge_content_blocks {
     h3 {
       display: none;
     }
@@ -137,7 +142,7 @@
     }
   }
 
-  .activity-content-structure {
+  .activity-content-structure, .challenge-content-structure {
     #sortable-list{
       li{
         padding: 10px;
@@ -208,7 +213,7 @@ div.draft {
 }
 
 @media only screen and (min-width: 992px) {
-  .activity-content-structure {
+  .activity-content-structure, .challenge-content-structure {
     #sortable-list{
       li:hover {
         background-color: #d8d8d8;

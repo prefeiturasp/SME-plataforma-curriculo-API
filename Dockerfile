@@ -10,17 +10,17 @@ WORKDIR /app
 RUN apk update && apk upgrade
 
 RUN apk add -U --no-cache \
-			build-base \
-			git \
-			imagemagick \
-			libxml2-dev \
-			libxslt-dev \
-			nodejs \
-			postgresql-dev \
-			tzdata \
-			yaml-dev \
-			yarn \
-			zlib-dev
+    build-base \
+    git \
+    imagemagick \
+    libxml2-dev \
+    libxslt-dev \
+    nodejs \
+    postgresql-dev \
+    tzdata \
+    yaml-dev \
+    yarn \
+    zlib-dev
 
 RUN npm install -g yarn
 RUN yarn install

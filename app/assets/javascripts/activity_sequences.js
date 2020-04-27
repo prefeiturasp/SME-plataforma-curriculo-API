@@ -2,23 +2,35 @@ $(document).ready(function(){
   showCheckBoxesTooltip();
   changePreviewMessage();
   removeImageAfterUserConfirm();
+
   var body = document.getElementsByClassName('show admin_activity_sequences');
   if (body[0]) {
     var row_content = body[0].getElementsByClassName('row-books');
-    var td = row_content[0].getElementsByTagName("td")[0]
+    var td = row_content[0].getElementsByTagName("td")[0];
     var content = td.innerHTML;
 
     var obj = JSON.parse(content);
-    var html_content = quillGetHTML(obj)
-    td.innerHTML = html_content
+    var html_content = quillGetHTML(obj);
+    td.innerHTML = html_content;
   }
 
-  $('#activity_sequence_main_curricular_component_id').change(function(e) {
-    fillLearningObjectives();
-  });
-
-  $('#activity_sequence_year').change(function(){
-    fillLearningObjectives();
+  $('#activity_sequence_main_curricular_component_id, #activity_sequence_year').change(fillLearningObjectives);
+  $('#activity_sequence_segment_id').change(function(){
+    var segment_id = $('#activity_sequence_segment_id').val();
+    $.ajax({
+      type: "GET",
+      url: "/api/v1/stages",
+      dataType: "json",
+      data: {'segment_id': segment_id},
+      success: function(result){
+        $('#activity_sequence_stage_id option').remove();
+        for (var i = 0; i < result.length; i++){
+          $('#activity_sequence_stage_id').append(
+            new Option(`${result[i]['name']}`, `${result[i]['id']}`)
+          );
+        }
+      }
+    });
   });
 });
 
@@ -84,4 +96,8 @@ function removeImageAfterUserConfirm(){
       });
     }
   });
+}
+
+function setSelectOptions(){
+
 }

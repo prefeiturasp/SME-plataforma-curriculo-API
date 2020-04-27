@@ -4,7 +4,7 @@ default: &default
   database: <%= ENV['POSTGRES_DB'] %>
   host:     <%= ENV['POSTGRES_HOST'] %>
   username: <%= ENV['POSTGRES_USER'] %>
-  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] || File.read("/run/secrets/POSTGRES_PASSWORD").strip %>
   pool:     <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:

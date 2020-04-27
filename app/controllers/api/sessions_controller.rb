@@ -21,8 +21,9 @@ module Api
 
     def custom_login_params
       custom = sign_in_params
-      custom[:username] = sign_in_params[:login]
-      custom.delete(:login)
+      custom[:login] = sign_in_params[:login]
+      custom[:senha] = sign_in_params[:password]
+      custom.delete(:password)
 
       custom
     end

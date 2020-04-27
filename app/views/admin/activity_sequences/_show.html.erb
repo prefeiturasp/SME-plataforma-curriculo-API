@@ -5,6 +5,8 @@
       image_tag variant_url(i.image, :large) if i.image.attached?
     end
     row :presentation_text
+    row :segment
+    row :stage
     row :year do |activity_sequence|
       ActivitySequence.human_enum_name(:year, activity_sequence.year, true)
     end

@@ -1,6 +1,8 @@
 class LearningObjective < ApplicationRecord
   include YearsEnum
   belongs_to :curricular_component
+  belongs_to :stage
+  belongs_to :segment
   has_and_belongs_to_many :sustainable_development_goals
   has_and_belongs_to_many :activity_sequences
   has_and_belongs_to_many :activities

@@ -3,7 +3,7 @@
 
 $(document).ready(function(){
   setShowContentBlocks();
-  var form = $('form.activity');
+  var form = $('form.activity, form.challenge');
   if(form.length) {
     $("input[name='activity[image]']").change(function() {
       validateSize(this);
@@ -32,13 +32,14 @@ $(document).ready(function(){
 });
 
 function fixActivityActionPosition(){
-  var form = $('form.activity');
+  var form = $('form.activity, form.challenge');
   var action_buttons = $('fieldset.actions');
   form.append(action_buttons);
 }
 
-function setActivityContentBlockToolbarId(){
+function setActivityContentBlockToolbarId () {
   var $fieldsets = $('fieldset.has_many_fields');
+
   for( var i = 0; i < $fieldsets.length; i++ ) {
     var new_id = new Date().valueOf() + i;
     var $toolbar = $($fieldsets[i]).find(".replace-id");
@@ -58,7 +59,10 @@ function setActivityContentBlockToolbarId(){
 }
 
 function hideUnusedRemoveButton(){
-  $('li.activity_content_blocks .has_many_fields .has_many_remove').hide();
+  $(
+    'li.activity_content_blocks .has_many_fields .has_many_remove, ' +
+    'li.challenge_content_blocks .has_many_fields .has_many_remove'
+  ).hide();
   $('li.has_many_containes.images .has_many_remove').show();
 }
 
@@ -73,13 +77,13 @@ function setTitleLegendClassNames(){
 }
 
 function bindUpdateStructureOnRemove(){
-  $('a.remove-activity-content-block').click( function(e){
+  $('a.remove-activity-content-block, a.remove-challenge-content-block').click( function(e){
     e.preventDefault();
     var fieldset = $(this).parent().parent().parent();
     var ol = $(this).parent().parent();
 
     if(fieldset.length){
-      var input_id = ol.find('.activity-content-id');
+      var input_id = ol.find('.activity-content-id, .challenge-content-id');
       if(input_id.val()) {
         fieldset.addClass('hidden');
         var destroy_input = ol.find('.destroy-input');
@@ -114,7 +118,7 @@ function add_fields(link, association, content, father) {
   content = content.replace(regexp, new_id);
   regexp = new RegExp("NEW_RECORD_ID", "g");
   content = content.replace(regexp, new_id);
-  $('li.activity_content_blocks').append(content);
+  $('li.activity_content_blocks, li.challenge_content_blocks').append(content);
   initializeQuillEditorAndToolbar(new_id);
   convertAllEditorsToDeltaOnSubmit();
   bindPredefinedExercisesSelect();
@@ -122,7 +126,7 @@ function add_fields(link, association, content, father) {
   setSortableList();
   bindUpdateStructureOnRemove();
   setSequenceInContentBlocks();
-  var last_fieldset = $('li.activity_content_blocks fieldset').last();
+  var last_fieldset = $('li.activity_content_blocks fieldset, li.challenge_content_blocks fieldset').last();
   goToTop(last_fieldset.offset().top);
 
   setSequenceOnActivityContentBlocks();
@@ -130,19 +134,24 @@ function add_fields(link, association, content, father) {
   return false;
 };
 
-function initializeQuillEditorAndToolbar(id){
+function initializeQuillEditorAndToolbar (id) {
   var editor = $(`#activity_activity_content_blocks_attributes_${id}_body.quill-editor`);
+
+  if (!editor.length)
+    editor = $(`#challenge_challenge_content_blocks_attributes_${id}_body.quill-editor`);
+
   if (editor.length) {
     initializeQuillEditor(editor[0]);
     var quill_content = editor[0].querySelector(".quill-editor-content");
     var toolbar = $(`#toolbar_${id}`);
     if (toolbar.length) {
       editor[0].insertBefore(toolbar[0], quill_content);
+      jQuery(toolbar[0]).show();
     }
   }
 }
 
-function setToolbarToActivityContents(){
+function setToolbarToActivityContents () {
   var editors = document.querySelectorAll( '.quill-editor' );
   for( var i = 0; i < editors.length; i++ ) {
     var content = editors[i].querySelector(".quill-editor-content");
@@ -150,7 +159,11 @@ function setToolbarToActivityContents(){
     var toolbar_options = JSON.parse(div_parent.dataset.options);
     var toolbar_id = toolbar_options.modules.toolbar;
     var toolbar = $(toolbar_id);
-    editors[i].insertBefore(toolbar[0], content);
+
+    if (typeof toolbar_id == 'string') {
+      editors[i].insertBefore(toolbar[0], content);
+      jQuery(toolbar[0]).show();
+    }
   }
 }
 
@@ -171,8 +184,9 @@ function goToTop(offset) {
 }
 
 function stickyContentsSidebar(){
-  $('.activity-content-structure').sticky({topSpacing:0});
-  $('.activity-content-buttons').sticky({topSpacing:0});
+  $(
+    '.activity-content-structure, .challenge-content-structure, .activity-content-buttons, .challenge-content-buttons'
+  ).sticky({topSpacing:0});
 }
 
 function setAnchorIdIfFormError(){
@@ -194,7 +208,8 @@ function setSequenceOnActivityContentBlocks() {
 }
 
 function setShowContentBlocks(){
-  var $row_bodys = $('body.show.admin_activities').find('.show-content-blocks').find('.row-body');
+  var $row_bodys = $('body.show.admin_activities, body.show.admin_challenges')
+    .find('.show-content-blocks').find('.row-body');
   for(var i = 0; i < $row_bodys.length; i++) {
     var td = $($row_bodys[i]).find('td')[0];
     var content = td.innerHTML;

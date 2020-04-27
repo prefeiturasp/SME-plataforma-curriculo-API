@@ -1,5 +1,7 @@
 class User < ApplicationRecord
   include JtiMatcherAndSmeStrategy
+  include HTTParty
+  base_uri ENV['SME_AUTHENTICATION_BASE_URL']
   devise :database_authenticatable, :recoverable, :rememberable, :trackable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
@@ -21,21 +23,37 @@ class User < ApplicationRecord
   end
 
   def self.authenticate_in_sme(credentials)
-    response = SMEAuthentication.login(credentials.symbolize_keys)
-    verifier = TokenValidator.new(response.sgpToken.token, response.sgpToken.refreshToken)
-    valid_username = response.username.eql?(credentials[:username])
-    User.find_or_create_by_auth_params(response, credentials) if valid_username && verifier.valid?
+    response = HTTParty.post(
+      "#{base_uri}/api/AutenticacaoSgp/Autenticar",
+      { body: credentials.symbolize_keys }
+    )
+    if response.code == 200
+      body = JSON.parse(response.body, symbolize_names: true)
+      User.find_or_create_by_auth_params(body, credentials)
+    else
+      false
+    end
   rescue StandardError => e
     Rails.logger.error(e)
     false
   end
 
-  def self.find_or_create_by_auth_params(response, credentials)
-    user = User.find_or_create_by(username: response.username)
-    user.email = response.email
-    user.password = credentials['password']
-    user.teacher.update(name: response.name) if response.name.present?
+  def self.find_or_create_by_auth_params(body, credentials)
+    user = User.find_or_create_by(username: body[:codigoRf])
+    user_info = User.get_info_from_sme(body[:codigoRf])
+    user.name = user_info[:nome]
+    user.email = user_info[:email]
+    user.password = credentials[:senha]
+    user.admin = false
     user.save
+  end
+
+  def self.get_info_from_sme(rf_code)
+    response = HTTParty.get(
+      "#{base_uri}/api/AutenticacaoSgp/#{rf_code}/dados"
+    )
+    body = JSON.parse(response.body, symbolize_names: true)
+    body
   end
 
   def self.find_for_database_authentication(warden_conditions)
@@ -50,35 +68,9 @@ class User < ApplicationRecord
     end
   end
 
-  def refresh_sme_token!
-    return false if valid_sme_token?
-
-    response = SMEAuthentication.refresh_token(refresh_token_params)
-    update_user_from_sme_response(response)
-  rescue StandardError
-    refresh_sme_token_fail
-  end
-
-  def update_user_from_sme_response(response)
-    verifier = TokenValidator.new(response.token, response.refreshToken)
-    if verifier.valid?
-      update(sme_token: verifier.token, sme_refresh_token: verifier.refresh_token)
-    else
-      refresh_sme_token_fail
-    end
-  end
-
-  def refresh_token_params
-    { username: username, refreshToken: sme_refresh_token }
-  end
-
   private
 
   def assign_teacher
     create_teacher if username.present? && teacher.nil?
-  end
-
-  def refresh_sme_token_fail
-    revoke_jwt! ? false : true
   end
 end
