@@ -39,8 +39,8 @@ class User < ApplicationRecord
   end
 
   def self.find_or_create_by_auth_params(body, credentials)
-    user = User.find_or_create_by(username: body[:codigoRf])
-    user_info = User.get_info_from_sme(body[:codigoRf])
+    user = User.find_or_create_by(username: credentials[:login])
+    user_info = User.get_info_from_sme(credentials[:login])
     user.name = user_info[:nome]
     user.email = user_info[:email]
     user.password = credentials[:senha]
