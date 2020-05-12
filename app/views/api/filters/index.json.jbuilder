@@ -9,3 +9,7 @@ json.partial! 'knowledge_matrices', collection: @knowledge_matrices
 json.partial! 'learning_objectives', collection: @learning_objectives
 
 json.partial! 'axes', collection: @axes
+
+json.partial! 'segments', collection: @segments
+
+json.partial! 'stages', collection: @stages

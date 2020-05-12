@@ -2,8 +2,10 @@ module Api
   class FiltersController < ApiController
     before_action :fetch_axes, only: %i[index]
     before_action :fetch_learning_objectives, only: %i[index]
+    before_action :fetch_stages, only: %i[index]
 
     def index
+      @segments = Segment.all
       @years = LearningObjective.years
 
       @curricular_components = CurricularComponent.all
@@ -18,8 +20,13 @@ module Api
     def set_activity_sequence_params
       params.permit(
         :years,
-        :curricular_component_slugs
+        :curricular_component_slugs,
+        :segment_id
       )
+    end
+
+    def fetch_stages
+      @stages = Stage.all_or_with_segment(params[:segment_id])
     end
 
     def fetch_axes
