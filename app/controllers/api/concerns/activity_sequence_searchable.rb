@@ -10,7 +10,7 @@ module Api
         query = params[:q].blank? ? '*' : params[:q]
         ActivitySequence.search(
           query,
-          fields: list_fields,
+          fields: ['title^1'],
           where: where,
           order: order_by,
           load: false,
@@ -38,7 +38,7 @@ module Api
       def where
         options = { status: 'published' }
         %i[
-          all_or_with_year all_or_with_main_curricular_component all_or_with_axes
+          all_or_with_main_curricular_component all_or_with_axes
           all_or_with_sustainable_development_goals all_or_with_knowledge_matrices
           all_or_with_learning_objectives all_or_with_segments all_or_with_stages
         ].each do |method|
@@ -46,11 +46,6 @@ module Api
         end
 
         options
-      end
-
-      def all_or_with_year
-        return {} unless params[:years]
-        { year: params[:years] }
       end
 
       def all_or_with_main_curricular_component

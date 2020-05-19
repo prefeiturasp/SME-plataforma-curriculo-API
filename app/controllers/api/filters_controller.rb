@@ -6,7 +6,6 @@ module Api
 
     def index
       @segments = Segment.all
-      @years = LearningObjective.years
 
       @curricular_components = CurricularComponent.all
       @sustainable_development_goals = SustainableDevelopmentGoal.all
@@ -19,9 +18,9 @@ module Api
 
     def set_activity_sequence_params
       params.permit(
-        :years,
         :curricular_component_slugs,
-        :segment_id
+        :segment_id,
+        :stage_id
       )
     end
 
@@ -34,8 +33,8 @@ module Api
     end
 
     def fetch_learning_objectives
-      return if params[:years].blank? && params[:curricular_component_slugs].blank?
-      @learning_objectives = LearningObjective.all_or_with_year(params[:years])
+      return [] unless params[:stage_id].present? && params[:curricular_component_slugs].present?
+      @learning_objectives = LearningObjective.all_or_with_stage(params[:stage_id])
                                               .all_or_with_curricular_component(params[:curricular_component_slugs])
     end
   end
