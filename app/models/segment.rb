@@ -5,4 +5,5 @@ class Segment < ApplicationRecord
   has_many :learning_objectives
 
   validates :name, presence: true
+  validates :color, presence: true
 end

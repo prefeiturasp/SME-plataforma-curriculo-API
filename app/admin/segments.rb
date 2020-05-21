@@ -1,5 +1,6 @@
 ActiveAdmin.register Segment do
-  permit_params :name
+  permit_params :name,
+                :color
 
   config.filters = true
 
@@ -14,6 +15,7 @@ ActiveAdmin.register Segment do
   form do |f|
     f.inputs do
       f.input :name, required: true
+      f.input :color, as: :color
     end
     f.actions
   end
@@ -22,6 +24,9 @@ ActiveAdmin.register Segment do
     selectable_column
     column :id
     column :name
+    column :color do |segment|
+      raw "<div class='pick_color'>#{segment.color}</div>"
+    end
     actions
   end
 
@@ -29,6 +34,9 @@ ActiveAdmin.register Segment do
     attributes_table do
       row :id
       row :name
+      row :color do |segment|
+        raw "<div class='pick_color'>#{segment.color}</div>"
+      end
     end
   end
 end

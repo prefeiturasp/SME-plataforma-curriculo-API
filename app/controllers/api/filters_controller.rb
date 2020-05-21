@@ -33,7 +33,7 @@ module Api
     end
 
     def fetch_learning_objectives
-      return [] unless params[:stage_id].present? && params[:curricular_component_slugs].present?
+      return [] unless params[:stage_id].present? || params[:curricular_component_slugs].present?
       @learning_objectives = LearningObjective.all_or_with_stage(params[:stage_id])
                                               .all_or_with_curricular_component(params[:curricular_component_slugs])
     end
