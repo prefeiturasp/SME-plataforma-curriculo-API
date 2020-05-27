@@ -144,13 +144,13 @@ RSpec.describe LearningObjective, type: :model do
       end
     end
 
-    context 'with year' do
-      let(:params)   { { year: :second } }
-      let(:response) { LearningObjective.all_or_with_year(params[:year]) }
+    context 'with segment' do
+      let(:params)   { { stage_id: Stage.all.first.id } }
+      let(:response) { LearningObjective.all_or_with_stage(params[:stage_id]) }
 
       it 'return all with none params' do
         params = nil
-        response = LearningObjective.all_or_with_year(params)
+        response = LearningObjective.all_or_with_stage(params)
 
         expect(all_response).to eq(response)
       end
@@ -158,14 +158,15 @@ RSpec.describe LearningObjective, type: :model do
       it 'include' do
         a = create :learning_objective,
                    code: 'EF05',
-                   year: :second
+                   stage_id: Stage.all.first.id
         expect(response).to include(a)
       end
 
       it 'not include' do
         a = create :learning_objective,
                    code: 'EF06',
-                   year: :third
+                   stage_id: Stage.all.last.id
+
         expect(response).to_not include(a)
       end
     end
