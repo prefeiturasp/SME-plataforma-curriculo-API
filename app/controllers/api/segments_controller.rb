@@ -9,7 +9,7 @@ module Api
     private
 
     def segment_params
-      params.require(:segment).permit(:name)
+      params.require(:segment).permit(:name, :color)
     end
   end
 end

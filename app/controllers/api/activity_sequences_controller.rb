@@ -53,7 +53,6 @@ module Api
     def activity_sequence_params
       params.permit(
         :slug,
-        :years,
         :curricular_component_slugs,
         :sustainable_development_goal_ids,
         :knowledge_matrix_ids,

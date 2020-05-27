@@ -42,15 +42,6 @@ class ActivitySequence < ApplicationRecord
     title_changed? || super
   end
 
-  def self.where_optional_params(params = {})
-    all.all_or_with_year(params[:years])
-       .all_or_with_main_curricular_component(params)
-       .all_or_with_axes(params)
-       .all_or_with_sustainable_development_goal(params)
-       .all_or_with_knowledge_matrices(params)
-       .all_or_with_learning_objectives(params).group('activity_sequences.id')
-  end
-
   def curricular_components
     CurricularComponent.joins(activities: :activity_sequence)
                        .where(
@@ -73,72 +64,14 @@ class ActivitySequence < ApplicationRecord
     id_indices = Hash[activity_sequence_ids.map.with_index { |id, idx| [id, idx] }]
     ActivitySequence.where(id: activity_sequence_ids)
                     .includes(:main_curricular_component)
+                    .includes(:stage)
+                    .includes(:segment)
                     .includes(learning_objectives: :axes)
                     .includes(learning_objectives: :curricular_component)
                     .includes(learning_objectives: :sustainable_development_goals)
                     .includes(:knowledge_matrices)
                     .includes(:learning_objectives)
                     .sort_by { |a| id_indices[a.id.to_s] }
-  end
-
-  def self.all_or_with_year(years = nil)
-    return all unless years
-
-    where(year: years)
-  end
-
-  def self.all_or_with_main_curricular_component(params = {})
-    return all unless params[:curricular_component_slugs]
-
-    joins(:main_curricular_component).merge(
-      CurricularComponent.where(
-        slug: params[:curricular_component_slugs]
-      )
-    )
-  end
-
-  def self.all_or_with_axes(params = {})
-    return all unless params[:axis_ids]
-
-    joins(learning_objectives: :axes).where(
-      learning_objectives: {
-        axes: {
-          id: params[:axis_ids]
-        }
-      }
-    )
-  end
-
-  def self.all_or_with_sustainable_development_goal(params = {})
-    return all unless params[:sustainable_development_goal_ids]
-
-    joins(learning_objectives: :sustainable_development_goals).where(
-      learning_objectives: {
-        sustainable_development_goals: {
-          id: params[:sustainable_development_goal_ids]
-        }
-      }
-    )
-  end
-
-  def self.all_or_with_knowledge_matrices(params = {})
-    return all unless params[:knowledge_matrix_ids]
-
-    joins(:knowledge_matrices).where(
-      knowledge_matrices: {
-        id: params[:knowledge_matrix_ids]
-      }
-    )
-  end
-
-  def self.all_or_with_learning_objectives(params = {})
-    return all unless params[:learning_objective_ids]
-
-    joins(:learning_objectives).where(
-      learning_objectives: {
-        id: params[:learning_objective_ids]
-      }
-    )
   end
 
   def performed_by_teacher(teacher)
