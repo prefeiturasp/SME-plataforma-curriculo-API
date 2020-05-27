@@ -1,8 +1,13 @@
 module Api
   class AnswerBooksController < ApiController
     def index
-      @answer_books = AnswerBook.order_by_component_name(params[:segment_name])
-
+      if params[:stage_id]
+        @answer_books = AnswerBook.includes(:curricular_component).where(stage_id: params[:stage_id]).order(
+          "curricular_components.name asc"
+        )
+      else
+        @answer_books = AnswerBook.all
+      end
       render :index
     end
 
