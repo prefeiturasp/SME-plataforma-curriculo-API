@@ -1,10 +1,10 @@
 <%
   f.inputs do
     f.input :name, required: true
-    f.input :year, required: true
     f.input :curricular_component, required: true
     f.input :segment, required: true
     f.input :stage, collection: [], required: true
+    f.input :year, collection: [], required: true
     f.input :cover_image, required: true, as: :file
     f.input :book_file, required: true, as: :file
   end

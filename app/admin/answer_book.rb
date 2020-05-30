@@ -2,10 +2,10 @@ ActiveAdmin.register AnswerBook do
   permit_params :name,
                 :cover_image,
                 :book_file,
-                :year,
                 :curricular_component_id,
                 :stage_id,
-                :segment_id
+                :segment_id,
+                :year_id
 
 
   config.filters = true
@@ -32,10 +32,10 @@ ActiveAdmin.register AnswerBook do
       ) if obj.cover_image_identifier.present?
     end
     column :name
-    column :year
     column :curricular_component
     column :segment
     column :stage
+    column :year
     column :book_file do |obj|
       link_to(
         "Caderno Resposta de #{obj.curricular_component.name}",
@@ -49,10 +49,10 @@ ActiveAdmin.register AnswerBook do
     attributes_table do
       row :id
       row :name
-      row :year
       row :curricular_component
       row :segment
       row :stage
+      row :year
       row :cover_image do |obj|
         image_tag(
           "/assets/#{obj.cover_image_identifier}",
