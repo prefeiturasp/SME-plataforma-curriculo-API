@@ -73,6 +73,9 @@ pt-BR:
       stage:
         one: "Etapa"
         other: "Etapas"
+      year:
+        one: "Ano"
+        other: "Anos"
     attributes:
       acl:
         reason: "Motivo"
@@ -304,7 +307,7 @@ pt-BR:
           free_text: "Texto Livre"
       stage:
           name: "Nome"
-          segment:  "Segmento"
+          segment: "Segmento"
       segment:
           name: "Nome"
       answer_book:
@@ -315,6 +318,10 @@ pt-BR:
           curricular_component: "Componente curricular"
           segment: "Segmento"
           stage: "Etapa"
+      year:
+          segment: "Segmento"
+          stage: "Etapa"
+          name: "Ano"
     errors:
       messages:
         all_ratings_is_required: "É necessário votar em todos os critérios de avaliação."

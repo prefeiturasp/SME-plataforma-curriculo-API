@@ -3,10 +3,36 @@
     f.input :name, required: true
     f.input :curricular_component, required: true
     f.input :segment, required: true
-    f.input :stage, collection: [], required: true
-    f.input :year, collection: [], required: true
-    f.input :cover_image, required: true, as: :file
-    f.input :book_file, required: true, as: :file
+    f.input :stage,
+            required: true,
+            collection: answer_book.segment.present? \
+            ? stage_collection(answer_book.segment.id)
+            : [t('Selecione um segmento'), nil]
+    f.input :year,
+            required: true,
+            collection: answer_book.stage.present? \
+                        ? year_collection(answer_book.stage.id)
+                        : [t('Selecione uma etapa'), nil]
+    f.input :cover_image,
+            required: true,
+            as: :file,
+            hint: answer_book.cover_image.present? \
+                  ? image_tag(
+                      "/assets/#{answer_book.cover_image_identifier}",
+                      style: "max-width: 138px; min-height: 180px;",
+                      id: 'cover_image_file'
+                    )
+                  : content_tag(:span, "Anda não há pré-visualização")
+    f.input :book_file,
+            required: true,
+            as: :file,
+            hint: answer_book.book_file.present? \
+                  ? link_to(
+                      'Vizualiar caderno',
+                      "/assets/#{answer_book.book_file_identifier}",
+                      {target: '_blank', id: 'answer_book_file'}
+                    )
+                  : content_tag(:span, "Anda não há pré-visualização")
   end
   f.actions
 %>
