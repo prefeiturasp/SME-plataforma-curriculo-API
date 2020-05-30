@@ -24,7 +24,6 @@ class ActivitySequence < ApplicationRecord
 
   validates :title, presence: true, uniqueness: true
   validates :presentation_text, presence: true
-  validates :year, presence: true
   validates :status, presence: true
   validates :learning_objectives, presence: true
   validates :slug, presence: true, uniqueness: true

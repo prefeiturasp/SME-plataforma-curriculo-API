@@ -3,7 +3,6 @@ ActiveAdmin.register ActivitySequence do
   config.filters = true
 
   filter :title
-  filter :year
   filter :presentation_text
   filter :main_curricular_component
   filter :knowledge_matrices
@@ -19,7 +18,6 @@ ActiveAdmin.register ActivitySequence do
   end
 
   permit_params :title,
-                :year,
                 :stage_id,
                 :segment_id,
                 :presentation_text,
@@ -40,7 +38,7 @@ ActiveAdmin.register ActivitySequence do
 
   collection_action :change_learning_objectives, method: :get do
     @learning_objectives = LearningObjective.where(
-      year: params[:year],
+      stage: params[:stage_id],
       curricular_component_id: params[:main_curricular_component_id]
     )
     data = @learning_objectives.pluck(:id, :code, :description)
@@ -71,9 +69,6 @@ ActiveAdmin.register ActivitySequence do
     column :estimated_time
     column :segment
     column :stage
-    column :year do |activity_sequence|
-      ActivitySequence.human_enum_name(:year, activity_sequence.year, true)
-    end
     column :main_curricular_component
     column :status do |activity_sequence|
       ActivitySequence.human_enum_name(:status, activity_sequence.status)
@@ -102,9 +97,8 @@ ActiveAdmin.register ActivitySequence do
     column :title
     column :presentation_text
     column :estimated_time
-    column :year do |activity_sequence|
-      ActivitySequence.human_enum_name(:year, activity_sequence.year, true)
-    end
+    column :segment
+    column :stage
     column :main_curricular_component do |as|
       as.main_curricular_component.name
     end
