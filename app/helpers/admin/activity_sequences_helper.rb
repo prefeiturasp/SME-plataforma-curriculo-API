@@ -1,9 +1,9 @@
 module Admin
   module ActivitySequencesHelper
-    def learning_objectives_collection(main_curricular_component_id, stage_id)
+    def learning_objectives_collection(main_curricular_component_id, year_id)
       learning_objectives = LearningObjective.where(
         curricular_component_id: main_curricular_component_id,
-        stage_id: stage_id
+        year_id: year_id
       )
       learning_objectives.collect do |lo|
         [lo.code, lo.id, { title: lo.description }]

@@ -7,9 +7,7 @@
     row :presentation_text
     row :segment
     row :stage
-    row :year do |activity_sequence|
-      ActivitySequence.human_enum_name(:year, activity_sequence.year, true)
-    end
+    row :year
     row :main_curricular_component
     row :books do |activity_sequence|
       raw(activity_sequence.books)

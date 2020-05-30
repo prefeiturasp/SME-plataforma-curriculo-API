@@ -1,11 +1,11 @@
 class ActivitySequence < ApplicationRecord
   include FriendlyId
   include ImageConcern
-  include YearsEnum
   include ActivitySequenceSearchable
   belongs_to :main_curricular_component, class_name: 'CurricularComponent'
   belongs_to :stage
   belongs_to :segment
+  belongs_to :year
   has_and_belongs_to_many :knowledge_matrices
   has_and_belongs_to_many :learning_objectives
   has_many :activities,
@@ -42,7 +42,7 @@ class ActivitySequence < ApplicationRecord
   end
 
   def self.where_optional_params(params = {})
-    all.all_or_with_year(params[:years])
+    all.all_or_with_year(params[:year_id])
        .all_or_with_main_curricular_component(params)
        .all_or_with_axes(params)
        .all_or_with_sustainable_development_goal(params)
@@ -80,10 +80,10 @@ class ActivitySequence < ApplicationRecord
                     .sort_by { |a| id_indices[a.id.to_s] }
   end
 
-  def self.all_or_with_year(years = nil)
-    return all unless years
+  def self.all_or_with_year(year_id = nil)
+    return all unless year_id
 
-    where(year: years)
+    where(year_id: year_id)
   end
 
   def self.all_or_with_main_curricular_component(params = {})
@@ -164,14 +164,5 @@ class ActivitySequence < ApplicationRecord
 
   def total_evaluations
     performeds.where(evaluated: true).count
-  end
-
-  private
-
-  def year_reference_on_database
-    key = year_before_type_cast
-    return key if key.is_a? Integer
-
-    ActivitySequence.years[key]
   end
 end

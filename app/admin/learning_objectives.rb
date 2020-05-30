@@ -5,6 +5,7 @@ ActiveAdmin.register LearningObjective do
                 :curricular_component_id,
                 :segment_id,
                 :stage_id,
+                :year_id,
                 sustainable_development_goal_ids: [],
                 axis_ids: []
 
@@ -30,6 +31,8 @@ ActiveAdmin.register LearningObjective do
       f.input :stage,
               required: true,
               collection: learning_objective.segment.present? ? stage_collection(learning_objective.segment.id) : [t('Selecione um segmento'), nil]
+      f.input :stage, collection: [], required: true
+      f.input :year, collection: [], required: true
       f.input :description
       f.input :curricular_component
       f.input :code
@@ -53,6 +56,7 @@ ActiveAdmin.register LearningObjective do
     column :code
     column :segment
     column :stage
+    column :year
     column :description
     column :curricular_component
     column :created_at
@@ -66,6 +70,7 @@ ActiveAdmin.register LearningObjective do
       row :code
       row :segment
       row :stage
+      row :year
       row :description
       row :curricular_component
       row :created_at
@@ -97,6 +102,7 @@ ActiveAdmin.register LearningObjective do
     column :code
     column :segment
     column :stage
+    column :year
     column :description
     column :curricular_component do |learning_objective|
       learning_objective.curricular_component.name

@@ -13,8 +13,7 @@ $(document).ready(function(){
     var html_content = quillGetHTML(obj);
     td.innerHTML = html_content;
   }
-
-  $('#activity_sequence_main_curricular_component_id, #activity_sequence_year').change(fillLearningObjectives);
+  $('#activity_sequence_main_curricular_component_id, #activity_sequence_year_id').change(fillLearningObjectives);
   $('#activity_sequence_segment_id').change(function(){
     var segment_id = $('#activity_sequence_segment_id').val();
     $.ajax({
@@ -26,6 +25,24 @@ $(document).ready(function(){
         $('#activity_sequence_stage_id option').remove();
         for (var i = 0; i < result.length; i++){
           $('#activity_sequence_stage_id').append(
+            new Option(`${result[i]['name']}`, `${result[i]['id']}`)
+          );
+        }
+      }
+    });
+  });
+  $('#activity_sequence_stage_id').change(function(){
+    var segment_id = $('#activity_sequence_segment_id').val();
+    var stage_id = $(this).val();
+    $.ajax({
+      type: "GET",
+      url: "/api/v1/years",
+      dataType: "json",
+      data: {'segment_id': segment_id, 'stage_id': stage_id},
+      success: function(result){
+        $('#activity_sequence_year_id option').remove();
+        for (var i = 0; i < result.length; i++){
+          $('#activity_sequence_year_id').append(
             new Option(`${result[i]['name']}`, `${result[i]['id']}`)
           );
         }
@@ -44,18 +61,18 @@ function fillCheckBoxes(path, parent, ids, model) {
 function fillLearningObjectives() {
   var parent = $('#activity_sequence_learning_objectives_input ol');
   var main_curricular_component_id = $('#activity_sequence_main_curricular_component_id').val();
-  var year = $('#activity_sequence_year').val();
+  var year_id = $('#activity_sequence_year_id').val();
 
   if (!main_curricular_component_id) {
     fillTextOnChecKBoxes(parent, 'Selecione um componente curricular');
     return
   }
-  if (!year) {
+  if (!year_id) {
     fillTextOnChecKBoxes(parent, 'Selecione um ano');
     return
   }
 
-  var path = 'change_learning_objectives?main_curricular_component_id=' + main_curricular_component_id + '&year=' + year
+  var path = 'change_learning_objectives?main_curricular_component_id=' + main_curricular_component_id + '&year_id=' + year_id
   fillCheckBoxes(path,
                  parent,
                  'learning_objective_ids',

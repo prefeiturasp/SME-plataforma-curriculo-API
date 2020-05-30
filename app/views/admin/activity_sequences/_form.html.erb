@@ -4,6 +4,7 @@
     f.input :stage,
             required: true,
             collection: activity_sequence.segment.present? ? stage_collection(activity_sequence.segment.id) : [t('Selecione um segmento'), nil]
+    f.input :year, collection: [], required: true
     f.input :status
     f.input :title
     f.input :image, as: :file, hint: f.object.image.attached? \
@@ -14,8 +15,8 @@
     f.input :learning_objectives,
             as: :check_boxes,
             collection: activity_sequence.learning_objectives.present? \
-                        ? learning_objectives_collection(activity_sequence.main_curricular_component.id, activity_sequence.stage.id )
-                        : [ [t('Selecione um comonente curricular e uma etapa'), nil, {style: "display: none;"}] ],
+                        ? learning_objectives_collection(activity_sequence.main_curricular_component.id, activity_sequence.year.id ) 
+                        : [ [t('helpers.select.prompt_year_and_main_curricular'), nil, {style: "display: none;"}] ],
             input_html: {
               multiple: true
             }
