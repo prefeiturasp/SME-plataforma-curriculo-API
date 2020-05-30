@@ -18,10 +18,10 @@ module Api
         :name,
         :cover_image,
         :book_file,
-        :year,
         :segment_name,
         :segment_id,
         :stage_id,
+        :year_id,
         :curricular_component_id
       )
     end
