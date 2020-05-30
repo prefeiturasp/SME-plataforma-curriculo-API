@@ -1,11 +1,11 @@
 ActiveAdmin.register LearningObjective do
   config.sort_order = 'code_asc'
-  permit_params :year,
-                :description,
+  permit_params :description,
                 :code,
                 :curricular_component_id,
                 :segment_id,
                 :stage_id,
+                :year_id,
                 sustainable_development_goal_ids: [],
                 axis_ids: []
 
@@ -30,7 +30,7 @@ ActiveAdmin.register LearningObjective do
     f.inputs do
       f.input :segment, required: true
       f.input :stage, collection: [], required: true
-      f.input :year, as: :select, collection: human_attribute_years
+      f.input :year, collection: [], required: true
       f.input :description
       f.input :curricular_component
       f.input :code
@@ -54,9 +54,7 @@ ActiveAdmin.register LearningObjective do
     column :code
     column :segment
     column :stage
-    column :year do |learning_objective|
-      LearningObjective.human_enum_name(:year, learning_objective.year, true)
-    end
+    column :year
     column :description
     column :curricular_component
     column :created_at
@@ -70,9 +68,7 @@ ActiveAdmin.register LearningObjective do
       row :code
       row :segment
       row :stage
-      row :year do |learning_objective|
-        LearningObjective.human_enum_name(:year, learning_objective.year, true)
-      end
+      row :year
       row :description
       row :curricular_component
       row :created_at
@@ -102,9 +98,9 @@ ActiveAdmin.register LearningObjective do
     whitelist
 
     column :code
-    column :year do |learning_objective|
-      LearningObjective.human_enum_name(:year, learning_objective.year, true)
-    end
+    column :segment
+    column :stage
+    column :year
     column :description
     column :curricular_component do |learning_objective|
       learning_objective.curricular_component.name
