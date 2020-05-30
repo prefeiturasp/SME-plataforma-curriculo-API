@@ -1,4 +1,10 @@
 $(document).ready(function(){
+  $('#answer_book_cover_image').change(function(){
+    $('#cover_image_file').hide();
+  });
+  $('#answer_book_book_file').change(function(){
+    $('#answer_book_file').hide();
+  });
   $('#answer_book_segment_id').change(function(){
     var segment_id = $(this).val();
     $.ajax({
