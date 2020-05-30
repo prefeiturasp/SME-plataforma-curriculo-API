@@ -54,11 +54,11 @@ module Api
           :books,
           :estimated_time,
           :status,
-          :year,
           :image,
           :main_curricular_component_id,
           :stage_id,
           :segment_id,
+          :year_id,
           sustainable_development_goal_ids: [],
           knowledge_matrix_ids: [],
           learning_objective_ids: []

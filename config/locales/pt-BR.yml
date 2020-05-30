@@ -311,7 +311,7 @@ pt-BR:
           name: "Título"
           cover_image: "Imagem de capa"
           book_file: "Caderno resposta"
-          year: "Ano do livro"
+          year: "Ano"
           curricular_component: "Componente curricular"
           segment: "Segmento"
           stage: "Etapa"

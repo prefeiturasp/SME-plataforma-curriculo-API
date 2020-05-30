@@ -49,8 +49,8 @@ module Api
       end
 
       def all_or_with_year
-        return {} unless params[:years]
-        { year: params[:years] }
+        return {} unless params[:year_id]
+        { year_id: params[:year_id] }
       end
 
       def all_or_with_main_curricular_component
