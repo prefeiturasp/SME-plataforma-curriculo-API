@@ -10,7 +10,6 @@ class LearningObjective < ApplicationRecord
 
   include DestroyValidator # has_and_belongs_to_many doesn't support dependent restrict_with_error
 
-  validates :year, presence: true
   validates :description, presence: true
   validates :curricular_component, presence: true
   validates :code, presence: true, uniqueness: true
