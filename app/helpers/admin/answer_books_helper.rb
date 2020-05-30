@@ -9,8 +9,13 @@ module Admin
       end
     end
 
-    def render_cover_image(current_value)
-
+    def year_collection(stage_id)
+      years = Year.where(
+        stage_id: stage_id
+      )
+      years.collect do |year|
+        [year.name, year.id]
+      end
     end
   end
 end

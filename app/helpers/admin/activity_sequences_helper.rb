@@ -19,6 +19,15 @@ module Admin
       end
     end
 
+    def year_collection(stage_id)
+      years = Year.where(
+        stage_id: stage_id
+      )
+      years.collect do |year|
+        [year.name, year.id]
+      end
+    end
+
     def axes_collection(activity_sequence)
       if activity_sequence.learning_objectives.present?
         axes = Axis.where(curricular_component_id: activity_sequence.main_curricular_component.id)

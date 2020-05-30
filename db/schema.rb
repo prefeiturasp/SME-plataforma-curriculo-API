@@ -10,10 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_23_161626) do
+ActiveRecord::Schema.define(version: 2020_05_30_105649) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "fuzzystrmatch"
   enable_extension "plpgsql"
+  enable_extension "postgis"
+  enable_extension "postgis_tiger_geocoder"
+  enable_extension "postgis_topology"
 
   create_table "acls", force: :cascade do |t|
     t.bigint "teacher_id"
@@ -121,7 +125,6 @@ ActiveRecord::Schema.define(version: 2020_04_23_161626) do
 
   create_table "activity_sequences", force: :cascade do |t|
     t.string "title"
-    t.integer "year"
     t.text "presentation_text"
     t.jsonb "books"
     t.integer "estimated_time"
@@ -133,10 +136,12 @@ ActiveRecord::Schema.define(version: 2020_04_23_161626) do
     t.string "keywords"
     t.bigint "stage_id"
     t.bigint "segment_id"
+    t.bigint "year_id"
     t.index ["main_curricular_component_id"], name: "index_activity_sequences_on_main_curricular_component_id"
     t.index ["segment_id"], name: "index_activity_sequences_on_segment_id"
     t.index ["slug"], name: "index_activity_sequences_on_slug", unique: true
     t.index ["stage_id"], name: "index_activity_sequences_on_stage_id"
+    t.index ["year_id"], name: "index_activity_sequences_on_year_id"
   end
 
   create_table "activity_sequences_knowledge_matrices", id: false, force: :cascade do |t|
@@ -163,15 +168,16 @@ ActiveRecord::Schema.define(version: 2020_04_23_161626) do
     t.string "name"
     t.string "cover_image"
     t.string "book_file"
-    t.string "year"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "curricular_component_id"
     t.bigint "stage_id"
     t.bigint "segment_id"
+    t.bigint "year_id"
     t.index ["curricular_component_id"], name: "index_answer_books_on_curricular_component_id"
     t.index ["segment_id"], name: "index_answer_books_on_segment_id"
     t.index ["stage_id"], name: "index_answer_books_on_stage_id"
+    t.index ["year_id"], name: "index_answer_books_on_year_id"
   end
 
   create_table "axes", force: :cascade do |t|
@@ -271,6 +277,18 @@ ActiveRecord::Schema.define(version: 2020_04_23_161626) do
     t.index ["slug"], name: "index_curricular_components_on_slug", unique: true
   end
 
+  create_table "favourites", force: :cascade do |t|
+    t.integer "favouritable_id"
+    t.string "favouritable_type"
+    t.bigint "teacher_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["favouritable_id"], name: "index_favourites_on_favouritable_id"
+    t.index ["favouritable_type"], name: "index_favourites_on_favouritable_type"
+    t.index ["teacher_id", "favouritable_id", "favouritable_type"], name: "favourites_unique_index", unique: true
+    t.index ["teacher_id"], name: "index_favourites_on_teacher_id"
+  end
+
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
@@ -309,8 +327,19 @@ ActiveRecord::Schema.define(version: 2020_04_23_161626) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "layer", primary_key: ["topology_id", "layer_id"], force: :cascade do |t|
+    t.integer "topology_id", null: false
+    t.integer "layer_id", null: false
+    t.string "schema_name", null: false
+    t.string "table_name", null: false
+    t.string "feature_column", null: false
+    t.integer "feature_type", null: false
+    t.integer "level", default: 0, null: false
+    t.integer "child_id"
+    t.index ["schema_name", "table_name", "feature_column"], name: "layer_schema_name_table_name_feature_column_key", unique: true
+  end
+
   create_table "learning_objectives", force: :cascade do |t|
-    t.integer "year"
     t.string "code"
     t.string "description"
     t.bigint "curricular_component_id"
@@ -318,9 +347,11 @@ ActiveRecord::Schema.define(version: 2020_04_23_161626) do
     t.datetime "updated_at", null: false
     t.bigint "stage_id"
     t.bigint "segment_id"
+    t.bigint "year_id"
     t.index ["curricular_component_id"], name: "index_learning_objectives_on_curricular_component_id"
     t.index ["segment_id"], name: "index_learning_objectives_on_segment_id"
     t.index ["stage_id"], name: "index_learning_objectives_on_stage_id"
+    t.index ["year_id"], name: "index_learning_objectives_on_year_id"
   end
 
   create_table "learning_objectives_sustainable_development_goals", id: false, force: :cascade do |t|
@@ -380,6 +411,13 @@ ActiveRecord::Schema.define(version: 2020_04_23_161626) do
     t.string "name"
   end
 
+  create_table "spatial_ref_sys", primary_key: "srid", id: :integer, default: nil, force: :cascade do |t|
+    t.string "auth_name", limit: 256
+    t.integer "auth_srid"
+    t.string "srtext", limit: 2048
+    t.string "proj4text", limit: 2048
+  end
+
   create_table "stages", force: :cascade do |t|
     t.string "name"
     t.bigint "segment_id"
@@ -411,6 +449,14 @@ ActiveRecord::Schema.define(version: 2020_04_23_161626) do
     t.index ["user_id"], name: "index_teachers_on_user_id"
   end
 
+  create_table "topology", id: :serial, force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "srid", null: false
+    t.float "precision", null: false
+    t.boolean "hasz", default: false, null: false
+    t.index ["name"], name: "topology_name_key", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: ""
     t.string "encrypted_password", default: "", null: false
@@ -438,6 +484,14 @@ ActiveRecord::Schema.define(version: 2020_04_23_161626) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "years", force: :cascade do |t|
+    t.string "name"
+    t.bigint "segment_id"
+    t.bigint "stage_id"
+    t.index ["segment_id"], name: "index_years_on_segment_id"
+    t.index ["stage_id"], name: "index_years_on_stage_id"
+  end
+
   add_foreign_key "acls", "teachers"
   add_foreign_key "activities", "activity_sequences"
   add_foreign_key "activity_content_blocks", "activities"
@@ -454,11 +508,15 @@ ActiveRecord::Schema.define(version: 2020_04_23_161626) do
   add_foreign_key "collection_activity_sequences", "activity_sequences"
   add_foreign_key "collection_activity_sequences", "collections"
   add_foreign_key "collections", "teachers"
+  add_foreign_key "favourites", "teachers"
   add_foreign_key "goals", "sustainable_development_goals"
+  add_foreign_key "layer", "topology", name: "layer_topology_id_fkey"
   add_foreign_key "learning_objectives", "curricular_components"
   add_foreign_key "results", "challenges"
   add_foreign_key "results", "teachers"
   add_foreign_key "stages", "segments"
   add_foreign_key "steps", "methodologies"
   add_foreign_key "teachers", "users"
+  add_foreign_key "years", "segments"
+  add_foreign_key "years", "stages"
 end

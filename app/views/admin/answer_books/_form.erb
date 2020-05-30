@@ -8,7 +8,11 @@
             collection: answer_book.segment.present? \
             ? stage_collection(answer_book.segment.id)
             : [t('Selecione um segmento'), nil]
-    f.input :year, collection: [], required: true
+    f.input :year,
+            required: true,
+            collection: answer_book.stage.present? \
+                        ? year_collection(answer_book.stage.id)
+                        : [t('Selecione uma etapa'), nil]
     f.input :cover_image,
             required: true,
             as: :file,

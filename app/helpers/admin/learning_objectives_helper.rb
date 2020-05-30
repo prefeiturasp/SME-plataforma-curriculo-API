@@ -20,5 +20,14 @@ module Admin
         [stage.name, stage.id]
       end
     end
+
+    def year_collection(stage_id)
+      years = Year.where(
+        stage_id: stage_id
+      )
+      years.collect do |year|
+        [year.name, year.id]
+      end
+    end
   end
 end
