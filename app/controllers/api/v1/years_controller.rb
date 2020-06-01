@@ -4,23 +4,23 @@ module Api
 
       before_action :set_year, only: %i[show update destroy]
 
-      # GET /answer_books
+      # GET /v1/years
       def index
-        if params[:segment_id].present? && params[:stage_id].present?
-          @years = Year.where(segment_id: params[:segment_id], stage_id: params[:stage_id]).order(:name)
+        if params[:stage_id].present?
+          @years = Year.where(stage_id: params[:stage_id]).order(:name)
         else
           @years = Year.all
         end
-        render json: @years
 
+        render json: @years
       end
 
-      # GET /answer_books/1
+      # GET /v1/years/1
       def show
         render json: @year
       end
 
-      # POST /answer_books
+      # POST /v1/years
       def create
         @year = Year.new(year_params)
 
@@ -31,7 +31,7 @@ module Api
         end
       end
 
-      # PATCH/PUT /answer_books/1
+      # PATCH/PUT /v1/years/1
       def update
         if @year.update(year_params)
           render json: @year
@@ -40,7 +40,7 @@ module Api
         end
       end
 
-      # DELETE /answer_books/1
+      # DELETE /v1/years/1
       def destroy
         @year.destroy
       end

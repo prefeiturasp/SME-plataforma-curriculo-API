@@ -4,8 +4,6 @@ module Api
     before_action :fetch_learning_objectives, only: %i[index]
 
     def index
-      @years = LearningObjective.years
-
       @curricular_components = CurricularComponent.all
       @sustainable_development_goals = SustainableDevelopmentGoal.all
       @knowledge_matrices = KnowledgeMatrix.all
