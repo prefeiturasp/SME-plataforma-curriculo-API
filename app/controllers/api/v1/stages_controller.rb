@@ -4,10 +4,10 @@ module Api
 
       before_action :set_stage, only: %i[show update destroy]
 
-      # GET /answer_books
+      # GET /stages
       def index
         if params[:segment_id].present?
-          @stages = Stage.where(segment_id: params[:segment_id]).order(:name)
+          @stages = Stage.where(segment_id: params[:segment_id])
         else
           @stages = Stage.all
         end
@@ -15,12 +15,12 @@ module Api
 
       end
 
-      # GET /answer_books/1
+      # GET /stages/1
       def show
         render json: @stage
       end
 
-      # POST /answer_books
+      # POST /stages
       def create
         @stage = Stage.new(stage_params)
 
@@ -31,7 +31,7 @@ module Api
         end
       end
 
-      # PATCH/PUT /answer_books/1
+      # PATCH/PUT /stages/1
       def update
         if @stage.update(stage_params)
           render json: @stage
@@ -40,7 +40,7 @@ module Api
         end
       end
 
-      # DELETE /answer_books/1
+      # DELETE /stages/1
       def destroy
         @stage.destroy
       end

@@ -4,19 +4,19 @@ module Api
 
       before_action :set_segment, only: %i[show update destroy]
 
-      # GET /answer_books
+      # GET /v1/segments
       def index
         @segments = Segment.all
 
         render json: @segments
       end
 
-      # GET /answer_books/1
+      # GET /v1/segments/1
       def show
         render json: @segment
       end
 
-      # POST /answer_books
+      # POST /v1/segments
       def create
         @segment = Segment.new(segment_params)
 
@@ -27,7 +27,7 @@ module Api
         end
       end
 
-      # PATCH/PUT /answer_books/1
+      # PATCH/PUT /v1/segments/1
       def update
         if @segment.update(segment_params)
           render json: @segment
@@ -36,7 +36,7 @@ module Api
         end
       end
 
-      # DELETE /answer_books/1
+      # DELETE /v1/segments/1
       def destroy
         @segment.destroy
       end

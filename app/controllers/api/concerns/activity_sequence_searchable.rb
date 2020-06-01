@@ -48,6 +48,11 @@ module Api
         options
       end
 
+      def all_or_with_year
+        return {} unless params[:year_id]
+        { year_id: params[:year_id] }
+      end
+
       def all_or_with_main_curricular_component
         return {} unless params[:curricular_component_slugs]
         { main_curricular_component_slug: params[:curricular_component_slugs] }

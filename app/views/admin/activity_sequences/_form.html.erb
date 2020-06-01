@@ -1,19 +1,30 @@
 <%
   f.inputs do
     f.input :segment, required: true
-    f.input :stage, collection: [], required: true
+    f.input :stage,
+            required: true,
+            collection: activity_sequence.segment.present? \
+            ? stage_collection(activity_sequence.segment.id)
+            : [t('Selecione um segmento'), nil]
+    f.input :year,
+            required: true,
+            collection: activity_sequence.stage.present? \
+                        ? year_collection(activity_sequence.stage.id)
+                        : [t('Selecione uma etapa'), nil]
     f.input :status
     f.input :title
-    f.input :image, as: :file, hint: f.object.image.attached? \
-      ? image_container(f.object.image, :thumb)
-      : content_tag(:span, "Anda não há pré-visualização")
+    f.input :image,
+            as: :file,
+            hint: f.object.image.attached? \
+                  ? image_container(f.object.image, :thumb)
+                  : content_tag(:span, "Anda não há pré-visualização")
     f.input :presentation_text
-    f.input :year, as: :select, collection: human_attribute_years
     f.input :main_curricular_component
     f.input :learning_objectives,
             as: :check_boxes,
-            collection: activity_sequence.learning_objectives.present? ? learning_objectives_collection(activity_sequence.main_curricular_component.id, activity_sequence.year ) : [
-              [t('helpers.select.prompt_year_and_main_curricular'), nil, {style: "display: none;"}] ],
+            collection: activity_sequence.learning_objectives.present? && activity_sequence.year.present? \
+                        ? learning_objectives_collection(activity_sequence.main_curricular_component.id, activity_sequence.year.id )
+                        : [ [t('helpers.select.prompt_year_and_main_curricular'), nil, {style: "display: none;"}] ],
             input_html: {
               multiple: true
             }

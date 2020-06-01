@@ -1,7 +1,9 @@
 module Api
   class AnswerBooksController < ApiController
     def index
-      @answer_books = AnswerBook.order_by_component_name(params[:segment_name])
+      @answer_books = AnswerBook.includes(:curricular_component).all.order(
+        "curricular_components.name asc"
+      )
 
       render :index
     end
@@ -13,10 +15,10 @@ module Api
         :name,
         :cover_image,
         :book_file,
-        :year,
         :segment_name,
         :segment_id,
         :stage_id,
+        :year_id,
         :curricular_component_id
       )
     end

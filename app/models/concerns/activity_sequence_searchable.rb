@@ -33,6 +33,7 @@ module ActivitySequenceSearchable
   def search_data_to_filters
     {
       created_at: created_at,
+      year_id: year_id,
       main_curricular_component_slug: main_curricular_component.slug,
       axis_ids: axis_ids,
       sustainable_development_goal_ids: sustainable_development_goal_ids,

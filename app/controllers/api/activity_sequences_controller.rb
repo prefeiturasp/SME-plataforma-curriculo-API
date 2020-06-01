@@ -59,6 +59,7 @@ module Api
         :learning_objective_ids,
         :stage_id,
         :segment_id,
+        :year_id,
         :axis_ids
       )
     end

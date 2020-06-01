@@ -66,6 +66,7 @@ Rails.application.routes.draw do
       resources :roadmaps
       resources :segments
       resources :stages
+      resources :years
       resources :sustainable_development_goals
       resources :knowledge_matrices
     end

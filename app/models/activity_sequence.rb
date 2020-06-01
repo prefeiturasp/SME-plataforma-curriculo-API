@@ -1,11 +1,11 @@
 class ActivitySequence < ApplicationRecord
   include FriendlyId
   include ImageConcern
-  include YearsEnum
   include ActivitySequenceSearchable
   belongs_to :main_curricular_component, class_name: 'CurricularComponent'
   belongs_to :stage
   belongs_to :segment
+  belongs_to :year
   has_and_belongs_to_many :knowledge_matrices
   has_and_belongs_to_many :learning_objectives
   has_many :activities,
@@ -24,7 +24,6 @@ class ActivitySequence < ApplicationRecord
 
   validates :title, presence: true, uniqueness: true
   validates :presentation_text, presence: true
-  validates :year, presence: true
   validates :status, presence: true
   validates :learning_objectives, presence: true
   validates :slug, presence: true, uniqueness: true
@@ -40,6 +39,15 @@ class ActivitySequence < ApplicationRecord
 
   def should_generate_new_friendly_id?
     title_changed? || super
+  end
+
+  def self.where_optional_params(params = {})
+    all.all_or_with_year(params[:year_id])
+       .all_or_with_main_curricular_component(params)
+       .all_or_with_axes(params)
+       .all_or_with_sustainable_development_goal(params)
+       .all_or_with_knowledge_matrices(params)
+       .all_or_with_learning_objectives(params).group('activity_sequences.id')
   end
 
   def curricular_components
@@ -74,6 +82,66 @@ class ActivitySequence < ApplicationRecord
                     .sort_by { |a| id_indices[a.id.to_s] }
   end
 
+  def self.all_or_with_year(year_id = nil)
+    return all unless year_id
+
+    where(year_id: year_id)
+  end
+
+  def self.all_or_with_main_curricular_component(params = {})
+    return all unless params[:curricular_component_slugs]
+
+    joins(:main_curricular_component).merge(
+      CurricularComponent.where(
+        slug: params[:curricular_component_slugs]
+      )
+    )
+  end
+
+  def self.all_or_with_axes(params = {})
+    return all unless params[:axis_ids]
+
+    joins(learning_objectives: :axes).where(
+      learning_objectives: {
+        axes: {
+          id: params[:axis_ids]
+        }
+      }
+    )
+  end
+
+  def self.all_or_with_sustainable_development_goal(params = {})
+    return all unless params[:sustainable_development_goal_ids]
+
+    joins(learning_objectives: :sustainable_development_goals).where(
+      learning_objectives: {
+        sustainable_development_goals: {
+          id: params[:sustainable_development_goal_ids]
+        }
+      }
+    )
+  end
+
+  def self.all_or_with_knowledge_matrices(params = {})
+    return all unless params[:knowledge_matrix_ids]
+
+    joins(:knowledge_matrices).where(
+      knowledge_matrices: {
+        id: params[:knowledge_matrix_ids]
+      }
+    )
+  end
+
+  def self.all_or_with_learning_objectives(params = {})
+    return all unless params[:learning_objective_ids]
+
+    joins(:learning_objectives).where(
+      learning_objectives: {
+        id: params[:learning_objective_ids]
+      }
+    )
+  end
+
   def performed_by_teacher(teacher)
     performeds.by_teacher(teacher).last
   end
@@ -98,14 +166,5 @@ class ActivitySequence < ApplicationRecord
 
   def total_evaluations
     performeds.where(evaluated: true).count
-  end
-
-  private
-
-  def year_reference_on_database
-    key = year_before_type_cast
-    return key if key.is_a? Integer
-
-    ActivitySequence.years[key]
   end
 end
