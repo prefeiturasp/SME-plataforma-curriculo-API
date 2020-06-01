@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_04_141259) do
+ActiveRecord::Schema.define(version: 2020_05_30_105649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -116,7 +116,6 @@ ActiveRecord::Schema.define(version: 2019_02_04_141259) do
 
   create_table "activity_sequences", force: :cascade do |t|
     t.string "title"
-    t.integer "year"
     t.text "presentation_text"
     t.jsonb "books"
     t.integer "estimated_time"
@@ -126,8 +125,13 @@ ActiveRecord::Schema.define(version: 2019_02_04_141259) do
     t.datetime "updated_at", null: false
     t.string "slug", null: false
     t.string "keywords"
+    t.bigint "stage_id"
+    t.bigint "segment_id"
+    t.bigint "year_id"
     t.index ["main_curricular_component_id"], name: "index_activity_sequences_on_main_curricular_component_id"
     t.index ["slug"], name: "index_activity_sequences_on_slug", unique: true
+    t.index ["stage_id"], name: "index_activity_sequences_on_stage_id"
+    t.index ["year_id"], name: "index_activity_sequences_on_year_id"
   end
 
   create_table "activity_sequences_knowledge_matrices", id: false, force: :cascade do |t|
@@ -148,6 +152,22 @@ ActiveRecord::Schema.define(version: 2019_02_04_141259) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "answer_books", force: :cascade do |t|
+    t.string "name"
+    t.string "cover_image"
+    t.string "book_file"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "curricular_component_id"
+    t.bigint "stage_id"
+    t.bigint "segment_id"
+    t.bigint "year_id"
+    t.index ["curricular_component_id"], name: "index_answer_books_on_curricular_component_id"
+    t.index ["segment_id"], name: "index_answer_books_on_segment_id"
+    t.index ["stage_id"], name: "index_answer_books_on_stage_id"
+    t.index ["year_id"], name: "index_answer_books_on_year_id"
   end
 
   create_table "axes", force: :cascade do |t|
@@ -195,6 +215,18 @@ ActiveRecord::Schema.define(version: 2019_02_04_141259) do
     t.string "slug", null: false
     t.string "color"
     t.index ["slug"], name: "index_curricular_components_on_slug", unique: true
+  end
+
+  create_table "favourites", force: :cascade do |t|
+    t.integer "favouritable_id"
+    t.string "favouritable_type"
+    t.bigint "teacher_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["favouritable_id"], name: "index_favourites_on_favouritable_id"
+    t.index ["favouritable_type"], name: "index_favourites_on_favouritable_type"
+    t.index ["teacher_id", "favouritable_id", "favouritable_type"], name: "favourites_unique_index", unique: true
+    t.index ["teacher_id"], name: "index_favourites_on_teacher_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -247,13 +279,18 @@ ActiveRecord::Schema.define(version: 2019_02_04_141259) do
   end
 
   create_table "learning_objectives", force: :cascade do |t|
-    t.integer "year"
     t.string "code"
     t.string "description"
     t.bigint "curricular_component_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "stage_id"
+    t.bigint "segment_id"
+    t.bigint "year_id"
     t.index ["curricular_component_id"], name: "index_learning_objectives_on_curricular_component_id"
+    t.index ["segment_id"], name: "index_learning_objectives_on_segment_id"
+    t.index ["stage_id"], name: "index_learning_objectives_on_stage_id"
+    t.index ["year_id"], name: "index_learning_objectives_on_year_id"
   end
 
   create_table "learning_objectives_sustainable_development_goals", id: false, force: :cascade do |t|
@@ -284,6 +321,19 @@ ActiveRecord::Schema.define(version: 2019_02_04_141259) do
     t.integer "auth_srid"
     t.string "srtext", limit: 2048
     t.string "proj4text", limit: 2048
+  end
+
+  create_table "stages", force: :cascade do |t|
+    t.string "name"
+    t.bigint "segment_id"
+    t.index ["segment_id"], name: "index_stages_on_segment_id"
+  end
+
+  create_table "steps", force: :cascade do |t|
+    t.bigint "methodology_id"
+    t.string "title"
+    t.text "description"
+    t.index ["methodology_id"], name: "index_steps_on_methodology_id"
   end
 
   create_table "sustainable_development_goals", force: :cascade do |t|
@@ -337,6 +387,15 @@ ActiveRecord::Schema.define(version: 2019_02_04_141259) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "years", force: :cascade do |t|
+    t.string "name"
+    t.bigint "segment_id"
+    t.bigint "stage_id"
+    t.index ["segment_id"], name: "index_years_on_segment_id"
+    t.index ["stage_id"], name: "index_years_on_stage_id"
+  end
+
+  add_foreign_key "acls", "teachers"
   add_foreign_key "activities", "activity_sequences"
   add_foreign_key "activity_content_blocks", "activities"
   add_foreign_key "activity_content_blocks", "content_blocks"
@@ -349,9 +408,12 @@ ActiveRecord::Schema.define(version: 2019_02_04_141259) do
   add_foreign_key "collection_activity_sequences", "activity_sequences"
   add_foreign_key "collection_activity_sequences", "collections"
   add_foreign_key "collections", "teachers"
+  add_foreign_key "favourites", "teachers"
   add_foreign_key "goals", "sustainable_development_goals"
   add_foreign_key "images", "activity_content_blocks"
   add_foreign_key "layer", "topology", name: "layer_topology_id_fkey"
   add_foreign_key "learning_objectives", "curricular_components"
   add_foreign_key "teachers", "users"
+  add_foreign_key "years", "segments"
+  add_foreign_key "years", "stages"
 end

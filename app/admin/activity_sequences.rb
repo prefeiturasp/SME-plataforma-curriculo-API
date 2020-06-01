@@ -3,7 +3,6 @@ ActiveAdmin.register ActivitySequence do
   config.filters = true
 
   filter :title
-  filter :year
   filter :presentation_text
   filter :main_curricular_component
   filter :knowledge_matrices
@@ -40,6 +39,7 @@ ActiveAdmin.register ActivitySequence do
 
   collection_action :change_learning_objectives, method: :get do
     @learning_objectives = LearningObjective.where(
+      stage: params[:stage_id],
       year_id: params[:year_id],
       curricular_component_id: params[:main_curricular_component_id]
     )
@@ -100,6 +100,8 @@ ActiveAdmin.register ActivitySequence do
     column :title
     column :presentation_text
     column :estimated_time
+    column :segment
+    column :stage
     column :year
     column :main_curricular_component do |as|
       as.main_curricular_component.name

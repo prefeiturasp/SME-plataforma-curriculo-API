@@ -3,19 +3,19 @@ module Api
     class AnswerBooksController < ApiController
       before_action :set_answer_book, only: %i[show update destroy]
 
-      # GET /answer_books
+      # GET /v1/answer_books
       def index
         @answer_books = AnswerBook.all
 
         render json: @answer_books
       end
 
-      # GET /answer_books/1
+      # GET /v1/answer_books/1
       def show
         render json: @answer_book
       end
 
-      # POST /answer_books
+      # POST /v1/answer_books
       def create
         @answer_book = AnswerBook.new(answer_book_params)
 
@@ -26,7 +26,7 @@ module Api
         end
       end
 
-      # PATCH/PUT /answer_books/1
+      # PATCH/PUT /v1/answer_books/1
       def update
         if @answer_book.update(answer_book_params)
           render json: @answer_book
@@ -35,7 +35,7 @@ module Api
         end
       end
 
-      # DELETE /answer_books/1
+      # DELETE /v1/answer_books/1
       def destroy
         @answer_book.destroy
       end

@@ -11,7 +11,6 @@ ActiveAdmin.register LearningObjective do
 
   config.filters = true
 
-  filter :year
   filter :curricular_component
   filter :created_at
 
@@ -29,8 +28,16 @@ ActiveAdmin.register LearningObjective do
   form do |f|
     f.inputs do
       f.input :segment, required: true
-      f.input :stage, collection: [], required: true
-      f.input :year, collection: [], required: true
+      f.input :stage,
+              required: true,
+              collection: learning_objective.segment.present? \
+                          ? stage_collection(learning_objective.segment.id)
+                          : [t('Selecione um segmento'), nil]
+      f.input :year,
+              required: true,
+              collection: learning_objective.stage.present? \
+                          ? year_collection(learning_objective.stage.id)
+                          : [t('Selecione uma etapa'), nil]
       f.input :description
       f.input :curricular_component
       f.input :code
