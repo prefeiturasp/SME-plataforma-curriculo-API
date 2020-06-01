@@ -1,13 +1,10 @@
 module Api
   class AnswerBooksController < ApiController
     def index
-      if params[:stage_id]
-        @answer_books = AnswerBook.includes(:curricular_component).where(stage_id: params[:stage_id]).order(
-          "curricular_components.name asc"
-        )
-      else
-        @answer_books = AnswerBook.all
-      end
+      @answer_books = AnswerBook.includes(:curricular_component).all.order(
+        "curricular_components.name asc"
+      )
+
       render :index
     end
 
