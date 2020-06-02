@@ -22,9 +22,9 @@ class LearningObjective < ApplicationRecord
     "#{code} - #{description}"
   end
 
-  def self.all_or_with_year(year = nil)
-    return all unless year
-    where(year_id: year)
+  def self.all_or_with_year(years_id = nil)
+    return all unless years_id
+    where(year_id: years_id)
   end
 
   def self.all_or_with_curricular_component(curricular_component_slug = nil)

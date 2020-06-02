@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :learning_objective do
-    year { :first }
     description { Faker::Lorem.sentence(20) }
 
     sequence(:code) { |n| "#{Faker::Code.asin}#{n}" }
@@ -8,6 +7,7 @@ FactoryBot.define do
     association :curricular_component, factory: :curricular_component
     association :segment, factory: :segment
     association :stage, factory: :stage
+    association :year, factory: :year
     sustainable_development_goals { [create(:sustainable_development_goal)] }
     axes { [create(:axis)] }
   end

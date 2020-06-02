@@ -37,7 +37,7 @@ RSpec.describe Api::FiltersController, type: :controller do
         it 'return valid JSON all filters' do
           get :index
 
-          expect(json['years']).to be_present
+          expect(json['segments']).to be_present
           expect(json['curricular_components']).to be_present
           expect(json['sustainable_development_goals']).to be_present
           expect(json['knowledge_matrices']).to be_present
@@ -46,13 +46,13 @@ RSpec.describe Api::FiltersController, type: :controller do
           expect(json['axes']).to be_present
         end
 
-        it 'return valid years JSON' do
+        it 'return valid segments JSON' do
           get :index
 
-          expect(json['years']).to be_present
-          expect(json['years'].length).to eq(9)
-          expect(json['years'][0]['id']).to be_present
-          expect(json['years'][0]['description']).to be_present
+          expect(json['segments']).to be_present
+          expect(json['segments'][0]['id']).to be_present
+          expect(json['segments'][0]['name']).to be_present
+          expect(json['segments'][0]['color']).to be_present
         end
 
         it 'return valid curricular components JSON' do
@@ -88,8 +88,8 @@ RSpec.describe Api::FiltersController, type: :controller do
           expect(json['activity_types']).to_not be_present
         end
 
-        it 'invalid number year' do
-          get :index, params: { year: 9999 }
+        it 'invalid number semgent' do
+          get :index, params: { segment_id: 9999 }
 
           expect(json['learning_objectives']).to_not be_present
         end
@@ -109,7 +109,7 @@ RSpec.describe Api::FiltersController, type: :controller do
 
         let(:params) do
           {
-            years: [learning_objective.year],
+            segment_id: [learning_objective.segment_id],
             curricular_component_slugs: [curricular_component.slug]
           }
         end
@@ -117,7 +117,7 @@ RSpec.describe Api::FiltersController, type: :controller do
         it 'return valid all JSON' do
           get :index, params: params
 
-          expect(json['years']).to be_present
+          expect(json['segments']).to be_present
           expect(json['curricular_components']).to be_present
           expect(json['sustainable_development_goals']).to be_present
           expect(json['knowledge_matrices']).to be_present
@@ -141,7 +141,6 @@ RSpec.describe Api::FiltersController, type: :controller do
           expect(json['learning_objectives'][0]['id']).to be_present
           expect(json['learning_objectives'][0]['code']).to be_present
           expect(json['learning_objectives'][0]['description']).to be_present
-          expect(json['learning_objectives'][0]['color']).to be_present
         end
       end
     end

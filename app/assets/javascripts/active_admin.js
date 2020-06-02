@@ -19,6 +19,7 @@
 //= require activities
 //= require activity_sequences
 //= require learning_objectives
+//= require answer_book
 //= require years
 //= require lib/jquery.sticky
 
