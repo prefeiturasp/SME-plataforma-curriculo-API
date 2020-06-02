@@ -50,7 +50,7 @@ module Api
 
       # Only allow a trusted parameter "white list" through.
       def segment_params
-        params.require(:segment).permit(:name)
+        params.require(:segment).permit(:name, :color)
       end
     end
   end

@@ -2,8 +2,13 @@ module Api
   class FiltersController < ApiController
     before_action :fetch_axes, only: %i[index]
     before_action :fetch_learning_objectives, only: %i[index]
+    before_action :fetch_stages, only: %i[index]
+    before_action :fetch_years, only: %i[index]
+
 
     def index
+      @segments = Segment.all
+
       @curricular_components = CurricularComponent.all
       @sustainable_development_goals = SustainableDevelopmentGoal.all
       @knowledge_matrices = KnowledgeMatrix.all
@@ -15,9 +20,19 @@ module Api
 
     def set_activity_sequence_params
       params.permit(
-        :years,
-        :curricular_component_slugs
+        :curricular_component_slugs,
+        :segment_id,
+        :stage_id,
+        :year_ids,
       )
+    end
+
+    def fetch_years
+      @years = Year.all_or_with_year(params[:stage_id])
+    end
+
+    def fetch_stages
+      @stages = Stage.all_or_with_segment(params[:segment_id])
     end
 
     def fetch_axes
@@ -25,8 +40,8 @@ module Api
     end
 
     def fetch_learning_objectives
-      return if params[:years].blank? && params[:curricular_component_slugs].blank?
-      @learning_objectives = LearningObjective.all_or_with_year(params[:years])
+      return [] unless params[:year_ids].present? || params[:curricular_component_slugs].present?
+      @learning_objectives = LearningObjective.all_or_with_year(params[:year_ids])
                                               .all_or_with_curricular_component(params[:curricular_component_slugs])
     end
   end

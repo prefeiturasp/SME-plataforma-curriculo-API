@@ -1,4 +1,5 @@
 json.years @years do |year|
-  json.id LearningObjective.years[year.first]
-  json.description t("activerecord.attributes.enums.years.#{year.first}")
+  json.id year.id
+  json.name year.name
+  json.color year.stage.segment.color
 end

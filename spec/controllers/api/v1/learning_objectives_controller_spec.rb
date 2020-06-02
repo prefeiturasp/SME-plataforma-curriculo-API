@@ -6,11 +6,12 @@ RSpec.describe Api::V1::LearningObjectivesController, type: :controller do
                    curricular_component_id: create(:curricular_component).id,
                    sustainable_development_goal_ids: [create(:sustainable_development_goal).id],
                    segment_id: create(:segment).id,
-                   stage_id: create(:stage).id
+                   stage_id: create(:stage).id,
+                   year_id: create(:year).id
   end
 
   let(:invalid_attributes) do
-    attributes_for :learning_objective, year: nil
+    attributes_for :learning_objective, year_id: nil
   end
 
   let(:valid_session) { {} }

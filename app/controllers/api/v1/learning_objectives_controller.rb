@@ -50,7 +50,7 @@ module Api
       # Only allow a trusted parameter "white list" through.
       def learning_objective_params
         params.require(:learning_objective).permit(
-          :year,
+          :year_id,
           :code,
           :description,
           :curricular_component_id,

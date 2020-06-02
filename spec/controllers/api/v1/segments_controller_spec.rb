@@ -6,7 +6,7 @@ RSpec.describe Api::V1::SegmentsController, type: :controller do
   end
 
   let(:invalid_attributes) do
-    attributes_for(:segment, name: nil)
+    attributes_for(:segment, name: nil, color: nil)
   end
 
   let(:valid_session) { {} }
@@ -53,7 +53,7 @@ RSpec.describe Api::V1::SegmentsController, type: :controller do
   describe 'PUT #update' do
     context 'with valid params' do
       let(:new_attributes) do
-        attributes_for(:segment, name: 'New Segment')
+        attributes_for(:segment, name: 'New Segment', color: '#7e39a4')
       end
 
       it 'updates the requested segment' do
@@ -62,6 +62,7 @@ RSpec.describe Api::V1::SegmentsController, type: :controller do
         segment.reload
 
         expect(segment.name).to eq('New Segment')
+        expect(segment.color).to eq('#7e39a4')
       end
 
       it 'renders a JSON response with the segment' do
