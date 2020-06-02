@@ -11,3 +11,5 @@ json.partial! 'axes', collection: @axes
 json.partial! 'segments', collection: @segments
 
 json.partial! 'stages', collection: @stages
+
+json.partial! 'years', collection: @years

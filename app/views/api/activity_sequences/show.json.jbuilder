@@ -1,7 +1,7 @@
 json.id @activity_sequence.id
 json.slug @activity_sequence.slug
 json.title @activity_sequence.title
-json.year t("activerecord.attributes.enums.years.#{@activity_sequence.year}")
+json.year @activity_sequence.year.name if @activity_sequence.year.present?
 json.estimated_time @activity_sequence.estimated_time
 json.status @activity_sequence.status
 json.keywords @activity_sequence.keywords

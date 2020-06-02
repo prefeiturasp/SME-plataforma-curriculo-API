@@ -72,8 +72,9 @@ class ActivitySequence < ApplicationRecord
     id_indices = Hash[activity_sequence_ids.map.with_index { |id, idx| [id, idx] }]
     ActivitySequence.where(id: activity_sequence_ids)
                     .includes(:main_curricular_component)
-                    .includes(:stage)
                     .includes(:segment)
+                    .includes(:stage)
+                    .includes(:year)
                     .includes(learning_objectives: :axes)
                     .includes(learning_objectives: :curricular_component)
                     .includes(learning_objectives: :sustainable_development_goals)

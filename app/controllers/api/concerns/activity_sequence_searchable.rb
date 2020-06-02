@@ -41,6 +41,7 @@ module Api
           all_or_with_main_curricular_component all_or_with_axes
           all_or_with_sustainable_development_goals all_or_with_knowledge_matrices
           all_or_with_learning_objectives all_or_with_segments all_or_with_stages
+          all_or_with_year
         ].each do |method|
           options.merge!(send(method.to_s))
         end
@@ -49,8 +50,8 @@ module Api
       end
 
       def all_or_with_year
-        return {} unless params[:year_id]
-        { year_id: params[:year_id] }
+        return {} unless params[:year_ids]
+        { year_id: params[:year_ids] }
       end
 
       def all_or_with_main_curricular_component

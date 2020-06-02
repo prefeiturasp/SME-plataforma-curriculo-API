@@ -6,4 +6,12 @@ class Segment < ApplicationRecord
 
   validates :name, presence: true
   validates :color, presence: true
+
+  after_save :activity_sequence_reindex
+
+  private
+
+  def activity_sequence_reindex
+    ActivitySequence.reindex(async: true)
+  end
 end
