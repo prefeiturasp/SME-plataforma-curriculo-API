@@ -13,8 +13,8 @@ RSpec.describe LearningObjective, type: :model do
       should belong_to(:segment)
     end
 
-    it 'belongs to stage' do
-      should belong_to(:stage)
+    it 'belongs to year' do
+      should belong_to(:year)
     end
 
     it 'has and belongs to many sustainable development goals' do
@@ -144,13 +144,13 @@ RSpec.describe LearningObjective, type: :model do
       end
     end
 
-    context 'with segment' do
-      let(:params)   { { stage_id: Stage.all.first.id } }
-      let(:response) { LearningObjective.all_or_with_stage(params[:stage_id]) }
+    context 'with year' do
+      let(:params)   { { year_id: Year.all.first.id } }
+      let(:response) { LearningObjective.all_or_with_year(params[:year_id]) }
 
       it 'return all with none params' do
         params = nil
-        response = LearningObjective.all_or_with_stage(params)
+        response = LearningObjective.all_or_with_year(params)
 
         expect(all_response).to eq(response)
       end
@@ -158,14 +158,14 @@ RSpec.describe LearningObjective, type: :model do
       it 'include' do
         a = create :learning_objective,
                    code: 'EF05',
-                   stage_id: Stage.all.first.id
+                   year_id: Year.all.first.id
         expect(response).to include(a)
       end
 
       it 'not include' do
         a = create :learning_objective,
                    code: 'EF06',
-                   stage_id: Stage.all.last.id
+                   year_id: Year.all.last.id
 
         expect(response).to_not include(a)
       end

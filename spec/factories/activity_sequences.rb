@@ -4,7 +4,6 @@ FactoryBot.define do
     presentation_text { Faker::Lorem.sentence(10) }
     books { Faker::Lorem.sentence(10) }
     estimated_time { Faker::Number.between(1, 500) }
-    year { :first }
     status { :draft }
     keywords { 'keyword 1, keyword 2' }
 
@@ -19,14 +18,14 @@ FactoryBot.define do
     association :main_curricular_component, factory: :curricular_component
     association :segment, factory: :segment
     association :stage, factory: :stage
-    
+    association :year, factory: :year
+
     knowledge_matrix_ids { [create(:knowledge_matrix).id] }
     learning_objectives { [create(:learning_objective)] }
 
     trait :invalid do
       title { nil }
       presentation_text { nil }
-      year { nil }
     end
 
     trait :reindex do
