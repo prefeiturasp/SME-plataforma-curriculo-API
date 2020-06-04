@@ -24,6 +24,15 @@ ActiveRecord::Schema.define(version: 2020_05_30_105649) do
     t.index ["teacher_id"], name: "index_acls_on_teacher_id"
   end
 
+  create_table "acls", force: :cascade do |t|
+    t.bigint "teacher_id"
+    t.boolean "enabled", default: true
+    t.string "reason"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["teacher_id"], name: "index_acls_on_teacher_id"
+  end
+
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
@@ -467,6 +476,7 @@ ActiveRecord::Schema.define(version: 2020_05_30_105649) do
   add_foreign_key "collection_activity_sequences", "collections"
   add_foreign_key "collections", "teachers"
   add_foreign_key "goals", "sustainable_development_goals"
+  add_foreign_key "layer", "topology", name: "layer_topology_id_fkey"
   add_foreign_key "learning_objectives", "curricular_components"
   add_foreign_key "results", "challenges"
   add_foreign_key "results", "teachers"
