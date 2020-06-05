@@ -28,6 +28,21 @@ $(document).ready(function(){
             new Option(`${result[i]['name']}`, `${result[i]['id']}`)
           );
         }
+        var stage_id = $('#activity_sequence_stage_id').val();
+        $.ajax({
+          type: "GET",
+          url: "/api/v1/years",
+          dataType: "json",
+          data: {'segment_id': segment_id, 'stage_id': stage_id},
+          success: function(result){
+            $('#activity_sequence_year_id option').remove();
+            for (var i = 0; i < result.length; i++){
+              $('#activity_sequence_year_id').append(
+                new Option(`${result[i]['name']}`, `${result[i]['id']}`)
+              );
+            }
+          }
+        });
       }
     });
   });

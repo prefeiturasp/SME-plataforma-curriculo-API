@@ -14,7 +14,11 @@ ActiveAdmin.register Year do
   form do |f|
     f.inputs do
       f.input :segment, required: true
-      f.input :stage, collection: [], required: true
+      f.input :stage,
+              required: true,
+              collection: year.segment.present? \
+                          ? stage_collection(year.segment.id)
+                          : [t('Selecione um segmento'), nil]
       f.input :name, required: true
     end
     f.actions
