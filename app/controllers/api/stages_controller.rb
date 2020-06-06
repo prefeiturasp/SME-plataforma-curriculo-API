@@ -3,7 +3,7 @@ module Api
     def index
       @stages = Stage.all
 
-      render :index
+      render json: @stages
     end
 
     private

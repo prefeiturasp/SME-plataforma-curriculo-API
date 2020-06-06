@@ -19,6 +19,15 @@ ActiveRecord::Schema.define(version: 2020_05_30_105649) do
   enable_extension "postgis_tiger_geocoder"
   enable_extension "postgis_topology"
 
+  create_table "acls", force: :cascade do |t|
+    t.bigint "teacher_id"
+    t.boolean "enabled", default: true
+    t.string "reason"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["teacher_id"], name: "index_acls_on_teacher_id"
+  end
+
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"

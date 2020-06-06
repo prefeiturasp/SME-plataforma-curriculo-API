@@ -22,6 +22,9 @@ Rails.application.routes.draw do
     end
 
     resources :answer_books, only:[:index]
+    resources :stages, only:[:index]
+    resources :segments, only:[:index]
+    resources :years, only:[:index]
     resources :filters, path: 'filtros', only: [:index]
     resources :activity_sequences, path: 'sequencias', param: :slug, only: %i[index show] do
       get 'atividades/:activity_slug', to: 'activities#show'

@@ -3,7 +3,7 @@ module Api
     def index
       @years = Year.all
 
-      render :index
+      render json: @years
     end
 
     private

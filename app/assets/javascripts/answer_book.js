@@ -19,6 +19,21 @@ $(document).ready(function(){
             new Option(`${result[i]['name']}`, `${result[i]['id']}`)
           );
         }
+        var stage_id = $('#answer_book_stage_id').val();
+        $.ajax({
+          type: "GET",
+          url: "/api/v1/years",
+          dataType: "json",
+          data: {'segment_id': segment_id, 'stage_id': stage_id},
+          success: function(result){
+            $('#answer_book_year_id option').remove();
+            for (var i = 0; i < result.length; i++){
+              $('#answer_book_year_id').append(
+                new Option(`${result[i]['name']}`, `${result[i]['id']}`)
+              );
+            }
+          }
+        });
       }
     });
   });
