@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_30_105649) do
+ActiveRecord::Schema.define(version: 2020_06_11_205831) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -309,6 +309,44 @@ ActiveRecord::Schema.define(version: 2020_05_30_105649) do
     t.index ["sustainable_development_goal_id", "learning_objective_id"], name: "index_sdg_lo_on_sdg_id_alo_id"
   end
 
+  create_table "links", force: :cascade do |t|
+    t.integer "linkable_id"
+    t.string "linkable_type"
+    t.string "link"
+    t.index ["linkable_id"], name: "index_links_on_linkable_id"
+    t.index ["linkable_type"], name: "index_links_on_linkable_type"
+  end
+
+  create_table "methodologies", force: :cascade do |t|
+    t.string "title"
+    t.string "slug"
+    t.string "subtitle"
+    t.text "description"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "public_consultation_links", force: :cascade do |t|
+    t.string "link"
+    t.string "title"
+    t.bigint "public_consultation_id"
+    t.index ["public_consultation_id"], name: "index_public_consultation_links_on_public_consultation_id"
+  end
+
+  create_table "public_consultations", force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.string "cover_image"
+    t.string "documents", default: [], array: true
+    t.datetime "initial_date"
+    t.datetime "final_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "segment_id"
+    t.index ["segment_id"], name: "index_public_consultations_on_segment_id"
+  end
+
   create_table "ratings", force: :cascade do |t|
     t.integer "sequence"
     t.text "description"
@@ -427,6 +465,12 @@ ActiveRecord::Schema.define(version: 2020_05_30_105649) do
   add_foreign_key "images", "activity_content_blocks"
   add_foreign_key "layer", "topology", name: "layer_topology_id_fkey"
   add_foreign_key "learning_objectives", "curricular_components"
+  add_foreign_key "public_consultation_links", "public_consultations"
+  add_foreign_key "public_consultations", "segments"
+  add_foreign_key "results", "challenges"
+  add_foreign_key "results", "teachers"
+  add_foreign_key "stages", "segments"
+  add_foreign_key "steps", "methodologies"
   add_foreign_key "teachers", "users"
   add_foreign_key "years", "segments"
   add_foreign_key "years", "stages"

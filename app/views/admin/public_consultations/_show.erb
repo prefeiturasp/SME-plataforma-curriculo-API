@@ -1,0 +1,42 @@
+<% context.instance_eval do
+  attributes_table do
+    row :id
+    row :segment
+    row :title
+    row :description
+    row :cover_image do |obj|
+      image_tag(
+        "/assets/#{obj.cover_image_identifier}",
+        style: "max-width: 100%"
+      ) if obj.cover_image_identifier.present?
+    end
+    row :documents do |obj|
+      obj.documents_identifiers.map.with_index do |file, index|
+        link_to("documento #{index + 1}", "/assets/#{file}", target: "_blank")
+      end.join(' ').html_safe
+    end
+    row :initial_date do |obj|
+      obj.initial_date.strftime("%d/%m/%Y")
+    end
+    row :final_date do |obj|
+      obj.final_date.strftime("%d/%m/%Y")
+    end
+  end
+
+  panel I18n.t('activerecord.attributes.public_consultation.public_consultation_links') do
+    table_for public_consultation.public_consultation_links do
+      column :title
+      column :link do |obj|
+        link_to("#{obj.link}", "#{obj.link}", target: "_blank")
+      end
+      column do |public_consultation_link|
+        span link_to t('helpers.links.show'), admin_public_consultation_public_consultation_link_path(public_consultation, public_consultation_link)
+        span link_to t('helpers.links.edit'), edit_admin_public_consultation_public_consultation_link_path(public_consultation, public_consultation_link)
+        span link_to t('helpers.links.destroy'),
+          admin_public_consultation_public_consultation_link_path(public_consultation, public_consultation_link),
+          method: :delete,
+          data: { confirm: t('active_admin.delete_confirmation') }
+      end
+    end
+  end
+end %>

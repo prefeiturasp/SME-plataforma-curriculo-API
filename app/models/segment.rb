@@ -4,6 +4,7 @@ class Segment < ApplicationRecord
   has_many :years
   has_many :activity_sequences
   has_many :learning_objectives
+  has_many :public_consultation
 
   validates :name, presence: true
   validates :color, presence: true
