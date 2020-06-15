@@ -227,7 +227,7 @@ pt-BR:
         documents: "Documentos"
         initial_date: "Data Inicial"
         final_date: "Data Final"
-        created_at: "Data de criação"
+        created_at: "Data de Criação"
         public_consultation_links: "Links da Consulta"
       public_consultation_link:
         title: "Título"
