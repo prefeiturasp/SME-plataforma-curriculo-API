@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     resources :segments, only:[:index]
     resources :years, only:[:index]
     resources :filters, path: 'filtros', only: [:index]
+    resources :public_consultations
     resources :activity_sequences, path: 'sequencias', param: :slug, only: %i[index show] do
       get 'atividades/:activity_slug', to: 'activities#show'
       post 'avaliacao', to: 'activity_sequence_ratings#create'
