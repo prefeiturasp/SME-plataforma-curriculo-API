@@ -46,6 +46,12 @@ pt-BR:
       methodology:
         one: "Metodologia"
         other: "Metodologias"
+      public_consultation:
+        one: "Consulta Pública"
+        other: "Consultas Públicas"
+      public_consultation_link:
+        one: "Link da Consulta"
+        other: "Links das Consultas"
       rating:
         one: "Avaliação"
         other: "Avaliações"
@@ -213,6 +219,20 @@ pt-BR:
         content: "Conteúdo"
         steps: "Passos"
         archive: "Anexo"
+      public_consultation:
+        title: "Título"
+        description: "Descrição"
+        segment: "Segmento"
+        cover_image: "Imagem de Capa"
+        documents: "Documentos"
+        initial_date: "Data Inicial"
+        final_date: "Data Final"
+        created_at: "Data de criação"
+        public_consultation_links: "Links da Consulta"
+      public_consultation_link:
+        title: "Título"
+        link: "Link"
+        public_consultation: "Consulta Pública"
       rating:
         sequence: "Ordem"
         description: "Descrição"
