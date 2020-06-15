@@ -1,0 +1,53 @@
+<%
+  f.inputs do
+    f.input :title, required: true
+    f.input :segment, required: true
+    f.input :description, required: true
+    f.input :cover_image,
+            required: true,
+            as: :file,
+            hint: public_consultation.cover_image.present? \
+                  ? image_tag(
+                      "/assets/#{public_consultation.cover_image_identifier}",
+                      style: "max-width: 138px; min-height: 180px;",
+                      id: 'cover_image_file'
+                    )
+                  : content_tag(:span, "Anda não há pré-visualização")
+    f.input :documents,
+            required: true,
+            as: :file,
+            input_html: { multiple: true },
+            hint: public_consultation.documents.count.zero? \
+                  ? content_tag(:span, "Anda não há pré-visualização")
+                  : public_consultation.documents_identifiers.map.with_index { |file, index| link_to("documento #{index + 1}", "/assets/#{file}", {target: "_blank", class: 'public_consultation_file'}) }.join(' ').html_safe
+    f.input :initial_date, as: :datepicker, datepicker_options: {
+        dateFormat: "dd-mm-yy",
+        monthNames: [
+          "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
+          "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ],
+        dayNames: [
+          "Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira",
+          "Quinta-feira", "Sexta-feira", "Sábado"
+        ],
+        dayNamesMin: [
+          "Do", "Se", "Te", "Qa", "Qi", "Sx", "Sa"
+        ]
+      }, required: true
+    f.input :final_date, as: :datepicker, datepicker_options: {
+        dateFormat: "dd-mm-yy",
+        monthNames: [
+          "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
+          "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ],
+        dayNames: [
+          "Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira",
+          "Quinta-feira", "Sexta-feira", "Sábado"
+        ],
+        dayNamesMin: [
+          "Do", "Se", "Te", "Qa", "Qi", "Sx", "Sa"
+        ]
+      }, required: true
+  end
+  f.actions
+%>
