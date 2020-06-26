@@ -11,13 +11,13 @@ class SurveyForm < ApplicationRecord
   after_save    :update_sequences, on: %i[create update]
   after_destroy :update_sequences
 
-  def next_activity
+  def next_object
     public_consultation.survey_forms
     .where('sequence >= ?', next_sequence)
     .order('sequence ASC').first
   end
 
-  def last_activity
+  def last_object
     return unless last_sequence
     public_consultation.survey_forms
     .where('sequence <= ?', last_sequence)

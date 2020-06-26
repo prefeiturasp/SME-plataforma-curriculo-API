@@ -52,8 +52,8 @@ RSpec.describe Api::ActivitiesController, type: :controller do
         expect(response_body['activity_sequence']).to be_present
         expect(response_body['image_attributes']).to be_present
         expect(response_body['activity_types']).to_not be_present
-        expect(response_body['next_activity']).to be_present
-        expect(response_body['last_activity']).to be_present
+        expect(response_body['next_object']).to be_present
+        expect(response_body['last_object']).to be_present
         expect(response_body['content']).to be_present
       end
 
