@@ -8,7 +8,8 @@ class ContentBlock < ApplicationRecord
     gallery: 5,
     free_text: 6,
     open_text: 7,
-    bullet: 8
+    bullet: 8,
+    survey_question: 9
   }
 
   validates :content_type, presence: true, uniqueness: true

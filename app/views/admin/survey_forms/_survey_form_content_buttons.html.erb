@@ -1,0 +1,7 @@
+<legend><span>+ Adicione Blocos</span></legend>
+<%= semantic_form_for survey_form, :url => admin_public_consultation_survey_forms_path(survey_form.public_consultation), builder: ActiveAdmin::FormBuilder do |new_form| %>
+  <% ContentBlock.human_attribute_content_blocks.each do |name, key|
+    next if [:to_teacher, :to_student, :question, :predefined_exercise, :long_text, :gallery, :free_text, :open_text, :bullet].include?(key.to_sym) %>
+    <%= link_to_add_fields("#{name}", new_form, :survey_form_content_blocks, key) %>
+  <% end %>
+<% end %>

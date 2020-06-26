@@ -7,6 +7,9 @@ pt-BR:
       activity:
         one: "Atividade"
         other: "Atividades"
+      survey_form:
+        one: "Formulário da Pesquisa"
+        other: "Formulários da Pesquisa"
       activity_sequence:
         one: "Sequência de Atividades"
         other: "Sequência de Atividades"
@@ -14,6 +17,9 @@ pt-BR:
         one: "Tipo de atividade"
         other: "Tipos de atividades"
       activity_content_block: &content_block
+        one: "Bloco de conteúdo"
+        other: "Blocos de conteúdo"
+      survey_form_content_block: &content_block
         one: "Bloco de conteúdo"
         other: "Blocos de conteúdo"
       activity_sequences_report: "Relatório das avaliações"
@@ -109,6 +115,18 @@ pt-BR:
           published: "Publicada"
         created_at: "Criado em"
         updated_at: "Atualizado em"
+      survey_form:
+        title: "Título"
+        description: "Descrição"
+        sequence: "Sequência"
+        survey_form_content_blocks: "Blocos de conteúdo"
+      survey_form_content_block: &survey_form_content_block_attrs
+        body: "Conteúdo"
+        have_rating: "Tem avaliação?"
+        have_comment: "Tem comentário?"
+        required_rating: "Avaliação obrigatória?"
+        required_comment: "Comentário obrigatório?"
+        sequence: "Sequência"
       activity_content_block: &activity_content_block_attrs
         body: "Conteúdo"
         title: "Título"
@@ -227,12 +245,9 @@ pt-BR:
         documents: "Documentos"
         initial_date: "Data Inicial"
         final_date: "Data Final"
-        created_at: "Data de Criação"
-        public_consultation_links: "Links da Consulta"
-      public_consultation_link:
-        title: "Título"
-        link: "Link"
-        public_consultation: "Consulta Pública"
+        survey_forms: "Formulários da Pesquisa"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
       rating:
         sequence: "Ordem"
         description: "Descrição"
@@ -324,7 +339,10 @@ pt-BR:
           predefined_exercise: "Execício pré-definido"
           long_text: "Texto longo"
           gallery: "Galeria"
-          free_text: "Texto Livre"
+          free_text: "Texto livre"
+          open_text: "Texto"
+          bullet: "Lista não ordenada"
+          survey_question: "Questão da pesquisa"
       stage:
           name: "Nome"
           segment: "Segmento"

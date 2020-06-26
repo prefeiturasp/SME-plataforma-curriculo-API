@@ -22,18 +22,18 @@
       obj.final_date.strftime("%d/%m/%Y")
     end
   end
-
-  panel I18n.t('activerecord.attributes.public_consultation.public_consultation_links') do
-    table_for public_consultation.public_consultation_links do
+  panel I18n.t('activerecord.attributes.public_consultation.survey_forms') do
+    table_for public_consultation.survey_forms do
       column :title
-      column :link do |obj|
-        link_to("#{obj.link}", "#{obj.link}", target: "_blank")
-      end
-      column do |public_consultation_link|
-        span link_to t('helpers.links.show'), admin_public_consultation_public_consultation_link_path(public_consultation, public_consultation_link)
-        span link_to t('helpers.links.edit'), edit_admin_public_consultation_public_consultation_link_path(public_consultation, public_consultation_link)
+      column :description
+      column :sequence
+      column do |survey_form|
+        if Rails.env.development?
+          span link_to t('helpers.links.show'), admin_public_consultation_survey_form_path(public_consultation, survey_form)
+        end
+        span link_to t('helpers.links.edit'),edit_admin_public_consultation_survey_form_path(public_consultation, survey_form)
         span link_to t('helpers.links.destroy'),
-          admin_public_consultation_public_consultation_link_path(public_consultation, public_consultation_link),
+          admin_public_consultation_survey_form_path(public_consultation, survey_form),
           method: :delete,
           data: { confirm: t('active_admin.delete_confirmation') }
       end

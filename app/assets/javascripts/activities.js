@@ -3,7 +3,7 @@
 
 $(document).ready(function(){
   setShowContentBlocks();
-  var form = $('form.activity, form.challenge');
+  var form = $('form.activity, form.challenge, form.survey_form');
   if(form.length) {
     $("input[name='activity[image]']").change(function() {
       validateSize(this);
@@ -32,7 +32,7 @@ $(document).ready(function(){
 });
 
 function fixActivityActionPosition(){
-  var form = $('form.activity, form.challenge');
+  var form = $('form.activity, form.challenge, form.survey_form');
   var action_buttons = $('fieldset.actions');
   form.append(action_buttons);
 }
@@ -61,7 +61,8 @@ function setActivityContentBlockToolbarId () {
 function hideUnusedRemoveButton(){
   $(
     'li.activity_content_blocks .has_many_fields .has_many_remove, ' +
-    'li.challenge_content_blocks .has_many_fields .has_many_remove'
+    'li.challenge_content_blocks .has_many_fields .has_many_remove, ' +
+    'li.survey_form_content_blocks .has_many_fields .has_many_remove'
   ).hide();
   $('li.has_many_containes.images .has_many_remove').show();
 }
@@ -77,13 +78,13 @@ function setTitleLegendClassNames(){
 }
 
 function bindUpdateStructureOnRemove(){
-  $('a.remove-activity-content-block, a.remove-challenge-content-block').click( function(e){
+  $('a.remove-activity-content-block, a.remove-challenge-content-block, a.remove-survey-form-content-block').click( function(e){
     e.preventDefault();
     var fieldset = $(this).parent().parent().parent();
     var ol = $(this).parent().parent();
 
     if(fieldset.length){
-      var input_id = ol.find('.activity-content-id, .challenge-content-id');
+      var input_id = ol.find('.activity-content-id, .challenge-content-id, .survey-form-content-id');
       if(input_id.val()) {
         fieldset.addClass('hidden');
         var destroy_input = ol.find('.destroy-input');
@@ -118,7 +119,7 @@ function add_fields(link, association, content, father) {
   content = content.replace(regexp, new_id);
   regexp = new RegExp("NEW_RECORD_ID", "g");
   content = content.replace(regexp, new_id);
-  $('li.activity_content_blocks, li.challenge_content_blocks').append(content);
+  $('li.activity_content_blocks, li.challenge_content_blocks, li.survey_form_content_blocks').append(content);
   initializeQuillEditorAndToolbar(new_id);
   convertAllEditorsToDeltaOnSubmit();
   bindPredefinedExercisesSelect();
@@ -126,7 +127,7 @@ function add_fields(link, association, content, father) {
   setSortableList();
   bindUpdateStructureOnRemove();
   setSequenceInContentBlocks();
-  var last_fieldset = $('li.activity_content_blocks fieldset, li.challenge_content_blocks fieldset').last();
+  var last_fieldset = $('li.activity_content_blocks fieldset, li.challenge_content_blocks fieldset, li.survey_form_content_blocks fieldset').last();
   goToTop(last_fieldset.offset().top);
 
   setSequenceOnActivityContentBlocks();
@@ -137,8 +138,13 @@ function add_fields(link, association, content, father) {
 function initializeQuillEditorAndToolbar (id) {
   var editor = $(`#activity_activity_content_blocks_attributes_${id}_body.quill-editor`);
 
-  if (!editor.length)
+  if (!editor.length) {
     editor = $(`#challenge_challenge_content_blocks_attributes_${id}_body.quill-editor`);
+  }
+
+  if (!editor.length) {
+    editor = $(`#survey_form_survey_form_content_blocks_attributes_${id}_body.quill-editor`);
+  }
 
   if (editor.length) {
     initializeQuillEditor(editor[0]);
@@ -185,7 +191,7 @@ function goToTop(offset) {
 
 function stickyContentsSidebar(){
   $(
-    '.activity-content-structure, .challenge-content-structure, .activity-content-buttons, .challenge-content-buttons'
+    '.activity-content-structure, .challenge-content-structure, .survey-form-content-structure, .activity-content-buttons, .challenge-content-buttons, .survey-form-content-buttons'
   ).sticky({topSpacing:0});
 }
 
@@ -208,7 +214,7 @@ function setSequenceOnActivityContentBlocks() {
 }
 
 function setShowContentBlocks(){
-  var $row_bodys = $('body.show.admin_activities, body.show.admin_challenges')
+  var $row_bodys = $('body.show.admin_activities, body.show.admin_challenges, body.show.admin_survey_forms')
     .find('.show-content-blocks').find('.row-body');
   for(var i = 0; i < $row_bodys.length; i++) {
     var td = $($row_bodys[i]).find('td')[0];

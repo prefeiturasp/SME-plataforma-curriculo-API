@@ -108,6 +108,29 @@ class AssignDefaultSchemaToContentBlock < ActiveRecord::Migration[5.2]
             }
           }
         }
+      },
+      {
+        "content_type": "survey_question",
+        "schema": {
+          "required": ["body", "have_rating", "have_comment", "required_rating", "required_comment"],
+          "properties": {
+            "body": {
+              "type": "string"
+            },
+            "have_rating": {
+              "type": "boolean"
+            },
+            "have_comment": {
+              "type": "boolean"
+            },
+            "required_rating": {
+              "type": "boolean"
+            },
+            "required_comment": {
+              "type": "boolean"
+            }
+          }
+        }
       }
     ].each do |attributes|
       cb = ContentBlock.find_or_create_by(content_type: attributes[:content_type])

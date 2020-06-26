@@ -24,14 +24,14 @@ class Activity < ApplicationRecord
   after_destroy :update_sequences
   after_save :activity_sequence_reindex
 
-  def next_activity
+  def next_object
     activity_sequence.activities
                      .where(status: :published)
                      .where('sequence >= ?', next_sequence)
                      .order('sequence ASC').first
   end
 
-  def last_activity
+  def last_object
     return unless last_sequence
     activity_sequence.activities
                      .where(status: :published)

@@ -1,7 +1,6 @@
 class PublicConsultation < ApplicationRecord
-  has_many    :public_consultation_links
   belongs_to  :segment
-
+  has_many :survey_forms
   validates :title, presence: true
   validates :description, presence: true
   validates :initial_date, presence: true
