@@ -9,7 +9,7 @@ pt-BR:
         other: "Atividades"
       survey_form:
         one: "Formulário da Pesquisa"
-        other: "Formulários das Pesquisas"
+        other: "Formulários da Pesquisa"
       activity_sequence:
         one: "Sequência de Atividades"
         other: "Sequência de Atividades"
@@ -245,9 +245,9 @@ pt-BR:
         documents: "Documentos"
         initial_date: "Data Inicial"
         final_date: "Data Final"
-        survey_forms: "Formulários de Pesquisa"
+        survey_forms: "Formulários da Pesquisa"
         created_at: "Criado em"
-        updated_at: "Atualiado em"
+        updated_at: "Atualizado em"
       rating:
         sequence: "Ordem"
         description: "Descrição"
@@ -339,10 +339,10 @@ pt-BR:
           predefined_exercise: "Execício pré-definido"
           long_text: "Texto longo"
           gallery: "Galeria"
-          free_text: "Texto Livre"
+          free_text: "Texto livre"
           open_text: "Texto"
-          bullet: "bullet"
-          survey_question: "Questão da Pesquisa"
+          bullet: "Lista não ordenada"
+          survey_question: "Questão da pesquisa"
       stage:
           name: "Nome"
           segment: "Segmento"
