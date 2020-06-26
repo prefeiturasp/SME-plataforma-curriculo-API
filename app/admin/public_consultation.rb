@@ -1,6 +1,7 @@
 ActiveAdmin.register PublicConsultation do
   permit_params :title,
                 :segment_id,
+                :enabled,
                 :description,
                 :cover_image,
                 {documents: []},
@@ -11,8 +12,8 @@ ActiveAdmin.register PublicConsultation do
   config.filters = true
 
   action_item :new, only: :show do
-    link_to t('active_admin.new_model', model: PublicConsultationLink.model_name.human),
-            new_admin_public_consultation_public_consultation_link_path(public_consultation)
+    link_to t('active_admin.new_model', model: SurveyForm.model_name.human),
+            new_admin_public_consultation_survey_form_path(public_consultation)
   end
 
   controller do
@@ -69,9 +70,6 @@ ActiveAdmin.register PublicConsultation do
     column :final_date do |public_consultation|
       public_consultation.final_date.strftime("%d/%m/%Y")
     end
-    column :public_consultation_links do |public_consultation|
-      public_consultation.public_consultation_links.map(&:link).join(" ")
-    end
     column :created_at do |public_consultation|
       public_consultation.created_at.strftime("%d/%m/%Y")
     end
@@ -93,9 +91,6 @@ ActiveAdmin.register PublicConsultation do
     end
     column :final_date do |public_consultation|
       public_consultation.final_date.strftime("%d/%m/%Y")
-    end
-    column :public_consultation_links do |public_consultation|
-      public_consultation.public_consultation_links.map(&:link).join(" ")
     end
     column :created_at do |public_consultation|
       public_consultation.created_at.strftime("%d/%m/%Y")

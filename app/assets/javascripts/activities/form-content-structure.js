@@ -28,12 +28,12 @@ function getOptionalText($fieldset_parent){
 
 function setContentStructure(){
   var contents = $('li .has_many_fields').not('.gallery-has-many-images');
-  var structure_list = $('.activity-content-structure ol, .challenge-content-structure ol');
-  var sortable_list = $('.activity-content-structure ul#sortable-list, .challenge-content-structure ul#sortable-list');
-  $('.activity-content-structure ol li, .challenge-content-structure ol li').not(".preview-item").remove();
+  var structure_list = $('.activity-content-structure ol, .challenge-content-structure ol, .survey-form-content-structure ol');
+  var sortable_list = $('.activity-content-structure ul#sortable-list, .challenge-content-structure ul#sortable-list, .survey-form-content-structure ul#sortable-list');
+  $('.activity-content-structure ol li, .challenge-content-structure ol li, .survey-form-content-structure ol li').not(".preview-item").remove();
   for( var i = 0; i < contents.length; i++ ) {
     if (!blockWasRemoved(contents[i])) {
-      var input = $(contents[i]).find('input.activity-content-id, input.challenge-content-id');
+      var input = $(contents[i]).find('input.activity-content-id, input.challenge-content-id, input.suvery-form-content-id');
       var activity_content_id = input.val();
       var anchor_id = $(contents[i]).find('legend').attr('id');
       var $ol_parent = $(input[0]).parent().parent();
@@ -149,7 +149,7 @@ function saveContentWhenClickInPreview(){
   $('a.preview-link').on('click', function(evt){
     var link_to_redirect = $(this).attr('href');
     evt.preventDefault();
-    var $activity_form = $('form.activity, form.chellenge');
+    var $activity_form = $('form.activity, form.chellenge, form.survey_form');
     if ($activity_form.length > 0) {
       //convertAllEditorsToDelta();
       convertContentToDelta();

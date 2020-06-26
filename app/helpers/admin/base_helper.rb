@@ -25,6 +25,12 @@ module Admin
       options << (options[-1].nil? ? 1 : (options[-1] + 1))
     end
 
+    def public_consultation_options(survey_form)
+      public_consultation = survey_form.public_consultation
+      options = public_consultation.survey_forms.order(:sequence).pluck(:sequence)
+      options << (options[-1].nil? ? 1 : (options[-1] + 1))
+    end
+
     def learning_objectives_activity_collection(activity)
       activity_sequence = activity.activity_sequence
       learning_objectives = activity_sequence.learning_objectives

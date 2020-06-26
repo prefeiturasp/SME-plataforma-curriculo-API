@@ -4,8 +4,8 @@ json.estimated_time @activity.estimated_time
 json.environment @activity.environment
 json.partial! 'api/images/image', image_param: @activity.image, sizes: %i[large extra_large]
 
-json.next_activity @activity.next_activity.try(:slug)
-json.last_activity @activity.last_activity.try(:slug)
+json.next_object @activity.next_object.try(:slug)
+json.last_object @activity.last_object.try(:slug)
 
 json.content @activity.content
 

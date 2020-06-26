@@ -3,7 +3,7 @@
   challenge, :url => "/", builder: ActiveAdmin::FormBuilder
 ) do |new_form| %>
 <% ContentBlock.human_attribute_content_blocks.each do |name, key|
-  next unless [:gallery, :free_text, :question, :open_text, :bullet].include?(key.to_sym) %>
+  next unless [:gallery, :free_text, :question, :open_text, :bullet, :survey_question].include?(key.to_sym) %>
     <%= link_to_add_fields("#{name}", new_form, :challenge_content_blocks, key) %>
   <% end %>
 <% end %>

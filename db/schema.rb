@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_11_205831) do
+ActiveRecord::Schema.define(version: 2020_06_23_165902) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -327,18 +327,12 @@ ActiveRecord::Schema.define(version: 2020_06_11_205831) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "public_consultation_links", force: :cascade do |t|
-    t.string "link"
-    t.string "title"
-    t.bigint "public_consultation_id"
-    t.index ["public_consultation_id"], name: "index_public_consultation_links_on_public_consultation_id"
-  end
-
   create_table "public_consultations", force: :cascade do |t|
     t.string "title"
     t.string "description"
     t.string "cover_image"
     t.string "documents", default: [], array: true
+    t.boolean "enabled"
     t.datetime "initial_date"
     t.datetime "final_date"
     t.datetime "created_at", null: false
@@ -386,6 +380,28 @@ ActiveRecord::Schema.define(version: 2020_06_11_205831) do
     t.string "title"
     t.text "description"
     t.index ["methodology_id"], name: "index_steps_on_methodology_id"
+  end
+
+  create_table "survey_form_content_blocks", force: :cascade do |t|
+    t.bigint "survey_form_id"
+    t.bigint "content_block_id"
+    t.integer "sequence"
+    t.jsonb "content", default: "{}", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["content_block_id"], name: "index_survey_form_content_blocks_on_content_block_id"
+    t.index ["survey_form_id"], name: "index_survey_form_content_blocks_on_survey_form_id"
+  end
+
+  create_table "survey_forms", force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.integer "sequence"
+    t.jsonb "content"
+    t.bigint "public_consultation_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["public_consultation_id"], name: "index_survey_forms_on_public_consultation_id"
   end
 
   create_table "sustainable_development_goals", force: :cascade do |t|
@@ -465,12 +481,14 @@ ActiveRecord::Schema.define(version: 2020_06_11_205831) do
   add_foreign_key "images", "activity_content_blocks"
   add_foreign_key "layer", "topology", name: "layer_topology_id_fkey"
   add_foreign_key "learning_objectives", "curricular_components"
-  add_foreign_key "public_consultation_links", "public_consultations"
   add_foreign_key "public_consultations", "segments"
   add_foreign_key "results", "challenges"
   add_foreign_key "results", "teachers"
   add_foreign_key "stages", "segments"
   add_foreign_key "steps", "methodologies"
+  add_foreign_key "survey_form_content_blocks", "content_blocks"
+  add_foreign_key "survey_form_content_blocks", "survey_forms"
+  add_foreign_key "survey_forms", "public_consultations"
   add_foreign_key "teachers", "users"
   add_foreign_key "years", "segments"
   add_foreign_key "years", "stages"

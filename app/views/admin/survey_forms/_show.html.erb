@@ -1,0 +1,31 @@
+<% context.instance_eval do
+  attributes_table do
+    row :public_consultation
+    row :title
+    row :description
+    row :created_at
+    row :updated_at
+  end
+
+  panel I18n.t('activerecord.attributes.survey_form.survey_form_content_blocks'), class: 'show-content-blocks' do
+    if survey_form.survey_form_content_blocks.exists?
+      table_for survey_form.survey_form_content_blocks do
+        column do |survey_form_content|
+          panel I18n.t("activerecord.attributes.enums.content_types.#{survey_form_content.content_block.content_type}") do
+            attributes_table_for survey_form_content do
+              row :required_rating if survey_form_content.required_rating.present?
+              row :have_rating if survey_form_content.have_rating.present?
+              row :required_comment if survey_form_content.required_comment.present?
+              row :have_comment if survey_form_content.have_comment.present?
+              if survey_form_content.body.present?
+                row :body do
+                  raw(survey_form_content.body)
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end %>
