@@ -1,0 +1,4 @@
+<% survey_form_content_block = a.object %>
+<% content_block = survey_form_content_block.content_block %>
+<% content_type = content_block&.content_type %>
+<%= render "#{ContentBlock.partials_path + content_type}_fields", f: a, content_block: content_block if content_type %>

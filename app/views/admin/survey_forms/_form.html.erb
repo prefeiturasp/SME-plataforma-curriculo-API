@@ -1,0 +1,27 @@
+<%
+  f.inputs do
+    f.input :id, as: :hidden
+    f.input :public_consultation_id, as: :hidden
+    f.input :title
+    f.input :description
+    f.input :sequence,
+        as: :select,
+        collection: public_consultation_options(survey_form),
+        selected: survey_form.sequence.present? ? survey_form.sequence : public_consultation_options(survey_form).last
+
+    f.panel 'Conteúdos', class: 'content' do
+      f.inputs class: 'survey-form-content-buttons' do
+        render partial: 'survey_form_content_buttons', locals: { survey_form: survey_form, f: f }
+      end
+
+      f.has_many :survey_form_content_blocks, new_record: false, allow_destroy: false do |a|
+        render partial: 'survey_form_content_list', locals: { a: a }
+      end
+
+      f.inputs class: 'survey-form-content-structure' do
+        render partial: 'survey_form_content_structure', locals: { survey_form: survey_form }
+      end
+    end
+    f.actions
+  end
+%>
