@@ -13,10 +13,18 @@
         column do |survey_form_content|
           panel I18n.t("activerecord.attributes.enums.content_types.#{survey_form_content.content_block.content_type}") do
             attributes_table_for survey_form_content do
-              row :required_rating if survey_form_content.required_rating.present?
-              row :have_rating if survey_form_content.have_rating.present?
-              row :required_comment if survey_form_content.required_comment.present?
-              row :have_comment if survey_form_content.have_comment.present?
+              bool_row :have_rating do |obj|
+                JSON.parse(obj.content)['have_rating'] == "true"
+              end
+              bool_row :required_rating do |obj|
+                JSON.parse(obj.content)['have_rating'] == "true"
+              end
+              bool_row :have_comment do |obj|
+                JSON.parse(obj.content)['have_comment'] == "true"
+              end
+              bool_row :required_comment do |obj|
+                JSON.parse(obj.content)['required_comment'] == "true"
+              end
               if survey_form_content.body.present?
                 row :body do
                   raw(survey_form_content.body)
