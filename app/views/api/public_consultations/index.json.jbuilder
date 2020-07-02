@@ -7,4 +7,5 @@ json.array! @public_consultations do |public_consultation|
   json.documents public_consultation.documents_identifiers.map {|d| "/assets/#{d}"}
   json.initial_date public_consultation.initial_date
   json.final_date public_consultation.final_date
+  json.survey_forms public_consultation.survey_forms
 end
