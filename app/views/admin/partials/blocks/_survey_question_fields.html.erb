@@ -1,10 +1,10 @@
 <%= render "#{ContentBlock.partials_path}header_fields", f: f, content_block: content_block %>
 <%= render 'content_toolbar', f: f %>
 
-<% f.input :required_rating, as: :select %>
 <% f.input :have_rating, as: :select %>
-<% f.input :required_comment, as: :select %>
+<% f.input :required_rating, as: :select %>
 <% f.input :have_comment, as: :select %>
+<% f.input :required_comment, as: :select %>
 <% f.input :body, as: :quill_editor, required: true, label: false, input_html: {
   data: {
     options: {
