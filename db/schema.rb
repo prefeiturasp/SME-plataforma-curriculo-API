@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_23_165902) do
+ActiveRecord::Schema.define(version: 2020_07_06_070745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -179,6 +179,17 @@ ActiveRecord::Schema.define(version: 2020_06_23_165902) do
     t.index ["year_id"], name: "index_answer_books_on_year_id"
   end
 
+  create_table "answers", force: :cascade do |t|
+    t.string "comment"
+    t.integer "rating"
+    t.bigint "survey_form_answer_id"
+    t.bigint "survey_form_content_block_id"
+    t.bigint "teacher_id"
+    t.index ["survey_form_answer_id"], name: "index_answers_on_survey_form_answer_id"
+    t.index ["survey_form_content_block_id"], name: "index_answers_on_survey_form_content_block_id"
+    t.index ["teacher_id"], name: "index_answers_on_teacher_id"
+  end
+
   create_table "axes", force: :cascade do |t|
     t.string "description"
     t.bigint "curricular_component_id"
@@ -332,7 +343,6 @@ ActiveRecord::Schema.define(version: 2020_06_23_165902) do
     t.string "description"
     t.string "cover_image"
     t.string "documents", default: [], array: true
-    t.boolean "enabled"
     t.datetime "initial_date"
     t.datetime "final_date"
     t.datetime "created_at", null: false
@@ -380,6 +390,15 @@ ActiveRecord::Schema.define(version: 2020_06_23_165902) do
     t.string "title"
     t.text "description"
     t.index ["methodology_id"], name: "index_steps_on_methodology_id"
+  end
+
+  create_table "survey_form_answers", force: :cascade do |t|
+    t.boolean "anonymous"
+    t.boolean "finished"
+    t.bigint "survey_form_id"
+    t.bigint "teacher_id"
+    t.index ["survey_form_id"], name: "index_survey_form_answers_on_survey_form_id"
+    t.index ["teacher_id"], name: "index_survey_form_answers_on_teacher_id"
   end
 
   create_table "survey_form_content_blocks", force: :cascade do |t|
@@ -472,6 +491,13 @@ ActiveRecord::Schema.define(version: 2020_06_23_165902) do
   add_foreign_key "activity_sequence_ratings", "activity_sequence_performeds"
   add_foreign_key "activity_sequence_ratings", "ratings"
   add_foreign_key "activity_sequences", "curricular_components", column: "main_curricular_component_id"
+<<<<<<< HEAD
+=======
+  add_foreign_key "answer_books", "curricular_components"
+  add_foreign_key "answers", "survey_form_answers"
+  add_foreign_key "answers", "survey_form_content_blocks"
+  add_foreign_key "answers", "teachers"
+>>>>>>> staging
   add_foreign_key "axes", "curricular_components"
   add_foreign_key "collection_activity_sequences", "activity_sequences"
   add_foreign_key "collection_activity_sequences", "collections"
@@ -486,6 +512,8 @@ ActiveRecord::Schema.define(version: 2020_06_23_165902) do
   add_foreign_key "results", "teachers"
   add_foreign_key "stages", "segments"
   add_foreign_key "steps", "methodologies"
+  add_foreign_key "survey_form_answers", "survey_forms"
+  add_foreign_key "survey_form_answers", "teachers"
   add_foreign_key "survey_form_content_blocks", "content_blocks"
   add_foreign_key "survey_form_content_blocks", "survey_forms"
   add_foreign_key "survey_forms", "public_consultations"
