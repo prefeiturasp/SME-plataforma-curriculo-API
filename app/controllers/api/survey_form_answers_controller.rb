@@ -1,7 +1,7 @@
 module Api
   class SurveyFormAnswersController < ApiController
 
-    before_action :authenticate_api_user!
+    # before_action :authenticate_api_user!
     before_action :set_survey_form, only: [:new]
 
     def create
