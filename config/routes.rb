@@ -23,6 +23,8 @@ Rails.application.routes.draw do
 
     resources :answer_books, only:[:index]
     resources :stages, only:[:index]
+    resources :survey_forms, only:[:show]
+    resources :survey_form_answers, only: [:new, :create]
     resources :segments, only:[:index]
     resources :years, only:[:index]
     resources :filters, path: 'filtros', only: [:index]
@@ -38,7 +40,11 @@ Rails.application.routes.draw do
     get :perfil, to: 'profiles#me'
 
     resources :teachers, path: 'professores', only: %i[show create update] do
+      member do
+        get '/todas_respostas', action: :all_survey_form_answers_finished
+      end
       post :avatar, action: :avatar
+
       delete :avatar, action: :avatar_purge
       resources :collections, path: 'colecoes' do
         resources :activity_sequences, path: 'sequencias'
