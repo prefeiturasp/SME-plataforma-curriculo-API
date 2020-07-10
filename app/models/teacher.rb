@@ -3,6 +3,8 @@ class Teacher < ApplicationRecord
   has_many :collections, dependent: :destroy
   has_many :activity_sequence_performeds
   has_many :acls, dependent: :destroy
+  has_many :survey_form_answers, dependent: :destroy
+  has_many :answers, dependent: :destroy
   belongs_to :user
   has_one_attached :avatar
 
