@@ -39,7 +39,6 @@ ActiveAdmin.register ActivitySequence do
 
   collection_action :change_learning_objectives, method: :get do
     @learning_objectives = LearningObjective.where(
-      stage: params[:stage_id],
       year_id: params[:year_id],
       curricular_component_id: params[:main_curricular_component_id]
     )

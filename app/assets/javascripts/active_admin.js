@@ -129,7 +129,7 @@ function validFileSize(inserts) {
       size += insert.image.length;
     }
   }
-  return ((size / 1024 / 1024) < 5);
+  return ((size / 1024 / 1024) < 100);
 }
 
 function getDefaultOptions(){

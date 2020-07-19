@@ -44,6 +44,7 @@ ActiveAdmin.register SurveyForm do
       params[:survey_form][:survey_form_content_blocks_attributes].each do |k, v|
         hash = {}
         survey_form_content_block_id = v.delete('id').to_i #always delete id
+        sequence = v.delete('sequence').to_i
         images_attributes = v.delete('images_attributes')
         hash = {
           content_block_id: v.delete('content_block_id').to_i,
@@ -53,6 +54,7 @@ ActiveAdmin.register SurveyForm do
 
         hash.merge!(id: survey_form_content_block_id) unless survey_form_content_block_id.zero?
         hash.merge!(images_attributes: images_attributes) if images_attributes.present?
+        hash[:sequence] = sequence
         new_hash.merge!("#{k}" => hash)
       end
       params[:survey_form][:survey_form_content_blocks_attributes] = new_hash
