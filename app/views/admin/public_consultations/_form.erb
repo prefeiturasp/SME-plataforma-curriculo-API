@@ -14,7 +14,6 @@
                     )
                   : content_tag(:span, "Anda não há pré-visualização")
     f.input :documents,
-            required: true,
             as: :file,
             input_html: { multiple: true },
             hint: public_consultation.documents.count.zero? \
