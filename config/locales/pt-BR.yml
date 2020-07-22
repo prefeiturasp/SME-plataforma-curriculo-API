@@ -22,6 +22,9 @@ pt-BR:
       survey_form_content_block: &content_block
         one: "Bloco de conteúdo"
         other: "Blocos de conteúdo"
+      survey_form_answer:
+        one: "Resposta do Formulário"
+        other: "Respostas do Formulário"
       activity_sequences_report: "Relatório das avaliações"
       axis:
         one: "Eixo"
@@ -120,6 +123,7 @@ pt-BR:
         description: "Descrição"
         sequence: "Sequência"
         survey_form_content_blocks: "Blocos de conteúdo"
+        survey_form_answers: "Respostas do Formulário"
       survey_form_content_block: &survey_form_content_block_attrs
         body: "Conteúdo"
         have_rating: "Tem avaliação?"
@@ -127,6 +131,8 @@ pt-BR:
         required_rating: "Avaliação obrigatória?"
         required_comment: "Comentário obrigatório?"
         sequence: "Sequência"
+      survey_form_answer:
+
       activity_content_block: &activity_content_block_attrs
         body: "Conteúdo"
         title: "Título"

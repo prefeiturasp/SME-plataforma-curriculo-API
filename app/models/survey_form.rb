@@ -1,7 +1,7 @@
 class SurveyForm < ApplicationRecord
   belongs_to :public_consultation
   has_many :survey_form_content_blocks, dependent: :destroy
-  has_many :survey_form_answers, dependent: :destroy
+  has_many :survey_form_answers, dependent: :restrict_with_error
 
   accepts_nested_attributes_for :survey_form_content_blocks, allow_destroy: true
 
