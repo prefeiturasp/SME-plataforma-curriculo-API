@@ -68,7 +68,22 @@ ActiveAdmin.register SurveyForm do
     end
 
     def update
+      begin
+        super do |format|
+          format.html { redirect_to collection_url and return if resource.valid? }
+          format.json { render json: resource }
+        end
+      rescue
+        flash[:error] = "Erro ao tentar excluir questão: Já existem respostas relacionadas."
+        redirect_to collection_url
+      end
+    end
+
+    def destroy
       super do |format|
+        e = resource.errors.full_messages.to_sentence
+        flash[:error] = "Erro ao tentar deletar: #{e}" if e.present?
+        flash[:error] ||= "Erro ao tentar deletar: Já existem respostas relacionadas." 
         format.html { redirect_to collection_url and return if resource.valid? }
         format.json { render json: resource }
       end
