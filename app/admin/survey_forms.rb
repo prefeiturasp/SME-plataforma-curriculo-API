@@ -29,6 +29,7 @@ ActiveAdmin.register SurveyForm do
                   :have_rating,
                   :required_comment,
                   :have_comment,
+                  :title,
                   images_attributes: [
                     :id,
                     :subtitle,
@@ -83,7 +84,7 @@ ActiveAdmin.register SurveyForm do
       super do |format|
         e = resource.errors.full_messages.to_sentence
         flash[:error] = "Erro ao tentar deletar: #{e}" if e.present?
-        flash[:error] ||= "Erro ao tentar deletar: Já existem respostas relacionadas." 
+        flash[:error] ||= "Erro ao tentar deletar: Já existem respostas relacionadas."
         format.html { redirect_to collection_url and return if resource.valid? }
         format.json { render json: resource }
       end

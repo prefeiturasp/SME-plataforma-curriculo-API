@@ -25,6 +25,7 @@
               bool_row :required_comment do |obj|
                 JSON.parse(obj.content)['required_comment'] == "true"
               end
+              row :title
               if survey_form_content.body.present?
                 row :body do
                   raw(survey_form_content.body)

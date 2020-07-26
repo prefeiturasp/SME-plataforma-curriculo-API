@@ -410,8 +410,11 @@ namespace :db do
         {
           "content_type": "survey_question",
           "schema": {
-            "required": ["body", "have_rating", "have_comment", "required_rating", "required_comment"],
+            "required": ["title", "body", "have_rating", "have_comment", "required_rating", "required_comment"],
             "properties": {
+              "title": {
+                "type": "string"
+              },
               "body": {
                 "type": "string"
               },

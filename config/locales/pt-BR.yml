@@ -126,6 +126,7 @@ pt-BR:
         survey_form_answers: "Respostas do Formulário"
       survey_form_content_block: &survey_form_content_block_attrs
         body: "Conteúdo"
+        title: "Título da Questão"
         have_rating: "Tem avaliação?"
         have_comment: "Tem comentário?"
         required_rating: "Avaliação obrigatória?"
