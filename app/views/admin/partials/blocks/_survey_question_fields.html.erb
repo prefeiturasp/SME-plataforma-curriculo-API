@@ -5,6 +5,7 @@
 <% f.input :required_rating, as: :select %>
 <% f.input :have_comment, as: :select %>
 <% f.input :required_comment, as: :select %>
+<% f.input :title %>
 <% f.input :body, as: :quill_editor, required: true, label: false, input_html: {
   data: {
     options: {
