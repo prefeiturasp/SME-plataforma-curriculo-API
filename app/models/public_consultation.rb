@@ -1,6 +1,6 @@
 class PublicConsultation < ApplicationRecord
   belongs_to  :segment
-  has_many :survey_forms
+  has_many :survey_forms, dependent: :restrict_with_error
   validates :title, presence: true
   validates :description, presence: true
   validates :cover_image, presence: true
