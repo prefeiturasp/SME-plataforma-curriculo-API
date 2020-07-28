@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   include JtiMatcherAndSmeStrategy
   include HTTParty
-  base_uri ENV['SME_AUTHENTICATION_BASE_URL']
+  base_uri ENV['SME_CORE_SSO_API']
   devise :database_authenticatable, :recoverable, :rememberable, :trackable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
@@ -41,17 +41,18 @@ class User < ApplicationRecord
   def self.find_or_create_by_auth_params(body, credentials)
     user = User.find_or_create_by(username: credentials[:login])
     user_info = User.get_info_from_sme(credentials[:login])
-    user.name = user_info[:nome]
-    user.email = user_info[:email]
     user.password = credentials[:senha]
+    user.name = user_info[:results].first[:nm_pessoa]
+    user.email = user_info[:results].first[:email_servidor]
+    user.dre = user_info[:results].first[:nm_unidade]
     user.admin = false
     user.save
   end
 
+
+
   def self.get_info_from_sme(rf_code)
-    response = HTTParty.get(
-      "#{base_uri}/api/AutenticacaoSgp/#{rf_code}/dados"
-    )
+    response = HTTParty.get("#{ENV['SME_SGP_API']}/servidores/servidor_diretoria/#{rf_code}", headers: {Authorization: "#{ENV['SME_AUTHENTICATION_TOKEN']}"})
     body = JSON.parse(response.body, symbolize_names: true)
     body
   end
