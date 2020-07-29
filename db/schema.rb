@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_06_070745) do
+ActiveRecord::Schema.define(version: 2020_07_28_172805) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(version: 2020_07_06_070745) do
     t.bigint "segment_id"
     t.bigint "year_id"
     t.index ["main_curricular_component_id"], name: "index_activity_sequences_on_main_curricular_component_id"
+    t.index ["segment_id"], name: "index_activity_sequences_on_segment_id"
     t.index ["slug"], name: "index_activity_sequences_on_slug", unique: true
     t.index ["stage_id"], name: "index_activity_sequences_on_stage_id"
     t.index ["year_id"], name: "index_activity_sequences_on_year_id"
@@ -201,6 +202,56 @@ ActiveRecord::Schema.define(version: 2020_07_06_070745) do
   create_table "axes_learning_objectives", id: false, force: :cascade do |t|
     t.bigint "learning_objective_id", null: false
     t.bigint "axis_id", null: false
+  end
+
+  create_table "challenge_content_blocks", force: :cascade do |t|
+    t.bigint "challenge_id"
+    t.bigint "content_block_id"
+    t.integer "sequence"
+    t.jsonb "content", default: "{}", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["challenge_id"], name: "index_challenge_content_blocks_on_challenge_id"
+    t.index ["content_block_id"], name: "index_challenge_content_blocks_on_content_block_id"
+  end
+
+  create_table "challenges", force: :cascade do |t|
+    t.string "slug"
+    t.string "title"
+    t.string "keywords"
+    t.date "finish_at"
+    t.integer "category"
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "challenges_curricular_components", id: false, force: :cascade do |t|
+    t.bigint "challenge_id", null: false
+    t.bigint "curricular_component_id", null: false
+    t.index ["challenge_id", "curricular_component_id"], name: "index_c_cc_on_c_id_cc_id"
+    t.index ["curricular_component_id", "challenge_id"], name: "index_c_lo_on_cc_id_c_id"
+  end
+
+  create_table "challenges_knowledge_matrices", id: false, force: :cascade do |t|
+    t.bigint "challenge_id", null: false
+    t.bigint "knowledge_matrix_id", null: false
+    t.index ["challenge_id", "knowledge_matrix_id"], name: "index_c_km_on_km_c_id"
+    t.index ["knowledge_matrix_id", "challenge_id"], name: "index_km_c_on_c_km_id"
+  end
+
+  create_table "challenges_learning_objectives", id: false, force: :cascade do |t|
+    t.bigint "challenge_id", null: false
+    t.bigint "learning_objective_id", null: false
+    t.index ["challenge_id", "learning_objective_id"], name: "index_c_lo_on_c_id_alo_id"
+    t.index ["learning_objective_id", "challenge_id"], name: "index_c_lo_on_lo_id_ac_id"
+  end
+
+  create_table "challenges_teachers", id: false, force: :cascade do |t|
+    t.bigint "challenge_id", null: false
+    t.bigint "teacher_id", null: false
+    t.index ["challenge_id", "teacher_id"], name: "index_challenges_teachers_on_challenge_id_and_teacher_id"
+    t.index ["teacher_id", "challenge_id"], name: "index_challenges_teachers_on_teacher_id_and_challenge_id"
   end
 
   create_table "collection_activity_sequences", force: :cascade do |t|
@@ -271,10 +322,11 @@ ActiveRecord::Schema.define(version: 2020_07_06_070745) do
 
   create_table "images", force: :cascade do |t|
     t.string "subtitle"
-    t.bigint "activity_content_block_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["activity_content_block_id"], name: "index_images_on_activity_content_block_id"
+    t.integer "imageable_id"
+    t.string "imageable_type"
+    t.index ["imageable_id", "imageable_type"], name: "index_images_on_imageable_id_and_imageable_type"
   end
 
   create_table "knowledge_matrices", force: :cascade do |t|
@@ -359,6 +411,18 @@ ActiveRecord::Schema.define(version: 2020_07_06_070745) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "results", force: :cascade do |t|
+    t.bigint "challenge_id"
+    t.bigint "teacher_id"
+    t.boolean "enabled", default: true
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "class_name"
+    t.index ["challenge_id"], name: "index_results_on_challenge_id"
+    t.index ["teacher_id"], name: "index_results_on_teacher_id"
+  end
+
   create_table "roadmaps", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -437,6 +501,7 @@ ActiveRecord::Schema.define(version: 2020_07_06_070745) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["user_id"], name: "index_teachers_on_user_id"
   end
 
@@ -449,7 +514,7 @@ ActiveRecord::Schema.define(version: 2020_07_06_070745) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email", default: "", null: false
+    t.string "email", default: ""
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -461,12 +526,14 @@ ActiveRecord::Schema.define(version: 2020_07_06_070745) do
     t.inet "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "admin", default: false
+    t.boolean "admin", default: true
     t.string "jti", null: false
     t.string "sme_token"
     t.string "sme_refresh_token"
     t.string "username"
-    t.index ["email"], name: "index_users_on_email", unique: true
+    t.string "name"
+    t.string "dre"
+    t.index ["email"], name: "index_users_on_email"
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["sme_refresh_token"], name: "index_users_on_sme_refresh_token"
@@ -491,20 +558,18 @@ ActiveRecord::Schema.define(version: 2020_07_06_070745) do
   add_foreign_key "activity_sequence_ratings", "activity_sequence_performeds"
   add_foreign_key "activity_sequence_ratings", "ratings"
   add_foreign_key "activity_sequences", "curricular_components", column: "main_curricular_component_id"
-<<<<<<< HEAD
-=======
   add_foreign_key "answer_books", "curricular_components"
   add_foreign_key "answers", "survey_form_answers"
   add_foreign_key "answers", "survey_form_content_blocks"
   add_foreign_key "answers", "teachers"
->>>>>>> staging
   add_foreign_key "axes", "curricular_components"
+  add_foreign_key "challenge_content_blocks", "challenges"
+  add_foreign_key "challenge_content_blocks", "content_blocks"
   add_foreign_key "collection_activity_sequences", "activity_sequences"
   add_foreign_key "collection_activity_sequences", "collections"
   add_foreign_key "collections", "teachers"
   add_foreign_key "favourites", "teachers"
   add_foreign_key "goals", "sustainable_development_goals"
-  add_foreign_key "images", "activity_content_blocks"
   add_foreign_key "layer", "topology", name: "layer_topology_id_fkey"
   add_foreign_key "learning_objectives", "curricular_components"
   add_foreign_key "public_consultations", "segments"
