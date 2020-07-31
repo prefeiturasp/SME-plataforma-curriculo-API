@@ -7,4 +7,4 @@ json.cover_image "/assets/#{@public_consultation.cover_image_identifier}"
 json.documents @public_consultation.documents_identifiers.map {|d| "/assets/#{d}"}
 json.initial_date @public_consultation.initial_date.strftime("%d/%m/%Y")
 json.final_date @public_consultation.final_date.strftime("%d/%m/%Y")
-json.survey_forms @public_consultation.survey_forms
+json.survey_forms @public_consultation.survey_forms.order(:sequence)
