@@ -1,6 +1,31 @@
 ActiveAdmin.register SurveyForm do
   belongs_to :public_consultation
 
+  collection_action :csv_export_answers, method: :get do
+    survey_form_answer_ids = SurveyFormAnswer.where(survey_form_id: params["id"]).map(&:id)
+    answers = Answer.where(survey_form_answer_id: survey_form_answer_ids)
+
+    csv_string = CSV.generate do |csv|
+      csv << ['Professor', 'DRE', 'Questionário', 'Questão', 'Comentário', 'Avaliação']
+      answers.each do |answer|
+        csv << [
+          answer.teacher.user.name,
+          answer.teacher.user.dre,
+          answer.survey_form_answer.survey_form.title,
+          answer.survey_form_content_block.title,
+          answer.comment,
+          answer.rating
+        ]
+      end
+    end
+    send_data csv_string
+  end
+
+  collection_action :xls_export_answers, method: :get do
+    survey_form_answer_ids = SurveyFormAnswer.where(survey_form_id: params["id"]).map(&:id)
+    @answers = Answer.where(survey_form_answer_id: survey_form_answer_ids)
+  end
+
   action_item :back, only: %i[show edit] do
     link_to t('active_admin.back_to_model', model: PublicConsultation.model_name.human),
             admin_public_consultation_path(survey_form.public_consultation)
@@ -11,6 +36,14 @@ ActiveAdmin.register SurveyForm do
   action_item :new, only: :show do
     link_to t('active_admin.new_model', model: survey_form.model_name.human),
             new_admin_public_consultation_survey_form_path(survey_form.public_consultation)
+  end
+
+  action_item :csv_export_answers, only: :show do
+    link_to "Exportar respostas em CSV", "/admin/public_consultations/#{survey_form.public_consultation_id}/survey_forms/csv_export_answers?id=#{survey_form.id}"
+  end
+
+  action_item :xls_export_answers, only: :show do
+    link_to "Exportar respostas em XLS", "/admin/public_consultations/#{survey_form.public_consultation_id}/survey_forms/xls_export_answers.xls?id=#{survey_form.id}"
   end
 
   permit_params :title,
