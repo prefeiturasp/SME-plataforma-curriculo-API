@@ -56,8 +56,8 @@ pt-BR:
         one: "Metodologia"
         other: "Metodologias"
       public_consultation:
-        one: "Consulta Pública"
-        other: "Consultas Públicas"
+        one: "Consulta à Rede"
+        other: "Consultas à Rede"
       public_consultation_link:
         one: "Link da Consulta"
         other: "Links das Consultas"
