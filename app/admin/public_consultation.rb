@@ -11,9 +11,45 @@ ActiveAdmin.register PublicConsultation do
 
   config.filters = true
 
+  collection_action :csv_export_answers, method: :get do
+    survey_form_ids = SurveyForm.where(public_consultation_id: params["id"]).map(&:id)
+    survey_form_answer_ids = SurveyFormAnswer.where(survey_form_id: survey_form_ids).map(&:id)
+    answers = Answer.where(survey_form_answer_id: survey_form_answer_ids)
+
+    csv_string = CSV.generate do |csv|
+      csv << ['Professor', 'DRE', 'Questionário', 'Questão', 'Comentário', 'Avaliação']
+      answers.each do |answer|
+        csv << [
+          answer.teacher.user.name,
+          answer.teacher.user.dre,
+          answer.survey_form_answer.survey_form.title,
+          answer.survey_form_content_block.title,
+          answer.comment,
+          answer.rating
+        ]
+      end
+    end
+    send_data csv_string
+  end
+
+  collection_action :xls_export_answers, method: :get do
+    survey_form_ids = SurveyForm.where(public_consultation_id: params["id"]).map(&:id)
+    survey_form_answer_ids = SurveyFormAnswer.where(survey_form_id: survey_form_ids).map(&:id)
+    @answers = Answer.where(survey_form_answer_id: survey_form_answer_ids)
+  end
+
+
   action_item :new, only: :show do
     link_to t('active_admin.new_model', model: SurveyForm.model_name.human),
             new_admin_public_consultation_survey_form_path(public_consultation)
+  end
+
+  action_item :csv_export_answers, only: :show do
+    link_to "Exportar respostas em CSV", "/admin/public_consultations/csv_export_answers?id=#{public_consultation.id}"
+  end
+
+  action_item :xls_export_answers, only: :show do
+    link_to "Exportar respostas em XLS", "/admin/public_consultations/xls_export_answers.xls?id=#{public_consultation.id}"
   end
 
   controller do

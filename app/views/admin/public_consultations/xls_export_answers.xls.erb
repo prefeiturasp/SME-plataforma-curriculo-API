@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <table border="1">
+      <tr>
+        <th>Professor</th>
+        <th>DRE</th>
+        <th>Questionário</th>
+        <th>Questão</th>
+        <th>Comentário</th>
+        <th>Avaliação</th>
+      </tr>
+      <% @answers.each do |answer| %>
+      <tr>
+        <td><%= answer.teacher.user.name %></td>
+        <td><%= answer.teacher.user.dre %></td>
+        <td><%= answer.survey_form_answer.survey_form.title %></td>
+        <td><%= answer.survey_form_content_block.title %></td>
+        <td><%= answer.comment %></td>
+        <td><%= answer.rating %></td>
+      </tr>
+      <% end %>
+    </table>
+  </body>
+</html>
