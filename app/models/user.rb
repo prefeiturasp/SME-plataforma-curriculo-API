@@ -5,6 +5,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :recoverable, :rememberable, :trackable,
          :jwt_authenticatable, jwt_revocation_strategy: self
 
+  attribute :admin, default: false
   has_one :teacher, dependent: :destroy
 
   validates :email, presence: true, if: -> { username.blank? }
@@ -45,7 +46,6 @@ class User < ApplicationRecord
     user.name = user_info[:results].first[:nm_pessoa]
     user.email = user_info[:results].first[:email_servidor]
     user.dre = user_info[:results].first[:nm_unidade]
-    user.admin = false
     user.save
   end
 
