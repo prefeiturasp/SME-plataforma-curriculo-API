@@ -12,6 +12,9 @@ ActiveAdmin.register LearningObjective do
   config.filters = true
 
   filter :curricular_component
+  filter :segment
+  filter :stage
+  filter :year
   filter :created_at
 
   collection_action :change_axes, method: :get do

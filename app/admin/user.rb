@@ -1,11 +1,14 @@
 ActiveAdmin.register User do
   permit_params :email, :password, :password_confirmation, :admin
 
-  config.filters = false
+  config.filters = true
 
-  controller do
-    #
-  end
+  filter :name
+  filter :username
+  filter :email
+  filter :admin
+  filter :dre
+  filter :created_at
 
   index do
     selectable_column
@@ -14,6 +17,8 @@ ActiveAdmin.register User do
     column :name do |user|
       span user.admin? ? "-" : user.teacher.name
     end
+    column :username
+    column :dre
     column :kind do |user|
       span user.admin? ? 'Administrador(a)' : 'Professor(a)'
     end
