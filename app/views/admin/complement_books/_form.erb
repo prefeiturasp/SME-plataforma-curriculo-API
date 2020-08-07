@@ -1,0 +1,29 @@
+<%
+  f.inputs do
+    f.input :name, required: true
+    f.input :description, required: true
+    f.input :author, required: true
+    f.input :curricular_component, required: true
+    f.input :cover_image,
+            required: true,
+            as: :file,
+            hint: complement_book.cover_image.present? \
+                  ? image_tag(
+                      "/assets/#{complement_book.cover_image_identifier}",
+                      style: "max-width: 138px; min-height: 180px;",
+                      id: 'cover_image_file'
+                    )
+                  : content_tag(:span, "Anda não há pré-visualização")
+    f.input :book_file,
+            required: true,
+            as: :file,
+            hint: complement_book.book_file.present? \
+                  ? link_to(
+                      'Vizualiar caderno',
+                      "/assets/#{complement_book.book_file_identifier}",
+                      {target: '_blank', id: 'complement_book_file'}
+                    )
+                  : content_tag(:span, "Anda não há pré-visualização")
+  end
+  f.actions
+%>

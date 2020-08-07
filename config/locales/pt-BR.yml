@@ -82,6 +82,9 @@ pt-BR:
       answer_book:
         one: "Caderno de Respostas"
         other: "Cadernos de Respostas"
+      complement_book:
+        one: "Caderno Complementar"
+        other: "Cadernos Complementares"
       segment:
         one: "Segmento"
         other: "Segmentos"
@@ -365,6 +368,15 @@ pt-BR:
           curricular_component: "Componente curricular"
           segment: "Segmento"
           stage: "Etapa"
+      complement_book:
+          name: "Título"
+          description: "Descrição"
+          author: "Autor"
+          cover_image: "Imagem de capa"
+          book_file: "Caderno complementar"
+          curricular_component: "Componente curricular"
+          created_at: "Criado em"
+          updated_at: "Atualizado em"
       year:
           segment: "Segmento"
           stage: "Etapa"
