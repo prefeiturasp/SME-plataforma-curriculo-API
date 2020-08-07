@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_28_172805) do
+ActiveRecord::Schema.define(version: 2020_08_07_100117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -270,6 +270,18 @@ ActiveRecord::Schema.define(version: 2020_07_28_172805) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["teacher_id"], name: "index_collections_on_teacher_id"
+  end
+
+  create_table "complement_books", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "author"
+    t.string "cover_image"
+    t.string "book_file"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "curricular_component_id"
+    t.index ["curricular_component_id"], name: "index_complement_books_on_curricular_component_id"
   end
 
   create_table "content_blocks", force: :cascade do |t|
@@ -568,6 +580,7 @@ ActiveRecord::Schema.define(version: 2020_07_28_172805) do
   add_foreign_key "collection_activity_sequences", "activity_sequences"
   add_foreign_key "collection_activity_sequences", "collections"
   add_foreign_key "collections", "teachers"
+  add_foreign_key "complement_books", "curricular_components"
   add_foreign_key "favourites", "teachers"
   add_foreign_key "goals", "sustainable_development_goals"
   add_foreign_key "layer", "topology", name: "layer_topology_id_fkey"
