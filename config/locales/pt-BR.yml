@@ -61,6 +61,12 @@ pt-BR:
       public_consultation_link:
         one: "Link da Consulta"
         other: "Links das Consultas"
+      complement_book_link:
+        one: "Link do Material Complementar"
+        other: "Links do Material Complementar"
+      partner:
+        one: "Parceiro"
+        other: "Parceiros"
       rating:
         one: "Avaliação"
         other: "Avaliações"
@@ -83,8 +89,8 @@ pt-BR:
         one: "Caderno de Respostas"
         other: "Cadernos de Respostas"
       complement_book:
-        one: "Caderno Complementar"
-        other: "Cadernos Complementares"
+        one: "Material Complementar"
+        other: "Materiais Complementares"
       segment:
         one: "Segmento"
         other: "Segmentos"
@@ -368,13 +374,22 @@ pt-BR:
           curricular_component: "Componente curricular"
           segment: "Segmento"
           stage: "Etapa"
+      partner:
+          name: "Nome"
+          description: "Descrição"
+          created_at: "Criado em"
+          updated_at: "Atualizado em"
+      complement_book_link:
+          link: "Link"
+          created_at: "Criado em"
+          updated_at: "Atualizado em"
       complement_book:
           name: "Título"
-          description: "Descrição"
           author: "Autor"
           cover_image: "Imagem de capa"
-          book_file: "Caderno complementar"
-          curricular_component: "Componente curricular"
+          book_file: "Documento material complementar"
+          partner: "Parceiro"
+          complement_book_links: "Links do material complementar"
           created_at: "Criado em"
           updated_at: "Atualizado em"
       year:
