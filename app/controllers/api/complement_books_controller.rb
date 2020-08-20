@@ -1,8 +1,8 @@
 module Api
   class ComplementBooksController < ApiController
     def index
-      @complement_books = ComplementBook.includes(:curricular_component).all.order(
-        "curricular_components.name asc"
+      @complement_books = ComplementBook.all.order(
+        "name asc"
       )
 
       render :index
