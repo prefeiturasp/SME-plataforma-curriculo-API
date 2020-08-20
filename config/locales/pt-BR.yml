@@ -387,7 +387,7 @@ pt-BR:
           name: "Título"
           author: "Autor"
           cover_image: "Imagem de capa"
-          book_file: "Documento material complementar"
+          book_file: "Documento do material complementar"
           partner: "Parceiro"
           complement_book_links: "Links do material complementar"
           created_at: "Criado em"
