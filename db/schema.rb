@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_28_172805) do
+ActiveRecord::Schema.define(version: 2020_08_19_155719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -272,6 +272,25 @@ ActiveRecord::Schema.define(version: 2020_07_28_172805) do
     t.index ["teacher_id"], name: "index_collections_on_teacher_id"
   end
 
+  create_table "complement_book_links", force: :cascade do |t|
+    t.string "link"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "complement_book_id"
+    t.index ["complement_book_id"], name: "index_complement_book_links_on_complement_book_id"
+  end
+
+  create_table "complement_books", force: :cascade do |t|
+    t.string "name"
+    t.string "author"
+    t.string "cover_image"
+    t.string "book_file"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "partner_id"
+    t.index ["partner_id"], name: "index_complement_books_on_partner_id"
+  end
+
   create_table "content_blocks", force: :cascade do |t|
     t.integer "content_type"
     t.jsonb "json_schema", default: "{}", null: false
@@ -386,6 +405,13 @@ ActiveRecord::Schema.define(version: 2020_07_28_172805) do
     t.string "subtitle"
     t.text "description"
     t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "partners", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -568,6 +594,7 @@ ActiveRecord::Schema.define(version: 2020_07_28_172805) do
   add_foreign_key "collection_activity_sequences", "activity_sequences"
   add_foreign_key "collection_activity_sequences", "collections"
   add_foreign_key "collections", "teachers"
+  add_foreign_key "complement_book_links", "complement_books"
   add_foreign_key "favourites", "teachers"
   add_foreign_key "goals", "sustainable_development_goals"
   add_foreign_key "layer", "topology", name: "layer_topology_id_fkey"
