@@ -1,5 +1,7 @@
 class ComplementBook < ApplicationRecord
-  belongs_to :curricular_component
+  belongs_to :partner
+  has_many :complement_book_links, dependent: :destroy
+  accepts_nested_attributes_for :complement_book_links, allow_destroy: true
 
   validates :name, presence: true
   validates :cover_image, presence: true
