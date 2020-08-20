@@ -1,0 +1,44 @@
+<% context.instance_eval do
+  attributes_table do
+    row :name
+    row :description
+    row :created_at
+    row :updated_at
+  end
+
+  panel'Materias Complementares' do
+    if partner.complement_books.exists?
+      table_for partner.complement_books do
+        column do |complement_book|
+          panel 'Material' do
+            attributes_table_for complement_book do
+              row :id
+              row :name
+              row :cover_image do |obj|
+                image_tag(obj.cover_image_identifier)
+              end
+              row :book_file do |obj, idx|
+                link_to("documento", "/assets/#{obj.book_file_identifier}")
+              end
+              row :author
+              panel 'Links' do
+                if complement_book.complement_book_links.exists?
+                  table_for complement_book.complement_book_links do
+                    column do |complement_book_link|
+                      panel 'Link' do
+                        attributes_table_for complement_book_link do
+                          row :id
+                          row :link
+                        end
+                      end
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end %>
