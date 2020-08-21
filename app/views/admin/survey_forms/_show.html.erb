@@ -3,6 +3,9 @@
     row :public_consultation
     row :title
     row :description
+    row :color do |survey_form|
+      raw "<div class='pick_color'>#{survey_form.color}</div>"
+    end
     row :created_at
     row :updated_at
   end
