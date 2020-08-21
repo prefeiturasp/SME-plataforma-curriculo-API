@@ -51,6 +51,7 @@ ActiveAdmin.register SurveyForm do
                 :public_consultation_id,
                 :content,
                 :sequence,
+                :color,
                 survey_form_content_blocks_attributes: [
                   :id,
                   :content_type,

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_19_155719) do
+ActiveRecord::Schema.define(version: 2020_08_21_185056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -510,6 +510,7 @@ ActiveRecord::Schema.define(version: 2020_08_19_155719) do
     t.bigint "public_consultation_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "color"
     t.index ["public_consultation_id"], name: "index_survey_forms_on_public_consultation_id"
   end
 

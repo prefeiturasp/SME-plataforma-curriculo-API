@@ -3,6 +3,9 @@
   column :title
   column :description
   column :public_consultation
+  column :color do |survey_form|
+    raw "<div class='pick_color'>#{survey_form.color}</div>"
+  end
   column :created_at
   column :updated_at
   actions
