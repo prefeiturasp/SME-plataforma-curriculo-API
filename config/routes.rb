@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     end
 
     resources :answer_books, only:[:index]
+    resources :complement_books, only:[:index]
     resources :stages, only:[:index]
     resources :survey_forms, only:[:show]
     resources :survey_form_answers, only: [:new, :create]
@@ -71,6 +72,7 @@ Rails.application.routes.draw do
       resources :activity_types
       resources :answer_books
       resources :axes
+      resources :complement_books
       resources :curricular_components
       resources :learning_objectives
       resources :roadmaps

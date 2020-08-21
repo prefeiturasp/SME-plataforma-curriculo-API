@@ -1,0 +1,18 @@
+<%
+  f.inputs do
+    f.input :name, required: true
+    f.input :description, required: true
+    f.panel 'Materiais Complementares' do
+      f.has_many :complement_books, allow_destroy: true do |complement_book|
+        complement_book.input :name, required: true
+        complement_book.input :author, required: true
+        complement_book.input :book_file, required: true, as: :file
+        complement_book.input :cover_image, required: true, as: :file
+        complement_book.has_many :complement_book_links, allow_destroy: true do |link|
+          link.input :link
+        end
+      end
+    end
+  end
+  f.actions
+%>
