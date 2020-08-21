@@ -4,6 +4,7 @@
     f.input :public_consultation_id, as: :hidden
     f.input :title
     f.input :description
+    f.input :color, as: :color
     f.input :sequence,
         as: :select,
         collection: public_consultation_options(survey_form),
