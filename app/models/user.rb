@@ -26,7 +26,8 @@ class User < ApplicationRecord
   def self.authenticate_in_sme(credentials)
     response = HTTParty.post(
       "#{base_uri}/api/AutenticacaoSgp/Autenticar",
-      { body: credentials.symbolize_keys }
+      headers: {"x-api-eol-key": "#{ENV['CORE_SSO_AUTHENTICATION_TOKEN']}"},
+      body: credentials.symbolize_keys
     )
     if response.code == 200
       body = JSON.parse(response.body, symbolize_names: true)
@@ -52,7 +53,7 @@ class User < ApplicationRecord
 
 
   def self.get_info_from_sme(rf_code)
-    response = HTTParty.get("#{ENV['SME_SGP_API']}/servidores/servidor_diretoria/#{rf_code}", headers: {Authorization: "#{ENV['SME_AUTHENTICATION_TOKEN']}"})
+    response = HTTParty.get("#{ENV['SME_SGP_API']}/servidores/servidor_diretoria/#{rf_code}", headers: {Authorization: "#{ENV['SGP_AUTHENTICATION_TOKEN']}"})
     body = JSON.parse(response.body, symbolize_names: true)
     body
   end
