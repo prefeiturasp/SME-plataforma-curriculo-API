@@ -37,6 +37,8 @@ ActiveAdmin.register User do
     f.semantic_errors
     f.inputs do
       f.input :email
+      f.input :password
+      f.input :password_confirmation
       f.input :admin, as: :select,
                       collection: [['Sim', true]],
                       selected: user.admin,
