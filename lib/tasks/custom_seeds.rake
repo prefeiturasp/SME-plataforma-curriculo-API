@@ -440,5 +440,34 @@ namespace :db do
         puts "#{attributes[:content_type]} updated!" if cb.save
       end
     end
+
+    desc "Create or Update Permitted Action"
+    task create_or_update_permitted_actions: :environment do
+      [
+        { name: 'Atividades', class_name: 'Activity' },
+        { name: 'Blocos de conteúdo das Atividades', class_name: 'ActivityContentBlock' },
+        { name: 'Sequências de Atividades', class_name: 'ActivitySequence' },
+        { name: 'Cadernos de Respostas', class_name: 'AnswerBook' },
+        { name: 'Eixos', class_name: 'Axis' },
+        { name: 'Blocos de conteúdo dos Desafios', class_name: 'ChallengeContentBlock' },
+        { name: 'Desafios', class_name: 'Challenge' },
+        { name: 'Componentes Curriculares', class_name: 'CurricularComponent' },
+        { name: 'Matriz dos Saberes', class_name: 'KnowledgeMatrix' },
+        { name: 'Objetivos de Aprendizagem', class_name: 'LearningObjective' },
+        { name: 'Metodologias', class_name: 'Methodology' },
+        { name: 'Parceiros', class_name: 'Partner' },
+        { name: 'Consultas à Rede', class_name: 'PublicConsultation' },
+        { name: 'Avaliações', class_name: 'Rating' },
+        { name: 'Resultados', class_name: 'Result' },
+        { name: 'Roteiros', class_name: 'Roadmap' },
+        { name: 'Segmentos', class_name: 'Segment' },
+        { name: 'Etapas', class_name: 'Stage' },
+        { name: 'Blocos de conteúdo dos Formulários de Pesquisa', class_name: 'SurveyFormContentBlock' },
+        { name: 'Formulários da Pesquisa', class_name: 'SurveyForm' },
+        { name: 'Objetivos de Desenvolvimento Sustentável', class_name: 'SustainableDevelopmentGoal' },
+        { name: 'Usuários', class_name: 'User' },
+        { name: 'Anos', class_name: 'Year' }
+      ].each { |action| PermittedAction.find_or_create_by(class_name: action[:class_name], name: action[:name]) }
+    end
   end
 end
