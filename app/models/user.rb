@@ -7,6 +7,7 @@ class User < ApplicationRecord
 
   attribute :admin, default: false
   has_one :teacher, dependent: :destroy
+  has_and_belongs_to_many :permitted_actions
 
   validates :email, presence: true, if: -> { username.blank? }
   validates :email, uniqueness: { case_sensitive: false }, if: -> { email.present? }
