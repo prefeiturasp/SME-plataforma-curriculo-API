@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_21_185056) do
+ActiveRecord::Schema.define(version: 2020_09_01_005034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -414,6 +414,16 @@ ActiveRecord::Schema.define(version: 2020_08_21_185056) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "permitted_actions", force: :cascade do |t|
+    t.string "class_name"
+    t.string "name"
+  end
+
+  create_table "permitted_actions_users", id: false, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "permitted_action_id", null: false
   end
 
   create_table "public_consultations", force: :cascade do |t|
