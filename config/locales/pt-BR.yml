@@ -86,8 +86,8 @@ pt-BR:
         one: "Usuário"
         other: "Usuários"
       permitted_actions:
-        one: "Permição"
-        other: "Permições"
+        one: "Permissão"
+        other: "Permissões"
       answer_book:
         one: "Caderno de Respostas"
         other: "Cadernos de Respostas"
@@ -316,7 +316,7 @@ pt-BR:
         current_sign_in_ip: IP do acesso atual
         email: Email
         username: RF
-        permitted_actions: Permições
+        permitted_actions: Permissões
         dre: DRE
         encrypted_password: Senha criptografada
         failed_attempts: Tentativas sem sucesso
