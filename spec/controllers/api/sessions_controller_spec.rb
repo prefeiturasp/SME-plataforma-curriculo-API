@@ -32,12 +32,12 @@ RSpec.describe Api::SessionsController, type: :controller do
             body: {
               results: [
                 {
-                  cd_registro_funcional: "7204540",
-                  nm_pessoa: "LISANDRA PAES",
-                  email_servidor: "lisandra.paes@sme.prefeitura.sp.gov.br",
-                  cd_diretoria_cargo_atual: "108800",
-                  nm_exibicao_unidade: "DRE - JT",
-                  nm_unidade: "DIRETORIA REGIONAL DE EDUCACAO JACANA/TREMEMBE"
+                  cd_registro_funcional: "1234567",
+                  nm_pessoa: "Fulano de Tal",
+                  email_servidor: "fulano.tal@sme.prefeitura.sp.gov.br",
+                  cd_diretoria_cargo_atual: "123456",
+                  nm_exibicao_unidade: "DRE - Qualquer",
+                  nm_unidade: "DIRETORIA REGIONAL DE EDUCACAO LUGAR/NENHUM"
                 }
               ]
             }.to_json,
