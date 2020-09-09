@@ -23,7 +23,7 @@ pipeline {
       
     stage('Analise Codigo') {
           when {
-            branch 'develop'
+            branch 'staging'
           }
             steps {
                 sh 'sonar-scanner \
@@ -33,6 +33,53 @@ pipeline {
                     -Dsonar.login=871792927f842e93338784ee1eaa12c4914a4aa9'
                               }
        }
+
+    stage('Setup Testes') {
+        agent {
+        label 'master'
+        }  
+        steps {
+          script {
+            CONTAINER_ID = sh (
+            script: 'docker ps -q --filter "name=sme-curriculodb"',
+            returnStdout: true
+            ).trim()
+             if (CONTAINER_ID) {
+               sh "echo nome é: ${CONTAINER_ID}"
+               sh "docker rm -f ${CONTAINER_ID}"
+               sh 'docker run -d --rm --cap-add SYS_TIME --name sme-curriculodb --network curriculo-network -p 5432 -e TZ="America/Sao_Paulo" -e POSTGRES_DB=curriculo -e POSTGRES_PASSWORD=curriculo -e POSTGRES_USER=postgres postgres:9-alpine'
+            } else {
+        
+                sh 'docker run -d --rm --cap-add SYS_TIME --name sme-curriculodb --network curriculo-network -p 5432 -e TZ="America/Sao_Paulo" -e POSTGRES_DB=curriculo -e POSTGRES_PASSWORD=curriculo -e POSTGRES_USER=postgres postgres:9-alpine'
+            }
+          }
+          script {
+            CONTAINER_ID2 = sh (
+            script: 'docker ps -q --filter "name=elasticsearch"',
+            returnStdout: true
+            ).trim()
+             if (CONTAINER_ID2) {
+               sh "echo nome é: ${CONTAINER_ID2}"
+               sh "docker rm -f ${CONTAINER_ID2}"
+               sh 'docker run -d --rm --cap-add SYS_TIME --name elasticsearch --net curriculo-network -p 9200 -p 9300 -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "http.cors.enabled=true" -e "http.cors.allow-origin=*" -e "http.cors.allow-credentials=true" -e "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization" docker.elastic.co/elasticsearch/elasticsearch:6.5.4'
+            } else {
+        
+                sh 'docker run -d --rm --cap-add SYS_TIME --name elasticsearch --net curriculo-network -p 9200 -p 9300 -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "http.cors.enabled=true" -e "http.cors.allow-origin=*" -e "http.cors.allow-credentials=true" -e "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization" docker.elastic.co/elasticsearch/elasticsearch:6.5.4'
+            }
+          }
+
+        }
+      }    
+
+    stage('Testes') {
+      
+        steps {
+              sh 'bundle install'
+              sh 'bundle exec rake db:create RAILS_ENV=test'
+              sh 'bundle exec rake db:migrate RAILS_ENV=test'
+              sh 'bundle exec rspec spec'
+        }
+    }
          
     stage('Docker build DEV') {
         when {
@@ -125,7 +172,7 @@ pipeline {
             
             timeout(time: 24, unit: "HOURS") {
                telegramSend("${JOB_NAME}...O Build ${BUILD_DISPLAY_NAME} - Requer uma aprovação para deploy !!!\n Consulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)\n")
-               input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: 'giuseppe_rosa'
+               input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: 'rodolpho_azeredo'
             }
             //Start JOB Rundeck para update de imagens no host homologação 
          
@@ -185,7 +232,7 @@ pipeline {
             steps {
                 timeout(time: 24, unit: "HOURS") {
                 telegramSend("${JOB_NAME}...O Build ${BUILD_DISPLAY_NAME} - Requer uma aprovação para deploy !!!\n Consulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)\n")
-                input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: 'giuseppe_rosa'
+                input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: 'rodolpho_azeredo'
                 }
                     
             
