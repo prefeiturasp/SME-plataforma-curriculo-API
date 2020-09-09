@@ -11,8 +11,8 @@ class User < ApplicationRecord
 
   validates :email, presence: true, if: -> { username.blank? }
   validates :email, uniqueness: { case_sensitive: false }, if: -> { email.present? }
-  validates :username, presence: true, if: -> { email.blank? }
 
+  validates :username, presence: true, if: -> { email.blank? }
   validates_uniqueness_of :username, case_sensitive: false, if: -> { username.present? }
 
   attr_writer :login
