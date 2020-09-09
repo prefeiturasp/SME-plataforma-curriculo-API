@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  permit_params :email, :password, :password_confirmation, :admin, permitted_action_ids: []
+  permit_params :username, :email, :password, :password_confirmation, :admin, permitted_action_ids: []
 
   config.filters = true
 
@@ -37,6 +37,7 @@ ActiveAdmin.register User do
     f.semantic_errors
     f.inputs do
       f.input :email
+      f.input :username
       f.input :password
       f.input :password_confirmation
       f.input :admin, as: :select,

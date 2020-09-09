@@ -15,7 +15,7 @@ RSpec.describe Api::SessionsController, type: :controller do
   describe 'POST #create' do
     context 'with valid params' do
       it 'renders a JSON response with the new session' do
-        stub_request(:post, "http://hom-smeintegracaoapi.sme.prefeitura.sp.gov.br/api/AutenticacaoSgp/Autenticar").
+        stub_request(:post, "https://smeintegracaoapi.sme.prefeitura.sp.gov.br/api/AutenticacaoSgp/Autenticar").
          with( body: "login=#{rf_code}&senha=#{user.password}" ).
           to_return(
             status: 200,
@@ -26,14 +26,20 @@ RSpec.describe Api::SessionsController, type: :controller do
             headers: {}
           )
 
-        stub_request(:get, "http://hom-smeintegracaoapi.sme.prefeitura.sp.gov.br/api/AutenticacaoSgp/#{rf_code}/dados").
+        stub_request(:get, "https://hom-smecieduapi.sme.prefeitura.sp.gov.br/servidores/servidor_diretoria/#{rf_code}").
           to_return(
             status: 200,
             body: {
-              cpf: "123.456.789-00",
-              nome: user.username,
-              codigoRf: rf_code,
-              email: "test@email.com"
+              results: [
+                {
+                  cd_registro_funcional: "1234567",
+                  nm_pessoa: "Fulano de Tal",
+                  email_servidor: "fulano.tal@sme.prefeitura.sp.gov.br",
+                  cd_diretoria_cargo_atual: "123456",
+                  nm_exibicao_unidade: "DRE - Qualquer",
+                  nm_unidade: "DIRETORIA REGIONAL DE EDUCACAO LUGAR/NENHUM"
+                }
+              ]
             }.to_json,
             headers: {}
           )
@@ -46,7 +52,7 @@ RSpec.describe Api::SessionsController, type: :controller do
 
     context 'returns http unauthorized' do
       it 'renders a JSON response with errors for the new session' do
-        stub_request(:post, "http://hom-smeintegracaoapi.sme.prefeitura.sp.gov.br/api/AutenticacaoSgp/Autenticar").
+        stub_request(:post, "https://smeintegracaoapi.sme.prefeitura.sp.gov.br/api/AutenticacaoSgp/Autenticar").
          with( body: "login=#{rf_code}&senha=wrong_password" ).
           to_return(
             status: 401,
