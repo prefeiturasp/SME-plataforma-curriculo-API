@@ -46,17 +46,6 @@ RSpec.describe Axis, type: :model do
 
     describe '#destroy' do
       let(:subject) { create :axis }
-
-      context 'if has curricular component' do
-        before do
-          subject.destroy
-        end
-
-        it 'not valid' do
-          expect(subject.errors[:curricular_component]).to include(I18n.t('activerecord.errors.messages.restrict_dependent_destroy.has_one', record: CurricularComponent.model_name.human))
-        end
-      end
-
       context 'if has learning_objectives' do
         before do
           create :learning_objective, axis_ids: [subject.id]
@@ -64,7 +53,7 @@ RSpec.describe Axis, type: :model do
 
         it 'not valid' do
           subject.destroy
-          expect(subject.errors[:learning_objectives]).to include(I18n.t('activerecord.errors.messages.restrict_dependent_destroy.has_many', record: LearningObjective.model_name.human))
+          expect(subject.errors.messages[:learning_objectives].first).to include(I18n.t('activerecord.errors.messages.restrict_dependent_destroy.has_many', record: LearningObjective.model_name.human))
         end
       end
     end
