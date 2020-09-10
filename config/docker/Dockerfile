@@ -1,10 +1,10 @@
 FROM ruby:2.5.1-alpine
 
-ENV LANG en_US.UTF-8 
-ENV LANGUAGE en_US:en 
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-RUN mkdir -p /app 
+RUN mkdir -p /app
 WORKDIR /app
 
 RUN apk update && apk upgrade
@@ -30,6 +30,7 @@ RUN yarn install
 COPY Gemfile Gemfile.lock ./
 
 RUN gem install bundler
+RUN chmod +t /tmp
 RUN bundle install --jobs 20 --retry 5
 
 COPY . ./
