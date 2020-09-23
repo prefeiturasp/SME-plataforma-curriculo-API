@@ -1,5 +1,6 @@
 if Rails.env.development?
-  admin = User.find_or_create_by(email: 'rodolpho.azeredo@amcom.com.br')
+  admin = User.find_or_create_by(email: 'admin@admin.com.br')
+  admin.admin = true
   admin.password = 'password'
   admin.password_confirmation = 'password'
   admin.save
