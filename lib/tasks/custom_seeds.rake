@@ -466,8 +466,19 @@ namespace :db do
         { name: 'Formulários da Pesquisa', class_name: 'SurveyForm' },
         { name: 'Objetivos de Desenvolvimento Sustentável', class_name: 'SustainableDevelopmentGoal' },
         { name: 'Usuários', class_name: 'User' },
-        { name: 'Anos', class_name: 'Year' }
+        { name: 'Anos', class_name: 'Year' },
+        { name: 'Protanismo Estudantil', class_name: 'StudentProtagonism'}
       ].each { |action| PermittedAction.find_or_create_by(class_name: action[:class_name], name: action[:name]) }
+    end
+
+    desc "Add permission to admin users"
+    task add_admin_permissions: :environment do
+      pa = PermittedAction.all
+      u = User.where(admin: true)
+      u.each do |user|
+        user.permitted_actions = pa
+        user.save!
+      end
     end
   end
 end
