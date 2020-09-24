@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_01_005034) do
+ActiveRecord::Schema.define(version: 2020_09_17_190332) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -455,6 +455,14 @@ ActiveRecord::Schema.define(version: 2020_09_01_005034) do
     t.string "title"
     t.text "description"
     t.index ["methodology_id"], name: "index_steps_on_methodology_id"
+  end
+
+  create_table "student_protagonisms", force: :cascade do |t|
+    t.string "description"
+    t.integer "sequence"
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "survey_form_answers", force: :cascade do |t|
