@@ -82,6 +82,9 @@ pt-BR:
       step:
         one: "Passo"
         other: "Passos"
+      student_protagonism:
+        one:  "Protagonismo Estudantil"
+        other:  "Protagonismos Estudantis"
       user:
         one: "Usuário"
         other: "Usuários"
@@ -306,6 +309,12 @@ pt-BR:
         image: "Icone"
         title: "Titulo"
         description: "Descrição"
+      student_protagonism:
+        title: "Título"
+        description: "Descrição"
+        sequence: "Ordem"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
       user:
         admin: Administrador
         confirmation_sent_at: Confirmação enviada em
