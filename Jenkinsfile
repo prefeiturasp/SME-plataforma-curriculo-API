@@ -30,7 +30,7 @@ pipeline {
                     -Dsonar.projectKey=SME-plataforma-curriculo-API \
                     -Dsonar.sources=. \
                     -Dsonar.host.url=http://sonar.sme.prefeitura.sp.gov.br \
-                    -Dsonar.login=871792927f842e93338784ee1eaa12c4914a4aa9'
+                    -Dsonar.login=0d918ef19d11f5bf660be3154c36a3db5b71d16f'
                               }
        }
 
