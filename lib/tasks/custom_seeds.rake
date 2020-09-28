@@ -474,7 +474,7 @@ namespace :db do
     desc "Add permission to admin users"
     task add_admin_permissions: :environment do
       pa = PermittedAction.all
-      u = User.where(admin: true)
+      u = User.where(superadmin: true)
       u.each do |user|
         user.permitted_actions = pa
         user.save!
