@@ -6,6 +6,7 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: self
 
   attribute :admin, default: false
+  attribute :superadmin, default: false
   has_one :teacher, dependent: :destroy
   has_and_belongs_to_many :permitted_actions
 
