@@ -1,10 +1,11 @@
 ActiveAdmin.register User do
-  permit_params :username, :email, :password, :password_confirmation, :admin, permitted_action_ids: []
+  permit_params :username, :email, :password, :password_confirmation, :admin, :superadmin, permitted_action_ids: []
 
   config.filters = true
 
   filter :name
   filter :username
+  filter :superadmin
   filter :email
   filter :admin
   filter :dre
@@ -22,6 +23,7 @@ ActiveAdmin.register User do
     column :kind do |user|
       span user.admin? ? 'Administrador(a)' : 'Professor(a)'
     end
+    column :superadmin
     column :current_sign_in_at
     column :sign_in_count
     column :created_at
@@ -44,6 +46,7 @@ ActiveAdmin.register User do
                       collection: [['Sim', true]],
                       selected: user.admin,
                       include_blank: false
+      f.input :superadmin, as: :select
       f.input :permitted_actions, as: :check_boxes,
                                   input_html: { multiple: true }
     end

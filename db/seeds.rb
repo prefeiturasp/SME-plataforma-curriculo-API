@@ -263,8 +263,8 @@ end
 end
 
 Rake::Task['db:seed:create_or_update_content_blocks'].invoke
-Rake::Task['create_or_update_permitted_actions'].invoke
-Rake::Task['add_admin_permissions'].invoke
+Rake::Task['db:seed:create_or_update_permitted_actions'].invoke
+Rake::Task['db:seed:add_admin_permissions'].invoke
 
 if Rails.env.development?
   Rake::Task['db:seed:create_or_update_teachers'].invoke
