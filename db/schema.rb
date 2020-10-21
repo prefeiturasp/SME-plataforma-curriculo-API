@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_28_172337) do
+ActiveRecord::Schema.define(version: 2020_10_20_102620) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -164,6 +164,16 @@ ActiveRecord::Schema.define(version: 2020_09_28_172337) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "advisors", force: :cascade do |t|
+    t.string "old_id"
+    t.string "name"
+  end
+
+  create_table "advisors_projects", id: false, force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "advisor_id", null: false
+  end
+
   create_table "answer_books", force: :cascade do |t|
     t.string "name"
     t.string "cover_image"
@@ -189,6 +199,18 @@ ActiveRecord::Schema.define(version: 2020_09_28_172337) do
     t.index ["survey_form_answer_id"], name: "index_answers_on_survey_form_answer_id"
     t.index ["survey_form_content_block_id"], name: "index_answers_on_survey_form_content_block_id"
     t.index ["teacher_id"], name: "index_answers_on_teacher_id"
+  end
+
+  create_table "areas", force: :cascade do |t|
+    t.string "old_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "areas_projects", id: false, force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "area_id", null: false
   end
 
   create_table "axes", force: :cascade do |t|
@@ -307,6 +329,16 @@ ActiveRecord::Schema.define(version: 2020_09_28_172337) do
     t.index ["slug"], name: "index_curricular_components_on_slug", unique: true
   end
 
+  create_table "curriculum_subjects", force: :cascade do |t|
+    t.string "old_id"
+    t.string "name"
+  end
+
+  create_table "curriculum_subjects_projects", id: false, force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "curriculum_subject_id", null: false
+  end
+
   create_table "favourites", force: :cascade do |t|
     t.integer "favouritable_id"
     t.string "favouritable_type"
@@ -409,6 +441,16 @@ ActiveRecord::Schema.define(version: 2020_09_28_172337) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "participants", force: :cascade do |t|
+    t.string "old_id"
+    t.string "name"
+  end
+
+  create_table "participants_projects", id: false, force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "participant_id", null: false
+  end
+
   create_table "partners", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -424,6 +466,23 @@ ActiveRecord::Schema.define(version: 2020_09_28_172337) do
   create_table "permitted_actions_users", id: false, force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "permitted_action_id", null: false
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.string "old_id"
+    t.string "title"
+    t.string "school"
+    t.string "dre"
+    t.string "description"
+    t.string "summary"
+    t.string "owners"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "projects_tags", id: false, force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "tag_id", null: false
   end
 
   create_table "public_consultations", force: :cascade do |t|
@@ -539,6 +598,11 @@ ActiveRecord::Schema.define(version: 2020_09_28_172337) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "color"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "old_id"
+    t.string "name"
   end
 
   create_table "teachers", force: :cascade do |t|
