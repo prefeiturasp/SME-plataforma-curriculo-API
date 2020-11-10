@@ -15,6 +15,7 @@ module Admin
     end
 
     def sequence_options(_model)
+      return [1] if (_model.all.count == 0)
       options = (1.._model.all.count).map { |sequence| sequence }
     end
 

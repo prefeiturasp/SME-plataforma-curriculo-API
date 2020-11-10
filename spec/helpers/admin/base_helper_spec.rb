@@ -33,8 +33,8 @@ RSpec.describe Admin::BaseHelper, type: :helper do
         create_list :sustainable_development_goal, 2
         create_list :knowledge_matrix, 2
 
-        expect(helper.sequence_options(SustainableDevelopmentGoal)).to match_array([1, 2, 3])
-        expect(helper.sequence_options(KnowledgeMatrix)).to match_array([1, 2, 3])
+        expect(helper.sequence_options(SustainableDevelopmentGoal)).to match_array([1, 2])
+        expect(helper.sequence_options(KnowledgeMatrix)).to match_array([1, 2])
       end
     end
   end

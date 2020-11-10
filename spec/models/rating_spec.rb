@@ -39,8 +39,8 @@ RSpec.describe Rating, type: :model do
       let(:rating_3) { create :rating, enable: true }
 
       it 'List all if enable is true' do
-        expected = [rating_1, rating_3]
-        expect(Rating.enableds).to eq(expected)
+        expect(Rating.enableds.include?(rating_1)).to eq(true)
+        expect(Rating.enableds.include?(rating_3)).to eq(true)
       end
 
       it 'Not list if enable is false' do
@@ -55,7 +55,7 @@ RSpec.describe Rating, type: :model do
       rating_2 = create :rating, enable: false
       rating_3 = create :rating, enable: true
 
-      expected_array = [rating_1.id, rating_3.id]
+      expected_array = [rating_1.id, rating_3.id].sort()
 
       expect(Rating.enabled_rating_ids).to eq(expected_array)
       expect(Rating.enabled_rating_ids).to_not include(rating_2)

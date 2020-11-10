@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe SustainableDevelopmentGoal, type: :model do
-  include_examples 'sequence_concern_spec'
   let(:subject) { build :sustainable_development_goal }
 
   describe 'Associations' do
@@ -99,5 +98,4 @@ RSpec.describe SustainableDevelopmentGoal, type: :model do
       end
     end
   end
-  it_behaves_like 'sequence_concern_spec'
 end

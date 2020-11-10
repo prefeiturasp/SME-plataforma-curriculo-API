@@ -54,7 +54,7 @@ module Api
 
       # Only allow a trusted parameter "white list" through.
       def stage_params
-        params.require(:stage).permit(:name, :segment_id)
+        params.require(:stage).permit(:name, :sequence, :segment_id)
       end
     end
   end

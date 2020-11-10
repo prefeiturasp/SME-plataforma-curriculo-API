@@ -6,7 +6,7 @@ RSpec.describe Api::V1::SegmentsController, type: :controller do
   end
 
   let(:invalid_attributes) do
-    attributes_for(:segment, name: nil, color: nil)
+    attributes_for(:segment, name: nil, color: nil, sequence: nil)
   end
 
   let(:valid_session) { {} }
