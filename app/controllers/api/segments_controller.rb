@@ -1,7 +1,7 @@
 module Api
   class SegmentsController < ApiController
     def index
-      @segments = Segment.all
+      @segments = Segment.order(:sequence)
 
       render json: @segments
     end

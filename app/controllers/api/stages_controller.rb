@@ -1,9 +1,9 @@
 module Api
   class StagesController < ApiController
     def index
-      @stages = Stage.all
+      @stages = Stage.order(:sequence)
 
-      render json: @stages
+      render :index
     end
 
     private
