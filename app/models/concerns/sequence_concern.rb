@@ -11,16 +11,22 @@ module SequenceConcern
   private
 
   def update_sequences
+    self.update_column(:sequence, 1) if (self.class.all.count == 1)
     return if valid_sequence?
-    self.class.order(:sequence, updated_at: :desc).each.with_index(1) do |k, i|
-      k.update_column(:sequence, i) if k.sequence != i
+    self.class.order(:sequence).each_with_index do |obj, idx|
+      if (self.sequence == 1 && obj.sequence == 1 && obj != self)
+        obj.update_column(:sequence, 2)
+      elsif self.id == obj.id
+        next
+      else
+        obj.update_column(:sequence, idx + 1)
+      end
     end
   end
 
   def valid_sequence?
     sequences = self.class.order(:sequence).pluck(:sequence)
-    valid_sequence = (1..sequences.count).to_a
-
-    sequences == valid_sequence
+    valid_sequence = (1..sequences.count).map {|n| n }.to_a
+    (sequences == valid_sequence) ? true : false
   end
 end

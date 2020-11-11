@@ -1,4 +1,6 @@
 class Stage < ApplicationRecord
+  include SequenceConcern
+
   belongs_to :segment
   has_many :answer_books
   has_many :activity_sequences
@@ -6,6 +8,7 @@ class Stage < ApplicationRecord
   has_many :years
 
   validates :name, presence: true
+  validates :sequence, presence: true
 
   after_save :activity_sequence_reindex
 

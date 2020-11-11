@@ -1,9 +1,9 @@
 module Api
   class YearsController < ApiController
     def index
-      @years = Year.all
+      @years = Year.order(:sequence)
 
-      render json: @years
+      render :index
     end
 
     private

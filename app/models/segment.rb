@@ -1,4 +1,6 @@
 class Segment < ApplicationRecord
+  include SequenceConcern
+
   has_many :stages
   has_many :answer_books
   has_many :years
@@ -8,6 +10,7 @@ class Segment < ApplicationRecord
 
   validates :name, presence: true
   validates :color, presence: true
+  validates :sequence, presence: true
 
   after_save :activity_sequence_reindex
 

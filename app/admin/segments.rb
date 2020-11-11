@@ -1,8 +1,10 @@
 ActiveAdmin.register Segment do
   permit_params :name,
-                :color
+                :color,
+                :sequence
 
   config.filters = true
+  config.sort_order = 'sequence_asc'
 
   controller do
     def destroy
@@ -16,6 +18,10 @@ ActiveAdmin.register Segment do
     f.inputs do
       f.input :name, required: true
       f.input :color, as: :color
+      f.input :sequence,
+              as: :select,
+              collection: sequence_options(Segment),
+              selected: segment.sequence.present? ? segment.sequence : sequence_options(Segment).last
     end
     f.actions
   end
@@ -23,6 +29,7 @@ ActiveAdmin.register Segment do
   index do
     selectable_column
     column :id
+    column :sequence
     column :name
     column :color do |segment|
       raw "<div class='pick_color'>#{segment.color}</div>"
@@ -33,6 +40,7 @@ ActiveAdmin.register Segment do
   show do
     attributes_table do
       row :id
+      row :sequence
       row :name
       row :color do |segment|
         raw "<div class='pick_color'>#{segment.color}</div>"

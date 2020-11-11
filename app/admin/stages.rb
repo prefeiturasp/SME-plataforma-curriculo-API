@@ -1,7 +1,8 @@
 ActiveAdmin.register Stage do
-  permit_params :name, :segment_id
+  permit_params :name, :sequence, :segment_id
 
   config.filters = true
+  config.sort_order = 'sequence_asc'
 
   controller do
     def destroy
@@ -15,6 +16,10 @@ ActiveAdmin.register Stage do
     f.inputs do
       f.input :segment, required: true
       f.input :name, required: true
+      f.input :sequence,
+              as: :select,
+              collection: sequence_options(Stage),
+              selected: stage.sequence.present? ? stage.sequence : sequence_options(Stage).last
     end
     f.actions
   end
@@ -22,6 +27,7 @@ ActiveAdmin.register Stage do
   index do
     selectable_column
     column :id
+    column :sequence
     column :name
     column :segment
     actions
@@ -30,6 +36,7 @@ ActiveAdmin.register Stage do
   show do
     attributes_table do
       row :id
+      row :sequence
       row :name
       row :segment
     end

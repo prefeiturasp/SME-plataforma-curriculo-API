@@ -9,6 +9,6 @@ class Rating < ApplicationRecord
   validates :enable, inclusion: { in: [true, false] }
 
   def self.enabled_rating_ids
-    enableds.pluck(:id)
+    enableds.pluck(:id).sort()
   end
 end

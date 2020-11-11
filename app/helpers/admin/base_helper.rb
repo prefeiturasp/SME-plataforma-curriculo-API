@@ -15,8 +15,8 @@ module Admin
     end
 
     def sequence_options(_model)
-      options = _model.order(:sequence).pluck(:sequence)
-      options << (options[-1].nil? ? 1 : (options[-1] + 1))
+      return [1] if (_model.all.count == 0)
+      options = (1.._model.all.count).map { |sequence| sequence }
     end
 
     def activity_sequence_options(activity)

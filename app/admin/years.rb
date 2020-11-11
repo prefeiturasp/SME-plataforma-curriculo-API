@@ -1,7 +1,8 @@
 ActiveAdmin.register Year do
-  permit_params :name, :segment_id, :stage_id
+  permit_params :name, :sequence, :segment_id, :stage_id
 
   config.filters = true
+  config.sort_order = 'sequence_asc'
 
   controller do
     def destroy
@@ -20,6 +21,10 @@ ActiveAdmin.register Year do
                           ? stage_collection(year.segment.id)
                           : [t('Selecione um segmento'), nil]
       f.input :name, required: true
+      f.input :sequence,
+              as: :select,
+              collection: sequence_options(Year),
+              selected: year.sequence.present? ? year.sequence : sequence_options(Year).last
     end
     f.actions
   end
@@ -27,6 +32,7 @@ ActiveAdmin.register Year do
   index do
     selectable_column
     column :id
+    column :sequence
     column :name
     column :segment
     column :stage
@@ -36,6 +42,7 @@ ActiveAdmin.register Year do
   show do
     attributes_table do
       row :id
+      row :sequence
       row :name
       row :segment
       row :stage
