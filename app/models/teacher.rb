@@ -5,6 +5,7 @@ class Teacher < ApplicationRecord
   has_many :acls, dependent: :destroy
   has_many :survey_form_answers, dependent: :destroy
   has_many :answers, dependent: :destroy
+  has_many :projects, dependent: :destroy
   belongs_to :user
   has_one_attached :avatar
 

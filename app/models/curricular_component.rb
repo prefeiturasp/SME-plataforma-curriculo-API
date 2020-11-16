@@ -1,6 +1,7 @@
 class CurricularComponent < ApplicationRecord
   include FriendlyId
   has_and_belongs_to_many :activities
+  has_and_belongs_to_many :projects
   has_many :axes, dependent: :destroy
   has_many :answer_books, dependent: :destroy
   has_many :main_activity_sequences, class_name: 'ActivitySequence', foreign_key: :main_curricular_component_id
@@ -44,7 +45,14 @@ class CurricularComponent < ApplicationRecord
       'Língua Portuguesa': 'LP',
       'Língua Inglesa': 'LI',
       'Matemática': 'M',
-      'Tecnologias de Aprendizagem': 'TA'
+      'Tecnologias de Aprendizagem': 'TEA',
+      'Língua Portuguesa para Surdos': 'LPS',
+      'LIBRAS': 'LB',
+      'Trilhas de Aprendizagens': 'TRA',
+      'Territ. Saber': 'TS',
+      'Eletiva de aluno': 'EA',
+      'Informática educativa': 'IE',
+      'Sala de leitura': 'SL'
     }
   end
 

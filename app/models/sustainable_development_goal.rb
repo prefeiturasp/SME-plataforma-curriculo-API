@@ -3,6 +3,7 @@ class SustainableDevelopmentGoal < ApplicationRecord
   has_and_belongs_to_many :learning_objectives
   has_many :goals, dependent: :restrict_with_error
   has_many :activity_sequences, through: :learning_objectives
+  has_many :projects, through: :learning_objectives
   has_one_attached :icon
   has_one_attached :sub_icon
 

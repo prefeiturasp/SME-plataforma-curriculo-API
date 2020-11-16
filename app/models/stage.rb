@@ -6,6 +6,7 @@ class Stage < ApplicationRecord
   has_many :activity_sequences
   has_many :learning_objectives
   has_many :years
+  has_and_belongs_to_many :projects
 
   validates :name, presence: true
   validates :sequence, presence: true
