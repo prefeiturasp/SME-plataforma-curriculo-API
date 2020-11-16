@@ -1,6 +1,7 @@
 class KnowledgeMatrix < ApplicationRecord
   include SequenceConcern
   has_and_belongs_to_many :activity_sequences
+  has_and_belongs_to_many :projects
   include DestroyValidator # has_and_belongs_to_many doesn't support dependent restrict_with_error
   before_destroy :check_associations
 

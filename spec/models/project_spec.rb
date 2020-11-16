@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Project, type: :model do
   it { is_expected.to have_db_column(:old_id).of_type(:string) }
   it { is_expected.to have_db_column(:title).of_type(:string) }
-  it { is_expected.to have_db_column(:school).of_type(:string) }
+  it { is_expected.to have_db_column(:school_name).of_type(:string) }
   it { is_expected.to have_db_column(:dre).of_type(:string) }
   it { is_expected.to have_db_column(:description).of_type(:string) }
   it { is_expected.to have_db_column(:summary).of_type(:string) }

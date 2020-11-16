@@ -6,6 +6,7 @@ class Year < ApplicationRecord
   has_many :answer_book
   has_many :activity_sequences
   has_many :learning_objectives
+  has_and_belongs_to_many :projects
 
   validates :name, presence: true
   validates :sequence, presence: true

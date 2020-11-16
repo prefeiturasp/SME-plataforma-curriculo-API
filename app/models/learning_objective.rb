@@ -5,6 +5,7 @@ class LearningObjective < ApplicationRecord
   belongs_to :year
   has_and_belongs_to_many :sustainable_development_goals
   has_and_belongs_to_many :activity_sequences
+  has_and_belongs_to_many :projects
   has_and_belongs_to_many :activities
   has_and_belongs_to_many :axes
 
