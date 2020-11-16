@@ -62,9 +62,3 @@ module Api
     end
   end
 end
-
-
-
-# segment_ids: project_params[:segment_ids].split(','),
-# stage_ids: project_params[:stage_ids].split(','),
-# year_ids: project_params[:year_ids].split(',')
