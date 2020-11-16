@@ -28,6 +28,12 @@ Rails.application.routes.draw do
     resources :survey_form_answers, only: [:new, :create]
     resources :segments, only:[:index]
     resources :years, only:[:index]
+    resources :projects, only: [:create]
+    resources :project_select_options, only: [:index]
+    resources :student_protagonisms, only: [:index]
+    resources :learning_objectives, only: [:index]
+    resources :schools, only: [:index]
+    resources :regional_education_boards, only: [:index]
     resources :filters, path: 'filtros', only: [:index]
     resources :public_consultations
     resources :activity_sequences, path: 'sequencias', param: :slug, only: %i[index show] do
