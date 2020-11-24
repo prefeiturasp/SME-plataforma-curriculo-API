@@ -1,26 +1,26 @@
 pipeline {
     agent {
-      node { 
+      node {
         label 'sme-ruby'
       }
     }
-    
+
     options {
       buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
       disableConcurrentBuilds()
-      skipDefaultCheckout()  
+      skipDefaultCheckout()
     }
-    
-        
+
+
   stages {
     stage('CheckOut') {
         steps {
-          
+
           checkout scm
 
         }
       }
-      
+
     stage('Analise Codigo') {
           when {
             branch 'staging'
@@ -37,7 +37,7 @@ pipeline {
     stage('Setup Testes') {
         agent {
         label 'master'
-        }  
+        }
         steps {
           script {
             CONTAINER_ID = sh (
@@ -49,7 +49,7 @@ pipeline {
                sh "docker rm -f ${CONTAINER_ID}"
                sh 'docker run -d --rm --cap-add SYS_TIME --name sme-curriculodb --network curriculo-network -p 5432 -e TZ="America/Sao_Paulo" -e POSTGRES_DB=curriculo -e POSTGRES_PASSWORD=curriculo -e POSTGRES_USER=postgres postgres:9-alpine'
             } else {
-        
+
                 sh 'docker run -d --rm --cap-add SYS_TIME --name sme-curriculodb --network curriculo-network -p 5432 -e TZ="America/Sao_Paulo" -e POSTGRES_DB=curriculo -e POSTGRES_PASSWORD=curriculo -e POSTGRES_USER=postgres postgres:9-alpine'
             }
           }
@@ -63,31 +63,32 @@ pipeline {
                sh "docker rm -f ${CONTAINER_ID2}"
                sh 'docker run -d --rm --cap-add SYS_TIME --name elasticsearch --net curriculo-network -p 9200 -p 9300 -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "http.cors.enabled=true" -e "http.cors.allow-origin=*" -e "http.cors.allow-credentials=true" -e "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization" docker.elastic.co/elasticsearch/elasticsearch:6.5.4'
             } else {
-        
+
                 sh 'docker run -d --rm --cap-add SYS_TIME --name elasticsearch --net curriculo-network -p 9200 -p 9300 -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "http.cors.enabled=true" -e "http.cors.allow-origin=*" -e "http.cors.allow-credentials=true" -e "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization" docker.elastic.co/elasticsearch/elasticsearch:6.5.4'
             }
           }
 
         }
-      }    
+      }
 
     stage('Testes') {
-      
+
         steps {
               sh 'bundle install'
+              sh 'bundle exec rake db:drop RAILS_ENV=test'
               sh 'bundle exec rake db:create RAILS_ENV=test'
               sh 'bundle exec rake db:migrate RAILS_ENV=test'
               sh 'bundle exec rspec spec'
         }
     }
-         
+
     stage('Docker build DEV') {
         when {
           branch 'develop'
         }
           steps {
           // Start JOB Rundeck para build das imagens Docker
-      
+
           script {
            step([$class: "RundeckNotifier",
               includeRundeckLogs: true,
@@ -115,7 +116,7 @@ pipeline {
         }
           steps {
             //Start JOB Rundeck para update de deploy Kubernetes DEV
-         
+
             script {
                 step([$class: "RundeckNotifier",
                   includeRundeckLogs: true,
@@ -134,19 +135,19 @@ pipeline {
               }
           }
       }
-		
+
 	  stage('Docker build staging') {
             when {
                 branch 'staging'
             }
             steps {
               // Start build das imagens Docker
-      
+
           script {
             step([$class: "RundeckNotifier",
                 includeRundeckLogs: true,
-                    
-                
+
+
                 //JOB DE BUILD
                 jobId: "50c05c49-94fb-4b56-a2ff-256b118b0d3a",
                 nodeFilters: "",
@@ -162,20 +163,20 @@ pipeline {
                 tailLog: true])
            }
           }
-        }    
-       
+        }
+
     stage('Deploy staging') {
           when {
             branch 'staging'
           }
           steps {
-            
+
             timeout(time: 24, unit: "HOURS") {
                telegramSend("${JOB_NAME}...O Build ${BUILD_DISPLAY_NAME} - Requer uma aprovação para deploy !!!\n Consulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)\n")
                input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: 'rodolpho_azeredo'
             }
-            //Start JOB Rundeck para update de imagens no host homologação 
-         
+            //Start JOB Rundeck para update de imagens no host homologação
+
             script {
                 step([$class: "RundeckNotifier",
                 includeRundeckLogs: true,
@@ -194,20 +195,20 @@ pipeline {
             }
          }
         }
-	    
+
 	  stage('Docker build PROD') {
         when {
           branch 'master'
         }
         steps {
-            
+
             // Start JOB Rundeck para build das imagens Docker
-      
+
             script {
               step([$class: "RundeckNotifier",
                 includeRundeckLogs: true,
-                
-                
+
+
                 //JOB DE BUILD
                 jobId: "a5c86d4f-119d-4dce-ac32-a02cc38c7a6d",
                 nodeFilters: "",
@@ -223,8 +224,8 @@ pipeline {
                 tailLog: true])
             }
          }
-      }           
-    
+      }
+
     stage('Deploy PROD') {
             when {
                 branch 'master'
@@ -234,8 +235,8 @@ pipeline {
                 telegramSend("${JOB_NAME}...O Build ${BUILD_DISPLAY_NAME} - Requer uma aprovação para deploy !!!\n Consulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)\n")
                 input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: 'rodolpho_azeredo'
                 }
-                    
-            
+
+
                 script {
                     step([$class: "RundeckNotifier",
                     includeRundeckLogs: true,
@@ -252,35 +253,35 @@ pipeline {
                     tags: "",
                     tailLog: true])
                 }
-        
-        
+
+
             }
         }
-  }    
+  }
 
 
-    
+
 post {
         always {
           echo 'One way or another, I have finished'
         }
         success {
-	  	    
+
           telegramSend("${JOB_NAME}...O Build ${BUILD_DISPLAY_NAME} - Esta ok !!!\n Consulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)\n\n Uma nova versão da aplicação esta disponivel!!!")
         }
         unstable {
-          
+
           telegramSend("O Build ${BUILD_DISPLAY_NAME} <${env.BUILD_URL}> - Esta instavel ...\nConsulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)")
         }
         failure {
-          
+
           telegramSend("${JOB_NAME}...O Build ${BUILD_DISPLAY_NAME}  - Quebrou. \nConsulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)")
         }
         changed {
           echo 'Things were different before...'
         }
         aborted {
-          
+
           telegramSend("O Build ${BUILD_DISPLAY_NAME} - Foi abortado.\nConsulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)")
         }
     }
