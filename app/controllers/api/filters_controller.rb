@@ -8,7 +8,7 @@ module Api
 
     def index
       @segments = Segment.all
-
+      @regional_education_boards = RegionalEducationBoard.all
       @curricular_components = CurricularComponent.all
       @sustainable_development_goals = SustainableDevelopmentGoal.all
       @knowledge_matrices = KnowledgeMatrix.all

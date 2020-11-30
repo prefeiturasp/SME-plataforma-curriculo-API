@@ -1,3 +1,5 @@
+json.partial! 'regional_education_boards', collection: @regional_education_boards
+
 json.partial! 'curricular_components', collection: @curricular_components
 
 json.partial! 'sustainable_development_goals', collection: @sustainable_development_goals

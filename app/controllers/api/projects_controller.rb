@@ -1,5 +1,19 @@
 module Api
   class ProjectsController < ApiController
+    include Api::Concerns::ProjectSearchable
+
+    before_action :set_project, only: %i[show]
+
+    def show
+      render :show
+    end
+
+    def index
+      projects = search_projects
+      searchkick_paginate(projects)
+      project_ids = project_ids_from_search(projects)
+      @projects = Project.where_id_with_includes(project_ids)
+    end
 
     def create
       project_attributes = {
@@ -58,7 +72,7 @@ module Api
     end
 
     def set_project
-      @project = Project.find_by(id: params[:id])
+      @project = Project.find_by(slug: params[:slug])
     end
   end
 end

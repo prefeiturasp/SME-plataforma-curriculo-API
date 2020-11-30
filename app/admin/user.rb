@@ -15,9 +15,7 @@ ActiveAdmin.register User do
     selectable_column
     id_column
     column :email
-    column :name do |user|
-      span user.admin? ? "-" : user.teacher.name
-    end
+    column :name
     column :username
     column :dre
     column :kind do |user|
