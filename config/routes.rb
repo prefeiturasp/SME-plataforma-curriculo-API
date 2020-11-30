@@ -28,7 +28,9 @@ Rails.application.routes.draw do
     resources :survey_form_answers, only: [:new, :create]
     resources :segments, only:[:index]
     resources :years, only:[:index]
-    resources :projects, only: [:create]
+    resources :projects, only: [:create, :index, :show], param: :slug do
+      get 'projects/:slug', to: 'projects#show'
+    end
     resources :project_select_options, only: [:index]
     resources :student_protagonisms, only: [:index]
     resources :learning_objectives, only: [:index]
