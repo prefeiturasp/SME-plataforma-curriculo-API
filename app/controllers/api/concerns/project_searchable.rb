@@ -32,7 +32,8 @@ module Api
         %i[ all_or_with_axes all_or_with_sustainable_development_goals
           all_or_with_knowledge_matrices all_or_with_learning_objectives
           all_or_with_segments all_or_with_stages all_or_with_year
-          all_or_with_curricular_components
+          all_or_with_curricular_components all_or_with_regional_education_board
+          all_or_with_school
         ].each do |method|
           options.merge!(send(method.to_s))
         end
@@ -78,6 +79,17 @@ module Api
       def all_or_with_stages
         return {} unless params[:stage_ids]
         { stage_ids: params[:stage_ids] }
+      end
+
+      def all_or_with_regional_education_board
+        return {} unless params[:regional_education_board_id]
+        { regional_education_board_id: params[:regional_education_board_id] }
+      end
+
+
+      def all_or_with_school
+        return {} unless params[:school_id]
+        { school_id: params[:school_id] }
       end
 
       def order_by
