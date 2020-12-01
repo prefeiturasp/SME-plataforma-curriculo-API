@@ -336,7 +336,7 @@ pt-BR:
         name: Nome
         password: Senha
         password_confirmation: Confirme sua senha
-        remember_created_at: Lembrar criado em
+        blocked: Bloqueado para criar projetos
         remember_me: Lembre-se de mim
         reset_password_sent_at: Resetar senha enviado em
         reset_password_token: Resetar token de senha
@@ -525,6 +525,8 @@ pt-BR:
         title: "Senha"
       password_confirmation:
         title: "Confirmação de senha"
+      blocked:
+        title: "Bloqueado para criar projetos"
       sign_up:
         title: "Cadastre-se"
         submit: "Continuar"

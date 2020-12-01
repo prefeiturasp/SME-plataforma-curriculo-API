@@ -5,6 +5,7 @@ ActiveAdmin.register User do
 
   filter :name
   filter :username
+  filter :blocked
   filter :superadmin
   filter :email
   filter :admin
@@ -16,6 +17,7 @@ ActiveAdmin.register User do
     id_column
     column :email
     column :name
+    column :blocked
     column :username
     column :dre
     column :kind do |user|
@@ -37,6 +39,10 @@ ActiveAdmin.register User do
     f.semantic_errors
     f.inputs do
       f.input :email
+      f.input :blocked, as: :select,
+                      collection: [['Sim', true], ['Não', false]],
+                      selected: user.blocked,
+                      include_blank: false
       f.input :username
       f.input :password
       f.input :password_confirmation
