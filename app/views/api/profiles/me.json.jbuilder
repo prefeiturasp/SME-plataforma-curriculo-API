@@ -4,6 +4,7 @@ json.name current_user.name
 
 if current_user.teacher
   json.teacher do
+    json.blocked current_user.blocked
     json.id current_user.teacher.id
     json.name current_user.teacher.name
     json.nickname current_user.teacher.nickname
