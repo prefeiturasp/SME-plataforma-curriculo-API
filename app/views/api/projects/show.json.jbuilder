@@ -23,4 +23,10 @@ json.sustainable_development_goals @project.sustainable_development_goals do |sd
   json.icon_url variant_url(sds.icon, :icon)
   json.sub_icon_url url_for(sds.sub_icon)
 end
+json.comments @project.comments do |c|
+  json.id c.id
+  json.teacher_id c.teacher_id
+  json.teacher_name c.teacher.user.name
+  json.body c.body
+end
 json.links @project.project_links

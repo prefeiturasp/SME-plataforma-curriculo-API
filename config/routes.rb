@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     resources :student_protagonisms, only: [:index]
     resources :learning_objectives, only: [:index]
     resources :schools, only: [:index]
+    resources :comments, only: [:index, :create, :destroy]
     resources :regional_education_boards, only: [:index]
     resources :filters, path: 'filtros', only: [:index]
     resources :public_consultations
