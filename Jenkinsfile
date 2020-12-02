@@ -74,6 +74,7 @@ pipeline {
     stage('Testes') {
 
         steps {
+              sh 'curl -XPUT -H "Content-Type: application/json" http://localhost:9200/_all/_settings -d '{"index.blocks.read_only_allow_delete": null}''
               sh 'bundle install'
               sh 'bundle exec rake db:drop RAILS_ENV=test'
               sh 'bundle exec rake db:create RAILS_ENV=test'
@@ -92,7 +93,7 @@ pipeline {
           script {
            step([$class: "RundeckNotifier",
               includeRundeckLogs: true,
-                               
+
               //JOB DE BUILD
               jobId: "d5491328-8b03-4f4e-bda1-5ee96c9d4b16",
               nodeFilters: "",
