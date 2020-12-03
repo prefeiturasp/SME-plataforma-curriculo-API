@@ -92,7 +92,7 @@ pipeline {
           script {
            step([$class: "RundeckNotifier",
               includeRundeckLogs: true,
-                               
+
               //JOB DE BUILD
               jobId: "d5491328-8b03-4f4e-bda1-5ee96c9d4b16",
               nodeFilters: "",
