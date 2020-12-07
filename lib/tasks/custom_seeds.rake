@@ -358,6 +358,7 @@ namespace :db do
         {
           "content_type": "gallery",
           "schema": {
+            "required": ["subtitle", "file"],
             "properties": {
               "subtitle": {
                 "type": "string"
