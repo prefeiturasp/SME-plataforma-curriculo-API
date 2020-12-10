@@ -19,6 +19,7 @@ module ProjectSearchable
       segment_ids: segment_ids,
       stage_ids: stage_ids,
       year_ids: year_ids,
+      development_year: development_year,
       curricular_component_ids: curricular_component_ids,
       knowledge_matrix_ids: knowledge_matrix_ids,
       student_protagonism_ids: student_protagonism_ids,
