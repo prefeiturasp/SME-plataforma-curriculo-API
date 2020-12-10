@@ -9,7 +9,7 @@ json.array! @activity_sequences do |activity_sequence|
   json.year activity_sequence.year.name if activity_sequence.year.present?
   json.keywords activity_sequence.keywords
   json.sequence activity_sequence.collection_activity_sequences.find_by(collection_id: @collection.id).sequence if @collection
-  json.already_saved_in_collection activity_sequence.already_saved_in_collection? current_teacher if current_teacher
+  json.already_saved_in_collection activity_sequence.already_saved_in_collection? current_user.teacher if current_user
 
   json.main_curricular_component do
     json.name activity_sequence.main_curricular_component.name

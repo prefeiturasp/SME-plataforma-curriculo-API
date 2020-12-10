@@ -5,7 +5,7 @@ class AddSlugToProject < ActiveRecord::Migration[5.2]
 
     Project.find_each(&:save)
 
-    change_column :projects, :slug, :string, null: false
+    change_column :projects, :slug, :string
   end
 
   def self.down

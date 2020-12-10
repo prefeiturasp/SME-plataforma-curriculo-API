@@ -28,7 +28,7 @@ module Api
       end
 
       def where
-        options = { old_id: nil }
+        options = { }
         %i[ all_or_with_axes all_or_with_sustainable_development_goals
           all_or_with_knowledge_matrices all_or_with_learning_objectives
           all_or_with_segments all_or_with_stages all_or_with_year
@@ -93,7 +93,7 @@ module Api
       end
 
       def order_by
-        order = { title: :asc } # most relevant first - default
+        order = { development_year: :desc } # most relevant first - default
         if valid_order_by?
           order = {
             params[:order_by].to_s => { 'order' => params[:sort].to_s }

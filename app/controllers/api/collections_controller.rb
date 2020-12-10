@@ -2,16 +2,15 @@ module Api
   class CollectionsController < ApiController
     before_action :authenticate_api_user!
     before_action :set_activity_sequence, only: %i[index]
+    before_action :set_project, only: %i[index]
     before_action :set_teacher, only: %i[index create show update destroy]
     before_action :set_collection, only: %i[show update destroy]
 
     def index
-      @collections = if @activity_sequence
-                       paginate(@activity_sequence.collections.where(teacher_id: @teacher.id))
-                     else
-                       paginate(@teacher.collections)
-                     end
-
+      @collections = []
+      @collections = @collections + paginate(@activity_sequence.collections.where(teacher_id: @teacher.id)) if @activity_sequence.present?
+      @collections = @collections + paginate(@project.collections.where(teacher_id: @teacher.id)) if @project.present?
+      @collections = paginate(@teacher.collections) unless @collection.present?
       render :index
     end
 
@@ -58,6 +57,10 @@ module Api
 
     def set_activity_sequence
       @activity_sequence = ActivitySequence.find_by(slug: params[:activity_sequence_slug])
+    end
+
+    def set_project
+      @project = Project.find_by(slug: params[:project_slug])
     end
 
     def check_user_permission
