@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     resources :years, only:[:index]
     resources :projects, only: [:create, :index, :show], param: :slug do
       get 'projects/:slug', to: 'projects#show'
+      resources :collections, path: 'colecoes', only: [:index]
     end
     resources :project_select_options, only: [:index]
     resources :student_protagonisms, only: [:index]
@@ -58,6 +59,9 @@ Rails.application.routes.draw do
       delete :avatar, action: :avatar_purge
       resources :collections, path: 'colecoes' do
         resources :activity_sequences, path: 'sequencias'
+        post 'projetos', to: 'projects#save_project'
+        get 'projetos', to: 'projects#load_projects'
+        delete 'projetos/:id', to: 'projects#delete_project'
       end
       get :all_challenges, path: 'favoritos'
       get :all_collections, path: 'todas_colecoes'

@@ -3,8 +3,28 @@ module Api
     include Api::Concerns::ProjectSearchable
 
     before_action :set_project, only: %i[show]
+    before_action :set_teacher, only: %i[load_projects save_project delete_project]
+    before_action :set_collection, only: %i[load_projects save_project delete_project]
+    before_action :set_collection_project, only: %i[delete_project]
+    before_action :check_collection_owner, only: %i[save_project]
 
     def show
+      @teachers = ""
+      if @project.teacher.present?
+        if @project.teacher.name.present?
+          @teachers = @project.teacher.name.titleize
+        else
+          @teachers = @project.teacher.user.name.titleize
+        end
+      else
+        @project.advisors.map(&:name).each do |advisor|
+          if @teachers.empty?
+            @teachers = advisor.titleize
+          else
+            @teachers = "#{@teachers}, #{advisor.titleize}"
+          end
+        end
+      end
       render :show
     end
 
@@ -13,6 +33,28 @@ module Api
       searchkick_paginate(projects)
       project_ids = project_ids_from_search(projects)
       @projects = Project.where_id_with_includes(project_ids)
+    end
+
+    def save_project
+      @collection_project = @collection.collection_projects
+                                                 .build(collection_projects_params)
+      if @collection_project.save
+        @project = @collection_project.project # find because show json
+        render json: @project, status: :created
+      else
+        render json: @collection_project.errors, status: :unprocessable_entity
+      end
+    end
+
+    def load_projects
+      render_unauthorized_resource && return if @collection && !user_signed_in?
+      @projects = @collection.projects.includes(:collection_projects)
+      @projects = paginate(@projects)
+      render json: @projects
+    end
+
+    def delete_project
+        @collection_project.destroy
     end
 
     def create
@@ -71,8 +113,42 @@ module Api
       )
     end
 
+    def collection_projects_params
+      params.require(:collection_project).permit(:project_id, :sequence)
+    end
+
+    def check_user_permission
+      render_no_content && return unless @teacher
+      render_unauthorized_resource && return \
+        if current_user&.id != @teacher&.user_id
+    end
+
+    def set_teacher
+      return if params[:teacher_id].blank?
+      @teacher = Teacher.find_by(id: params[:teacher_id])
+      check_user_permission
+    end
+
+    def set_collection
+      return if params[:teacher_id].blank? && params[:collection_id].blank?
+      @collection = Collection.find(params[:collection_id])
+    end
+
     def set_project
       @project = Project.find_by(slug: params[:slug])
+    end
+
+    def set_collection_project
+      return unless @collection
+      @collection_project = @collection.collection_projects
+                                                 .find_by(project_id: params[:id])
+
+      render_no_content && return unless @collection_project
+    end
+
+    def check_collection_owner
+      return unless @collection
+      render_unauthorized_resource && return if @collection.teacher.user.id != current_user.id
     end
   end
 end
