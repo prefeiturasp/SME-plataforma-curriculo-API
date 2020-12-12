@@ -11,12 +11,9 @@ module Api
     def show
       @teachers = ""
       if @project.teacher.present?
-        if @project.teacher.name.present?
-          @teachers = @project.teacher.name.titleize
-        else
-          @teachers = @project.teacher.user.name.titleize
-        end
-      else
+        @teachers = @project.teacher.name.titleize if @project.teacher.name.present?
+        @teachers = @project.teacher.user.name.titleize if @project.teacher.user.name.present?
+      elsif @project.advisors.present?
         @project.advisors.map(&:name).each do |advisor|
           if @teachers.empty?
             @teachers = advisor.titleize
@@ -50,7 +47,6 @@ module Api
       render_unauthorized_resource && return if @collection && !user_signed_in?
       @projects = @collection.projects.includes(:collection_projects)
       @projects = paginate(@projects)
-      render json: @projects
     end
 
     def delete_project
