@@ -67,6 +67,9 @@ pt-BR:
       partner:
         one: "Parceiro"
         other: "Parceiros"
+      project:
+        one: "Projeto"
+        other: "Projetos"
       rating:
         one: "Avaliação"
         other: "Avaliações"
@@ -260,6 +263,29 @@ pt-BR:
         content: "Conteúdo"
         steps: "Passos"
         archive: "Anexo"
+      project:
+        old_id: 'Id do Tá na rede'
+        teacher: "Professor(es)"
+        owners: "Estudante(s)"
+        regional_education_board: "Diretoria Regional de Educação"
+        school: "Escola"
+        development_year: "Ano Letivo"
+        development_class: "Etapa/Ano Turma"
+        cover_image: "Imagem de Capa"
+        title: "Título"
+        summary: "Resumo"
+        description: "Descrição"
+        curricular_components: "Componentes Curriculares"
+        knowledge_matrices: "Matriz dos Saberes"
+        learning_objectives: "Objetivos de Aprendizagem"
+        axes: "Eixos"
+        student_protagonisms: "Protagonismo Estudantil"
+        sustainable_development_goals: "Objetivos de Desenvolvimento Sustentável"
+        segments: "Segmentos"
+        stages: "Etapas"
+        years: "Anos"
+        created_at: "Criado em"
+        updated_at: "Atualizado em"
       public_consultation:
         title: "Título"
         description: "Descrição"
