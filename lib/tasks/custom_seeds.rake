@@ -468,7 +468,8 @@ namespace :db do
         { name: 'Objetivos de Desenvolvimento Sustentável', class_name: 'SustainableDevelopmentGoal' },
         { name: 'Usuários', class_name: 'User' },
         { name: 'Anos', class_name: 'Year' },
-        { name: 'Protagonismo Estudantil', class_name: 'StudentProtagonism'}
+        { name: 'Protagonismo Estudantil', class_name: 'StudentProtagonism'},
+        { name: 'Projetos', class_name: 'Project'}
       ].each { |action| PermittedAction.find_or_create_by(class_name: action[:class_name], name: action[:name]) }
     end
 
