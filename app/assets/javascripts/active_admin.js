@@ -72,10 +72,12 @@ function initializeQuillEditor (editor) {
     quillEditor.enableMathQuillFormulaAuthoring();
 
   var input = editor.querySelector('input[type="hidden"]');
-  if (input.value) {
+  if (input.value && !document.getElementById('project_description')) {
     quillEditor.setContents(JSON.parse(input.value));
 
     input.value = editor.getElementsByClassName('ql-editor')[0].innerHTML;
+  } else {
+    input.value
   }
 
   setTimeout(setBulletContent, 1000);
@@ -110,13 +112,19 @@ function convertContentToDelta () {
   var editors = document.querySelectorAll('.quill-editor');
 
   for (var i = 0; i < editors.length; i++) {
-    var delta = editors[i]['_quill-editor'].getContents();
-    if (!delta.ops || validFileSize(delta.ops)) {
-      var input = editors[i].querySelector( 'input[type="hidden"]' );
-      input.value = JSON.stringify(delta);
+    if(!document.getElementById('project_description')) {
+      var delta = editors[i]['_quill-editor'].getContents();
+      if (!delta.ops || validFileSize(delta.ops)) {
+        var input = editors[i].querySelector( 'input[type="hidden"]' );
+        input.value = JSON.stringify(delta);
+      } else {
+        alert("A soma do tamanho das imagens cadastradas supera o limite de 5mb. \nPor favor substitua as imagens por outras de menor tamanho");
+        return false;
+      }
     } else {
-      alert("A soma do tamanho das imagens cadastradas supera o limite de 5mb. \nPor favor substitua as imagens por outras de menor tamanho");
-      return false;
+      var delta = editors[i]['_quill-editor'].getContents();
+      debugger
+      $('input[name ="project[description]"]')[0].value = quillGetHTML(delta)
     }
   }
 };
