@@ -1,0 +1,94 @@
+<% context.instance_eval do
+  attributes_table do
+    row :id
+    row :teacher do |obj|
+      if obj.teacher.present?
+        if obj.teacher.name.present?
+          teachers_name = obj.teacher.name
+        else
+          teachers_name = obj.teacher.user.name
+        end
+      else
+        obj.advisors.each_with_index do |advisor, idx|
+          if idx === 0
+            teachers_name = advisor.name
+          else
+            teachers_name = "#{teachers_name}, #{advisor.name}"
+          end
+        end
+      end
+      teachers_name
+    end
+    row :owners
+    row :regional_education_board
+    row :school
+    row :development_year
+    row :development_class
+    row :title
+    row :summary
+    row :description
+  end
+  if project.curricular_components.exists?
+    panel I18n.t('activerecord.attributes.project.curricular_components') do
+      table_for project.curricular_components do
+        column :name
+      end
+    end
+  end
+  if project.knowledge_matrices.exists?
+    panel I18n.t('activerecord.attributes.project.knowledge_matrices') do
+      table_for project.knowledge_matrices do
+        column :title
+      end
+    end
+  end
+  if project.student_protagonisms.exists?
+    panel I18n.t('activerecord.attributes.project.student_protagonisms') do
+      table_for project.student_protagonisms do
+        column :title
+      end
+    end
+  end
+  if project.segments.exists?
+    panel I18n.t('activerecord.attributes.project.segments') do
+      table_for project.segments do
+        column :name
+      end
+    end
+  end
+  if project.stages.exists?
+    panel I18n.t('activerecord.attributes.project.stages') do
+      table_for project.stages do
+        column :name
+      end
+    end
+  end
+  if project.years.exists?
+    panel I18n.t('activerecord.attributes.project.years') do
+      table_for project.years do
+        column :name
+      end
+    end
+  end
+  if project.learning_objectives.exists?
+    panel I18n.t('activerecord.attributes.project.learning_objectives') do
+      table_for project.learning_objectives do
+        column :code
+      end
+    end
+  end
+  if project.axes.exists?
+    panel I18n.t('activerecord.attributes.project.axes') do
+      table_for project.axes do
+        column :description
+      end
+    end
+  end
+  if project.sustainable_development_goals.exists?
+    panel I18n.t('activerecord.attributes.project.sustainable_development_goals') do
+      table_for project.sustainable_development_goals do
+        column :name
+      end
+    end
+  end
+end %>

@@ -1,0 +1,41 @@
+<%
+  f.inputs do
+    f.input :id, as: :hidden
+    f.input :teacher_id, as: :hidden
+    f.input :curricular_components, required: true
+    f.input :knowledge_matrices, required: true
+    f.input :student_protagonisms, required: true
+    f.input :segments, required: true
+    f.input :stages, required: true
+    f.input :years, require: true
+    f.input :regional_education_board, required: true
+    f.input :school, required: true
+    f.input :cover_image,
+            as: :file,
+            hint: f.object.cover_image.attached? \
+                  ? image_container(f.object.cover_image, :thumb)
+                  : content_tag(:span, "Anda não há pré-visualização")
+    f.input :title, required: true
+    f.input :summary, required: true
+    f.input :description, as: :quill_editor, input_html: {
+      data: {
+        options: {
+          modules: {
+            toolbar: [
+              ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+              [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+              ['link', 'image', 'video'],
+              ['clean']
+            ]
+          },
+          placeholder: 'Escreva alguma coisa.',
+          theme: 'snow'
+        }
+      }
+    }
+    f.input :owners, required: true
+    f.input :development_year, required: true
+    f.input :development_class, required: true
+  end
+  f.actions
+%>
