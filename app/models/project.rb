@@ -23,7 +23,7 @@ class Project < ApplicationRecord
   has_many :comments, dependent: :destroy
   accepts_nested_attributes_for :project_links, allow_destroy: true
   has_one_attached :cover_image
-  has_many :collection_projects
+  has_many :collection_projects, dependent: :destroy
   has_many :collections,
            through: :collection_projects
 
