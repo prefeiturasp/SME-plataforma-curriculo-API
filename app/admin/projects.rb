@@ -36,8 +36,8 @@ ActiveAdmin.register Project do
 
   controller do
     def destroy
-      @project = Project.find(params[:id])
-      flash[:error] = @project.errors.full_messages.join(',') unless @prooject.destroy
+      @project = Project.find_by(slug: params[:id])
+      flash[:error] = @project.errors.full_messages.join(',') unless @project.destroy
       redirect_to action: :index
     end
   end
