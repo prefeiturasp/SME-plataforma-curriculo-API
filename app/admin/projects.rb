@@ -23,7 +23,8 @@ ActiveAdmin.register Project do
   filter :regional_education_board
   filter :school
   filter :filter_by_email_cont, as: :string, label: 'E-mail'
-
+  filter :updated_by_admin
+  
   controller do
     def destroy
       @project = Project.find_by(slug: params[:id])
