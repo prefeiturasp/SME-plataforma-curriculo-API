@@ -1,3 +1,4 @@
+json.old_project @project.old_id.present?
 json.teacher_name @teachers
 json.teacher_id @project.teacher.present? ? @project.teacher.id : nil
 json.slug @project.slug

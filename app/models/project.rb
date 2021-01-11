@@ -57,4 +57,18 @@ class Project < ApplicationRecord
                     .includes(:sustainable_development_goals)
                     .sort_by { |a| id_indices[a.id.to_s] }
   end
+
+  def self.filter_by_email_cont(value)
+    user = User.find_by(email: value)
+    teacher = user.teacher if user.present?
+    if teacher.present?
+      teacher.projects
+    else
+      Project.where(id: nil)
+    end
+  end
+
+  def self.ransackable_scopes(_auth_object = nil)
+      %i(filter_by_email_cont)
+    end
 end
