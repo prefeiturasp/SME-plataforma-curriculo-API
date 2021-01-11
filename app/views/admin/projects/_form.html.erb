@@ -1,6 +1,7 @@
 <%
   f.inputs do
     f.input :id, as: :hidden
+    f.input :updated_by_admin, as: :select
     f.input :teacher_id, as: :hidden
     f.input :curricular_components, required: true
     f.input :knowledge_matrices, required: true

@@ -17,6 +17,9 @@ json.years @project.years
 json.knowledge_matrices @project.knowledge_matrices
 json.learning_objectives @project.learning_objectives
 json.student_protagonisms @project.student_protagonisms
+json.created_at @project.created_at.strftime("%d/%m/%Y - %H:%M:%S")
+json.updated_at @project.updated_at.strftime("%d/%m/%Y - %H:%M:%S")
+json.updated_by_admin @project.updated_by_admin
 json.axes @project.axes
 json.school_id @project.school.present? ? @project.school.id : nil
 json.school @project.school.present? ? @project.school.name : @project.school_name
