@@ -28,7 +28,7 @@ Rails.application.routes.draw do
     resources :survey_form_answers, only: [:new, :create]
     resources :segments, only:[:index]
     resources :years, only:[:index]
-    resources :projects, only: [:create, :index, :show], param: :slug do
+    resources :projects, only: [:create, :index, :show, :update], param: :slug do
       get 'projects/:slug', to: 'projects#show'
       resources :collections, path: 'colecoes', only: [:index]
     end
@@ -63,6 +63,7 @@ Rails.application.routes.draw do
         get 'projetos', to: 'projects#load_projects'
         delete 'projetos/:id', to: 'projects#delete_project'
       end
+      get :my_projects, path: 'meus_projetos'
       get :all_challenges, path: 'favoritos'
       get :all_collections, path: 'todas_colecoes'
       get 'sequencias_realizadas', to: 'activity_sequence_performeds#index'

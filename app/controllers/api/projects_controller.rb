@@ -2,7 +2,7 @@ module Api
   class ProjectsController < ApiController
     include Api::Concerns::ProjectSearchable
 
-    before_action :set_project, only: %i[show]
+    before_action :set_project, only: %i[show update]
     before_action :set_teacher, only: %i[load_projects save_project delete_project]
     before_action :set_collection, only: %i[load_projects save_project delete_project]
     before_action :set_collection_project, only: %i[delete_project]
@@ -81,6 +81,38 @@ module Api
         render json: project, status: :created
       else
         render json: project.errors, status: :unprocessable_entity
+      end
+    end
+
+    def update
+      project_attributes = {
+        teacher_id: project_params[:teacher_id],
+        regional_education_board_id: project_params[:regional_education_board_id],
+        school_id: project_params[:school_id],
+        development_year: project_params[:development_year],
+        development_class: project_params[:development_class],
+        owners: project_params[:owners],
+        title: project_params[:title],
+        summary: project_params[:summary],
+        description: project_params[:description],
+        learning_objective_ids: project_params[:learning_objective_ids].split(','),
+        curricular_component_ids: project_params[:curricular_component_ids].split(','),
+        knowledge_matrix_ids: project_params[:knowledge_matrix_ids].split(','),
+        student_protagonism_ids: project_params[:student_protagonism_ids].split(','),
+        segment_ids: project_params[:segment_ids].split(','),
+        stage_ids: project_params[:stage_ids].split(','),
+        year_ids: project_params[:year_ids].split(',')
+      }
+      @project.update(project_attributes)
+      @project.project_links.delete_all
+      project_params[:project_links_attributes].split(',').each do |link|
+        ProjectLink.create({project_id: @project.id, link: link})
+      end
+      @project.cover_image.attach(project_params[:cover_image]) if project_params[:cover_image].present?
+      if @project.save
+        render json: @project, status: :created
+      else
+        render json: @project.errors, status: :unprocessable_entity
       end
     end
 
