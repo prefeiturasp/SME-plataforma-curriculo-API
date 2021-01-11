@@ -17,8 +17,8 @@ json.array! @projects do |project|
   json.school project.school.present? ? project.school.name : project.school_name
   json.regional_education_board project.regional_education_board.present? ? project.regional_education_board.name : project.dre
   json.already_saved_in_collection project.already_saved_in_collection? current_user.teacher if (current_user.present? && current_user.teacher.present?)
-  json.created_at project.created_at.strftime("%d/%m/%Y")
-  json.updated_at project.updated_at.strftime("%d/%m/%Y")
+  json.created_at project.created_at.strftime("%d/%m/%Y - %H:%M:%S")
+  json.updated_at project.updated_at.strftime("%d/%m/%Y - %H:%M:%S")
   if project.sustainable_development_goals.present?
     json.sustainable_development_goals project.sustainable_development_goals do |sds|
       json.name sds.name
