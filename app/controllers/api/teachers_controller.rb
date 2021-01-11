@@ -60,6 +60,13 @@ module Api
       render :all_challenges
     end
 
+    def my_projects
+      @teacher = Teacher.find_by(id: params[:teacher_id])
+      @projects = @teacher.projects
+
+      render :my_projects
+    end
+
     def all_survey_form_answers_finished
       teacher = current_user.teacher
       @survey_form_answer_ids = teacher.survey_form_answers.where(finished: true).map(&:survey_form_id)
