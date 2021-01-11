@@ -6,6 +6,7 @@ ActiveAdmin.register Project do
                 :owners,
                 :development_year,
                 :development_class,
+                :updated_by_admin,
                 :teacher_id,
                 :school_id,
                 :regional_education_board_id,
