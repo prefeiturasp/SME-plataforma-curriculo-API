@@ -18,21 +18,10 @@ ActiveAdmin.register Project do
 
   config.filters = true
 
-  filter :curricular_components
-  filter :knowledge_matrices
-  filter :student_protagonisms
-  filter :segments
-  filter :stages
-  filter :years
-  filter :development_year
-  filter :development_class
   filter :title
-  filter :summary
-  filter :description
-  filter :owners
   filter :regional_education_board
   filter :school
-  filter :created_at
+  filter :filter_by_email_cont, as: :string, label: 'E-mail'
 
   controller do
     def destroy
@@ -53,6 +42,17 @@ ActiveAdmin.register Project do
   index do
     selectable_column
     column :id
+    column 'E-mail' do |obj|
+      if obj.teacher.present?
+        if obj.teacher.user.email.present?
+          email = obj.teacher.user.email
+        else
+          email = "E-mail não cadastrado"
+        end
+      else
+        email = "E-mail não cadastrado"
+      end
+    end
     column :teacher do |obj|
       if obj.teacher.present?
         if obj.teacher.name.present?
@@ -71,13 +71,19 @@ ActiveAdmin.register Project do
       end
       teachers_name
     end
-    column :owners
+    column :created_at
+    column :title
     column :regional_education_board
     column :school
-    column :development_year
-    column :development_class
-    column :title
-    column :summary
+    column :segments do |obj|
+      segments = obj.segments.map {|segment| segment.name}
+    end
+    column :stages do |obj|
+      stages = obj.stages.map {|stage| stage.name}
+    end
+    column :years do |obj|
+      years = obj.years.map {|year| year.name}
+    end
     actions
   end
 
