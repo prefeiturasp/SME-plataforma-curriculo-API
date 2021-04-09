@@ -74,7 +74,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'activeadmin_quill_editor', '~> 0.1.4'
 
 # Pretty URLs and work with human-friendly strings
-gem 'friendly_id', '~> 5.2.4', github: 'norman/friendly_id'
+gem 'friendly_id'
 
 # Pagination library
 gem 'kaminari'
@@ -92,5 +92,5 @@ gem 'httparty'
 # Use CarrierWave to provide a simple and extremely flexible way to upload files
 gem 'carrierwave', '~> 2.1'
 
-# Validate admin permitions 
+# Validate admin permitions
 gem 'cancancan'
