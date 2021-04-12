@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :goal do
-    description { Faker::Lorem.sentence(10) }
+    description { Faker::Lorem.sentence(word_count: 10) }
     association :sustainable_development_goal, factory: :sustainable_development_goal
 
     trait :invalid_sustainable_development_goal do

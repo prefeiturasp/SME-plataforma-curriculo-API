@@ -71,7 +71,7 @@ RSpec.describe CollectionActivitySequence, type: :model do
 
         it 'if the sequence greather than 1' do
           collection = create :collection
-          subject =  create :collection_activity_sequence, collection: collection, activity_sequence: activity_sequence, sequence: Faker::Number.between(2, 100)
+          subject =  create :collection_activity_sequence, collection: collection, activity_sequence: activity_sequence, sequence: Faker::Number.between(from: 2, to: 100)
 
           subject.reload
           expect(subject.sequence).to eq(1)
@@ -137,7 +137,7 @@ RSpec.describe CollectionActivitySequence, type: :model do
         it 'assign element on last_sequence + 1' do
           last_sequence_before = collection.collection_activity_sequences.last.sequence
           next_sequence = last_sequence_before + 1
-          random_sequence = last_sequence_before + Faker::Number.between(5, 100)
+          random_sequence = last_sequence_before + Faker::Number.between(from: 5, to: 100)
 
           new_col_act_seq = create :collection_activity_sequence, collection: collection, sequence: random_sequence
 
