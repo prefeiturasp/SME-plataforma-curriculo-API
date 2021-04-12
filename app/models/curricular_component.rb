@@ -35,7 +35,7 @@ class CurricularComponent < ApplicationRecord
     split_name.map { |s| s[0] if s.length >= 3 }.compact.join
   end
 
-  def initials_map # rubocop:disable MethodLength
+  def initials_map # rubocop:disable Metrics/MethodLength
     {
       'Arte': 'A',
       'Ciências Naturais': 'C',
