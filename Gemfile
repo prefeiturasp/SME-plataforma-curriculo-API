@@ -23,6 +23,13 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 gem 'faker'
+gem 'rubocop', require: false
+gem 'rubocop-faker'
+
+gem 'listen', '>= 3.0.5', '< 3.2'
+# Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+gem 'spring'
+gem 'spring-watcher-listen', '~> 2.0.0'
 
 # Use ActiveStorage variant
 gem 'mini_magick', '~> 4.8'
@@ -38,21 +45,13 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
-  gem 'faker'
   gem 'shoulda-matchers', '~> 3.1'
   gem 'webmock'
 end
 
 group :development do
-  gem 'listen', '>= 3.0.5', '< 3.2'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-
   gem 'capistrano', '~> 3.11.0'
   gem 'capistrano-rails'
-
-  gem 'rubocop', require: false
 end
 
 # Admin area
@@ -65,7 +64,7 @@ gem "devise", '~> 4.4.3'
 gem 'devise-jwt'
 
 # gem 'devise_saml_authenticatable', '~>1.4.1'
-gem 'inherited_resources', git: 'https://github.com/activeadmin/inherited_resources'
+gem 'inherited_resources'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
