@@ -64,7 +64,6 @@ pipeline {
                sh 'docker run -d --rm --cap-add SYS_TIME --name elasticsearch --net curriculo-network -p 9200:9200 -p 9300 -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "http.cors.enabled=true" -e "http.cors.allow-origin=*" -e "http.cors.allow-credentials=true" -e "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization" docker.elastic.co/elasticsearch/elasticsearch:6.5.4'
 
             } else {
-                sh "docker rm -f elasticsearch"
                 sh 'docker run -d --rm --cap-add SYS_TIME --name elasticsearch --net curriculo-network -p 9200:9200 -p 9300 -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "http.cors.enabled=true" -e "http.cors.allow-origin=*" -e "http.cors.allow-credentials=true" -e "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization" docker.elastic.co/elasticsearch/elasticsearch:6.5.4'
 
 	     }
