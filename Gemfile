@@ -60,7 +60,7 @@ gem 'activeadmin_addons', '~> 1.6.0'
 gem 'activeadmin-xls', '~>2.0.0'
 
 # authentication solution for Rails based on Warden
-gem "devise", '~> 4.4.3'
+gem "devise", '~> 4.7.1'
 gem 'devise-jwt'
 
 # gem 'devise_saml_authenticatable', '~>1.4.1'
