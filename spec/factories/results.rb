@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :result do
-    description { Faker::Lorem.sentence(200) }
+    description { Faker::Lorem.sentence(word_count: 200) }
     class_name { Faker::Lorem.sentence }
     enabled { true }
 

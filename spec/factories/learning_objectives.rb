@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :learning_objective do
-    description { Faker::Lorem.sentence(20) }
+    description { Faker::Lorem.sentence(word_count: 20) }
 
     sequence(:code) { |n| "#{Faker::Code.asin}#{n}" }
 

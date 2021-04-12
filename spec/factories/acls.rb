@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :acl do
-    reason { Faker::Lorem.sentence(60) }
+    reason { Faker::Lorem.sentence(word_count: 60) }
     enabled { true }
 
     association :teacher, factory: :teacher

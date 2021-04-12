@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :activity do
-    title { Faker::Lorem.sentence(4) }
-    estimated_time { Faker::Number.between(1, 500) }
+    title { Faker::Lorem.sentence(word_count: 4) }
+    estimated_time { Faker::Number.between(from: 1, to: 500) }
     content { '{"ops":[{"insert":"Text\\n"}]}' }
     status { :published }
 
