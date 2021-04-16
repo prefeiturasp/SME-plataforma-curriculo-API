@@ -26,7 +26,7 @@ RSpec.describe Api::SessionsController, type: :controller do
             headers: {}
           )
 
-        stub_request(:get, "https://hom-cieduapi.sme.prefeitura.sp.gov.br/servidores/servidor_diretoria/#{rf_code}").
+        stub_request(:get, "https://hom-smecieduapi.sme.prefeitura.sp.gov.br/servidores/servidor_diretoria/#{rf_code}").
           to_return(
             status: 200,
             body: {

@@ -5,7 +5,7 @@ RSpec.describe Api::ActivitySequenceRatingsController, type: :controller do
     request.env['HTTP_ACCEPT'] = 'application/json'
   end
 
-  let(:invalid_score) { Faker::Number.between(from: 6, to: 10) }
+  let(:invalid_score) { Faker::Number.between(6, 10) }
   let(:user) { create :user }
   let(:teacher) { create :teacher, user: user }
   let(:rating) { create :rating }
@@ -19,7 +19,7 @@ RSpec.describe Api::ActivitySequenceRatingsController, type: :controller do
     {
       teacher_id: activity_sequence_performed.teacher.id,
       rating_id: rating.id,
-      score: Faker::Number.between(from: 0, to: 5)
+      score: Faker::Number.between(0, 5)
     }
   end
 
@@ -27,8 +27,8 @@ RSpec.describe Api::ActivitySequenceRatingsController, type: :controller do
     {
       teacher_id: activity_sequence_performed.teacher.id,
       ratings: [
-        { rating_id: rating.id, score: Faker::Number.between(from: 0, to: 5) },
-        { rating_id: another_rating.id, score: Faker::Number.between(from: 0, to: 5) }
+        { rating_id: rating.id, score: Faker::Number.between(0, 5) },
+        { rating_id: another_rating.id, score: Faker::Number.between(0, 5) }
       ]
     }
   end
@@ -44,7 +44,7 @@ RSpec.describe Api::ActivitySequenceRatingsController, type: :controller do
     {
       teacher_id: activity_sequence_performed.teacher.id,
       ratings: [
-        { rating_id: rating.id, score: Faker::Number.between(from: 0, to: 5) },
+        { rating_id: rating.id, score: Faker::Number.between(0, 5) },
         { rating_id: another_rating.id, score: invalid_score }
       ]
     }

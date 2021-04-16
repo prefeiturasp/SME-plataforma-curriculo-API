@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :activity_type do
-    name { Faker::Lorem.sentence(word_count: 4) }
+    name { Faker::Lorem.sentence(4) }
 
     trait :invalid_name do
       name { nil }

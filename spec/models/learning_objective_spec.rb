@@ -70,7 +70,6 @@ RSpec.describe LearningObjective, type: :model do
 
       it 'without a curricular component' do
         subject.curricular_component_id = nil
-        subject.curricular_component = nil
 
         expect(subject).to_not be_valid
       end
