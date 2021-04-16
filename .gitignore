@@ -33,6 +33,7 @@ config/initializers/secret_token.rb
 /tmp
 /vendor
 
+.rvmrc
 .rspec
 .ruby-gemset
 .docker-env-dev
