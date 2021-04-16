@@ -90,7 +90,7 @@ gem 'flexirest', '~> 1.7.5'
 gem 'httparty'
 
 # Use CarrierWave to provide a simple and extremely flexible way to upload files
-gem 'carrierwave', '~> 2.1'
+gem 'carrierwave', '~> 2.0'
 
 # Validate admin permitions 
 gem 'cancancan'
