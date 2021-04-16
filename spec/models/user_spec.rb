@@ -187,7 +187,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'return TRUE if VALID credentials' do
-      stub_request(:post, "https://smeintegracaoapi.sme.prefeitura.sp.gov.br/api/AutenticacaoSgp/Autenticar").
+      stub_request(:post, "#{ENV['SME_CORE_SSO_API']}/api/AutenticacaoSgp/Autenticar").
        with( body: "login=#{rf_code}&senha=#{user.password}" ).
         to_return(
           status: 200,
@@ -198,7 +198,7 @@ RSpec.describe User, type: :model do
           headers: {}
         )
 
-      stub_request(:get, "https://hom-smecieduapi.sme.prefeitura.sp.gov.br/servidores/servidor_diretoria/#{rf_code}").
+      stub_request(:get, "#{ENV['SME_SGP_API']}/servidores/servidor_diretoria/#{rf_code}").
         to_return(
           status: 200,
           body: {
@@ -222,7 +222,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'return FALSE if INVALID credentials' do
-      stub_request(:post, "https://smeintegracaoapi.sme.prefeitura.sp.gov.br/api/AutenticacaoSgp/Autenticar").
+      stub_request(:post, "#{ENV['SME_CORE_SSO_API']}/api/AutenticacaoSgp/Autenticar").
        with( body: "login=#{rf_code}&senha=WRONG" ).
         to_return(
           status: 401,
