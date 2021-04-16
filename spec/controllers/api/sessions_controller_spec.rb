@@ -15,7 +15,7 @@ RSpec.describe Api::SessionsController, type: :controller do
   describe 'POST #create' do
     context 'with valid params' do
       it 'renders a JSON response with the new session' do
-        stub_request(:post, "https://smeintegracaoapi.sme.prefeitura.sp.gov.br/api/AutenticacaoSgp/Autenticar").
+        stub_request(:post, "#{ENV['SME_CORE_SSO_API']}/api/AutenticacaoSgp/Autenticar").
          with( body: "login=#{rf_code}&senha=#{user.password}" ).
           to_return(
             status: 200,
@@ -26,7 +26,7 @@ RSpec.describe Api::SessionsController, type: :controller do
             headers: {}
           )
 
-        stub_request(:get, "https://hom-smecieduapi.sme.prefeitura.sp.gov.br/servidores/servidor_diretoria/#{rf_code}").
+        stub_request(:get, "#{ENV['SME_SGP_API']}/servidores/servidor_diretoria/#{rf_code}").
           to_return(
             status: 200,
             body: {
@@ -52,7 +52,7 @@ RSpec.describe Api::SessionsController, type: :controller do
 
     context 'returns http unauthorized' do
       it 'renders a JSON response with errors for the new session' do
-        stub_request(:post, "https://smeintegracaoapi.sme.prefeitura.sp.gov.br/api/AutenticacaoSgp/Autenticar").
+        stub_request(:post, "#{ENV['SME_CORE_SSO_API']}/api/AutenticacaoSgp/Autenticar").
          with( body: "login=#{rf_code}&senha=wrong_password" ).
           to_return(
             status: 401,
