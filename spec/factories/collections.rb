@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :collection do
-    name { Faker::Lorem.characters(number: 25) }
+    name { Faker::Lorem.characters(25) }
 
     association :teacher, factory: :teacher
 

@@ -24,13 +24,12 @@ RSpec.describe Teacher, type: :model do
 
       it 'if user_id is null' do
         subject.user_id = nil
-        subject.user = nil
 
         expect(subject).to_not be_valid
       end
 
       it 'if nickname greather than 15 digits' do
-        subject.nickname = 'test nome inválido'
+        subject.nickname = Faker::Internet.user_name(16..20)
 
         expect(subject).to_not be_valid
       end

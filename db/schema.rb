@@ -10,10 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_20_102620) do
+ActiveRecord::Schema.define(version: 2021_01_11_192807) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "fuzzystrmatch"
   enable_extension "plpgsql"
+  enable_extension "postgis"
+  enable_extension "postgis_tiger_geocoder"
+  enable_extension "postgis_topology"
 
   create_table "acls", force: :cascade do |t|
     t.bigint "teacher_id"
@@ -222,6 +226,11 @@ ActiveRecord::Schema.define(version: 2020_10_20_102620) do
     t.bigint "axis_id", null: false
   end
 
+  create_table "axes_projects", id: false, force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "axis_id", null: false
+  end
+
   create_table "challenge_content_blocks", force: :cascade do |t|
     t.bigint "challenge_id"
     t.bigint "content_block_id"
@@ -282,12 +291,32 @@ ActiveRecord::Schema.define(version: 2020_10_20_102620) do
     t.index ["collection_id"], name: "index_collection_activity_sequences_on_collection_id"
   end
 
+  create_table "collection_projects", force: :cascade do |t|
+    t.bigint "collection_id"
+    t.bigint "project_id"
+    t.integer "sequence"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["collection_id"], name: "index_collection_projects_on_collection_id"
+    t.index ["project_id"], name: "index_collection_projects_on_project_id"
+  end
+
   create_table "collections", force: :cascade do |t|
     t.string "name"
     t.bigint "teacher_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["teacher_id"], name: "index_collections_on_teacher_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.string "body"
+    t.bigint "teacher_id"
+    t.bigint "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_comments_on_project_id"
+    t.index ["teacher_id"], name: "index_comments_on_teacher_id"
   end
 
   create_table "complement_book_links", force: :cascade do |t|
@@ -325,6 +354,11 @@ ActiveRecord::Schema.define(version: 2020_10_20_102620) do
     t.index ["slug"], name: "index_curricular_components_on_slug", unique: true
   end
 
+  create_table "curricular_components_projects", id: false, force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "curricular_component_id", null: false
+  end
+
   create_table "curriculum_subjects", force: :cascade do |t|
     t.string "old_id"
     t.string "name"
@@ -333,6 +367,18 @@ ActiveRecord::Schema.define(version: 2020_10_20_102620) do
   create_table "curriculum_subjects_projects", id: false, force: :cascade do |t|
     t.bigint "project_id", null: false
     t.bigint "curriculum_subject_id", null: false
+  end
+
+  create_table "favourites", force: :cascade do |t|
+    t.integer "favouritable_id"
+    t.string "favouritable_type"
+    t.bigint "teacher_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["favouritable_id"], name: "index_favourites_on_favouritable_id"
+    t.index ["favouritable_type"], name: "index_favourites_on_favouritable_type"
+    t.index ["teacher_id", "favouritable_id", "favouritable_type"], name: "favourites_unique_index", unique: true
+    t.index ["teacher_id"], name: "index_favourites_on_teacher_id"
   end
 
   create_table "friendly_id_slugs", force: :cascade do |t|
@@ -373,6 +419,23 @@ ActiveRecord::Schema.define(version: 2020_10_20_102620) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "knowledge_matrices_projects", id: false, force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "knowledge_matrix_id", null: false
+  end
+
+  create_table "layer", primary_key: ["topology_id", "layer_id"], force: :cascade do |t|
+    t.integer "topology_id", null: false
+    t.integer "layer_id", null: false
+    t.string "schema_name", null: false
+    t.string "table_name", null: false
+    t.string "feature_column", null: false
+    t.integer "feature_type", null: false
+    t.integer "level", default: 0, null: false
+    t.integer "child_id"
+    t.index ["schema_name", "table_name", "feature_column"], name: "layer_schema_name_table_name_feature_column_key", unique: true
+  end
+
   create_table "learning_objectives", force: :cascade do |t|
     t.string "code"
     t.string "description"
@@ -386,6 +449,11 @@ ActiveRecord::Schema.define(version: 2020_10_20_102620) do
     t.index ["segment_id"], name: "index_learning_objectives_on_segment_id"
     t.index ["stage_id"], name: "index_learning_objectives_on_stage_id"
     t.index ["year_id"], name: "index_learning_objectives_on_year_id"
+  end
+
+  create_table "learning_objectives_projects", id: false, force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "learning_objective_id", null: false
   end
 
   create_table "learning_objectives_sustainable_development_goals", id: false, force: :cascade do |t|
@@ -440,21 +508,65 @@ ActiveRecord::Schema.define(version: 2020_10_20_102620) do
     t.bigint "permitted_action_id", null: false
   end
 
+  create_table "project_links", force: :cascade do |t|
+    t.string "link"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "project_id"
+    t.index ["project_id"], name: "index_project_links_on_project_id"
+  end
+
   create_table "projects", force: :cascade do |t|
     t.string "old_id"
     t.string "title"
-    t.string "school"
+    t.string "school_name"
     t.string "dre"
     t.string "description"
     t.string "summary"
     t.string "owners"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "development_year"
+    t.string "development_class"
+    t.bigint "teacher_id"
+    t.bigint "regional_education_board_id"
+    t.bigint "school_id"
+    t.string "slug"
+    t.boolean "updated_by_admin"
+    t.index ["regional_education_board_id"], name: "index_projects_on_regional_education_board_id"
+    t.index ["school_id"], name: "index_projects_on_school_id"
+    t.index ["slug"], name: "index_projects_on_slug", unique: true
+    t.index ["teacher_id"], name: "index_projects_on_teacher_id"
+  end
+
+  create_table "projects_segments", id: false, force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "segment_id", null: false
+  end
+
+  create_table "projects_stages", id: false, force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "stage_id", null: false
+  end
+
+  create_table "projects_student_protagonisms", id: false, force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "student_protagonism_id", null: false
+  end
+
+  create_table "projects_sustainable_development_goals", id: false, force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "sustainable_development_goal_id", null: false
   end
 
   create_table "projects_tags", id: false, force: :cascade do |t|
     t.bigint "project_id", null: false
     t.bigint "tag_id", null: false
+  end
+
+  create_table "projects_years", id: false, force: :cascade do |t|
+    t.bigint "project_id", null: false
+    t.bigint "year_id", null: false
   end
 
   create_table "public_consultations", force: :cascade do |t|
@@ -474,6 +586,14 @@ ActiveRecord::Schema.define(version: 2020_10_20_102620) do
     t.integer "sequence"
     t.text "description"
     t.boolean "enable", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "regional_education_boards", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.string "tag"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -498,14 +618,33 @@ ActiveRecord::Schema.define(version: 2020_10_20_102620) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "schools", force: :cascade do |t|
+    t.string "code"
+    t.string "name"
+    t.string "school_type"
+    t.bigint "regional_education_board_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["regional_education_board_id"], name: "index_schools_on_regional_education_board_id"
+  end
+
   create_table "segments", force: :cascade do |t|
     t.string "name"
     t.string "color"
+    t.integer "sequence"
+  end
+
+  create_table "spatial_ref_sys", primary_key: "srid", id: :integer, default: nil, force: :cascade do |t|
+    t.string "auth_name", limit: 256
+    t.integer "auth_srid"
+    t.string "srtext", limit: 2048
+    t.string "proj4text", limit: 2048
   end
 
   create_table "stages", force: :cascade do |t|
     t.string "name"
     t.bigint "segment_id"
+    t.integer "sequence"
     t.index ["segment_id"], name: "index_stages_on_segment_id"
   end
 
@@ -579,6 +718,14 @@ ActiveRecord::Schema.define(version: 2020_10_20_102620) do
     t.index ["user_id"], name: "index_teachers_on_user_id"
   end
 
+  create_table "topology", id: :serial, force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "srid", null: false
+    t.float "precision", null: false
+    t.boolean "hasz", default: false, null: false
+    t.index ["name"], name: "topology_name_key", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: ""
     t.string "encrypted_password", default: "", null: false
@@ -600,6 +747,7 @@ ActiveRecord::Schema.define(version: 2020_10_20_102620) do
     t.string "name"
     t.string "dre"
     t.boolean "superadmin", default: false, null: false
+    t.boolean "blocked", default: false
     t.index ["email"], name: "index_users_on_email"
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -612,6 +760,7 @@ ActiveRecord::Schema.define(version: 2020_10_20_102620) do
     t.string "name"
     t.bigint "segment_id"
     t.bigint "stage_id"
+    t.integer "sequence"
     t.index ["segment_id"], name: "index_years_on_segment_id"
     t.index ["stage_id"], name: "index_years_on_stage_id"
   end
@@ -634,13 +783,21 @@ ActiveRecord::Schema.define(version: 2020_10_20_102620) do
   add_foreign_key "challenge_content_blocks", "content_blocks"
   add_foreign_key "collection_activity_sequences", "activity_sequences"
   add_foreign_key "collection_activity_sequences", "collections"
+  add_foreign_key "collection_projects", "collections"
+  add_foreign_key "collection_projects", "projects"
   add_foreign_key "collections", "teachers"
+  add_foreign_key "comments", "projects"
+  add_foreign_key "comments", "teachers"
   add_foreign_key "complement_book_links", "complement_books"
+  add_foreign_key "favourites", "teachers"
   add_foreign_key "goals", "sustainable_development_goals"
+  add_foreign_key "layer", "topology", name: "layer_topology_id_fkey"
   add_foreign_key "learning_objectives", "curricular_components"
+  add_foreign_key "project_links", "projects"
   add_foreign_key "public_consultations", "segments"
   add_foreign_key "results", "challenges"
   add_foreign_key "results", "teachers"
+  add_foreign_key "schools", "regional_education_boards"
   add_foreign_key "stages", "segments"
   add_foreign_key "steps", "methodologies"
   add_foreign_key "survey_form_answers", "survey_forms"

@@ -1,9 +1,9 @@
 FactoryBot.define do
   factory :activity_sequence do
-    title { Faker::Lorem.sentence(word_count: 4) }
-    presentation_text { Faker::Lorem.sentence(word_count: 10) }
-    books { Faker::Lorem.sentence(word_count: 10) }
-    estimated_time { Faker::Number.between(from: 1, to: 500) }
+    title { Faker::Lorem.sentence(4) }
+    presentation_text { Faker::Lorem.sentence(10) }
+    books { Faker::Lorem.sentence(10) }
+    estimated_time { Faker::Number.between(1, 500) }
     status { :draft }
     keywords { 'keyword 1, keyword 2' }
 

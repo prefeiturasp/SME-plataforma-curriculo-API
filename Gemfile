@@ -18,18 +18,16 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
+# listen check modifications in app directories
+gem 'listen', '>= 3.0.5', '< 3.2'
+# Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+gem 'spring'
+gem 'spring-watcher-listen', '~> 2.0.0'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 gem 'faker'
-gem 'rubocop', require: false
-gem 'rubocop-faker'
-
-gem 'listen', '>= 3.0.5', '< 3.2'
-# Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-gem 'spring'
-gem 'spring-watcher-listen', '~> 2.0.0'
 
 # Use ActiveStorage variant
 gem 'mini_magick', '~> 4.8'
@@ -45,6 +43,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
+  gem 'faker'
   gem 'shoulda-matchers', '~> 3.1'
   gem 'webmock'
 end
@@ -52,6 +51,8 @@ end
 group :development do
   gem 'capistrano', '~> 3.11.0'
   gem 'capistrano-rails'
+
+  gem 'rubocop', require: false
 end
 
 # Admin area
@@ -64,7 +65,7 @@ gem "devise", '~> 4.4.3'
 gem 'devise-jwt'
 
 # gem 'devise_saml_authenticatable', '~>1.4.1'
-gem 'inherited_resources'
+gem 'inherited_resources', git: 'https://github.com/activeadmin/inherited_resources'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
@@ -73,7 +74,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'activeadmin_quill_editor', '~> 0.1.4'
 
 # Pretty URLs and work with human-friendly strings
-gem 'friendly_id'
+gem 'friendly_id', '~> 5.2.4', github: 'norman/friendly_id'
 
 # Pagination library
 gem 'kaminari'
@@ -89,7 +90,7 @@ gem 'flexirest', '~> 1.7.5'
 gem 'httparty'
 
 # Use CarrierWave to provide a simple and extremely flexible way to upload files
-gem 'carrierwave', '~> 2.1'
+gem 'carrierwave', '~> 2.0'
 
 # Validate admin permitions
 gem 'cancancan'

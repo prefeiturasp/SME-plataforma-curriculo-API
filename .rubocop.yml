@@ -1,5 +1,4 @@
 AllCops:
-  NewCops: enable
   Exclude:
     - 'storage/**/*'
     - 'Rakefile'
@@ -14,19 +13,19 @@ Metrics/ClassLength:
   Max: 1500
 
 Style/Documentation:
-  Enabled: true
+  Enabled: false
 
 Metrics/LineLength:
   Max: 120
 
 Style/FrozenStringLiteralComment:
-  Enabled: true
+  Enabled: false
 
 Style/BlockDelimiters:
   EnforcedStyle: braces_for_chaining
 
 Metrics/BlockLength:
-  Enabled: true
+  ExcludedMethods: ['describe', 'context', 'register', 'shared_examples_for']
 
 Style/Lambda:
   EnforcedStyle: literal

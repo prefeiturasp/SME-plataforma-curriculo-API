@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :challenge do
-    title { Faker::Lorem.sentence word_count: 4 }
-    finish_at { Faker::Date.forward days: 20 }
+    title { Faker::Lorem.sentence 4 }
+    finish_at { Faker::Date.forward 20 }
     status { :published }
     category { :project }
     keywords { 'keyword 1, keyword 2' }

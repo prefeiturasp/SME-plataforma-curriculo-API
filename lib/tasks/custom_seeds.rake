@@ -16,9 +16,9 @@ namespace :db do
           title: Faker::Lorem.sentence,
           body:  {
             ops: [
-              { insert: Array.new(rand(2..5)) { Faker::Lorem.sentence(word_count: rand(5..10)) }.join("\n") },
+              { insert: Array.new(rand(2..5)) { Faker::Lorem.sentence(rand(5..10)) }.join("\n") },
               [{ insert: "\n" }, { insert: { formula: formulas.shuffle!.pop } }, { insert: "\n" }],
-              { insert: Array.new(rand(2..5)) { Faker::Lorem.sentence(word_count: rand(5..10)) }.join("\n") },
+              { insert: Array.new(rand(2..5)) { Faker::Lorem.sentence(rand(5..10)) }.join("\n") },
               [{ insert: "\n" }, { insert: { formula: formulas.shuffle!.pop } }, { insert: "\n" }]
             ].shuffle.flatten
           }.to_json
@@ -43,7 +43,7 @@ namespace :db do
     def create_challenge_result teacher, challenge, class_name = nil
       result = Result.create!(
         class_name:   class_name.blank? ? Faker::Lorem.sentence : class_name,
-        description:  Faker::Lorem.sentence(word_count: 200),
+        description:  Faker::Lorem.sentence(200),
         teacher_id:   teacher,
         challenge_id: challenge
       )
@@ -125,7 +125,7 @@ namespace :db do
 
         LearningObjective.create!(
           year:                             year,
-          description:                      Faker::Lorem.sentence(word_count: 20),
+          description:                      Faker::Lorem.sentence(20),
           code:                             code,
           curricular_component:             cc,
           sustainable_development_goal_ids: sustainables.sample(rand(2..4)),
@@ -160,7 +160,7 @@ namespace :db do
         next unless Challenge.where(title: title).blank?
 
         ccx  = curricular_components[cc]
-        ends = index % 2 == 0 ? Faker::Date.backward(days: rand(10..100)) : Faker::Date.forward(days: rand(60..1000))
+        ends = index % 2 == 0 ? Faker::Date.backward(rand(10..100)) : Faker::Date.forward(rand(60..1000))
 
         challenge = Challenge.create!(
           title:                    title,
@@ -226,7 +226,7 @@ namespace :db do
       ].each do |title, icon|
         next unless Methodology.where(title: title).blank?
 
-        meth = Methodology.create! title: title, description: Faker::Lorem.sentence(word_count: 140)
+        meth = Methodology.create! title: title, description: Faker::Lorem.sentence(140)
 
         meth.image.attach(
           io:       File.open(Rails.root.join('spec', 'fixtures', 'icons', icon)),
@@ -246,7 +246,7 @@ namespace :db do
             ['Resposta coletiva à pergunta inicial', '9.svg'],
             ['Avaliação e autoavaliação', '10.svg']
           ].each do |step_title, step_icon|
-            step = meth.steps.create! title: step_title, description: Faker::Lorem.sentence(word_count: 140)
+            step = meth.steps.create! title: step_title, description: Faker::Lorem.sentence(140)
 
             step.image.attach(
               io:       File.open(Rails.root.join('spec', 'fixtures', 'steps', step_icon)),

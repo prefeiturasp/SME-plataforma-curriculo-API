@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :teacher do
-    nickname { 'nome válido' }
+    nickname { Faker::Internet.user_name(7..15) }
     name { Faker::Name.unique.name }
 
     after(:build) do |teacher|
@@ -14,7 +14,7 @@ FactoryBot.define do
     association :user, factory: :user
 
     trait :invalid do
-      nickname { 'test nome inválido' }
+      nickname { Faker::Internet.user_name(16..20) }
     end
   end
 end

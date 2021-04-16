@@ -24,7 +24,7 @@ RSpec.describe Collection, type: :model do
       end
 
       it 'with name length is equals 30 characters' do
-        subject.name = Faker::Lorem.characters(number: 30)
+        subject.name = Faker::Lorem.characters(30)
 
         expect(subject).to be_valid
       end
@@ -38,7 +38,7 @@ RSpec.describe Collection, type: :model do
       end
 
       it 'if name greather than 30 characters' do
-        subject.name = Faker::Lorem.characters(number: 31)
+        subject.name = Faker::Lorem.characters(31)
 
         expect(subject).to_not be_valid
       end
