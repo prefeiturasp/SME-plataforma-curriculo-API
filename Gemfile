@@ -18,6 +18,11 @@ gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
+# listen check modifications in app directories
+gem 'listen', '>= 3.0.5', '< 3.2'
+# Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+gem 'spring'
+gem 'spring-watcher-listen', '~> 2.0.0'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
@@ -44,11 +49,6 @@ group :development, :test do
 end
 
 group :development do
-  gem 'listen', '>= 3.0.5', '< 3.2'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-watcher-listen', '~> 2.0.0'
-
   gem 'capistrano', '~> 3.11.0'
   gem 'capistrano-rails'
 
@@ -92,5 +92,5 @@ gem 'httparty'
 # Use CarrierWave to provide a simple and extremely flexible way to upload files
 gem 'carrierwave', '~> 2.0'
 
-# Validate admin permitions 
+# Validate admin permitions
 gem 'cancancan'
