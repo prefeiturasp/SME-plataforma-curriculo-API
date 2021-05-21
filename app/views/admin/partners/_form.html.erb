@@ -6,8 +6,22 @@
       f.has_many :complement_books, allow_destroy: true do |complement_book|
         complement_book.input :name, required: true
         complement_book.input :author, required: true
-        complement_book.input :book_file, required: true, as: :file
-        complement_book.input :cover_image, required: true, as: :file
+        complement_book.input :book_file,
+                              required: true,
+                              as: :file,
+                              hint: complement_book.object.book_file.present? \
+                                    ? (link_to 'Download Livro', book_file_api_complement_book_path(complement_book.object.id))
+                                    : content_tag(:span, "Anda não há pré-visualização")
+        complement_book.input :cover_image,
+                              required: true,
+                              as: :file,
+                              hint: complement_book.object.cover_image.present?  \
+                                    ? image_tag(
+                                        "/assets/#{complement_book.object.cover_image_identifier}",
+                                        style: "max-width: 138px; min-height: 180px;",
+                                        id: 'cover_image_file'
+                                      )
+                                    : content_tag(:span, "Anda não há pré-visualização")
         complement_book.has_many :complement_book_links, allow_destroy: true do |link|
           link.input :link
         end

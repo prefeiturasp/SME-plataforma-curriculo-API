@@ -10,7 +10,7 @@ class ComplementBookFileUploader < CarrierWave::Uploader::Base
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    "app/assets/images/"
+    "#{Rails.root}/books_storage/#{model_class_name}/#{mounted_as}/#{model.id}"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
@@ -35,13 +35,32 @@ class ComplementBookFileUploader < CarrierWave::Uploader::Base
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
-  def extension_whitelist
-    %w(pdf)
-  end
 
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
   # def filename
   #   "something.jpg" if original_filename
   # end
+
+  def extension_whitelist
+    %w(pdf)
+  end
+
+  def content_type_whitelist
+    %w[application/pdf] # or e.g. [%r{image/}]
+  end
+
+  def file_identifier
+    file.identifier
+  end
+
+  private
+
+  def model_class_name
+    if model.class.respond_to?(:extended_record_base_class)
+      model.class.extended_record_base_class.to_s.underscore
+    else
+      model.class.to_s.underscore
+    end
+  end
 end

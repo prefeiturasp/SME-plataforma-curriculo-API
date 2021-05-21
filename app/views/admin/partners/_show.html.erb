@@ -17,8 +17,8 @@
               row :cover_image do |obj|
                 image_tag(obj.cover_image_identifier)
               end
-              row :book_file do |obj, idx|
-                link_to("documento", "/assets/#{obj.book_file_identifier}")
+              row :book_file do |obj|
+                link_to 'Download Livro', book_file_api_complement_book_path(obj)
               end
               row :author
               panel 'Links' do
