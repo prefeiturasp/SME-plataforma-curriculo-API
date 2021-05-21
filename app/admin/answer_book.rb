@@ -37,10 +37,7 @@ ActiveAdmin.register AnswerBook do
     column :stage
     column :year
     column :book_file do |obj|
-      link_to(
-        "Caderno Resposta de #{obj.curricular_component.name}",
-        "/assets/#{obj.book_file_identifier}"
-      ) if obj.book_file_identifier.present?
+      link_to 'Download Livro', book_file_api_answer_book_path(obj)
     end
     actions
   end
@@ -60,10 +57,7 @@ ActiveAdmin.register AnswerBook do
         ) if obj.cover_image_identifier.present?
       end
       row :book_file do |obj|
-        link_to(
-          "Caderno Resposta de #{obj.curricular_component.name}",
-          "/assets/#{obj.book_file_identifier}"
-        ) if obj.book_file_identifier.present?
+        link_to 'Download Livro', book_file_api_answer_book_path(obj)
       end
      end
   end

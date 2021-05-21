@@ -27,11 +27,7 @@
             required: true,
             as: :file,
             hint: answer_book.book_file.present? \
-                  ? link_to(
-                      'Vizualiar caderno',
-                      "/assets/#{answer_book.book_file_identifier}",
-                      {target: '_blank', id: 'answer_book_file'}
-                    )
+                  ? (link_to 'Download Livro', book_file_api_answer_book_path(answer_book.id))
                   : content_tag(:span, "Anda não há pré-visualização")
   end
   f.actions
