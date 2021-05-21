@@ -21,8 +21,16 @@ Rails.application.routes.draw do
       match :logout, to: 'sessions#destroy', as: :destroy_jwt_user_session, via: [:delete, :get]
     end
 
-    resources :answer_books, only:[:index]
-    resources :complement_books, only:[:index]
+    resources :answer_books, only: [:index] do
+      member do
+        get 'book_file'
+      end
+    end
+    resources :complement_books, only:[:index] do
+      member do
+        get 'book_file'
+      end
+    end
     resources :stages, only:[:index]
     resources :survey_forms, only:[:show]
     resources :survey_form_answers, only: [:new, :create]
