@@ -22,7 +22,7 @@
 
 # Ignore uploaded files in development
 /storage/*
-
+/books_storage/*
 .byebug_history
 
 # Ignore master key for decrypting credentials and more.
