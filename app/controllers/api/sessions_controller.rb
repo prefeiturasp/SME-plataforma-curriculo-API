@@ -16,7 +16,8 @@ module Api
     private
 
     def authenticate_in_sme
-      render_failed_login unless User.authenticate_in_sme(custom_login_params)
+      result = User.authenticate_in_sme(custom_login_params)
+      render_failed_login(result) if [400, 403].include?(result[:status])
     end
 
     def custom_login_params
@@ -40,8 +41,8 @@ module Api
       request.session_options[:skip] = true
     end
 
-    def render_failed_login
-      render json: { error: 'Login ou senha inválidos.' }, status: :unauthorized
+    def render_failed_login(result)
+      render json: { error: result[:message].gsub("\"", "") }, status: result[:status]
     end
   end
 end
