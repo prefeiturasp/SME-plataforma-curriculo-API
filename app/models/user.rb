@@ -26,38 +26,45 @@ class User < ApplicationRecord
   end
 
   def self.authenticate_in_sme(credentials)
-    response = HTTParty.post(
-      "#{base_uri}/api/AutenticacaoSgp/Autenticar",
-      headers: {"x-api-eol-key": "#{ENV['CORE_SSO_AUTHENTICATION_TOKEN']}"},
-      body: credentials.symbolize_keys
-    )
-    if response.code == 200
+    User.core_sso_authenticate(credentials)
+  end
+
+  def self.core_sso_authenticate(credentials)
+    uri = URI.parse("#{base_uri}/api/v1/autenticacao")
+    headers = {
+      "x-api-eol-key": "#{ENV['CORE_SSO_AUTHENTICATION_TOKEN']}",
+      "Content-Type": "application/json-patch+json"
+    }
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    response = http.post(uri.path, credentials.to_json, headers)
+
+    if response.code.to_i == 200
       body = JSON.parse(response.body, symbolize_names: true)
       User.find_or_create_by_auth_params(body, credentials)
     else
-      false
+      { status: response.code.to_i, message: response.body}
     end
-  rescue StandardError => e
-    Rails.logger.error(e)
-    false
   end
 
   def self.find_or_create_by_auth_params(body, credentials)
-    user = User.find_or_create_by(username: credentials[:login])
     user_info = User.get_info_from_sme(credentials[:login])
-    user.password = credentials[:senha]
-    user.name = user_info[:results].first[:nm_pessoa]
-    user.email = user_info[:results].first[:email_servidor]
-    user.dre = user_info[:results].first[:nm_unidade]
-    user.save
+    if user_info[:results].empty?
+      { status: 403, message: "As informações do usuário não foram encontradas na API CIEDU"}
+    else
+      user = User.find_or_create_by(username: credentials[:login])
+      user.password = credentials[:senha]
+      user.name = user_info[:results].first[:nm_pessoa]
+      user.email = user_info[:results].first[:email_servidor]
+      user.dre = user_info[:results].first[:nm_unidade]
+      user.save
+      { status: 201, message: "Created"}
+    end
   end
-
-
 
   def self.get_info_from_sme(rf_code)
     response = HTTParty.get("#{ENV['SME_SGP_API']}/servidores/servidor_diretoria/#{rf_code}", headers: {Authorization: "#{ENV['SGP_AUTHENTICATION_TOKEN']}"})
     body = JSON.parse(response.body, symbolize_names: true)
-    body
   end
 
   def self.find_for_database_authentication(warden_conditions)
