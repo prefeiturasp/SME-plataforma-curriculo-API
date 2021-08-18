@@ -15,16 +15,23 @@ RSpec.describe Api::SessionsController, type: :controller do
   describe 'POST #create' do
     context 'with valid params' do
       it 'renders a JSON response with the new session' do
-        stub_request(:post, "#{ENV['SME_CORE_SSO_API']}/api/AutenticacaoSgp/Autenticar").
-         with( body: "login=#{rf_code}&senha=#{user.password}" ).
-          to_return(
-            status: 200,
-            body: {
-              usuarioId: "1", status: 0, nome: user.username, codigoRf: rf_code,
-              perfis: [ "string" ], possuiCargoCJ: true, possuiPerfilCJ: true
-            }.to_json,
-            headers: {}
-          )
+        stub_request(:post, "#{ENV['SME_CORE_SSO_API']}/api/v1/autenticacao").
+         with(
+           body: "{\"login\":\"#{rf_code}\",\"senha\":\"#{user.password}\"}",
+           headers: {
+         	  'Accept'=>'*/*',
+         	  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+         	  'Content-Type'=>'application/json-patch+json',
+         	  'User-Agent'=>'Ruby',
+         	  'X-Api-Eol-Key'=> "#{ENV['CORE_SSO_AUTHENTICATION_TOKEN']}"
+           }).to_return(
+             status: 200,
+             body: {
+               usuarioId: "1", status: 0, nome: user.username, codigoRf: rf_code,
+               perfis: [ "string" ], possuiCargoCJ: true, possuiPerfilCJ: true
+             }.to_json,
+             headers: {}
+           )
 
         stub_request(:get, "#{ENV['SME_SGP_API']}/servidores/servidor_diretoria/#{rf_code}").
           to_return(
@@ -52,13 +59,21 @@ RSpec.describe Api::SessionsController, type: :controller do
 
     context 'returns http unauthorized' do
       it 'renders a JSON response with errors for the new session' do
-        stub_request(:post, "#{ENV['SME_CORE_SSO_API']}/api/AutenticacaoSgp/Autenticar").
-         with( body: "login=#{rf_code}&senha=wrong_password" ).
-          to_return(
-            status: 401,
-            body: { error: "Usuário ou senha incorretos." }.to_json,
-            headers: {}
-          )
+        stub_request(:post, "#{ENV['SME_CORE_SSO_API']}/api/v1/autenticacao").
+         with(
+           body: "{\"login\":\"#{rf_code}\",\"senha\":\"wrong_password\"}",
+           headers: {
+         	  'Accept'=>'*/*',
+         	  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+         	  'Content-Type'=>'application/json-patch+json',
+         	  'User-Agent'=>'Ruby',
+         	  'X-Api-Eol-Key'=> "#{ENV['CORE_SSO_AUTHENTICATION_TOKEN']}"
+           }).to_return(
+             status: 401,
+             body: { error: "Usuário ou senha incorretos." }.to_json,
+             headers: {}
+           )
+
 
         post :create, params: { user: invalid_attributes }
         expect(response).to have_http_status(:unauthorized)
