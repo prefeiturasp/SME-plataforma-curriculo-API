@@ -180,23 +180,24 @@ RSpec.describe User, type: :model do
   end
 
   describe 'Authenticate in SME' do
-    it 'return nil unless credentials' do
-      expected = User.authenticate_in_sme nil
-
-      expect(expected).to be false
-    end
-
     it 'return TRUE if VALID credentials' do
-      stub_request(:post, "#{ENV['SME_CORE_SSO_API']}/api/AutenticacaoSgp/Autenticar").
-       with( body: "login=#{rf_code}&senha=#{user.password}" ).
-        to_return(
-          status: 200,
-          body: {
-            usuarioId: "1", status: 0, nome: user.username, codigoRf: rf_code,
-            perfis: [ "string" ], possuiCargoCJ: true, possuiPerfilCJ: true
-          }.to_json,
-          headers: {}
-        )
+      stub_request(:post, "#{ENV['SME_CORE_SSO_API']}/api/v1/autenticacao").
+       with(
+         body: "{\"login\":\"#{rf_code}\",\"senha\":\"#{user.password}\"}",
+         headers: {
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type'=>'application/json-patch+json',
+          'User-Agent'=>'Ruby',
+          'X-Api-Eol-Key'=> "#{ENV['CORE_SSO_AUTHENTICATION_TOKEN']}"
+         }).to_return(
+           status: 200,
+           body: {
+             usuarioId: "1", status: 0, nome: user.username, codigoRf: rf_code,
+             perfis: [ "string" ], possuiCargoCJ: true, possuiPerfilCJ: true
+           }.to_json,
+           headers: {}
+         )
 
       stub_request(:get, "#{ENV['SME_SGP_API']}/servidores/servidor_diretoria/#{rf_code}").
         to_return(
@@ -218,21 +219,27 @@ RSpec.describe User, type: :model do
 
       expected = User.authenticate_in_sme credentials
 
-      expect(expected).to be true
+      expect(expected).to eq({:message=>"Created", :status=>201})
     end
 
     it 'return FALSE if INVALID credentials' do
-      stub_request(:post, "#{ENV['SME_CORE_SSO_API']}/api/AutenticacaoSgp/Autenticar").
-       with( body: "login=#{rf_code}&senha=WRONG" ).
-        to_return(
-          status: 401,
-          body: { error: "Usuário ou senha incorretos." }.to_json,
-          headers: {}
-        )
+      stub_request(:post, "#{ENV['SME_CORE_SSO_API']}/api/v1/autenticacao").
+       with(
+         body: "{\"login\":\"#{rf_code}\",\"senha\":\"WRONG\"}",
+         headers: {
+          'Accept'=>'*/*',
+          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+          'Content-Type'=>'application/json-patch+json',
+          'User-Agent'=>'Ruby',
+          'X-Api-Eol-Key'=> "#{ENV['CORE_SSO_AUTHENTICATION_TOKEN']}"
+         }).to_return(
+           status: 401,
+           body: { error: "Usuário ou senha incorretos." }.to_json,
+           headers: {}
+         )
 
       expected = User.authenticate_in_sme invalid_credentials
-
-      expect(expected).to be false
+      expect(expected).to eq({ :status=> 401, :message=> "{\"error\":\"Usuário ou senha incorretos.\"}" })
     end
   end
 end
