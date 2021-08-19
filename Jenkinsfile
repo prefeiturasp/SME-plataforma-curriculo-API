@@ -89,6 +89,7 @@ pipeline {
           when { anyOf { branch 'master'; branch 'main'; branch "story/*"; branch 'develop'; branch 'staging'; } } 
           steps {
             script {
+	      checkout scm
               imagename = "registry.sme.prefeitura.sp.gov.br/${env.branchname}/curriculo-api"        
               dockerImage = docker.build(imagename, "-f Dockerfile .")
               docker.withRegistry( 'https://registry.sme.prefeitura.sp.gov.br', registryCredential ) {
