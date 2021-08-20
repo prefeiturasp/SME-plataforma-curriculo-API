@@ -30,9 +30,9 @@ pipeline {
 	        when { branch 'staging' }
           steps {
               withSonarQubeEnv('sonarqube-local'){
-                sh 'dotnet-sonarscanner begin /k:"SME-plataforma-curriculo-API"'
-                sh 'dotnet build'
-                sh 'dotnet-sonarscanner end'
+                sh 'sonar-scanner \
+                -Dsonar.projectKey=SME-plataforma-curriculo-API \
+                -Dsonar.sources=.'
             }
           }
         }
