@@ -63,7 +63,7 @@ class User < ApplicationRecord
   end
 
   def self.get_info_from_sme(rf_code)
-    response = HTTParty.get("#{ENV['SME_SGP_API']}/servidores/servidor_diretoria/#{rf_code}", headers: {Authorization: "#{ENV['SGP_AUTHENTICATION_TOKEN']}"})
+    response = HTTParty.get("#{ENV['SME_SGP_API']}/api/AutenticacaoSgp/#{rf_code}/dados", headers: {Authorization: "#{ENV['SGP_AUTHENTICATION_TOKEN']}"})
     body = JSON.parse(response.body, symbolize_names: true)
   end
 
