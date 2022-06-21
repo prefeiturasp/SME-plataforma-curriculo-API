@@ -33,7 +33,7 @@ RSpec.describe Api::SessionsController, type: :controller do
              headers: {}
            )
 
-        stub_request(:get, "#{ENV['SME_SGP_API']}/servidores/servidor_diretoria/#{rf_code}").
+        stub_request(:get, "#{ENV['SME_SGP_API']}/api/AutenticacaoSgp/#{rf_code}/dados").
           to_return(
             status: 200,
             body: {
