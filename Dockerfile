@@ -1,26 +1,26 @@
-FROM ruby:2.5.1-alpine
+FROM ruby:2.5.1-stretch
 
-ENV LANG en_US.UTF-8 
-ENV LANGUAGE en_US:en 
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-RUN mkdir -p /app 
+RUN mkdir -p /app
 WORKDIR /app
 
-RUN apk update && apk upgrade
+RUN apt-get update -y && apt-get upgrade -y && update-ca-certificates --fresh
+RUN curl -fsSL https://deb.nodesource.com/setup_8.x | sh
 
-RUN apk add -U --no-cache \
-    build-base \
+RUN apt-get install -y \
+    build-essential \
     git \
     imagemagick \
     libxml2-dev \
     libxslt-dev \
     nodejs \
-    postgresql-dev \
+    libpq-dev \
     tzdata \
-    yaml-dev \
-    yarn \
-    zlib-dev
+    libyaml-dev \
+    zlib1g-dev
 
 RUN npm install -g yarn
 RUN yarn install
