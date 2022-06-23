@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_11_192807) do
+ActiveRecord::Schema.define(version: 2022_06_23_085330) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "fuzzystrmatch"
@@ -596,6 +596,11 @@ ActiveRecord::Schema.define(version: 2021_01_11_192807) do
     t.string "tag"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "regional_education_boards_users", id: false, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "regional_education_board_id", null: false
   end
 
   create_table "results", force: :cascade do |t|
