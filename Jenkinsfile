@@ -41,6 +41,7 @@ pipeline {
           agent {
           label 'master'
           }
+	  when { anyOf { branch 'develop'; } } 
           steps {
             script {
               CONTAINER_ID = sh (
@@ -75,6 +76,7 @@ pipeline {
         }
 
     stage('Testes') {
+	when { anyOf { branch 'develop'; } } 
         steps {
               sh 'bundle install'
               sh 'bundle exec rake db:drop RAILS_ENV=test'
