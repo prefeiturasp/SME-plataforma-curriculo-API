@@ -57,8 +57,9 @@ class User < ApplicationRecord
       user.password = credentials[:senha]
       user.name = user_info[:nome]
       user.email = user_info[:email]
-      user.dre = user_info[:dreCodigos]? user_info[:dreCodigos].first() : []
-      user.regional_education_boards = RegionalEducationBoard.where(code: user_info[:dreCodigos])
+      codigos_dre = user_info[:dreCodigos]? user_info[:dreCodigos] : []
+      user.dre = codigos_dre.first()
+      user.regional_education_boards = RegionalEducationBoard.where(code: codigos_dre)
       user.save
       { status: 201, message: "Created"}
     end
