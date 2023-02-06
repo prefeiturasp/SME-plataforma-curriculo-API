@@ -13,7 +13,11 @@
 ActiveRecord::Schema.define(version: 2022_06_23_085330) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "fuzzystrmatch"
   enable_extension "plpgsql"
+  enable_extension "postgis"
+  enable_extension "postgis_tiger_geocoder"
+  enable_extension "postgis_topology"
 
   create_table "acls", force: :cascade do |t|
     t.bigint "teacher_id"
@@ -365,6 +369,18 @@ ActiveRecord::Schema.define(version: 2022_06_23_085330) do
     t.bigint "curriculum_subject_id", null: false
   end
 
+  create_table "favourites", force: :cascade do |t|
+    t.integer "favouritable_id"
+    t.string "favouritable_type"
+    t.bigint "teacher_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["favouritable_id"], name: "index_favourites_on_favouritable_id"
+    t.index ["favouritable_type"], name: "index_favourites_on_favouritable_type"
+    t.index ["teacher_id", "favouritable_id", "favouritable_type"], name: "favourites_unique_index", unique: true
+    t.index ["teacher_id"], name: "index_favourites_on_teacher_id"
+  end
+
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string "slug", null: false
     t.integer "sluggable_id", null: false
@@ -406,6 +422,18 @@ ActiveRecord::Schema.define(version: 2022_06_23_085330) do
   create_table "knowledge_matrices_projects", id: false, force: :cascade do |t|
     t.bigint "project_id", null: false
     t.bigint "knowledge_matrix_id", null: false
+  end
+
+  create_table "layer", primary_key: ["topology_id", "layer_id"], force: :cascade do |t|
+    t.integer "topology_id", null: false
+    t.integer "layer_id", null: false
+    t.string "schema_name", null: false
+    t.string "table_name", null: false
+    t.string "feature_column", null: false
+    t.integer "feature_type", null: false
+    t.integer "level", default: 0, null: false
+    t.integer "child_id"
+    t.index ["schema_name", "table_name", "feature_column"], name: "layer_schema_name_table_name_feature_column_key", unique: true
   end
 
   create_table "learning_objectives", force: :cascade do |t|
@@ -611,6 +639,13 @@ ActiveRecord::Schema.define(version: 2022_06_23_085330) do
     t.integer "sequence"
   end
 
+  create_table "spatial_ref_sys", primary_key: "srid", id: :integer, default: nil, force: :cascade do |t|
+    t.string "auth_name", limit: 256
+    t.integer "auth_srid"
+    t.string "srtext", limit: 2048
+    t.string "proj4text", limit: 2048
+  end
+
   create_table "stages", force: :cascade do |t|
     t.string "name"
     t.bigint "segment_id"
@@ -688,6 +723,14 @@ ActiveRecord::Schema.define(version: 2022_06_23_085330) do
     t.index ["user_id"], name: "index_teachers_on_user_id"
   end
 
+  create_table "topology", id: :serial, force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "srid", null: false
+    t.float "precision", null: false
+    t.boolean "hasz", default: false, null: false
+    t.index ["name"], name: "topology_name_key", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: ""
     t.string "encrypted_password", default: "", null: false
@@ -751,7 +794,9 @@ ActiveRecord::Schema.define(version: 2022_06_23_085330) do
   add_foreign_key "comments", "projects"
   add_foreign_key "comments", "teachers"
   add_foreign_key "complement_book_links", "complement_books"
+  add_foreign_key "favourites", "teachers"
   add_foreign_key "goals", "sustainable_development_goals"
+  add_foreign_key "layer", "topology", name: "layer_topology_id_fkey"
   add_foreign_key "learning_objectives", "curricular_components"
   add_foreign_key "project_links", "projects"
   add_foreign_key "public_consultations", "segments"

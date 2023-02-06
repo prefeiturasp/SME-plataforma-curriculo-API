@@ -51,13 +51,13 @@ class User < ApplicationRecord
   def self.find_or_create_by_auth_params(body, credentials)
     user_info = User.get_info_from_sme(credentials[:login])
     if user_info.nil?
-      { status: 403, message: "As informações do usuário não foram encontradas na API CIEDU"}
+      { status: 403, message: "As informações do usuário não foram encontradas na smeintegracaoapi"}
     else
       user = User.find_or_create_by(username: credentials[:login])
       user.password = credentials[:senha]
       user.name = user_info[:nome]
       user.email = user_info[:email]
-      user.dre = user_info[:dreCodigos].first()
+      user.dre = user_info[:dreCodigos]? user_info[:dreCodigos].first() : []
       user.regional_education_boards = RegionalEducationBoard.where(code: user_info[:dreCodigos])
       user.save
       { status: 201, message: "Created"}
