@@ -8,6 +8,7 @@ class User < ApplicationRecord
   attribute :admin, default: false
   attribute :superadmin, default: false
   has_one :teacher, dependent: :destroy
+  has_and_belongs_to_many :regional_education_boards
   has_and_belongs_to_many :permitted_actions
 
   validates :email, presence: true, if: -> { username.blank? }
@@ -49,21 +50,27 @@ class User < ApplicationRecord
 
   def self.find_or_create_by_auth_params(body, credentials)
     user_info = User.get_info_from_sme(credentials[:login])
-    if user_info[:results].empty?
-      { status: 403, message: "As informações do usuário não foram encontradas na API CIEDU"}
+    if user_info.nil?
+      { status: 403, message: "As informações do usuário não foram encontradas na smeintegracaoapi"}
     else
       user = User.find_or_create_by(username: credentials[:login])
       user.password = credentials[:senha]
-      user.name = user_info[:results].first[:nm_pessoa]
-      user.email = user_info[:results].first[:email_servidor]
-      user.dre = user_info[:results].first[:nm_unidade]
+      user.name = user_info[:nome]
+      user.email = user_info[:email]
+      codigos_dre = user_info[:dreCodigos]? user_info[:dreCodigos] : []
+      user.dre = codigos_dre.first()
+      user.regional_education_boards = RegionalEducationBoard.where(code: codigos_dre)
       user.save
       { status: 201, message: "Created"}
     end
   end
 
   def self.get_info_from_sme(rf_code)
-    response = HTTParty.get("#{ENV['SME_SGP_API']}/servidores/servidor_diretoria/#{rf_code}", headers: {Authorization: "#{ENV['SGP_AUTHENTICATION_TOKEN']}"})
+    headers = {
+      "x-api-eol-key": "#{ENV['CORE_SSO_AUTHENTICATION_TOKEN']}",
+      "Content-Type": "application/json-patch+json"
+    }
+    response = HTTParty.get("#{ENV['SME_SGP_API']}/api/AutenticacaoSgp/#{rf_code}/dados", headers: headers)
     body = JSON.parse(response.body, symbolize_names: true)
   end
 

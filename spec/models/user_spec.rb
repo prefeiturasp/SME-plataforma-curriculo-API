@@ -199,20 +199,18 @@ RSpec.describe User, type: :model do
            headers: {}
          )
 
-      stub_request(:get, "#{ENV['SME_SGP_API']}/servidores/servidor_diretoria/#{rf_code}").
+      stub_request(:get, "#{ENV['SME_SGP_API']}/api/AutenticacaoSgp/#{rf_code}/dados").
         to_return(
           status: 200,
           body: {
-            results: [
-              {
-                cd_registro_funcional: "1234567",
-                nm_pessoa: "Fulano de Tal",
-                email_servidor: "fulano.tal@sme.prefeitura.sp.gov.br",
-                cd_diretoria_cargo_atual: "123456",
-                nm_exibicao_unidade: "DRE - Qualquer",
-                nm_unidade: "DIRETORIA REGIONAL DE EDUCACAO LUGAR/NENHUM"
-              }
-            ]
+            cpf: "31388275864",
+            nome: "Fulano de Tal",
+            codigoRf: "1234567",
+            email: "fulano.tal@sme.prefeitura.sp.gov.br",
+            dreCodigos: [
+              123456
+            ],
+            emailValido: true
           }.to_json,
           headers: {}
         )
