@@ -39,7 +39,7 @@ pipeline {
 
       stage('Setup Testes') {
           agent {
-          label 'master'
+          label 'setup'
           }
 	  when { anyOf { branch 'develop'; } } 
           steps {
@@ -87,7 +87,7 @@ pipeline {
     }
 
         stage('Build') {
-          agent { label 'master' }
+          agent { label 'setup' }
           when { anyOf { branch 'master'; branch 'main'; branch "story/*"; branch 'develop'; branch 'staging'; } } 
           steps {
             script {
