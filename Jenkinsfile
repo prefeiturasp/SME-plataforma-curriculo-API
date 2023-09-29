@@ -44,7 +44,7 @@ pipeline {
               defaultContainer 'builder'
             }
           }
-	  when { anyOf { branch 'develop'; } } 
+	  when { anyOf { branch 'testecurriculo'; } } 
           steps {
             script {
               CONTAINER_ID = sh (
@@ -79,7 +79,7 @@ pipeline {
         }
 
     stage('Testes') {
-	when { anyOf { branch 'develop'; } } 
+	when { anyOf { branch 'testecurriculo'; } } 
         steps {
               sh 'bundle install'
               sh 'bundle exec rake db:drop RAILS_ENV=test'
@@ -95,7 +95,7 @@ pipeline {
               defaultContainer 'builder'
             }
           }
-          when { anyOf { branch 'master'; branch 'main'; branch "story/*"; branch 'develop'; branch 'staging'; } } 
+          when { anyOf { branch 'master'; branch 'main'; branch "story/*"; branch 'develop'; branch 'testecurriculo'; } } 
           steps {
             script {
 	      checkout scm
@@ -110,7 +110,7 @@ pipeline {
         }
 	    
         stage('Deploy'){
-            when { anyOf {  branch 'master'; branch 'main'; branch 'develop'; branch 'staging'; } }        
+            when { anyOf {  branch 'master'; branch 'main'; branch 'develop'; branch 'testecurriculo'; } }        
             steps {
                 script{
                     if ( env.branchname == 'main' ||  env.branchname == 'master' ) {
