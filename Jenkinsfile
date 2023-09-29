@@ -28,7 +28,7 @@ pipeline {
         }
 
         stage('AnaliseCodigo') {
-	        when { branch 'staging' }
+	        when { branch 'testecurriculo' }
           steps {
               withSonarQubeEnv('sonarqube-local'){
                 sh 'sonar-scanner \
@@ -40,6 +40,11 @@ pipeline {
 
       stage('Setup Testes') {
           when { anyOf { branch 'testecurriculo'; } } 
+             agent { kubernetes { 
+              label 'ruby-rc'
+              defaultContainer 'builder'
+            }
+          }
           steps {
             script {
               CONTAINER_ID = sh (
