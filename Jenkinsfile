@@ -29,6 +29,11 @@ pipeline {
 
         stage('AnaliseCodigo') {
 	        when { branch 'testecurriculo' }
+          agent { kubernetes { 
+              label 'ruby-rc'
+              defaultContainer 'ruby-rc'
+            }
+          }
           steps {
               withSonarQubeEnv('sonarqube-local'){
                 sh 'sonar-scanner \
