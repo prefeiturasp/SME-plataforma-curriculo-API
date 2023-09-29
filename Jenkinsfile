@@ -39,12 +39,7 @@ pipeline {
         }
 
       stage('Setup Testes') {
-          agent { kubernetes { 
-              label 'ruby-rc'
-              defaultContainer 'builder'
-            }
-          }
-	  when { anyOf { branch 'testecurriculo'; } } 
+          when { anyOf { branch 'testecurriculo'; } } 
           steps {
             script {
               CONTAINER_ID = sh (
