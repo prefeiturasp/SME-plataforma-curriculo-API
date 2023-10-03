@@ -3,6 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.6.10'
 
+gem 'therubyracer'
 # Added because of the ActiveAdmin
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
