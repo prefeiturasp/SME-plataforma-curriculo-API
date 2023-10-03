@@ -58,6 +58,7 @@ pipeline {
               //sh 'bundle exec rake db:create RAILS_ENV=test'
               //sh 'bundle exec rake db:migrate RAILS_ENV=test'
               //sh 'bundle exec rspec spec'
+	       sh 'node -v'		
 	       sh 'RAILS_EXECJS_RUNTIME=nodejs bundle exec rake db:drop RAILS_ENV=test'
                sh 'RAILS_EXECJS_RUNTIME=nodejs bundle exec rake db:create RAILS_ENV=test'
                sh 'RAILS_EXECJS_RUNTIME=nodejs bundle exec rake db:migrate RAILS_ENV=test'
