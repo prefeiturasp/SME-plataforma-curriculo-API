@@ -85,6 +85,11 @@ pipeline {
 
     stage('Testes') {
 	when { anyOf { branch 'testecurriculo'; } } 
+        agent { kubernetes { 
+              label 'ruby-rc'
+              defaultContainer 'builder'
+            }
+          }
         steps {
               sh 'bundle install'
               sh 'bundle exec rake db:drop RAILS_ENV=test'
