@@ -54,10 +54,10 @@ pipeline {
 	      checkout scm
               	
 	      sh 'bundle install'
-              sh 'bundle exec rake db:drop RAILS_ENV=test'
-              sh 'bundle exec rake db:create RAILS_ENV=test'
-              sh 'bundle exec rake db:migrate RAILS_ENV=test'
-              sh 'bundle exec rspec spec'
+              sh 'bundle exec rake db:drop RAILS_ENV=test RAILS_EXECJS_RUNTIME=therubyracer'
+              sh 'bundle exec rake db:create RAILS_ENV=test RAILS_EXECJS_RUNTIME=therubyracer'
+              sh 'bundle exec rake db:migrate RAILS_ENV=test RAILS_EXECJS_RUNTIME=therubyracer'
+              sh 'bundle exec rspec spec RAILS_EXECJS_RUNTIME=therubyracer'
         }
     }
 
