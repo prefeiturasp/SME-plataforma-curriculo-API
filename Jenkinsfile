@@ -91,7 +91,8 @@ pipeline {
             }
           }
         steps {
-	      checkout scm	
+	      checkout scm
+              sh 'apt-get install git'	
 	      sh 'bundle install'
               sh 'bundle exec rake db:drop RAILS_ENV=test'
               sh 'bundle exec rake db:create RAILS_ENV=test'
