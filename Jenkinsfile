@@ -91,6 +91,8 @@ pipeline {
             }
           }
         steps {
+	      sh 'pwd'
+	      sh 'ls'	
               sh 'bundle install'
               sh 'bundle exec rake db:drop RAILS_ENV=test'
               sh 'bundle exec rake db:create RAILS_ENV=test'
