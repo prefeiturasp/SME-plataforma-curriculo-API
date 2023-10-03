@@ -43,47 +43,7 @@ pipeline {
           }
         }
 
-      /* stage('Setup Testes') {
-          when { anyOf { branch 'testecurriculo'; } } 
-             agent { kubernetes { 
-              label 'ruby-rc'
-              defaultContainer 'ruby-rc'
-            }
-          }
-          steps {
-            script {
-              CONTAINER_ID = sh (
-              script: 'docker ps -q --filter "name=sme-curriculodb"',
-              returnStdout: true
-              ).trim()
-              if (CONTAINER_ID) {
-                sh "echo nome é: ${CONTAINER_ID}"
-                sh "docker rm -f ${CONTAINER_ID}"
-                sh 'docker run -d --rm --cap-add SYS_TIME --name sme-curriculodb --network curriculo-network -p 5432 -e TZ="America/Sao_Paulo" -e POSTGRES_DB=curriculo -e POSTGRES_PASSWORD=curriculo -e POSTGRES_USER=postgres postgres:9-alpine'
-              } else {
-
-                  sh 'docker run -d --rm --cap-add SYS_TIME --name sme-curriculodb --network curriculo-network -p 5432 -e TZ="America/Sao_Paulo" -e POSTGRES_DB=curriculo -e POSTGRES_PASSWORD=curriculo -e POSTGRES_USER=postgres postgres:9-alpine'
-              }
-            }
-            script {
-              CONTAINER_ID2 = sh (
-              script: 'docker ps -q --filter "name=elasticsearch"',
-              returnStdout: true
-              ).trim()
-              if (CONTAINER_ID2) {
-                sh "echo nome é: ${CONTAINER_ID2}"
-                sh "docker rm -f ${CONTAINER_ID2}"
-                sh 'docker run -d --rm --cap-add SYS_TIME --name elasticsearch --net curriculo-network -p 9200:9200 -p 9300 -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "http.cors.enabled=true" -e "http.cors.allow-origin=*" -e "http.cors.allow-credentials=true" -e "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization" docker.elastic.co/elasticsearch/elasticsearch:6.5.4'
-
-              } else {
-                  sh 'docker run -d --rm --cap-add SYS_TIME --name elasticsearch --net curriculo-network -p 9200:9200 -p 9300 -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "http.cors.enabled=true" -e "http.cors.allow-origin=*" -e "http.cors.allow-credentials=true" -e "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization" docker.elastic.co/elasticsearch/elasticsearch:6.5.4'
-                }
-            }
-
-          }
-        } */
-
-    stage('Testes') {
+     stage('Testes') {
 	when { anyOf { branch 'testecurriculo'; } } 
         agent { kubernetes { 
               label 'ruby-rc'
