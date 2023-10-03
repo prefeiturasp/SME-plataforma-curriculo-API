@@ -43,7 +43,7 @@ pipeline {
           }
         }
 
-      stage('Setup Testes') {
+      /* stage('Setup Testes') {
           when { anyOf { branch 'testecurriculo'; } } 
              agent { kubernetes { 
               label 'ruby-rc'
@@ -81,7 +81,7 @@ pipeline {
             }
 
           }
-        }
+        } */
 
     stage('Testes') {
 	when { anyOf { branch 'testecurriculo'; } } 
