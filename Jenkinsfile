@@ -91,6 +91,7 @@ pipeline {
             }
           }
         steps {
+	      checkout scm	
 	      sh 'pwd'
 	      sh 'ls'	
               sh 'bundle install'
