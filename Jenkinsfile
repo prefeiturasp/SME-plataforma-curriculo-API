@@ -87,7 +87,7 @@ pipeline {
 	when { anyOf { branch 'testecurriculo'; } } 
         agent { kubernetes { 
               label 'ruby-rc'
-              defaultContainer 'builder'
+              defaultContainer 'ruby-rc'
             }
           }
         steps {
