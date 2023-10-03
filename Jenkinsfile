@@ -71,7 +71,7 @@ pipeline {
               defaultContainer 'builder'
             }
           }
-          when { anyOf { branch 'master'; branch 'main'; branch "story/*"; branch 'develop'; branch 'testecurriculo'; } } 
+          when { anyOf { branch 'master'; branch 'main'; branch "story/*"; branch 'develop'; branch 'testecurriculo'; } }
           steps {
             script {
 	      checkout scm
