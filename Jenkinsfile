@@ -7,34 +7,27 @@ pipeline {
       namespace = "${env.branchname == 'develop' ? 'curriculo-dev' : env.branchname == 'staging' ? 'curriculo-hom' : env.branchname == 'staging-r2' ? 'curriculo-hom2' : 'sme-curriculo' }"	    
     }
 
-    agent { kubernetes { 
-              label 'ruby-rc'
-              defaultContainer 'ruby-rc'
-            }
-          }
+
+    agent none
 
     options {
-      buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
+      buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
       disableConcurrentBuilds()
       skipDefaultCheckout()
     }
 
       stages {
 
-        stage('CheckOut') {
-            steps {
-              checkout scm
-            }
-        }
 
         stage('AnaliseCodigo') {
 	        when { branch 'testecurriculo' }
           agent { kubernetes { 
-              label 'ruby-rc'
+              label 'builder'
               defaultContainer 'builder'
             }
           }
           steps {
+		  checkout scm
               withSonarQubeEnv('sonarqube-local'){
                 sh 'sonar-scanner \
                 -Dsonar.projectKey=SME-plataforma-curriculo-API \
