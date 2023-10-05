@@ -45,9 +45,9 @@ pipeline {
           }
         steps {
 	      checkout scm
-		pwd
-              	su - jenkins
-		pwd
+		sh "pwd"
+              	sh "su - jenkins"
+		sh "pwd"
 		
 	       sh 'bundle install'
 	       //sh 'curl -sL https://deb.nodesource.com/setup_16.x | bash -'
