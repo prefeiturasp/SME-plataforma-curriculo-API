@@ -6,30 +6,25 @@ pipeline {
       registryCredential = 'jenkins_registry'
       namespace = "${env.branchname == 'develop' ? 'curriculo-dev' : env.branchname == 'staging' ? 'curriculo-hom' : env.branchname == 'staging-r2' ? 'curriculo-hom2' : 'sme-curriculo' }"	    
     }
-
-    agent {
-      node {
-        label 'ruby-rc'
-      }
-    }
-
+	
+    agent none
+	
     options {
-      buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5'))
+      buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
       disableConcurrentBuilds()
       skipDefaultCheckout()
     }
 
       stages {
-
-        stage('CheckOut') {
-            steps {
-              checkout scm
-            }
-        }
-
         stage('AnaliseCodigo') {
 	        when { branch 'staging' }
+          agent { kubernetes { 
+              label 'builder'
+              defaultContainer 'builder'
+            }
+          }
           steps {
+	      checkout scm
               withSonarQubeEnv('sonarqube-local'){
                 sh 'sonar-scanner \
                 -Dsonar.projectKey=SME-plataforma-curriculo-API \
@@ -38,48 +33,16 @@ pipeline {
           }
         }
 
-      stage('Setup Testes') {
-          agent {
-          label 'master'
-          }
-	  when { anyOf { branch 'develop'; } } 
-          steps {
-            script {
-              CONTAINER_ID = sh (
-              script: 'docker ps -q --filter "name=sme-curriculodb"',
-              returnStdout: true
-              ).trim()
-              if (CONTAINER_ID) {
-                sh "echo nome é: ${CONTAINER_ID}"
-                sh "docker rm -f ${CONTAINER_ID}"
-                sh 'docker run -d --rm --cap-add SYS_TIME --name sme-curriculodb --network curriculo-network -p 5432 -e TZ="America/Sao_Paulo" -e POSTGRES_DB=curriculo -e POSTGRES_PASSWORD=curriculo -e POSTGRES_USER=postgres postgres:9-alpine'
-              } else {
-
-                  sh 'docker run -d --rm --cap-add SYS_TIME --name sme-curriculodb --network curriculo-network -p 5432 -e TZ="America/Sao_Paulo" -e POSTGRES_DB=curriculo -e POSTGRES_PASSWORD=curriculo -e POSTGRES_USER=postgres postgres:9-alpine'
-              }
+     stage('Testes') {
+	when { anyOf { branch 'staging'; } } 
+        agent { kubernetes { 
+              label 'ruby-rc'
+              defaultContainer 'ruby-rc'
             }
-            script {
-              CONTAINER_ID2 = sh (
-              script: 'docker ps -q --filter "name=elasticsearch"',
-              returnStdout: true
-              ).trim()
-              if (CONTAINER_ID2) {
-                sh "echo nome é: ${CONTAINER_ID2}"
-                sh "docker rm -f ${CONTAINER_ID2}"
-                sh 'docker run -d --rm --cap-add SYS_TIME --name elasticsearch --net curriculo-network -p 9200:9200 -p 9300 -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "http.cors.enabled=true" -e "http.cors.allow-origin=*" -e "http.cors.allow-credentials=true" -e "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization" docker.elastic.co/elasticsearch/elasticsearch:6.5.4'
-
-              } else {
-                  sh 'docker run -d --rm --cap-add SYS_TIME --name elasticsearch --net curriculo-network -p 9200:9200 -p 9300 -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" -e "discovery.type=single-node" -e "xpack.security.enabled=false" -e "http.cors.enabled=true" -e "http.cors.allow-origin=*" -e "http.cors.allow-credentials=true" -e "http.cors.allow-headers=X-Requested-With,X-Auth-Token,Content-Type,Content-Length,Authorization" docker.elastic.co/elasticsearch/elasticsearch:6.5.4'
-                }
-            }
-
           }
-        }
-
-    stage('Testes') {
-	when { anyOf { branch 'develop'; } } 
         steps {
-              sh 'bundle install'
+	      checkout scm
+	      sh 'bundle install'
               sh 'bundle exec rake db:drop RAILS_ENV=test'
               sh 'bundle exec rake db:create RAILS_ENV=test'
               sh 'bundle exec rake db:migrate RAILS_ENV=test'
@@ -88,8 +51,12 @@ pipeline {
     }
 
         stage('Build') {
-          agent { label 'master' }
-          when { anyOf { branch 'master'; branch 'main'; branch "story/*"; branch 'develop'; branch 'staging'; } } 
+          agent { kubernetes { 
+              label 'builder'
+              defaultContainer 'builder'
+            }
+          }
+          when { anyOf { branch 'master'; branch 'main'; branch "story/*"; branch 'develop'; } }
           steps {
             script {
 	      checkout scm
@@ -104,18 +71,25 @@ pipeline {
         }
 	    
         stage('Deploy'){
-            when { anyOf {  branch 'master'; branch 'main'; branch 'develop'; branch 'staging'; } }        
+          agent { kubernetes { 
+              label 'builder'
+              defaultContainer 'builder'
+            }
+          }
+            when { anyOf {  branch 'master'; branch 'main'; branch 'develop'; } }        
             steps {
                 script{
-                    if ( env.branchname == 'main' ||  env.branchname == 'master' || env.branchname == 'staging' ) {
+                    if ( env.branchname == 'main' ||  env.branchname == 'master' ) {
                         sendTelegram("🤩 [Deploy ${env.branchname}] Job Name: ${JOB_NAME} \nBuild: ${BUILD_DISPLAY_NAME} \nMe aprove! \nLog: \n${env.BUILD_URL}")
-                        timeout(time: 24, unit: "HOURS") {
-                            input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: 'rodolpho_azeredo'
+                        withCredentials([string(credentialsId: 'aprovadores_curriculo', variable: 'aprovadores')]) {
+                            timeout(time: 24, unit: "HOURS") {
+                                input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: "${aprovadores}"
+                            }
                         }
                     }
                     withCredentials([file(credentialsId: "${kubeconfig}", variable: 'config')]){
                       sh('cp $config '+"$home"+'/.kube/config')
-                      sh "kubectl rollout restart deployment/curriculo-api -n sme-curriculo"
+                      sh "kubectl rollout restart deployment/curriculo-api -n ${namespace}"
                       sh('rm -f '+"$home"+'/.kube/config')
                     }
                 }
