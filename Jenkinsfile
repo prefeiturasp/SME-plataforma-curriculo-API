@@ -56,7 +56,7 @@ pipeline {
               defaultContainer 'builder'
             }
           }
-          when { anyOf { branch 'master'; branch 'main'; branch "story/*"; branch 'develop'; branch 'testecurriculo'; } }
+          when { anyOf { branch 'master'; branch 'main'; branch "story/*"; branch 'develop'; } }
           steps {
             script {
 	      checkout scm
@@ -71,7 +71,7 @@ pipeline {
         }
 	    
         stage('Deploy'){
-            when { anyOf {  branch 'master'; branch 'main'; branch 'develop'; branch 'testecurriculo'; } }        
+            when { anyOf {  branch 'master'; branch 'main'; branch 'develop'; } }        
             steps {
                 script{
                     if ( env.branchname == 'main' ||  env.branchname == 'master' ) {
