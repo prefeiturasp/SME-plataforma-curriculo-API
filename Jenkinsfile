@@ -54,9 +54,9 @@ pipeline {
 	      checkout scm
               	
 	       sh 'bundle install'
-	       sh 'curl -sL https://deb.nodesource.com/setup_16.x | bash -'
-               sh 'apt-get install -y nodejs'
-               sh 'node -v'
+	       //sh 'curl -sL https://deb.nodesource.com/setup_16.x | bash -'
+               //sh 'apt-get install -y nodejs'
+               //sh 'node -v'
               sh 'bundle exec rake db:drop RAILS_ENV=test'
               sh 'bundle exec rake db:create RAILS_ENV=test'
               sh 'bundle exec rake db:migrate RAILS_ENV=test'
