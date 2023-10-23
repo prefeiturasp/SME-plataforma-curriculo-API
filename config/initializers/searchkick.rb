@@ -1,5 +1,5 @@
 Searchkick.client = Elasticsearch::Client.new(
-  hosts: ["localhost:9200"],
+  hosts: [ENV['ELASTICSEARCH_URL']],
   retry_on_failure: true,
   transport_options: { request: {timeout: 250} }
 )
