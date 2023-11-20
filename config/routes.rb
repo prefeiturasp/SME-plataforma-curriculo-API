@@ -18,6 +18,11 @@ Rails.application.routes.draw do
     as :user do
       get :login, to: 'sessions#new', as: :new_jwt_user_session
       post :login, to: 'sessions#create'
+      
+      # custom SGA token login
+      post :gerar_token_login, to: 'sessions#gerar_token_login'
+      post :token_login, to: 'sessions#token_login'
+
       match :logout, to: 'sessions#destroy', as: :destroy_jwt_user_session, via: [:delete, :get]
     end
 
@@ -96,6 +101,9 @@ Rails.application.routes.draw do
       resources :sustainable_development_goals
       resources :knowledge_matrices
     end
+    
+    # post 'gerar_token_login', to: 'sessions#gerar_token_login'
+    # post 'validar_token_login', to: 'sessions#validar_token_login'      
 
     match '*path', to: 'errors#catch_404', via: :all
   end
