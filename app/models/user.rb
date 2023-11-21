@@ -86,6 +86,17 @@ class User < ApplicationRecord
     end
   end
 
+  def generate_authentication_token
+    self.authentication_token = SecureRandom.hex(32)
+    self.token_expires_at = Time.now + 1.day
+    save!
+    authentication_token
+  end
+
+  def valid_authentication_token?(token)
+    authentication_token == token && token_expires_at >= Time.now
+  end
+  
   private
 
   def assign_teacher
