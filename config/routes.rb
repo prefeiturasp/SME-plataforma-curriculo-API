@@ -100,10 +100,7 @@ Rails.application.routes.draw do
       resources :years
       resources :sustainable_development_goals
       resources :knowledge_matrices
-    end
-    
-    # post 'gerar_token_login', to: 'sessions#gerar_token_login'
-    # post 'validar_token_login', to: 'sessions#validar_token_login'      
+    end 
 
     match '*path', to: 'errors#catch_404', via: :all
   end
