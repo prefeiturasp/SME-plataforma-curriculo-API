@@ -56,7 +56,7 @@ pipeline {
               defaultContainer 'builder'
             }
           }
-          when { anyOf { branch 'master'; branch 'main'; branch "story/*"; branch 'develop'; } }
+          when { anyOf { branch 'master'; branch 'main'; branch "story/*"; branch 'develop'; branch 'staging' } }
           steps {
             script {
 	      checkout scm
