@@ -2,6 +2,7 @@ module Api
   class SessionsController < Devise::SessionsController
     before_action :skip_set_cookies_header
     before_action :authenticate_in_sme, only: [:create]
+    before_action :authenticate_sga_api_token, only: [:gerar_token_login]
     respond_to :json
 
     def create
@@ -13,8 +14,29 @@ module Api
       render 'api/profiles/me'
     end
 
+    def gerar_token_login
+      @user = User.find_by(username: params[:username])
+      return render(json: { error: 'Usuário não encontrado.' }) unless @user
+    
+      render json: { token: @user.generate_authentication_token }
+    end
+    
+    def token_login
+      @current_user = User.find_by(authentication_token: params[:token])
+      return render(json: { error: 'Token inválido ou expirado.' }, status: :unauthorized) unless @current_user&.valid_authentication_token?(params[:token])
+    
+      sign_in(:user, @current_user)
+      render 'api/profiles/me'
+    end
+    
     private
 
+    def authenticate_sga_api_token
+      unless request.headers['Authorization'] == "Bearer #{ENV['SGA_API_TOKEN']}"
+        render json: { error: 'Token inválido' }, status: :unauthorized
+      end
+    end
+    
     def authenticate_in_sme
       result = User.authenticate_in_sme(custom_login_params)
       render_failed_login(result) if [400, 403].include?(result[:status])
@@ -43,6 +65,7 @@ module Api
 
     def render_failed_login(result)
       render json: { error: result[:message].gsub("\"", "") }, status: result[:status]
-    end
+    end 
+
   end
 end
