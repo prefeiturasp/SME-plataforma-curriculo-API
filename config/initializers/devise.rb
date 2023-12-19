@@ -286,9 +286,7 @@ Devise.setup do |config|
   config.jwt do |jwt|
     jwt.secret = ENV['DEVISE_JWT_SECRET_KEY'] || File.read("/run/secrets/DEVISE_JWT_SECRET_KEY").strip
     jwt.dispatch_requests = [
-      ['POST', %r{^/api/login$}]
-    ]
-    jwt.dispatch_requests = [
+      ['POST', %r{^/api/login$}],
       ['POST', %r{^/api/token_login$}]
     ]
     jwt.revocation_requests = [
