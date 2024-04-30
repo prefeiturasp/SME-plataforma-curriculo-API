@@ -83,7 +83,8 @@ gem 'kaminari'
 gem 'api-pagination'
 
 # Intelligent search made easy with Rails and Elasticsearch
-gem 'searchkick'
+gem 'searchkick', '~> 5.2', '>= 5.2.4'
+gem 'elasticsearch', '~> 8.1'
 
 # Access your external REST API
 gem 'flexirest', '~> 1.7.5'
