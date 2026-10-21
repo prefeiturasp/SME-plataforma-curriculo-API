@@ -23,7 +23,7 @@ RUN yarn install 
 
 COPY Gemfile Gemfile.lock ./
 
-RUN gem install bundler
+RUN gem install bundler -v 2.4.22
 RUN bundle install --jobs 20 --retry 5 
 
 COPY . ./
