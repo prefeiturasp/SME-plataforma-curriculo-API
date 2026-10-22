@@ -38,6 +38,9 @@ module Api
     end
     
     def authenticate_in_sme
+      # Sem Core SSO configurado (ambiente local), autentica só pelo banco
+      return if Rails.env.development? && ENV['SME_CORE_SSO_API'].blank?
+
       result = User.authenticate_in_sme(custom_login_params)
       render_failed_login(result) if [400, 403].include?(result[:status])
     end
